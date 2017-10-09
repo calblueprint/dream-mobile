@@ -38,21 +38,19 @@ export class Courses extends React.Component {
   }
 
   _renderCourses() {
-    // return this.state.courses.map((course) => {
-    //   <Text key={course.id}>{ course.id } { course.title }</Text>
-    // });
-    return (
-      <FlatList
-        data={this.state.courses}
-        renderItem={(course) => <Text>{course.id} {course.title}</Text>}
-        keyExtractor={(course) => course.id}
-      />
-    );
+    return this.state.courses.map(function(course, i) {
+      return(
+        <View key={i}>
+          <Text>{course.id} {course.title}</Text>
+        </View>
+      );
+    });
   }
 
   render() {
     let courses;
     if (this.state.isLoading) {
+      // TODO (casey): Add loading gif.
       courses = (
         <Text>Loading...</Text>
       )
