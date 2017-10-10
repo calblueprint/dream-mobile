@@ -1,18 +1,36 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Button, StyleSheet, Text, View } from 'react-native';
+import { StackNavigator } from 'react-navigation';
 
-import { Courses } from './courses/courses_main'
+import { CoursesScreen } from './courses/courses_main'
+
+class HomeScreen extends React.Component {
+  static navigationOptions = {
+    title: 'Welcome',
+  };
+
+  render() {
+    const { navigate } = this.props.navigation;
+    return (
+      <View style={styles.container}>
+        <Text>DREAM</Text>
+        <Button
+          onPress={() => navigate('Courses')}
+          title="Show Courses"
+        />
+      </View>
+    );
+  }
+}
+
+export const AppNavigator = StackNavigator({
+  Home    : { screen: HomeScreen },
+  Courses : { screen: CoursesScreen },
+});
 
 export default class App extends React.Component {
   render() {
-    return (
-      <Courses />
-      // <View style={styles.container}>
-      //   <Text>Open up App.js to start working on your app!</Text>
-      //   <Text>Changes you make will automatically reload.</Text>
-      //   <Text>Shake your phone to open the developer menu.</Text>
-      // </View>
-    );
+    return <AppNavigator />;
   }
 }
 

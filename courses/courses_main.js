@@ -1,7 +1,12 @@
 import React from 'react';
-import { FlatList, StyleSheet, Text, View } from 'react-native';
+import { Button, FlatList, StyleSheet, Text, View } from 'react-native';
+import { StackNavigator } from 'react-navigation';
 
-export class Courses extends React.Component {
+export class CoursesScreen extends React.Component {
+
+  static navigationOptions = {
+    title: 'Show Courses',
+  };
 
   constructor(props) {
     super(props);
@@ -62,6 +67,7 @@ export class Courses extends React.Component {
         { courses }
       </View>
     );
+
   }
 }
 
