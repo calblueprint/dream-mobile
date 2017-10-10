@@ -16,7 +16,7 @@ class HomeScreen extends React.Component {
         <Text>DREAM</Text>
         <Button
           onPress={() => navigate('Courses')}
-          title="Show Courses"
+          title="See Courses"
         />
       </View>
     );

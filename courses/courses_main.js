@@ -5,7 +5,7 @@ import { StackNavigator } from 'react-navigation';
 export class CoursesScreen extends React.Component {
 
   static navigationOptions = {
-    title: 'Show Courses',
+    title: 'Courses',
   };
 
   constructor(props) {
