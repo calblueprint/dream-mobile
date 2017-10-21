@@ -20,3 +20,12 @@ export const HomeStack = StackNavigator({
     },
   },
 });
+
+
+export class APIRoutes {
+  static createRoute(route)           { return `/api/${route}` }
+
+  static getCoursesPath()             { return APIRoutes.createRoute(`courses`) }
+  // Example route w/ id
+  // static createComponentPath(id)    { return APIRoutes.createRoute(`admins/subsections/${id}/components`) }
+}
