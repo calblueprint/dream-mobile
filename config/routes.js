@@ -4,6 +4,8 @@ import { StackNavigator } from 'react-navigation';
 
 import HomeScreen from '../screens/HomeScreen';
 import CoursesScreen from '../screens/courses/CoursesScreen';
+// TODO (caseytaka): put create course screen in screens dir
+import CreateCourseScreen from './courses/create_course'
 
 
 export const HomeStack = StackNavigator({
@@ -17,6 +19,12 @@ export const HomeStack = StackNavigator({
     screen: CoursesScreen,
     navigationOptions: {
       headerTitle: 'Courses',
+    },
+  },
+  CreateCourse : {
+    screen: CreateCourseScreen,
+    navigationOptions: {
+      headerTitle: 'CreateCourse',
     },
   },
 });
