@@ -1,3 +1,4 @@
+// TODO (Kelsey): test whether if check actually works
 if (process.env.NODE_ENV === 'production') {
   URL = 'https://dream-rails-production.herokuapp.com';
 } else {
