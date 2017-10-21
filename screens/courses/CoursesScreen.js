@@ -1,6 +1,11 @@
 import React from 'react';
 import { Button, Text, View } from 'react-native';
+<<<<<<< db43e5c9b8ced305496d882b2f5267f5d491c181
 import { styles } from '../../styles/styles';
+=======
+import { styles } from '../../config/styles';
+import { courseCardStyles } from '../../components/CourseCard';
+>>>>>>> Course create fields in form.
 import { getRequest } from '../../lib/requests';
 import { APIRoutes } from '../../config/routes';
 
@@ -33,8 +38,8 @@ class CoursesScreen extends React.Component {
   _renderCourses() {
     return this.state.courses.map(function(course, i) {
       return(
-        <View key={i}>
-          <Text>{course.id} {course.title}</Text>
+        <View key={i} style={courseCard.container}>
+          <Text style={courseCard.title}>{course.title}</Text>
         </View>
       );
     });
@@ -43,7 +48,7 @@ class CoursesScreen extends React.Component {
   render() {
     let courses;
     if (this.state.isLoading) {
-      // TODO (casey): Add loading gif.
+      // TODO (caseytaka): Add loading gif.
       courses = (
         <Text>Loading...</Text>
       )
@@ -51,7 +56,11 @@ class CoursesScreen extends React.Component {
       courses = this._renderCourses()
     }
     return (
-      <View style={styles.container}>
+      <View>
+        <Button
+          onPress={() => navigate('CreateCourse')}
+          title="Create Course"
+        />
         { courses }
       </View>
     );
