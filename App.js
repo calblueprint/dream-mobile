@@ -25,13 +25,6 @@ class HomeScreen extends React.Component {
   }
 }
 
-export const AppNavigator = StackNavigator({
-  Home    : { screen: HomeScreen },
-  Courses : { screen: CoursesScreen },
-  Students : { screen: StudentsScreen },
-});
->>>>>>> first commit
-
 export default class App extends React.Component {
   render() {
     return <HomeStack />;
