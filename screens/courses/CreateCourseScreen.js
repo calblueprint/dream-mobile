@@ -4,6 +4,9 @@ import { StackNavigator } from 'react-navigation';
 import { Form, InputField, PickerField,
          DatePickerField, TimePickerField } from 'react-native-form-generator';
 
+/**
+ * @prop onCreateCourse - callback function when course create form is submitted
+ */
 export class CreateCourseScreen extends React.Component {
 
   constructor(props) {
@@ -12,10 +15,6 @@ export class CreateCourseScreen extends React.Component {
     this.state = {
       courseData: {}
     }
-  }
-
-  _createCourse() {
-    console.log(this.state.courseData);
   }
 
   _handleFormChange(courseData){
@@ -96,7 +95,7 @@ export class CreateCourseScreen extends React.Component {
           placeholder='End Date'/>
 
         <Button
-          onPress={this._createCourse.bind(this)}
+          // onPress={this.props.navigation.state.params.onCreateCourse}
           title='Create Course'
         />
       </Form>
