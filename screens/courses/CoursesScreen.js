@@ -1,13 +1,8 @@
 import React from 'react';
-import { Button, FlatList, StyleSheet, Text, View } from 'react-native';
-import { StackNavigator } from 'react-navigation';
+import { Button, Text, View } from 'react-native';
+import { styles } from '../../config/styles';
 
-export class CoursesScreen extends React.Component {
-
-  static navigationOptions = {
-    title: 'Courses',
-  };
-
+class CoursesScreen extends React.Component {
   constructor(props) {
     super(props);
     this._fetchCourses = this._fetchCourses.bind(this);
@@ -63,7 +58,7 @@ export class CoursesScreen extends React.Component {
       courses = this._renderCourses()
     }
     return (
-      <View style={courseStyles.container}>
+      <View style={styles.container}>
         { courses }
       </View>
     );
@@ -71,11 +66,4 @@ export class CoursesScreen extends React.Component {
   }
 }
 
-const courseStyles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default CoursesScreen;
