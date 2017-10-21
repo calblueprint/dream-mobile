@@ -1,6 +1,8 @@
 import React from 'react';
 import { Button, Text, View } from 'react-native';
 import { styles } from '../../config/styles';
+import { getRequest } from '../../lib/requests';
+import { APIRoutes } from '../../config/routes';
 
 class CoursesScreen extends React.Component {
   constructor(props) {
@@ -18,23 +20,14 @@ class CoursesScreen extends React.Component {
   }
 
   _fetchCourses() {
-    // TODO (caseytaka): Fix URL
-    fetch('http://127.0.0.1:3000/api/courses', {
-      method: 'GET',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      }})
-      .then(function(response) {
-        return response.json();
-      })
-      .then(function(responseData) {
-        this.setState({ courses: responseData, isLoading: false });
-      }.bind(this))
-      .catch(function(error) {
-        // TODO (caseytaka): Display correct toastr error msg
-        console.error(error);
-      });
+    const successFunc = (responseData) => {
+      this.setState({ courses: responseData, isLoading: false });
+    }
+    const errorFunc = (error) => {
+      // TODO (caseytaka): Display correct toastr error msg
+      console.error(error);
+    }
+    getRequest(APIRoutes.getCoursesPath(), successFunc, errorFunc);
   }
 
   _renderCourses() {
