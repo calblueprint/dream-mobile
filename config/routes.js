@@ -4,8 +4,7 @@ import { StackNavigator } from 'react-navigation';
 
 import HomeScreen from '../screens/HomeScreen';
 import CoursesScreen from '../screens/courses/CoursesScreen';
-// TODO (caseytaka): put create course screen in screens dir
-import CreateCourseScreen from './courses/create_course'
+import CreateCourseScreen from '../screens/courses/CreateCourseScreen';
 
 
 export const HomeStack = StackNavigator({

@@ -1,4 +1,6 @@
-const courseCardStyles = StyleSheet.create({
+import { StyleSheet } from 'react-native';
+
+const cardStyles = StyleSheet.create({
   container: {
     backgroundColor: '#A1C3BB',
     margin: 8,
@@ -9,3 +11,5 @@ const courseCardStyles = StyleSheet.create({
     fontSize: 20,
   },
 });
+
+export { cardStyles };

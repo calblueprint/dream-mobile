@@ -4,8 +4,12 @@ import { Button, Text, View } from 'react-native';
 import { styles } from '../../styles/styles';
 =======
 import { styles } from '../../config/styles';
+<<<<<<< 7ad0dbc53b80825184c8056442d8a9d52e4e173f
 import { courseCardStyles } from '../../components/CourseCard';
 >>>>>>> Course create fields in form.
+=======
+import { cardStyles } from '../../components/CourseCard/cardStyles';
+>>>>>>> Adjust courses files for new directory structure.
 import { getRequest } from '../../lib/requests';
 import { APIRoutes } from '../../config/routes';
 
@@ -38,14 +42,15 @@ class CoursesScreen extends React.Component {
   _renderCourses() {
     return this.state.courses.map(function(course, i) {
       return(
-        <View key={i} style={courseCard.container}>
-          <Text style={courseCard.title}>{course.title}</Text>
+        <View key={i} style={cardStyles.container}>
+          <Text style={cardStyles.title}>{course.title}</Text>
         </View>
       );
     });
   }
 
   render() {
+    const { navigate } = this.props.navigation;
     let courses;
     if (this.state.isLoading) {
       // TODO (caseytaka): Add loading gif.
