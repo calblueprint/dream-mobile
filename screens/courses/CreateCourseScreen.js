@@ -1,14 +1,13 @@
 import React from 'react';
-import { Button, StyleSheet, Text, View } from 'react-native';
-import { StackNavigator } from 'react-navigation';
+import { Button, Text, View } from 'react-native';
 import { Form, InputField, PickerField,
          DatePickerField, TimePickerField } from 'react-native-form-generator';
+import { APIRoutes } from '../../config/routes';
 
 /**
  * @prop onCreateCourse - callback function when course create form is submitted
  */
-export class CreateCourseScreen extends React.Component {
-
+class CreateCourseScreen extends React.Component {
   constructor(props) {
     super(props);
     this._timeFormat = this._timeFormat.bind(this);
@@ -96,10 +95,12 @@ export class CreateCourseScreen extends React.Component {
 
         <Button
           // onPress={this.props.navigation.state.params.onCreateCourse}
-          title='Create Course'
+          title='Create'
         />
       </Form>
     );
 
   }
 }
+
+export default CreateCourseScreen;

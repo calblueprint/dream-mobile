@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, Text, View } from 'react-native';
 import { styles } from '../../config/styles';
-import { courseCardStyles } from '../../components/CourseCard';
+import { cardStyles } from '../../components/CourseCard/cardStyles';
 import { getRequest } from '../../lib/requests';
 import { APIRoutes } from '../../config/routes';
 
@@ -34,14 +34,15 @@ class CoursesScreen extends React.Component {
   _renderCourses() {
     return this.state.courses.map(function(course, i) {
       return(
-        <View key={i} style={courseCard.container}>
-          <Text style={courseCard.title}>{course.title}</Text>
+        <View key={i} style={cardStyles.container}>
+          <Text style={cardStyles.title}>{course.title}</Text>
         </View>
       );
     });
   }
 
   render() {
+    const { navigate } = this.props.navigation;
     let courses;
     if (this.state.isLoading) {
       // TODO (caseytaka): Add loading gif.
