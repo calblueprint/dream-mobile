@@ -39,7 +39,11 @@ export const HomeStack = StackNavigator({
 export class APIRoutes {
   static createRoute(route)           { return `/api/${route}` }
 
+  // Courses
   static getCoursesPath()             { return APIRoutes.createRoute(`courses`) }
+
+  // Students
+
   // Example route w/ id
   // static createComponentPath(id)    { return APIRoutes.createRoute(`admins/subsections/${id}/components`) }
   static getStudentsPath()             { return APIRoutes.createRoute(`students`) }
