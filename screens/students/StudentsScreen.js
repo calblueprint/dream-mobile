@@ -1,12 +1,14 @@
 import React from 'react';
-import { Button, FlatList, StyleSheet, Text, View } from 'react-native';
+import { Button, Text, View } from 'react-native';
 import { styles } from '../../config/styles';
+import { getRequest } from '../../lib/requests';
+import { APIRoutes } from '../../config/routes';
 
 class StudentsScreen extends React.Component {
   constructor(props) {
     super(props);
     this._fetchStudents = this._fetchStudents.bind(this);
-    this._renderStudent = this._renderStudents.bind(this);
+    this._renderStudents = this._renderStudents.bind(this); 
     this.state = {
       students : { },
       isLoading : true,
@@ -18,22 +20,14 @@ class StudentsScreen extends React.Component {
   }
 
   _fetchStudents() {
-    fetch('http://127.0.0.1:3000/api/students', {
-      method: 'GET',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      }})
-      .then(function(response) {
-        return response.json();
-      })
-      .then(function(responseData) {
-        this.setState({ students: responseData, isLoading: false });
-      }.bind(this))
-      .catch(function(error) {
-        // TODO (caseytaka): Display correct toastr error msg
-        console.error(error);
-      });
+    const successFunc = (responseData) => {
+      this.setState({ students: responseData, isLoading: false });
+    }
+    const errorFunc = (error) => {
+      // TODO (caseytaka): Display correct toastr error msg
+      console.error(error);
+    }
+    getRequest(APIRoutes.getStudentsPath(), successFunc, errorFunc); 
   }
 
   _renderStudents() {
@@ -47,7 +41,7 @@ class StudentsScreen extends React.Component {
   }
 
   render() {
-    let students;
+    let Students;
     if (this.state.isLoading) {
       // TODO (casey): Add loading gif.
       students = (
