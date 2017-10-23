@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Text, View } from 'react-native';
+import { Button, ScrollView, Text, View } from 'react-native';
 import { styles } from '../../config/styles';
 import { cardStyles } from '../../components/CourseCard/cardStyles';
 import { getRequest } from '../../lib/requests';
@@ -53,13 +53,15 @@ class CoursesScreen extends React.Component {
       courses = this._renderCourses()
     }
     return (
-      <View>
-        <Button
-          onPress={() => navigate('CreateCourse')}
-          title="Create Course"
-        />
-        { courses }
-      </View>
+      <ScrollView>
+        <View>
+          <Button
+            onPress={() => navigate('CreateCourse', {refreshCourses: this._fetchCourses})}
+            title="Create Course"
+          />
+          { courses }
+        </View>
+      </ScrollView>
     );
 
   }

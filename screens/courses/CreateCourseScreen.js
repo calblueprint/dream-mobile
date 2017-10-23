@@ -3,103 +3,38 @@ import { Button, Text, View } from 'react-native';
 import { Form, InputField, PickerField,
          DatePickerField, TimePickerField } from 'react-native-form-generator';
 import { APIRoutes } from '../../config/routes';
+import PropTypes from 'prop-types';
+import CreateCourseForm from '../../components/Form/CreateCourseForm'
+import { postRequest } from '../../lib/requests';
 
-/**
- * @prop onCreateCourse - callback function when course create form is submitted
- */
 class CreateCourseScreen extends React.Component {
   constructor(props) {
     super(props);
-    this._timeFormat = this._timeFormat.bind(this);
     this.state = {
-      courseData: {}
+      course: {}
     }
   }
 
-  _handleFormChange(courseData){
-    //formData will be a json object that will contain refs of every field
-    this.setState({courseData : courseData});
+  _handleCreateCourse(params) {
+    params.is_active = true;
+
+    const successFunc = (responseData) => {
+      this.setState({ course: responseData});
+      this.props.navigation.state.params.refreshCourses();
+      this.props.navigation.goBack(null);
+    }
+    const errorFunc = (error) => {
+      console.error(error);
+    }
+    postRequest(APIRoutes.getCoursesPath(), successFunc, errorFunc, params=params);
   }
 
-  _handleFormFocus(event, reactNode) {
-   this.refs.scroll.scrollToFocusedInput(event, reactNode);
-  }
-
-  /* Display time in HH:MM AM/PM format. */
-  _timeFormat(date, mode) {
-    if(!date) return "";
-    let value=date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-    return value;
-  }
 
   render() {
-    const { navigate } = this.props.navigation;
-    const today = new Date();
-    const maxDate = new Date(today.getFullYear()+2, today.getMonth(), today.getDate());
     return (
-      <Form
-        ref='registrationForm'
-        onChange={this._handleFormChange.bind(this)}
-        label="Personal Information">
-        <InputField
-          ref='course_title'
-          label='Course Title'
-          placeholder='e.g. Montessori'/>
-
-        <InputField
-          ref='teacher_1'
-          label='Teacher ID 1'
-          placeholder='e.g. 19322372'/>
-
-        <InputField
-          ref='teacher_2'
-          label='Teacher ID 2'
-          placeholder='e.g. 12634669'/>
-
-        <PickerField
-          ref='weekday'
-          options={{
-            'sun': 'Sunday',
-            'mon': 'Monday',
-            'tue': 'Tuesday',
-            'wed': 'Wednesday',
-            'thu': 'Thursday',
-            'fri': 'Friday',
-            'sat': 'Saturday',
-          }}
-          placeholder='Select Day'/>
-
-        <TimePickerField
-          ref='start_time'
-          dateTimeFormat={this._timeFormat}
-          placeholder='Session Start'/>
-
-        <TimePickerField
-          ref='end_time'
-          dateTimeFormat={this._timeFormat}
-          placeholder='Session End'/>
-
-        <DatePickerField
-          ref='start_date'
-          minimumDate={today}
-          maximumDate={maxDate}
-          mode="date"
-          placeholder='Start Date'/>
-
-        <DatePickerField
-          ref='end_date'
-          minimumDate={today}
-          maximumDate={maxDate}
-          mode='date'
-          placeholder='End Date'/>
-
-        <Button
-          // onPress={this.props.navigation.state.params.onCreateCourse}
-          title='Create'
-        />
-      </Form>
+      <CreateCourseForm
+        onCreateCourse={this._handleCreateCourse.bind(this)} />
     );
-
   }
 }
 
