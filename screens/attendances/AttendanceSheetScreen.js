@@ -1,10 +1,12 @@
 import React from 'react';
-import { Button, Text, View } from 'react-native';
-import { styles } from '../../config/styles';
+import { Button, Text, View, ScrollView } from 'react-native';
+import { styles } from '../../styles/styles';
 import { APIRoutes } from '../../config/routes';
 import { getRequest, postRequest, putRequest } from '../../lib/requests';
 import settings from '../../config/settings';
 import AttendanceCard from '../../components/AttendanceCard';
+
+console.disableYellowBox = true;
 
 class AttendanceSheetScreen extends React.Component {
   constructor(props) {
@@ -145,9 +147,11 @@ class AttendanceSheetScreen extends React.Component {
       attendances = this._renderLoaded();
     }
     return (
-      <View style={styles.container}>
-        { attendances }
-      </View>
+      <ScrollView>
+        <View style={styles.container}>
+          { attendances }
+        </View>
+      </ScrollView>
     );
   }
 }
