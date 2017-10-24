@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, Text, View } from 'react-native';
-import { styles } from '../../config/styles';
+import { styles } from '../../styles/styles';
 import { getRequest } from '../../lib/requests';
 import { APIRoutes } from '../../config/routes';
 
@@ -51,7 +51,7 @@ class StudentsScreen extends React.Component {
     return this.state.students.map(function(student, i) {
       return(
         <View key={i}>
-          <Text>{student.id} {student.title}</Text>
+          <Text>{student.id} {student.first_name} {student.last_name}</Text>
         </View>
       );
     });
