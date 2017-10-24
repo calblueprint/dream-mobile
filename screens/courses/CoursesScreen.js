@@ -54,14 +54,14 @@ class CoursesScreen extends React.Component {
     }
     return (
       <ScrollView>
-         <View>
-           <Button
-             onPress={() => navigate('CreateCourse', {refreshCourses: this._fetchCourses})}
-             title="Create Course"
-           />
-           { courses }
-         </View>
-       </ScrollView>
+        <View>
+          <Button
+            onPress={() => navigate('CreateCourse', {refreshCourses: this._fetchCourses})}
+            title="Create Course"
+          />
+          { courses }
+        </View>
+      </ScrollView>
     );
 
   }
