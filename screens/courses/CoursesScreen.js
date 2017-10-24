@@ -1,6 +1,7 @@
 import React from 'react';
-import { Button, Text, View } from 'react-native';
-import { styles } from '../../config/styles';
+import { Button, ScrollView, Text, View } from 'react-native';
+import { styles } from '../../styles/styles';
+import { cardStyles } from '../../components/CourseCard/styles';
 import { getRequest } from '../../lib/requests';
 import { APIRoutes } from '../../config/routes';
 
@@ -33,17 +34,18 @@ class CoursesScreen extends React.Component {
   _renderCourses() {
     return this.state.courses.map(function(course, i) {
       return(
-        <View key={i}>
-          <Text>{course.id} {course.title}</Text>
+        <View key={i} style={cardStyles.container}>
+          <Text style={cardStyles.title}>{course.title}</Text>
         </View>
       );
     });
   }
 
   render() {
+    const { navigate } = this.props.navigation;
     let courses;
     if (this.state.isLoading) {
-      // TODO (casey): Add loading gif.
+      // TODO (caseytaka): Add loading gif.
       courses = (
         <Text>Loading...</Text>
       )
@@ -51,9 +53,15 @@ class CoursesScreen extends React.Component {
       courses = this._renderCourses()
     }
     return (
-      <View style={styles.container}>
-        { courses }
-      </View>
+      <ScrollView>
+        <View>
+          <Button
+            onPress={() => navigate('CreateCourse', {refreshCourses: this._fetchCourses})}
+            title="Create Course"
+          />
+          { courses }
+        </View>
+      </ScrollView>
     );
 
   }
