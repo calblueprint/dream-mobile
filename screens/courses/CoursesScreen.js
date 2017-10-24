@@ -28,7 +28,8 @@ class CoursesScreen extends React.Component {
       // TODO (caseytaka): Display correct toastr error msg
       console.error(error);
     }
-    getRequest(APIRoutes.getCoursesPath(), successFunc, errorFunc);
+    const retval = getRequest(APIRoutes.getCoursesPath(), successFunc, errorFunc);
+    console.log(retval)
   }
 
   _renderCourses() {
