@@ -1,6 +1,5 @@
 import React from 'react';
 import { Button, StyleSheet, Text, View } from 'react-native';
-
 import { HomeStack } from './config/routes'
 
 class HomeScreen extends React.Component {
