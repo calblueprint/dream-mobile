@@ -45,7 +45,15 @@ class CreateCourseForm extends React.Component {
           <InputField
             ref='title'
             label='Course Title'
-            placeholder='e.g. Montessori'/>
+            placeholder='e.g. Montessori'
+            validationFunction=
+              {[(value)=>{
+                if(value == '') return "Title required";
+                //Initial state is null/undefined
+                if(!value) return "Course title required";
+                return true;
+              }]}
+            />
 
           <InputField
             ref='teacher_1'
@@ -68,7 +76,7 @@ class CreateCourseForm extends React.Component {
               'fri': 'Friday',
               'sat': 'Saturday',
             }}
-            placeholder='Select Day'/>
+            label='Select Day'/>
 
           <TimePickerField
             ref='start_time'
