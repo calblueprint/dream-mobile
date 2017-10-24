@@ -1,6 +1,4 @@
-import { StyleSheet } from 'react-native';
-
-const colors = StyleSheet.create({
+const colors = {
   primaryYellow: '#FFC107',
   courseGreen: '#26A69A',
   courseBlue: '#3F51B5',
@@ -23,6 +21,6 @@ const colors = StyleSheet.create({
   iconDark: 'rgba(33, 33, 33, .85)',
   iconLight: 'rgba(255, 255, 255, .85)',
 
-});
+};
 
-export { colors };
+module.exports = colors;
