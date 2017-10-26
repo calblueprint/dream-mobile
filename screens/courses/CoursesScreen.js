@@ -39,7 +39,11 @@ class CoursesScreen extends React.Component {
         <View key={i} style={cardStyles.container}>
           <Text style={cardStyles.title}>{course.title}</Text>
           <Button
-            onPress={() => navigate('Attendances', { courseId: course.id, date: date })}
+            onPress={() => navigate('Attendances', {
+              courseId: course.id,
+              courseTitle: course.title,
+              date: date
+            })}
             title="Take Attendance"
           />
         </View>

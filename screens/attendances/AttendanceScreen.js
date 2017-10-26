@@ -1,9 +1,11 @@
 import React from 'react';
 import { Button, Text, View, ScrollView } from 'react-native';
+
 import { styles } from '../../styles/styles';
 import { APIRoutes } from '../../config/routes';
-import { getRequest, postRequest, putRequest } from '../../lib/requests';
 import settings from '../../config/settings';
+import { getRequest, postRequest, putRequest } from '../../lib/requests';
+import { attendanceDate } from '../../lib/date';
 import AttendanceCard from '../../components/AttendanceCard';
 
 console.disableYellowBox = true;
@@ -18,6 +20,7 @@ class AttendanceScreen extends React.Component {
       isLoading : true,
       date: this.props.navigation.state.params.date,
       courseId: this.props.navigation.state.params.courseId,
+      courseTitle: this.props.navigation.state.params.courseTitle,
     }
   }
 
@@ -150,6 +153,8 @@ class AttendanceScreen extends React.Component {
     return(
       <View>
         <ScrollView>
+          <Text>{attendanceDate(this.state.date)}</Text>
+          <Text>{this.state.courseTitle}</Text>
           {this._renderAttendances()}
         </ScrollView>
         <Button
