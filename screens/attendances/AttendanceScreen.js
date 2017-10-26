@@ -8,13 +8,14 @@ import AttendanceCard from '../../components/AttendanceCard';
 
 console.disableYellowBox = true;
 
-class AttendanceSheetScreen extends React.Component {
+class AttendanceScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       attendances : { },
       students : { },
       isLoading : true,
+      date: this.props.navigation.state.params.date,
       courseId: this.props.navigation.state.params.courseId,
     }
 
@@ -25,10 +26,14 @@ class AttendanceSheetScreen extends React.Component {
     this._fetchStudents(this.state.courseId);
   }
 
+  /**
+    * Fetches all students with the given course id and on success
+    * gets attendances for each student
+    */
   _fetchStudents(courseId) {
     const successFunc = (responseData) => {
       this.setState({ students: responseData });
-      this._getAttendances(responseData);
+      this._fetchAttendances(responseData);
     }
     const errorFunc = (error) => {
       console.log(error)
@@ -36,10 +41,13 @@ class AttendanceSheetScreen extends React.Component {
     getRequest(APIRoutes.getStudentsPath(courseId), successFunc, errorFunc);
   }
 
-  _getAttendances(students) {
-    const date = new Date();
+  /**
+    * Attempts to get attendance for each students and waits for each request to succeed
+    * before setting state for attendances, or logs failure
+    */
+  _fetchAttendances(students) {
     const attendances = students.map((student) => {
-      return this._fetchAttendance(student.id, date);
+      return this._fetchAttendance(student.id, this.state.date);
     });
 
     Promise.all(attendances).then((attendances) => {
@@ -50,6 +58,9 @@ class AttendanceSheetScreen extends React.Component {
   }
 
 
+  /**
+    * Makes a request to get attendance for the specified student
+    */
   _fetchAttendance(studentId, date) {
     const successFunc = (responseData) => {
       return responseData;
@@ -75,19 +86,6 @@ class AttendanceSheetScreen extends React.Component {
     this.setState({ attendances: attendances })
   }
 
-  _getAttendances(students) {
-    const date = new Date();
-    const attendances = students.map((student) => {
-      return this._fetchAttendance(student.id, date);
-    });
-
-    Promise.all(attendances).then((attendances) => {
-      this.setState({ attendances: attendances, isLoading: false })
-    }).catch((error) => {
-      console.log(error);
-    });
-  }
-
   _updateAttendances() {
     const attendances = this.state.attendances.map((attendance) => {
       return this._putAttendance(attendance);
@@ -106,8 +104,7 @@ class AttendanceSheetScreen extends React.Component {
       return responseData;
     }
     const errorFunc = (error) => {
-      // TODO (Kelsey): address what happens when attendance for student on given date doesn't exist
-      console.log(error)
+      // TODO (Kelsey): address what happens when editing attendance fails
     }
     const params = attendance
     return putRequest(APIRoutes.attendancePath(), successFunc, errorFunc, params);
@@ -118,6 +115,7 @@ class AttendanceSheetScreen extends React.Component {
       return(
         <AttendanceCard key={i}
           attendance={attendance}
+          index={i}
           name={this.state.students.find((student) => student.id == attendance.student_id).first_name}
           updateAttendance={this.updateAttendance}/>
       );
@@ -156,4 +154,9 @@ class AttendanceSheetScreen extends React.Component {
   }
 }
 
-export default AttendanceSheetScreen;
+AttendanceScreen.propTypes = {
+  courseId: React.PropTypes.integer,
+  date: React.PropTypes.date,
+};
+
+export default AttendanceScreen;

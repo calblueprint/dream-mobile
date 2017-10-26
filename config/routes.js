@@ -6,8 +6,11 @@ import HomeScreen from '../screens/HomeScreen';
 import CoursesScreen from '../screens/courses/CoursesScreen';
 import CreateCourseScreen from '../screens/courses/CreateCourseScreen';
 import StudentsScreen from '../screens/students/StudentsScreen';
-import AttendanceSheetScreen from '../screens/attendances/AttendanceSheetScreen';
+import AttendanceScreen from '../screens/attendances/AttendanceScreen';
 
+/**
+ * HomeStack is the main navigation stack starting from the HomeScreen
+ */
 export const HomeStack = StackNavigator({
   Home: {
     screen: HomeScreen,
@@ -34,7 +37,7 @@ export const HomeStack = StackNavigator({
     },
   },
   Attendances: {
-    screen: AttendanceSheetScreen,
+    screen: AttendanceScreen,
     navigationOptions: {
       headerTitle: 'Attendance',
     },
@@ -42,7 +45,11 @@ export const HomeStack = StackNavigator({
 });
 
 
+/**
+ * Class for defining API routes
+ */
 export class APIRoutes {
+  // Use to build api routes
   static createRoute(route)           { return `/api/${route}` }
 
   // Courses
