@@ -11,6 +11,7 @@ console.disableYellowBox = true;
 class AttendanceScreen extends React.Component {
   constructor(props) {
     super(props);
+
     this.state = {
       attendances : { },
       students : { },
@@ -18,8 +19,6 @@ class AttendanceScreen extends React.Component {
       date: this.props.navigation.state.params.date,
       courseId: this.props.navigation.state.params.courseId,
     }
-
-    this.updateAttendance = this.updateAttendance.bind(this)
   }
 
   componentDidMount() {
@@ -79,16 +78,22 @@ class AttendanceScreen extends React.Component {
     return postRequest(APIRoutes.attendanceItemPath(), successFunc, errorFunc, params);
   }
 
-  updateAttendance(attendance) {
-    index = this.state.attendances.findIndex((attendanceItem) => attendanceItem.id === attendance.id)
+  /**
+    * Method passed to AttendanceCard to update state for the given attendance object
+    */
+  _updateAttendance(attendance, index) {
     const attendances = this.state.attendances
     attendances[index] = attendance
     this.setState({ attendances: attendances })
   }
 
-  _updateAttendances() {
+  /**
+    * Attempts to update each changed and waits for each request to succeed
+    * before navigating backwards or logging failure
+    */
+  _submitAttendances() {
     const attendances = this.state.attendances.map((attendance, i) => {
-      return this._putAttendance(attendance, i);
+      return this._submitAttendance(attendance, i);
     });
 
     Promise.all(attendances).then((attendances) => {
@@ -98,7 +103,10 @@ class AttendanceScreen extends React.Component {
     });
   }
 
-  _putAttendance(attendance, index) {
+  /**
+    * Makes put request to update given attendance if it has been changed
+    */
+  _submitAttendance(attendance, index) {
     const successFunc = (responseData) => {
       return responseData;
     }
@@ -107,7 +115,10 @@ class AttendanceScreen extends React.Component {
       console.log(error);
     }
     const params = attendance
-    return putRequest(APIRoutes.attendancePath(), successFunc, errorFunc, params);
+
+    if (attendance.isChanged) {
+      return putRequest(APIRoutes.attendancePath(), successFunc, errorFunc, params);
+    }
   }
 
   _renderAttendances() {
@@ -117,7 +128,7 @@ class AttendanceScreen extends React.Component {
           attendance={attendance}
           index={i}
           name={this.state.students.find((student) => student.id == attendance.student_id).first_name}
-          updateAttendance={this.updateAttendance}/>
+          updateAttendance={this._updateAttendance.bind(this)}/>
       );
     });
   }
@@ -127,7 +138,7 @@ class AttendanceScreen extends React.Component {
       <View>
         {this._renderAttendances()}
         <Button
-          onPress={this._updateAttendances.bind(this)}
+          onPress={this._submitAttendances.bind(this)}
           title="Submit"
         />
       </View>
@@ -154,9 +165,6 @@ class AttendanceScreen extends React.Component {
   }
 }
 
-AttendanceScreen.propTypes = {
-  courseId: React.PropTypes.number.isRequired,
-  date: React.PropTypes.instanceOf(Date).isRequired,
-};
+// TODO (Kelsey): Add PropTypes from navigation
 
 export default AttendanceScreen;

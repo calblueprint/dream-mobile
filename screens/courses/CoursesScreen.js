@@ -32,13 +32,14 @@ class CoursesScreen extends React.Component {
   }
 
   _renderCourses() {
+    const date = new Date();
     const { navigate } = this.props.navigation;
     return this.state.courses.map(function(course, i) {
       return(
         <View key={i} style={cardStyles.container}>
           <Text style={cardStyles.title}>{course.title}</Text>
           <Button
-            onPress={() => navigate('Attendances', { courseId: course.id, date: new Date() })}
+            onPress={() => navigate('Attendances', { courseId: course.id, date: date })}
             title="Take Attendance"
           />
         </View>

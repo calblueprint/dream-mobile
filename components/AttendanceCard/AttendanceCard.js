@@ -26,15 +26,17 @@ class AttendanceCard extends React.Component {
   setComment(comment) {
     const attendance = this.state.attendance
     attendance.comment = comment
+    attendance.isChanged = true
     this.setState({ attendance: attendance })
-    this.props.updateAttendance(attendance)
+    this.props.updateAttendance(attendance, this.props.index)
   }
 
   setType(option) {
     const attendance = this.state.attendance
     attendance.attendance_type = option.key
+    attendance.isChanged = true
     this.setState({attendance: attendance, attendanceLabel: option.label})
-    this.props.updateAttendance(attendance)
+    this.props.updateAttendance(attendance, this.props.index)
   }
 
   render() {
