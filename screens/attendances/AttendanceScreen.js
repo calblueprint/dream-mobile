@@ -87,24 +87,24 @@ class AttendanceScreen extends React.Component {
   }
 
   _updateAttendances() {
-    const attendances = this.state.attendances.map((attendance) => {
-      return this._putAttendance(attendance);
+    const attendances = this.state.attendances.map((attendance, i) => {
+      return this._putAttendance(attendance, i);
     });
 
     Promise.all(attendances).then((attendances) => {
-      this.props.navigation.goBack(null);
+      this.props.navigation.goBack();
     }).catch((error) => {
       console.log(error);
     });
   }
 
-
-  _putAttendance(attendance) {
+  _putAttendance(attendance, index) {
     const successFunc = (responseData) => {
       return responseData;
     }
     const errorFunc = (error) => {
       // TODO (Kelsey): address what happens when editing attendance fails
+      console.log(error);
     }
     const params = attendance
     return putRequest(APIRoutes.attendancePath(), successFunc, errorFunc, params);
@@ -155,8 +155,8 @@ class AttendanceScreen extends React.Component {
 }
 
 AttendanceScreen.propTypes = {
-  courseId: React.PropTypes.integer,
-  date: React.PropTypes.date,
+  courseId: React.PropTypes.number.isRequired,
+  date: React.PropTypes.instanceOf(Date).isRequired,
 };
 
 export default AttendanceScreen;

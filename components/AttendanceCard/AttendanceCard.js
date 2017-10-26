@@ -90,9 +90,9 @@ const styles = StyleSheet.create({
 });
 
 AttendanceCard.propTypes = {
-  attendance: React.PropTypes.object,
-  name: React.PropTypes.string,
-  index: React.PropTypes.integer,
+  attendance: React.PropTypes.object.isRequired,
+  name: React.PropTypes.string.isRequired,
+  index: React.PropTypes.number.isRequired,
 };
 
 export default AttendanceCard;
