@@ -121,22 +121,37 @@ class AttendanceScreen extends React.Component {
     }
   }
 
+  /**
+    * Gets students full name at the given index (assumes attendance index is same as student index)
+    */
+  _getStudentName(index) {
+    const student = this.state.students[index]
+    if (student) {
+      return `${student.first_name} ${student.last_name}`
+    }
+  }
+
+  /**
+    * Renders AttendanceCard for each attendance object
+    */
   _renderAttendances() {
     return this.state.attendances.map((attendance, i) => {
       return(
         <AttendanceCard key={i}
           attendance={attendance}
           index={i}
-          name={this.state.students.find((student) => student.id == attendance.student_id).first_name}
+          name={this._getStudentName(i)}
           updateAttendance={this._updateAttendance.bind(this)}/>
       );
     });
   }
 
-  _renderLoaded() {
+  _renderLoadedView() {
     return(
       <View>
-        {this._renderAttendances()}
+        <ScrollView>
+          {this._renderAttendances()}
+        </ScrollView>
         <Button
           onPress={this._submitAttendances.bind(this)}
           title="Submit"
@@ -146,21 +161,12 @@ class AttendanceScreen extends React.Component {
   }
 
   render() {
-    let attendances;
-    if (this.state.isLoading) {
-      // TODO (casey): Add loading gif.
-      attendances = (
-        <Text>Loading...</Text>
-      )
-    } else {
-      attendances = this._renderLoaded();
-    }
+    // TODO (Kelsey): Add loading gif
+    const attendances = this.state.isLoading ? (<Text>Loading...</Text>) : this._renderLoadedView();
     return (
-      <ScrollView>
-        <View style={styles.container}>
-          { attendances }
-        </View>
-      </ScrollView>
+      <View style={styles.container}>
+        { attendances }
+      </View>
     );
   }
 }
