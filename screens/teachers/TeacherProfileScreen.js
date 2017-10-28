@@ -9,7 +9,12 @@ import { APIRoutes } from '../../config/routes';
 
 class TeacherProfileScreen extends React.Component {
   static navigationOptions = {
-  	headerRight: <Button title="Edit" />, 
+  	headerRight: 
+      <Button 
+        title="Edit" 
+        onPress={() => navigate('EditTeacherProfile', {refreshTeachers: this._fetchTeachers})}
+        title="Edit Profile"
+      />,
   };	
 
   constructor(props) {
