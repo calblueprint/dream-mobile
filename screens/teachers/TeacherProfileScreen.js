@@ -14,48 +14,89 @@ class TeacherProfileScreen extends React.Component {
 
   constructor(props) {
     super(props);
+    this._fetchTeachers = this._fetchTeachers.bind(this);
+    this._renderTeachers = this._renderTeachers.bind(this);
+    this.state = {
+      teachers : { },
+      isLoading : true,
+    }
   }
 
+  componentDidMount() {
+    this._fetchTeachers();
+  }
+
+  _fetchTeachers() {
+    const successFunc = (responseData) => {
+      this.setState({ teachers: responseData, isLoading: false });
+    }
+    const errorFunc = (error) => {
+      console.error(error);
+    }
+    getRequest(APIRoutes.getTeachersPath(), successFunc, errorFunc);
+  }
+
+  _renderTeachers() {
+    return this.state.teachers.map(function(teacher, i) {
+      return(
+        <View key={i} style={teacherStyles.base}>
+          <View style={teacherStyles.div_1}>
+            <View style={teacherStyles.div_2}>
+            <Text style={textStyles.titleLarge}>
+            {teacher.first_name} {teacher.last_name}
+            </Text>
+            </View>
+
+            <View style={teacherStyles.div_2}>
+            <Text style={textStyles.titleSmall}>
+            Dream ID
+            </Text>
+            <Text style={textStyles.body}>
+            {teacher.dream_id}
+            </Text>
+            </View>
+
+            <View style={teacherStyles.div_2}>
+            <Text style={textStyles.titleSmall}>
+            Email
+            </Text>
+            <Text style={textStyles.body}>
+            {teacher.email}
+            </Text>
+            </View>
+
+            <View style={teacherStyles.div_2}>
+            <Text style={textStyles.titleSmall}>
+            Phone Number
+            </Text>
+            <Text style={textStyles.body}>
+            {teacher.phone}
+            </Text>
+            </View>
+          </View>
+        </View>
+      );
+    });
+  }
 
   render() {
+    const { navigate } = this.props.navigation;
+    let teachers;
+    if (this.state.isLoading) {
+      teachers = (
+        <Text>Loading...</Text>
+      )
+    } else {
+      teachers = this._renderTeachers()
+    }
     return (
-    	<ScrollView>
-    	<View style={{flex: 4}}>
-      	<View style={teacherStyles.viewStyles}>
-      	<Text style={textStyles.titleMedium}>
-      	John Denero
-      	</Text>
-      	</View>
-
-      	<View style={teacherStyles.viewStyles}>
-      	<Text style={textStyles.titleSmall}>
-      	Dream ID
-      	</Text>
-      	<Text style={textStyles.body}>
-      	123456789
-      	</Text>
-      	</View>
-
-      	<View style={teacherStyles.viewStyles}>
-      	<Text style={textStyles.titleSmall}>
-      	Email
-      	</Text>
-      	<Text style={textStyles.body}>
-      	johndenero@dream.org
-      	</Text>
-      	</View>
-
-      	<View style={teacherStyles.viewStyles}>
-      	<Text style={textStyles.titleSmall}>
-      	Phone Number
-      	</Text>
-      	<Text style={textStyles.body}>
-      	5109999999
-      	</Text>
-      	</View>
-      	</View>
-      	</ScrollView>
+      <ScrollView>
+        <View>
+          { teachers }
+        </View>
+      </ScrollView>
     );
+
   }
 }
 

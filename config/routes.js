@@ -7,7 +7,7 @@ import CoursesScreen from '../screens/courses/CoursesScreen';
 import TeacherProfileScreen from '../screens/teachers/TeacherProfileScreen';
 import CreateCourseScreen from '../screens/courses/CreateCourseScreen';
 import StudentsScreen from '../screens/students/StudentsScreen';
-
+import AttendanceSheetScreen from '../screens/attendances/AttendanceSheetScreen';
 
 export const HomeStack = StackNavigator({
   Home: {
@@ -16,7 +16,7 @@ export const HomeStack = StackNavigator({
       headerTitle: 'Home',
     },
   },
-  Courses : {
+  Courses: {
     screen: CoursesScreen,
     navigationOptions: {
       headerTitle: 'Courses',
@@ -40,15 +40,32 @@ export const HomeStack = StackNavigator({
       headerTitle: 'Students',
     },
   },
+  Attendances: {
+    screen: AttendanceSheetScreen,
+    navigationOptions: {
+      headerTitle: 'Attendance',
+    },
+  }
 });
 
 
 export class APIRoutes {
   static createRoute(route)           { return `/api/${route}` }
 
+  // Courses
   static getCoursesPath()             { return APIRoutes.createRoute(`courses`) }
+<<<<<<< HEAD
   static getTeachersPath()             { return APIRoutes.createRoute('teachers')}
   // Example route w/ id
   // static createComponentPath(id)    { return APIRoutes.createRoute(`admins/subsections/${id}/components`) }
   static getStudentsPath()             { return APIRoutes.createRoute(`students`) }
+=======
+
+  // Students
+  static getStudentsPath(id)          { return APIRoutes.createRoute(`courses/${id}/students`) }
+
+  // Attendances
+  static attendanceItemPath()         { return APIRoutes.createRoute(`attendances/attendance_item`) }
+  static attendancePath(id)           { return APIRoutes.createRoute(`attendances/${id}`) }
+>>>>>>> 928b9737a1fb4ab4b31919e28a11a72676604368
 }

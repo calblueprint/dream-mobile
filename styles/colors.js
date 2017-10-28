@@ -16,7 +16,8 @@ const colors = {
   textDark_30: 'rgba(33, 33, 33, .3)',
   textLight: '#FFF', 
 
-  backgroundGrey: '#F5F5F6', 
+  backgroundGrey: '#F5F5F6',
+  backgroundWhite: '#FFFFFF', 
   dividerGrey: '#E0E0E0', 
   iconDark: 'rgba(33, 33, 33, .85)',
   iconLight: 'rgba(255, 255, 255, .85)',

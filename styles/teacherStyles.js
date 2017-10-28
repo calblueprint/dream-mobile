@@ -4,9 +4,16 @@ import styles from './styles';
 import textStyles from './textStyles';
 
 const teacherStyles = StyleSheet.create({
-  viewStyle: {
-		flex: 1, 
-	}
+  base: {
+		backgroundColor: colors.backgroundWhite
+	}, 
+  div_1: {
+		marginLeft: 24,
+		marginTop: 24,
+	},
+  div_2: {
+		marginTop: 16
+  }
 });
 
 export { teacherStyles };
