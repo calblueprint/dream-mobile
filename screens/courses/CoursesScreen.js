@@ -42,6 +42,10 @@ class CoursesScreen extends React.Component {
             onPress={() => navigate('Attendances', { courseId: course.id })}
             title="Take Attendance"
           />
+          <Button
+            onPress={() => navigate('Students', { courseId: course.id })}
+            title="View Students"
+          />
         </View>
       );
     });

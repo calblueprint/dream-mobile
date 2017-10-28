@@ -1,6 +1,7 @@
 import React from 'react';
-import { Button, Text, View } from 'react-native';
+import { Button, ScrollView, Text, View } from 'react-native';
 import { styles } from '../../styles/styles';
+import { cardStyles } from '../../components/StudentCard/styles';
 import { getRequest } from '../../lib/requests';
 import { APIRoutes } from '../../config/routes';
 
@@ -32,6 +33,7 @@ class StudentsScreen extends React.Component {
   }
 
   _renderStudents() {
+    const { navigate } = this.props.navigation;
     return this.state.students.map(function(student, i) {
       return(
         <View key={i}>
@@ -54,6 +56,10 @@ class StudentsScreen extends React.Component {
     }
     return (
       <View style={styles.container}>
+        <Button
+          onPress={() => navigate('CreateStudent', {refreshStudents: this._fetchStudents})}
+          title="Create Student"
+        />
         { students }
       </View>
     );
