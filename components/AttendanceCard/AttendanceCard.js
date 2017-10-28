@@ -1,10 +1,18 @@
 import React from 'react';
 import { View, Text, StyleSheet, Button, TextInput, Modal, TouchableHighlight } from 'react-native';
-import ModalPicker from 'react-native-modal-picker'
+import styles from './styles'
+import Dropdown from '../Dropdown'
 
 class AttendanceCard extends React.Component {
   constructor(props) {
     super(props);
+    this.options = {
+      0: 'Present',
+      1: 'Unexcused Absent',
+      2: 'Excused Absent',
+      3: 'Unexcused Late',
+      4: 'Excused Late'
+    }
     this.data = [
       { key: 0, label: 'Present' },
       { key: 1, label: 'Unexcused Absent' },
@@ -31,27 +39,37 @@ class AttendanceCard extends React.Component {
     this.props.updateAttendance(attendance, this.props.index)
   }
 
-  setType(option) {
+  setType(value, label) {
     const attendance = this.state.attendance
-    attendance.attendance_type = option.key
+    attendance.attendance_type = value
     attendance.isChanged = true
-    this.setState({attendance: attendance, attendanceLabel: option.label})
+    this.setState({attendance: attendance, attendanceLabel: label})
     this.props.updateAttendance(attendance, this.props.index)
+  }
+
+  renderSelect() {
+    const options = {
+      0: 'Present',
+      1: 'Unexcused Absent',
+      2: 'Excused Absent',
+      3: 'Unexcused Late',
+      4: 'Excused Late'
+    }
+    return(
+      <Dropdown
+        onSelect={this.setType.bind(this)}
+        value={this.props.attendance.attendance_type}
+        defaultText={options[this.props.attendance.attendance_type]}
+        options={options}
+        />
+    )
   }
 
   render() {
     return (
       <View style={styles.container}>
         <Text>{this.props.name}</Text>
-        <ModalPicker
-          data={this.data}
-          initValue={this.state.attendanceLabel}
-          onChange={this.setType.bind(this)}>
-
-          <Text style={{borderWidth:1, borderColor:'#ccc', padding:5, height: 'auto', borderRadius: 4, margin: 4}} >
-            {this.state.attendanceLabel}
-          </Text>
-        </ModalPicker>
+        {this.renderSelect()}
         <Button onPress={() => this.setModalVisible(true)}
           title="Comment"
         />
@@ -77,19 +95,6 @@ class AttendanceCard extends React.Component {
     )
   }
 }
-
-
-
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    padding: 10,
-    alignItems: 'center',
-  },
-  picker: {
-    width: 100,
-  },
-});
 
 AttendanceCard.propTypes = {
   attendance: React.PropTypes.object.isRequired,

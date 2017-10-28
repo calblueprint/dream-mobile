@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, Text, View, ScrollView } from 'react-native';
 
-import { styles } from '../../styles/styles';
+import { commonStyles } from '../../styles/styles';
 import { APIRoutes } from '../../config/routes';
 import settings from '../../config/settings';
 import { getRequest, postRequest, putRequest } from '../../lib/requests';
@@ -169,7 +169,7 @@ class AttendanceScreen extends React.Component {
     // TODO (Kelsey): Add loading gif
     const attendances = this.state.isLoading ? (<Text>Loading...</Text>) : this._renderLoadedView();
     return (
-      <View style={styles.container}>
+      <View style={commonStyles.container}>
         { attendances }
       </View>
     );

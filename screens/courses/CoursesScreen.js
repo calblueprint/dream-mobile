@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, ScrollView, Text, View } from 'react-native';
-import { styles } from '../../styles/styles';
+import { commonStyles } from '../../styles/styles';
 import { cardStyles } from '../../components/CourseCard/styles';
 import { getRequest } from '../../lib/requests';
 import { APIRoutes } from '../../config/routes';
