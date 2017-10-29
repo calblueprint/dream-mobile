@@ -8,8 +8,6 @@ import { getRequest, postRequest, putRequest } from '../../lib/requests';
 import { attendanceDate } from '../../lib/date';
 import AttendanceCard from '../../components/AttendanceCard';
 
-console.disableYellowBox = true;
-
 class AttendanceScreen extends React.Component {
   constructor(props) {
     super(props);
@@ -149,6 +147,9 @@ class AttendanceScreen extends React.Component {
     });
   }
 
+  /**
+    * Renders date, course title, attendance cards, and submit button
+    */
   _renderLoadedView() {
     return(
       <View>
@@ -165,6 +166,9 @@ class AttendanceScreen extends React.Component {
     )
   }
 
+  /**
+    * Renders loading state if data is still loading or uses _renderLoadedView
+    */
   render() {
     // TODO (Kelsey): Add loading gif
     const attendances = this.state.isLoading ? (<Text>Loading...</Text>) : this._renderLoadedView();

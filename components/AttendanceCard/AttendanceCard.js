@@ -13,13 +13,6 @@ class AttendanceCard extends React.Component {
       3: 'Unexcused Late',
       4: 'Excused Late'
     }
-    this.data = [
-      { key: 0, label: 'Present' },
-      { key: 1, label: 'Unexcused Absent' },
-      { key: 2, label: 'Excused Absent' },
-      { key: 3, label: 'Unexcused Late' },
-      { key: 4, label: 'Excused Late' },
-    ];
     this.state = {
       attendance: this.props.attendance,
       attendanceLabel: this.data.find((item) => item.key === this.props.attendance.attendance_type).label,
@@ -55,6 +48,7 @@ class AttendanceCard extends React.Component {
       3: 'Unexcused Late',
       4: 'Excused Late'
     }
+
     return(
       <Dropdown
         onSelect={this.setType.bind(this)}

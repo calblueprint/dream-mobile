@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native';
 
+// TODO (Kelsey): Fix styles
 export default StyleSheet.create({
   textStyle: {
     borderWidth: 1,
