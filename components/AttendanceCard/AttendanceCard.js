@@ -24,12 +24,17 @@ class AttendanceCard extends React.Component {
       4: 'Excused Late'
     }
 
+    const dropdownStyles = {
+      style: styles.dropdownStyle
+    }
+
     return(
       <Dropdown
         onSelect={this.props.updateType(this.props.index)}
         value={this.props.attendance.attendance_type}
         defaultText={options[this.props.attendance.attendance_type]}
         options={options}
+        styles={dropdownStyles}
         />
     )
   }
@@ -39,7 +44,9 @@ class AttendanceCard extends React.Component {
       <View style={styles.container}>
         <Text>{this.props.name}</Text>
         {this.renderSelect()}
-        <Button onPress={() => this.setModalVisible(true)}
+        <Button
+          onPress={() => this.setModalVisible(true)}
+          style={styles.button}
           title="Comment"
         />
         <Modal

@@ -17,17 +17,35 @@ class Dropdown extends React.Component {
     });
   }
 
+  /**
+    * Returns either default styles for dropdown or combines styles from props with default styles
+    * (styles from props should override defaults)
+    */
+  getStyles() {
+    if (this.props.styles) {
+      return {
+        style: [styles.style, this.props.styles.style],
+        textStyle: [styles.textStyle, this.props.styles.textStyle],
+        backdropStyle: [styles.backdropStyle, this.props.styles.backdropStyle],
+        optionListStyle: [styles.optionListStyle, this.props.styles.optionListStyle],
+      }
+    } else {
+      return styles
+    }
+  }
+
   render() {
+    const dropdownStyles = this.getStyles()
     return (
       <View style={commonStyles.container}>
         <Select
             transparent={true}
             onSelect={this.props.onSelect}
             defaultText={this.props.defaultText ? this.props.defaultText : this.props.value}
-            style={styles.style}
-            textStyle={styles.textStyle}
-            backdropStyle ={styles.backdropStyle}
-            optionListStyle={styles.optionListStyle}
+            style={dropdownStyles.style}
+            textStyle={dropdownStyles.textStyle}
+            backdropStyle ={dropdownStyles.backdropStyle}
+            optionListStyle={dropdownStyles.optionListStyle}
           >
           {this.renderOptions()}
         </Select>

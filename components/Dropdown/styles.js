@@ -1,14 +1,17 @@
 import { StyleSheet } from 'react-native';
 
 // TODO (Kelsey): Fix styles
+/**
+  * Has style, backdropStyle, textStyle, optionListStyle, selectedStyle
+  * See https://github.com/gs-akhan/react-native-chooser for reference.
+  */
 export default StyleSheet.create({
-  textStyle: {
+  style: {
     borderWidth: 1,
     borderColor: '#ccc',
     padding: 5,
-    height: 'auto',
     borderRadius: 4,
-    margin: 4
+    margin: 4,
   },
   optionListStyle: {
     backgroundColor: 'white',

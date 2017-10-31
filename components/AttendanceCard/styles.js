@@ -4,6 +4,8 @@ export default StyleSheet.create({
   container: {
     flexDirection: 'row',
     padding: 10,
-    alignItems: 'center',
-  }
+  },
+  dropdownStyle: {
+    width: 100,
+  },
 });

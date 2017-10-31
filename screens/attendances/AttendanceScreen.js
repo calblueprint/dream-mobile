@@ -195,7 +195,7 @@ class AttendanceScreen extends React.Component {
     // TODO (Kelsey): Add loading gif
     const attendances = this.state.isLoading ? (<Text>Loading...</Text>) : this._renderLoadedView();
     return (
-      <View style={commonStyles.container}>
+      <View>
         { attendances }
       </View>
     );
