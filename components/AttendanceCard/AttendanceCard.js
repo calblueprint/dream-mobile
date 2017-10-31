@@ -1,20 +1,9 @@
 import React from 'react';
-import { View, Text, StyleSheet, Button, TextInput, Modal, TouchableHighlight } from 'react-native';
+import { View, Text, StyleSheet, Button } from 'react-native';
 import styles from './styles'
 import Dropdown from '../Dropdown'
 
 class AttendanceCard extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      modalVisible: false
-    }
-  }
-
-  setModalVisible(visible) {
-    this.setState({modalVisible: visible});
-  }
-
   renderSelect() {
     const options = {
       0: 'Present',
@@ -30,7 +19,7 @@ class AttendanceCard extends React.Component {
 
     return(
       <Dropdown
-        onSelect={this.props.updateType(this.props.index)}
+        onSelect={this.props.setType(this.props.index)}
         value={this.props.attendance.attendance_type}
         defaultText={options[this.props.attendance.attendance_type]}
         options={options}
@@ -45,28 +34,9 @@ class AttendanceCard extends React.Component {
         <Text>{this.props.name}</Text>
         {this.renderSelect()}
         <Button
-          onPress={() => this.setModalVisible(true)}
-          style={styles.button}
+          onPress={() => this.props.setModal(true, this.props.index)}
           title="Comment"
         />
-        <Modal
-          animationType="slide"
-          transparent={false}
-          visible={this.state.modalVisible}
-          >
-          <View style={{marginTop: 22}}>
-            <TextInput
-                style={{height: 40, borderColor: 'gray', borderWidth: 1}}
-                onChangeText={this.props.updateComment(this.props.index)}
-                value={this.props.attendance.comment}
-              />
-            <TouchableHighlight onPress={() => {
-              this.setModalVisible(!this.state.modalVisible)
-            }}>
-              <Text>Hide Modal</Text>
-            </TouchableHighlight>
-          </View>
-        </Modal>
       </View>
     )
   }

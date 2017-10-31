@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Text, View, ScrollView } from 'react-native';
+import { Button, Text, View, ScrollView, TextInput, TouchableHighlight } from 'react-native';
 
 import { commonStyles } from '../../styles/styles';
 import { APIRoutes } from '../../config/routes';
@@ -7,19 +7,23 @@ import settings from '../../config/settings';
 import { getRequest, postRequest, putRequest } from '../../lib/requests';
 import { attendanceDate } from '../../lib/date';
 import AttendanceCard from '../../components/AttendanceCard';
+import SimpleModal from '../../components/SimpleModal';
 
 class AttendanceScreen extends React.Component {
   constructor(props) {
     super(props);
-
     this.state = {
-      attendances : { },
-      students : { },
-      isLoading : true,
+      attendances: { },
+      students: { },
+      isLoading: true,
       date: this.props.navigation.state.params.date,
       courseId: this.props.navigation.state.params.courseId,
       courseTitle: this.props.navigation.state.params.courseTitle,
+      modalVisible: false,
+      modalIndex: -1,
     }
+
+    this._setComment = this._setComment.bind(this)
   }
 
   componentDidMount() {
@@ -153,6 +157,10 @@ class AttendanceScreen extends React.Component {
     }
   }
 
+  _setModal(visible, index) {
+    this.setState({ modalVisible: visible, modalIndex: index });
+  }
+
   /**
     * Renders AttendanceCard for each attendance object
     */
@@ -163,10 +171,33 @@ class AttendanceScreen extends React.Component {
           attendance={attendance}
           index={i}
           name={this._getStudentName(i)}
-          updateComment={this._setComment.bind(this)}
-          updateType={this._setType.bind(this)} />
+          setModal={this._setModal.bind(this)}
+          setType={this._setType.bind(this)} />
       );
     });
+  }
+
+  _renderModal() {
+    if (this.state.modalIndex !== -1) {
+      return (
+        <SimpleModal
+          visible={this.state.modalVisible}
+          >
+          <View style={{marginTop: 22}}>
+            <TextInput
+                style={{height: 40, borderColor: 'gray', borderWidth: 1}}
+                onChangeText={this._setComment(this.state.modalIndex)}
+                value={this.state.attendances[this.state.modalIndex].comment}
+              />
+            <TouchableHighlight onPress={() => {
+              this._setModal(!this.state.modalVisible, -1)
+            }}>
+              <Text>Save</Text>
+            </TouchableHighlight>
+          </View>
+        </SimpleModal>
+      )
+    }
   }
 
   /**
@@ -184,6 +215,7 @@ class AttendanceScreen extends React.Component {
           onPress={this._submitAttendances.bind(this)}
           title="Submit"
         />
+        {this._renderModal()}
       </View>
     )
   }
