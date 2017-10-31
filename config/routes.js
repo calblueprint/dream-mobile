@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
 import { StackNavigator } from 'react-navigation';
-
+import { Button } from 'react-native';
 import HomeScreen from '../screens/HomeScreen';
 import CoursesScreen from '../screens/courses/CoursesScreen';
 import TeacherProfileScreen from '../screens/teachers/TeacherProfileScreen';
@@ -10,6 +10,7 @@ import CreateCourseScreen from '../screens/courses/CreateCourseScreen';
 import StudentsScreen from '../screens/students/StudentsScreen';
 import AttendanceSheetScreen from '../screens/attendances/AttendanceSheetScreen';
 
+// const { navigate } = this.props.navigation;
 export const HomeStack = StackNavigator({
   Home: {
     screen: HomeScreen,
@@ -61,7 +62,7 @@ export class APIRoutes {
 
   // Courses
   static getCoursesPath()             { return APIRoutes.createRoute(`courses`) }
-  static getTeachersPath()             { return APIRoutes.createRoute('teachers')}
+  static getTeachersPath()             { return APIRoutes.createRoute(`teachers`)}
   // Example route w/ id
   // static createComponentPath(id)    { return APIRoutes.createRoute(`admins/subsections/${id}/components`) }
   static getStudentsPath()             { return APIRoutes.createRoute(`students`) }

@@ -8,14 +8,14 @@ import { getRequest } from '../../lib/requests';
 import { APIRoutes } from '../../config/routes';
 
 class TeacherProfileScreen extends React.Component {
-  static navigationOptions = {
-  	headerRight: 
-      <Button 
-        title="Edit" 
-        onPress={() => navigate('EditTeacherProfile', {refreshTeachers: this._fetchTeachers})}
-        title="Edit Profile"
-      />,
-  };	
+  static navigationOptions = ({navigation}) => ({
+    // const { navigate } = this.props.navigation;
+      headerRight: 
+        <Button
+           title="Edit Profile" onPress={()=>{ navigation.navigate('EditTeacherProfile'); }}  
+        />
+
+  });
 
   constructor(props) {
     super(props);
@@ -104,5 +104,6 @@ class TeacherProfileScreen extends React.Component {
 
   }
 }
+
 
 export default TeacherProfileScreen;
