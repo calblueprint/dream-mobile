@@ -39,8 +39,12 @@ class ViewCourseScreen extends React.Component {
     } else {
       return (
         <ScrollView>
-          <View>
+          <View style={styles.container}>
             <Text>{ this.state.course.title }</Text>
+            <Button
+              onPress={() => navigate('EditCourse', {refreshCourse: this._fetchCourse})}
+              title="Edit Course"
+            />
           </View>
         </ScrollView>
       );

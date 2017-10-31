@@ -5,7 +5,7 @@ import { StackNavigator } from 'react-navigation';
 import HomeScreen from '../screens/HomeScreen';
 import ViewCourseScreen from '../screens/courses/ViewCourseScreen';
 import CoursesScreen from '../screens/courses/CoursesScreen';
-import CreateCourseScreen from '../screens/courses/CreateCourseScreen';
+import EditCourseScreen from '../screens/courses/EditCourseScreen';
 import StudentsScreen from '../screens/students/StudentsScreen';
 
 
@@ -28,10 +28,10 @@ export const HomeStack = StackNavigator({
       headerTitle: 'Courses',
     },
   },
-  CreateCourse : {
-    screen: CreateCourseScreen,
+  EditCourse : {
+    screen: EditCourseScreen,
     navigationOptions: {
-      headerTitle: 'CreateCourse',
+      headerTitle: 'EditCourse',
     },
   },
   Students : {

@@ -6,9 +6,9 @@ import { APIRoutes } from '../../config/routes';
 import PropTypes from 'prop-types';
 
 /**
- * @prop onCreateCourse - callback function when course create form is submitted
+ * @prop onSaveCourse - callback function when course create form is submitted
  */
-class CreateCourseForm extends React.Component {
+class EditCourseForm extends React.Component {
   constructor(props) {
     super(props);
     this._timeFormat = this._timeFormat.bind(this);
@@ -102,7 +102,7 @@ class CreateCourseForm extends React.Component {
             placeholder='End Date'/>
         </Form>
         <Button
-          onPress={() => this.props.onCreateCourse(this.state.courseData)}
+          onPress={() => this.props.onSaveCourse(this.state.courseData)}
           title='Create'
         />
       </View>
@@ -111,4 +111,4 @@ class CreateCourseForm extends React.Component {
   }
 }
 
-export default CreateCourseForm;
+export default EditCourseForm;
