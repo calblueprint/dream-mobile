@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, Button } from 'react-native';
+import { View, Text, StyleSheet, Button, TouchableHighlight } from 'react-native';
 import styles from './styles'
 import Dropdown from '../Dropdown'
 
@@ -16,6 +16,14 @@ class AttendanceCard extends React.Component {
       4: 'Excused Late'
     }
 
+    const optionsAbbrev = {
+      0: 'Present',
+      1: 'UA',
+      2: 'EA',
+      3: 'UL',
+      4: 'EL'
+    }
+
     const dropdownStyles = {
       style: styles.dropdownStyle
     }
@@ -24,7 +32,7 @@ class AttendanceCard extends React.Component {
       <Dropdown
         onSelect={this.props.setType(this.props.index)}
         value={this.props.attendance.attendance_type}
-        defaultText={options[this.props.attendance.attendance_type]}
+        defaultText={optionsAbbrev[this.props.attendance.attendance_type]}
         options={options}
         styles={dropdownStyles}
         />
@@ -35,11 +43,14 @@ class AttendanceCard extends React.Component {
     return (
       <View style={styles.container}>
         <Text>{this.props.name}</Text>
-        {this.renderSelect()}
-        <Button
-          onPress={() => this.props.setModal(this.props.index)}
-          title="Comment"
-        />
+        <View style={styles.leftContainer}>
+          {this.renderSelect()}
+          <TouchableHighlight
+            style={styles.commentButton}
+            onPress={() => this.props.setModal(this.props.index)}>
+            <Text style={{fontSize: 10}}>Comment</Text>
+          </TouchableHighlight>
+        </View>
       </View>
     )
   }

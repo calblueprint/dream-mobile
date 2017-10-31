@@ -1,7 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, Button, TextInput, Modal, TouchableHighlight } from 'react-native';
 import { Select, Option } from 'react-native-chooser';
-import { commonStyles } from '../../styles/styles';
 import styles from './styles';
 
 class Dropdown extends React.Component {
@@ -37,7 +36,7 @@ class Dropdown extends React.Component {
   render() {
     const dropdownStyles = this.getStyles()
     return (
-      <View style={commonStyles.container}>
+      <View>
         <Select
             transparent={true}
             onSelect={this.props.onSelect}
