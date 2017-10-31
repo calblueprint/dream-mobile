@@ -19,7 +19,6 @@ class AttendanceScreen extends React.Component {
       date: this.props.navigation.state.params.date,
       courseId: this.props.navigation.state.params.courseId,
       courseTitle: this.props.navigation.state.params.courseTitle,
-      modalVisible: false,
       modalIndex: -1,
     }
 
@@ -157,8 +156,12 @@ class AttendanceScreen extends React.Component {
     }
   }
 
-  _setModal(visible, index) {
-    this.setState({ modalVisible: visible, modalIndex: index });
+  /**
+    * Sets the comment modal's modalIndex (either to certain attendance's index or -1
+    * if modal isn't open)
+    */
+  _setModal(index) {
+    this.setState({ modalIndex: index });
   }
 
   /**
@@ -177,11 +180,15 @@ class AttendanceScreen extends React.Component {
     });
   }
 
+  /**
+    * Renders comment modal if modalIndex is not -1
+    * (aka if modal is open for a certain attendance)
+    */
   _renderModal() {
     if (this.state.modalIndex !== -1) {
       return (
         <SimpleModal
-          visible={this.state.modalVisible}
+          visible={this.state.modalIndex !== -1}
           >
           <View style={{marginTop: 22}}>
             <TextInput
@@ -190,7 +197,7 @@ class AttendanceScreen extends React.Component {
                 value={this.state.attendances[this.state.modalIndex].comment}
               />
             <TouchableHighlight onPress={() => {
-              this._setModal(!this.state.modalVisible, -1)
+              this._setModal(-1)
             }}>
               <Text>Save</Text>
             </TouchableHighlight>

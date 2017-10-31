@@ -34,7 +34,7 @@ class AttendanceCard extends React.Component {
         <Text>{this.props.name}</Text>
         {this.renderSelect()}
         <Button
-          onPress={() => this.props.setModal(true, this.props.index)}
+          onPress={() => this.props.setModal(this.props.index)}
           title="Comment"
         />
       </View>
