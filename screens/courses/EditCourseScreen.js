@@ -4,10 +4,10 @@ import { Form, InputField, PickerField,
          DatePickerField, TimePickerField } from 'react-native-form-generator';
 import { APIRoutes } from '../../config/routes';
 import PropTypes from 'prop-types';
-import CreateCourseForm from '../../components/Form/CreateCourseForm'
+import EditCourseForm from '../../components/Form/EditCourseForm'
 import { postRequest } from '../../lib/requests';
 
-class CreateCourseScreen extends React.Component {
+class EditCourseScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -32,10 +32,10 @@ class CreateCourseScreen extends React.Component {
 
   render() {
     return (
-      <CreateCourseForm
-        onCreateCourse={this._handleCreateCourse.bind(this)} />
+      <EditCourseForm
+        onSaveCourse={this._handleCreateCourse.bind(this)} />
     );
   }
 }
 
-export default CreateCourseScreen;
+export default EditCourseScreen;

@@ -8,6 +8,7 @@ import { cardStyles } from './styles';
  * @prop course_id - course ID
  * @prop title - course title
  * @prop onSelectCourse - callback function to show course information
+ * @prop onDeleteCourse - callback function to delete a course
  */
 class CourseCard extends React.Component {
   constructor(props) {

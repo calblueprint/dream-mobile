@@ -9,8 +9,10 @@ class CoursesScreen extends React.Component {
   constructor(props) {
     super(props);
     this._fetchCourses = this._fetchCourses.bind(this);
+    this._deleteCourse = this._deleteCourse.bind(this);
     this._renderCourses = this._renderCourses.bind(this);
     this._handleSelectCourse = this._handleSelectCourse.bind(this);
+    this._handleDeleteCourse = this._handleDeleteCourse.bind(this);
     this.state = {
       courses : { },
       isLoading : true,
@@ -32,24 +34,32 @@ class CoursesScreen extends React.Component {
     getRequest(APIRoutes.getCoursesPath(), successFunc, errorFunc);
   }
 
+  _deleteCourse() {
+
+  }
+
   _handleSelectCourse(course_id) {
     this.props.navigation.navigate('ViewCourse', {course_id: course_id});
+  }
+
+  /*
+   * Deletes the course and re-renders the component.
+   */
+  _handleDeleteCourse(course_id) {
+    this._deleteCourse(course_id);
+    this._fetchCourses();
   }
 
   _renderCourses() {
     const date = new Date();
     const { navigate } = this.props.navigation;
     return this.state.courses.map((course, i) => (
-      <CourseCard key={i}
-        course_id={course.id}
-        title={course.title}
-        onSelectCourse={this._handleSelectCourse} />
-
       <View key={i} style={cardStyles.container}>
         <CourseCard key={i}
           course_id={course.id}
           title={course.title}
-          onSelectCourse={this._handleSelectCourse} />
+          onSelectCourse={this._handleSelectCourse}
+          onDeleteCourse={this._handleDeleteCourse} />
         <Button
           onPress={() => navigate('Attendances', {
             courseId: course.id,
@@ -78,7 +88,7 @@ class CoursesScreen extends React.Component {
       <ScrollView>
         <View>
           <Button
-            onPress={() => navigate('CreateCourse', {refreshCourses: this._fetchCourses})}
+            onPress={() => navigate('EditCourse', {refreshCourses: this._fetchCourses})}
             title="Create Course"
           />
           { courses }
