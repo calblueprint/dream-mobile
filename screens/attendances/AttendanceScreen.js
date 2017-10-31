@@ -196,6 +196,7 @@ class AttendanceScreen extends React.Component {
                 style={{height: 40, borderColor: 'gray', borderWidth: 1}}
                 onChangeText={this._setComment(this.state.modalIndex)}
                 value={this.state.attendances[this.state.modalIndex].comment}
+                placeholder='Add a note...'
               />
             <TouchableHighlight onPress={() => {
               this._setModal(-1)
