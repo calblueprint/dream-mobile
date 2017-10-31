@@ -80,16 +80,7 @@ class AttendanceScreen extends React.Component {
   }
 
   /**
-    * Method passed to AttendanceCard to update state for the given attendance object
-    */
-  _updateAttendance(attendance, index) {
-    const attendances = this.state.attendances
-    attendances[index] = attendance
-    this.setState({ attendances: attendances })
-  }
-
-  /**
-    * Attempts to update each changed and waits for each request to succeed
+    * Attempts to update each changed attendance and waits for each request to succeed
     * before navigating backwards or logging failure
     */
   _submitAttendances() {
@@ -133,6 +124,36 @@ class AttendanceScreen extends React.Component {
   }
 
   /**
+    * Method passed to AttendanceCard to update comment for the attendance at the given index.
+    * Takes in an index and returns a function that takes in a comment.
+    */
+  _setComment(index) {
+    return (comment) => {
+      const attendances = this.state.attendances
+      const attendance = this.state.attendances[index]
+      attendance.comment = comment
+      attendance.isChanged = true
+      attendances[index] = attendance
+      this.setState({ attendances: attendances })
+    }
+  }
+
+  /**
+    * Method passed to AttendanceCard to update attendance type for the attendance at the given index.
+    * Takes in an index and returns a function that takes in a value and label (for Dropdown option).
+    */
+  _setType(index) {
+    return (value, label) => {
+      const attendances = this.state.attendances
+      const attendance = this.state.attendances[index]
+      attendance.attendance_type = value
+      attendance.isChanged = true
+      attendances[index] = attendance
+      this.setState({ attendances: attendances })
+    }
+  }
+
+  /**
     * Renders AttendanceCard for each attendance object
     */
   _renderAttendances() {
@@ -142,7 +163,8 @@ class AttendanceScreen extends React.Component {
           attendance={attendance}
           index={i}
           name={this._getStudentName(i)}
-          updateAttendance={this._updateAttendance.bind(this)}/>
+          updateComment={this._setComment.bind(this)}
+          updateType={this._setType.bind(this)} />
       );
     });
   }

@@ -6,38 +6,13 @@ import Dropdown from '../Dropdown'
 class AttendanceCard extends React.Component {
   constructor(props) {
     super(props);
-    this.options = {
-      0: 'Present',
-      1: 'Unexcused Absent',
-      2: 'Excused Absent',
-      3: 'Unexcused Late',
-      4: 'Excused Late'
-    }
     this.state = {
-      attendance: this.props.attendance,
-      attendanceLabel: this.data.find((item) => item.key === this.props.attendance.attendance_type).label,
       modalVisible: false
     }
   }
 
   setModalVisible(visible) {
     this.setState({modalVisible: visible});
-  }
-
-  setComment(comment) {
-    const attendance = this.state.attendance
-    attendance.comment = comment
-    attendance.isChanged = true
-    this.setState({ attendance: attendance })
-    this.props.updateAttendance(attendance, this.props.index)
-  }
-
-  setType(value, label) {
-    const attendance = this.state.attendance
-    attendance.attendance_type = value
-    attendance.isChanged = true
-    this.setState({attendance: attendance, attendanceLabel: label})
-    this.props.updateAttendance(attendance, this.props.index)
   }
 
   renderSelect() {
@@ -51,7 +26,7 @@ class AttendanceCard extends React.Component {
 
     return(
       <Dropdown
-        onSelect={this.setType.bind(this)}
+        onSelect={this.props.updateType(this.props.index)}
         value={this.props.attendance.attendance_type}
         defaultText={options[this.props.attendance.attendance_type]}
         options={options}
@@ -75,8 +50,8 @@ class AttendanceCard extends React.Component {
           <View style={{marginTop: 22}}>
             <TextInput
                 style={{height: 40, borderColor: 'gray', borderWidth: 1}}
-                onChangeText={this.setComment.bind(this)}
-                value={this.state.attendance.comment}
+                onChangeText={this.props.updateComment(this.props.index)}
+                value={this.props.attendance.comment}
               />
             <TouchableHighlight onPress={() => {
               this.setModalVisible(!this.state.modalVisible)
