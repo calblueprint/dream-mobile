@@ -1,15 +1,16 @@
 import React from 'react';
 import { Button, ScrollView, Text, View } from 'react-native';
 import { styles } from '../../styles/styles';
-import { cardStyles } from '../../components/CourseCard/styles';
 import { getRequest } from '../../lib/requests';
 import { APIRoutes } from '../../config/routes';
+import CourseCard from '../../components/CourseCard/CourseCard';
 
 class CoursesScreen extends React.Component {
   constructor(props) {
     super(props);
     this._fetchCourses = this._fetchCourses.bind(this);
     this._renderCourses = this._renderCourses.bind(this);
+    this._handleSelectCourse = this._handleSelectCourse.bind(this);
     this.state = {
       courses : { },
       isLoading : true,
@@ -31,14 +32,18 @@ class CoursesScreen extends React.Component {
     getRequest(APIRoutes.getCoursesPath(), successFunc, errorFunc);
   }
 
+  _handleSelectCourse(course_id) {
+    this.props.navigation.navigate('ViewCourse', {course_id: course_id});
+  }
+
   _renderCourses() {
-    return this.state.courses.map(function(course, i) {
-      return(
-        <View key={i} style={cardStyles.container}>
-          <Text style={cardStyles.title}>{course.title}</Text>
-        </View>
-      );
-    });
+    return this.state.courses.map((course, i) => (
+      <CourseCard key={i}
+        course_id={course.id}
+        title={course.title}
+        onSelectCourse={this._handleSelectCourse} />
+      )
+    );
   }
 
   render() {

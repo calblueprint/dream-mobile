@@ -18,7 +18,6 @@ class CreateCourseForm extends React.Component {
   }
 
   _handleFormChange(courseData){
-    //formData will be a json object that will contain refs of every field
     this.setState({courseData : courseData});
   }
 
