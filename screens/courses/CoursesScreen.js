@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, ScrollView, Text, View } from 'react-native';
 import { commonStyles } from '../../styles/styles';
-import { getRequest } from '../../lib/requests';
+import { getRequest, deleteRequest } from '../../lib/requests';
 import { APIRoutes } from '../../config/routes';
 import CourseCard from '../../components/CourseCard/CourseCard';
 
@@ -28,14 +28,19 @@ class CoursesScreen extends React.Component {
       this.setState({ courses: responseData, isLoading: false });
     }
     const errorFunc = (error) => {
-      // TODO (caseytaka): Display correct toastr error msg
       console.error(error);
     }
     getRequest(APIRoutes.getCoursesPath(), successFunc, errorFunc);
   }
 
-  _deleteCourse() {
-
+  _deleteCourse(course_id) {
+    const successFunc = (responseData) => {
+      this.setState({ isLoading: false });
+    }
+    const errorFunc = (error) => {
+      console.error(error);
+    }
+    deleteRequest(APIRoutes.getCoursePath(course_id), successFunc, errorFunc);
   }
 
   _handleSelectCourse(course_id) {
@@ -46,6 +51,7 @@ class CoursesScreen extends React.Component {
    * Deletes the course and re-renders the component.
    */
   _handleDeleteCourse(course_id) {
+    this.setState({ isLoading: true });
     this._deleteCourse(course_id);
     this._fetchCourses();
   }
@@ -54,7 +60,7 @@ class CoursesScreen extends React.Component {
     const date = new Date();
     const { navigate } = this.props.navigation;
     return this.state.courses.map((course, i) => (
-      <View key={i} style={cardStyles.container}>
+      <View key={i}>
         <CourseCard key={i}
           course_id={course.id}
           title={course.title}

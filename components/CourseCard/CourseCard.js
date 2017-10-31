@@ -22,6 +22,10 @@ class CourseCard extends React.Component {
       <TouchableHighlight onPress={() => this.props.onSelectCourse(this.props.course_id)}>
         <View style={cardStyles.container}>
           <Text style={cardStyles.title}>{this.props.course_id} {this.props.title}</Text>
+          <Button
+            onPress={() => this.props.onDeleteCourse(this.props.course_id)}
+            title='Delete'
+          />
         </View>
       </TouchableHighlight>
     );
