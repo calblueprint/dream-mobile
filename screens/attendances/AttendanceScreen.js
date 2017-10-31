@@ -191,6 +191,7 @@ class AttendanceScreen extends React.Component {
           visible={this.state.modalIndex !== -1}
           >
           <View style={{marginTop: 22}}>
+            <Text>{this._getStudentName(this.state.modalIndex)}</Text>
             <TextInput
                 style={{height: 40, borderColor: 'gray', borderWidth: 1}}
                 onChangeText={this._setComment(this.state.modalIndex)}
@@ -234,7 +235,7 @@ class AttendanceScreen extends React.Component {
     // TODO (Kelsey): Add loading gif
     const attendances = this.state.isLoading ? (<Text>Loading...</Text>) : this._renderLoadedView();
     return (
-      <View>
+      <View style={styles.container}>
         { attendances }
       </View>
     );
@@ -243,10 +244,10 @@ class AttendanceScreen extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 10,
+    padding: 20,
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: '#fff',
   },
 });
 // TODO (Kelsey): Add PropTypes from navigation

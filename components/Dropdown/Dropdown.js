@@ -54,12 +54,12 @@ class Dropdown extends React.Component {
   }
 }
 
-
 Dropdown.propTypes = {
   onSelect: React.PropTypes.func.isRequired,
   value: React.PropTypes.any.isRequired,
   options: React.PropTypes.object.isRequired,
   defaultText: React.PropTypes.string.isRequired,
+  styles: React.PropTypes.object,
 };
 
 export default Dropdown;

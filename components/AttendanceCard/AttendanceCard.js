@@ -4,6 +4,9 @@ import styles from './styles'
 import Dropdown from '../Dropdown'
 
 class AttendanceCard extends React.Component {
+  /**
+    * Render attendance option dropdown
+    */
   renderSelect() {
     const options = {
       0: 'Present',
@@ -46,6 +49,8 @@ AttendanceCard.propTypes = {
   attendance: React.PropTypes.object.isRequired,
   name: React.PropTypes.string.isRequired,
   index: React.PropTypes.number.isRequired,
+  setModal: React.PropTypes.func.isRequired,
+  setType: React.PropTypes.func.isRequired,
 };
 
 export default AttendanceCard;
