@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Text, View, ScrollView, TextInput, TouchableHighlight } from 'react-native';
+import { Button, Text, View, ScrollView, TextInput, TouchableHighlight, StyleSheet } from 'react-native';
 
 import { commonStyles } from '../../styles/styles';
 import { APIRoutes } from '../../config/routes';
@@ -241,6 +241,14 @@ class AttendanceScreen extends React.Component {
   }
 }
 
+const styles = StyleSheet.create({
+  container: {
+    padding: 10,
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});
 // TODO (Kelsey): Add PropTypes from navigation
 
 export default AttendanceScreen;
