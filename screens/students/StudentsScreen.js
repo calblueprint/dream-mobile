@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, Text, View } from 'react-native';
-import { styles } from '../../styles/styles';
+import { commonStyles } from '../../styles/styles';
 import { getRequest } from '../../lib/requests';
 import { APIRoutes } from '../../config/routes';
 
@@ -53,7 +53,7 @@ class StudentsScreen extends React.Component {
       students = this._renderStudents()
     }
     return (
-      <View style={styles.container}>
+      <View style={commonStyles.container}>
         { students }
       </View>
     );
