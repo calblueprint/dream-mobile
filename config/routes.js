@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
 import { StackNavigator } from 'react-navigation';
-import { View, Button } from 'react-native';
+import { Button } from 'react-native';
 
 import HomeScreen from '../screens/HomeScreen';
 import CoursesScreen from '../screens/courses/CoursesScreen';
