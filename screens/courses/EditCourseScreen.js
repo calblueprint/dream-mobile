@@ -11,15 +11,14 @@ class EditCourseScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      course: {}
     }
   }
 
-  _handleCreateCourse(params) {
-    params.is_active = true;
-
+  /*
+   * Make request to save attributes of the course, and return to courses page.
+   */
+  _handleSaveCourse(params) {
     const successFunc = (responseData) => {
-      this.setState({ course: responseData});
       this.props.navigation.state.params.refreshCourses();
       this.props.navigation.goBack(null);
     }
@@ -31,10 +30,27 @@ class EditCourseScreen extends React.Component {
 
 
   render() {
-    return (
-      <EditCourseForm
-        onSaveCourse={this._handleCreateCourse.bind(this)} />
-    );
+    const navProps = this.props.navigation.state.params;
+    if (navProps.newCourse) {
+      return (
+        <EditCourseForm
+          onSaveCourse={this._handleSaveCourse.bind(this)} />
+      );
+    } else {
+      return (
+        <EditCourseForm
+          onSaveCourse={this._handleSaveCourse.bind(this)}
+          is_active={navProps.is_active}
+          title={navProps.title}
+          teacher1={navProps.teacher1}
+          teacher2={navProps.teacher2}
+          weekday={navProps.weekday}
+          start_time={navProps.start_time}
+          end_time={navProps.end_time}
+          start_date={navProps.start_date}
+          end_date={navProps.end_date} />
+      );
+    }
   }
 }
 
