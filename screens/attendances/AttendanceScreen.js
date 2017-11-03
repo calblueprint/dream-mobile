@@ -193,7 +193,8 @@ class AttendanceScreen extends React.Component {
             attendances: this.state.attendances,
             students: this.state.students,
             courseTitle: this.state.courseTitle,
-            date: this.state.date
+            date: this.state.date,
+            parentKey: this.props.navigation.state.key,
           })}
           title="Submit"
         />
