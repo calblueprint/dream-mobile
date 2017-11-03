@@ -83,40 +83,6 @@ class AttendanceScreen extends React.Component {
   }
 
   /**
-    * Attempts to update each changed attendance and waits for each request to succeed
-    * before navigating backwards or logging failure
-    */
-  _submitAttendances() {
-    const attendances = this.state.attendances.map((attendance, i) => {
-      return this._submitAttendance(attendance, i);
-    });
-
-    Promise.all(attendances).then((attendances) => {
-      this.props.navigation.goBack();
-    }).catch((error) => {
-      console.log(error);
-    });
-  }
-
-  /**
-    * Makes put request to update given attendance if it has been changed
-    */
-  _submitAttendance(attendance, index) {
-    const successFunc = (responseData) => {
-      return responseData;
-    }
-    const errorFunc = (error) => {
-      // TODO (Kelsey): address what happens when editing attendance fails
-      console.log(error);
-    }
-    const params = attendance
-
-    if (attendance.isChanged) {
-      return putRequest(APIRoutes.attendancePath(), successFunc, errorFunc, params);
-    }
-  }
-
-  /**
     * Gets students full name at the given index (assumes attendance index is same as student index)
     */
   _getStudentName(index) {
@@ -213,6 +179,8 @@ class AttendanceScreen extends React.Component {
     * Renders date, course title, attendance cards, and submit button
     */
   _renderLoadedView() {
+    const { navigate } = this.props.navigation;
+
     return(
       <View>
         <ScrollView>
@@ -221,7 +189,12 @@ class AttendanceScreen extends React.Component {
           {this._renderAttendances()}
         </ScrollView>
         <Button
-          onPress={this._submitAttendances.bind(this)}
+          onPress={() => navigate('AttendanceSummary', {
+            attendances: this.state.attendances,
+            students: this.state.students,
+            courseTitle: this.state.courseTitle,
+            date: this.state.date
+          })}
           title="Submit"
         />
         {this._renderModal()}

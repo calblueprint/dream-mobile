@@ -7,6 +7,7 @@ import CoursesScreen from '../screens/courses/CoursesScreen';
 import CreateCourseScreen from '../screens/courses/CreateCourseScreen';
 import StudentsScreen from '../screens/students/StudentsScreen';
 import AttendanceScreen from '../screens/attendances/AttendanceScreen';
+import AttendanceSummaryScreen from '../screens/attendances/AttendanceSummaryScreen';
 
 /**
  * HomeStack is the main navigation stack starting from the HomeScreen
@@ -41,7 +42,13 @@ export const HomeStack = StackNavigator({
     navigationOptions: {
       headerTitle: 'Attendance',
     },
-  }
+  },
+  AttendanceSummary: {
+    screen: AttendanceSummaryScreen,
+    navigationOptions: {
+      headerTitle: 'Attendance Summary',
+    },
+  },
 });
 
 
