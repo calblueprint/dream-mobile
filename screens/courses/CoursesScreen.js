@@ -62,6 +62,7 @@ class CoursesScreen extends React.Component {
       courseTitle: title,
       date: date,
     });
+  }
 
   /*
    * Set loading indicator and call function to delete the course.
