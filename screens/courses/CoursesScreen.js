@@ -57,44 +57,12 @@ class CoursesScreen extends React.Component {
 
   _handleTakeAttendance(course_id, title) {
     const date = new Date();
+    console.log(course_id, title);
     this.props.navigation.navigate('Attendances', {
       courseId: course_id,
       courseTitle: title,
       date: date,
     });
-  }
-
-  /*
-   * Set loading indicator and call function to delete the course.
-   */
-  _handleDeleteCourse(course_id) {
-    this.setState({ isLoading: true });
-    this._deleteCourse(course_id);
-  }
-
-  _renderCourses() {
-    return this.state.courses.map((course, i) => (
-      <CourseCard key={i}
-        course_id={course.id}
-        title={course.title}
-        onSelectCourse={this._handleSelectCourse}
-        onDeleteCourse={this._handleDeleteCourse} />
-      )
-    );
-  }
-
-  /*
-   * Make a delete request. On success, re-render the component.
-   */
-  _deleteCourse(course_id) {
-    const successFunc = (responseData) => {
-      this.setState({ isLoading: false });
-      this._fetchCourses();
-    }
-    const errorFunc = (error) => {
-      console.error(error);
-    }
-    deleteRequest(APIRoutes.getCoursePath(course_id), successFunc, errorFunc);
   }
 
   /*
