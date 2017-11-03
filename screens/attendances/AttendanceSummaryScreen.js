@@ -62,29 +62,19 @@ class AttendanceSummaryScreen extends React.Component {
   }
 
   /**
-    * TODO (Kelsey): add logic to check for network and then make a request to server
-    * or show no network dialog. Currently defaults to showing "no network" dialog
-    */
-  _syncAttendances() {
-    this.setState({ isModalOpen: true })
-  }
-
-
-  /**
-    * TODO (Kelsey): have this save locally instead
+    * TODO (Kelsey): have this save locally too and indicate success for saving locally/network
     * Attempts to update each changed attendance and waits for each request to succeed
     * before navigating backwards or logging failure
     */
-  _saveAttendances() {
+  _syncAttendances() {
+    this.setState({ isLoading: true });
+
     const attendances = this.state.attendances.map((attendance, i) => {
       return this._updateAttendance(attendance, i);
     });
 
-    this.setState({ isLoading: true });
-
     Promise.all(attendances).then((attendances) => {
-      this.setState({ isLoading: false })
-      this.props.navigation.goBack(this.props.navigation.state.params.parentKey || null);
+      this.setState({ isLoading: false, isModalOpen: true })
     }).catch((error) => {
       console.log(error);
     });
@@ -145,7 +135,7 @@ class AttendanceSummaryScreen extends React.Component {
 
   /**
     * Renders list of student names in a FlatList.
-    * `students` is passed in as a list of { key: name } objects to work
+    * `students` is passed in as a list of { key: name } objects to work with
     * FlatList
     */
   _renderStudentsList(students) {
@@ -177,43 +167,27 @@ class AttendanceSummaryScreen extends React.Component {
   }
 
   /**
-    * Renders bottom bar with sync and save buttons
-    */
-  _renderBottomBar() {
-    return (
-      <View style={styles.bottomBar}>
-        <Button
-          onPress={this._syncAttendances.bind(this)}
-          title="Sync"
-        />
-        <Button
-          onPress={this._saveAttendances.bind(this)}
-          title="Save"
-        />
-      </View>
-    )
-  }
-
-  /**
-    * Renders network warning modal. When dismiss is pressed, modal is closed
-    * and attendances are saved to phone.
+    * Renders sync confirmation/warning modal. When dismiss is pressed,
+    * modal is closed and navigates back to courses page.
     */
   _renderModal() {
     return (
       <SimpleModal
         visible={this.state.isModalOpen}>
         <View style={{marginTop: 22}}>
-          <Text>Warning</Text>
+          <Text>Status</Text>
+          <Text>Saved to phone</Text>
+          <Text>Synced</Text>
           <Text>
-          Attendance not synced because the device is not connected to Wifi.
-          Try again when Wifi is available. Attendance saved to phone.
+            Attendance not synced because the device is not connected to Wifi.
+            Try again when Wifi is available. Attendance saved to phone.
           </Text>
           <Button
             onPress={() => {
               this.setState({ isModalOpen: false });
-              this._saveAttendances();
+              this.props.navigation.goBack(this.props.navigation.state.params.parentKey || null);
             }}
-            title='Dismiss'
+            title='Okay'
           />
         </View>
       </SimpleModal>
@@ -221,7 +195,7 @@ class AttendanceSummaryScreen extends React.Component {
   }
 
   /**
-    * Renders date, course title, attendance summary, bottom buttons, and modal
+    * Renders date, course title, attendance summary, sync button, and modal
     */
   _renderLoadedView() {
     return(
@@ -231,7 +205,10 @@ class AttendanceSummaryScreen extends React.Component {
           <Text>{this.state.courseTitle}</Text>
           {this._renderSummary()}
         </ScrollView>
-        {this._renderBottomBar()}
+        <Button
+          onPress={this._syncAttendances.bind(this)}
+          title="Sync"
+        />
         {this._renderModal()}
       </View>
     )
@@ -268,10 +245,6 @@ const styles = StyleSheet.create({
   },
   studentList: {
     padding: 4,
-  },
-  bottomBar: {
-    flexDirection: 'row',
-    justifyContent: 'center',
   },
 });
 // TODO (Kelsey): Add PropTypes from navigation
