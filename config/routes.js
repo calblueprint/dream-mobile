@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
 import { StackNavigator } from 'react-navigation';
+import { View, Button } from 'react-native';
 
 import HomeScreen from '../screens/HomeScreen';
 import CoursesScreen from '../screens/courses/CoursesScreen';
@@ -45,9 +46,10 @@ export const HomeStack = StackNavigator({
   },
   AttendanceSummary: {
     screen: AttendanceSummaryScreen,
-    navigationOptions: {
+    navigationOptions: ({navigation}) => ({
       headerTitle: 'Attendance Summary',
-    },
+      headerRight: (<Button title='Edit' onPress={() => { navigation.goBack() }}/>),
+    }),
   },
 });
 
