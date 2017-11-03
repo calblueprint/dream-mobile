@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, ScrollView, Text, View } from 'react-native';
-import { styles } from '../../styles/styles';
+import { commonStyles } from '../../styles/styles';
 import { getRequest } from '../../lib/requests';
 import { APIRoutes } from '../../config/routes';
 
@@ -39,7 +39,7 @@ class ViewCourseScreen extends React.Component {
     } else {
       return (
         <ScrollView>
-          <View style={styles.container}>
+          <View style={commonStyles.container}>
             <Text>{ this.state.course.title }</Text>
             <Button
               onPress={() => navigate('EditCourse',

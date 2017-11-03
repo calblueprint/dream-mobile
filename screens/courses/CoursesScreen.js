@@ -12,6 +12,7 @@ class CoursesScreen extends React.Component {
     this._deleteCourse = this._deleteCourse.bind(this);
     this._renderCourses = this._renderCourses.bind(this);
     this._handleSelectCourse = this._handleSelectCourse.bind(this);
+    this._handleTakeAttendance = this._handleTakeAttendance.bind(this);
     this._handleDeleteCourse = this._handleDeleteCourse.bind(this);
     this.state = {
       courses : { },
@@ -36,6 +37,19 @@ class CoursesScreen extends React.Component {
     getRequest(APIRoutes.getCoursesPath(), successFunc, errorFunc);
   }
 
+  _handleSelectCourse(course_id) {
+    this.props.navigation.navigate('ViewCourse', {course_id: course_id});
+  }
+
+  _handleTakeAttendance(course_id, title) {
+    const date = new Date();
+    this.props.navigation.navigate('Attendances', {
+      courseId: course_id,
+      courseTitle: title,
+      date: date,
+    });
+  }
+
   /*
    * Make a delete request. On success, re-render the component.
    */
@@ -50,10 +64,6 @@ class CoursesScreen extends React.Component {
     deleteRequest(APIRoutes.getCoursePath(course_id), successFunc, errorFunc);
   }
 
-  _handleSelectCourse(course_id) {
-    this.props.navigation.navigate('ViewCourse', {course_id: course_id});
-  }
-
   /*
    * Set loading indicator and call function to delete the course.
    */
@@ -63,24 +73,13 @@ class CoursesScreen extends React.Component {
   }
 
   _renderCourses() {
-    const date = new Date();
-    const { navigate } = this.props.navigation;
     return this.state.courses.map((course, i) => (
-      <View key={i}>
-        <CourseCard key={i}
-          course_id={course.id}
-          title={course.title}
-          onSelectCourse={this._handleSelectCourse}
-          onDeleteCourse={this._handleDeleteCourse} />
-        <Button
-          onPress={() => navigate('Attendances', {
-            courseId: course.id,
-            courseTitle: course.title,
-            date: date
-          })}
-          title="Take Attendance"
-        />
-      </View>
+      <CourseCard key={i}
+        course_id={course.id}
+        title={course.title}
+        onSelectCourse={this._handleSelectCourse}
+        onTakeAttendance={this._handleTakeAttendance}
+        onDeleteCourse={this._handleDeleteCourse} />
       )
     );
   }
