@@ -23,6 +23,9 @@ class CoursesScreen extends React.Component {
     this._fetchCourses();
   }
 
+  /*
+   * Get all course records and rerenders component to display courses.
+   */
   _fetchCourses() {
     const successFunc = (responseData) => {
       this.setState({ courses: responseData, isLoading: false });
@@ -33,9 +36,13 @@ class CoursesScreen extends React.Component {
     getRequest(APIRoutes.getCoursesPath(), successFunc, errorFunc);
   }
 
+  /*
+   * Make a delete request. On success, re-render the component.
+   */
   _deleteCourse(course_id) {
     const successFunc = (responseData) => {
       this.setState({ isLoading: false });
+      this._fetchCourses();
     }
     const errorFunc = (error) => {
       console.error(error);
@@ -48,12 +55,11 @@ class CoursesScreen extends React.Component {
   }
 
   /*
-   * Deletes the course and re-renders the component.
+   * Set loading indicator and call function to delete the course.
    */
   _handleDeleteCourse(course_id) {
     this.setState({ isLoading: true });
     this._deleteCourse(course_id);
-    this._fetchCourses();
   }
 
   _renderCourses() {
@@ -94,7 +100,7 @@ class CoursesScreen extends React.Component {
       <ScrollView>
         <View>
           <Button
-            onPress={() => navigate('EditCourse', {refreshCourses: this._fetchCourses})}
+            onPress={() => navigate('EditCourse', {refreshCourses: this._fetchCourses, newCourse: true})}
             title="Create Course"
           />
           { courses }

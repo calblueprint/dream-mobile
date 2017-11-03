@@ -42,7 +42,20 @@ class ViewCourseScreen extends React.Component {
           <View style={styles.container}>
             <Text>{ this.state.course.title }</Text>
             <Button
-              onPress={() => navigate('EditCourse', {refreshCourse: this._fetchCourse})}
+              onPress={() => navigate('EditCourse',
+                {
+                  refreshCourse: this._fetchCourse,
+                  newCourse: false,
+                  is_active: this.state.course.is_active,
+                  title: this.state.course.title,
+                  teacher1: this.state.course.teacher_id1,
+                  teacher2: this.state.course.teacher_id2,
+                  weekday: this.state.course.weekday,
+                  start_time: this.state.course.start_time,
+                  end_time: this.state.course.end_time,
+                  start_date: this.state.course.start_date,
+                  end_date: this.state.course.end_date,
+                })}
               title="Edit Course"
             />
           </View>
