@@ -10,10 +10,10 @@ class CoursesScreen extends React.Component {
     super(props);
     this._fetchCourses = this._fetchCourses.bind(this);
     this._deleteCourse = this._deleteCourse.bind(this);
-    this._renderCourses = this._renderCourses.bind(this);
     this._handleSelectCourse = this._handleSelectCourse.bind(this);
     this._handleTakeAttendance = this._handleTakeAttendance.bind(this);
     this._handleDeleteCourse = this._handleDeleteCourse.bind(this);
+    this._renderCourses = this._renderCourses.bind(this);
     this.state = {
       courses : { },
       isLoading : true,
@@ -37,6 +37,20 @@ class CoursesScreen extends React.Component {
     getRequest(APIRoutes.getCoursesPath(), successFunc, errorFunc);
   }
 
+  /*
+   * Make a delete request. On success, re-render the component.
+   */
+  _deleteCourse(course_id) {
+    const successFunc = (responseData) => {
+      this.setState({ isLoading: false });
+      this._fetchCourses();
+    }
+    const errorFunc = (error) => {
+      console.error(error);
+    }
+    deleteRequest(APIRoutes.getCoursePath(course_id), successFunc, errorFunc);
+  }
+
   _handleSelectCourse(course_id) {
     this.props.navigation.navigate('ViewCourse', {course_id: course_id});
   }
@@ -48,6 +62,24 @@ class CoursesScreen extends React.Component {
       courseTitle: title,
       date: date,
     });
+
+  /*
+   * Set loading indicator and call function to delete the course.
+   */
+  _handleDeleteCourse(course_id) {
+    this.setState({ isLoading: true });
+    this._deleteCourse(course_id);
+  }
+
+  _renderCourses() {
+    return this.state.courses.map((course, i) => (
+      <CourseCard key={i}
+        course_id={course.id}
+        title={course.title}
+        onSelectCourse={this._handleSelectCourse}
+        onDeleteCourse={this._handleDeleteCourse} />
+      )
+    );
   }
 
   /*
