@@ -1,13 +1,17 @@
 import React from 'react';
 import { Button, ScrollView, Text, View } from 'react-native';
 import { commonStyles } from '../../styles/styles';
-import { getRequest } from '../../lib/requests';
+import { getRequest, deleteRequest } from '../../lib/requests';
 import { APIRoutes } from '../../config/routes';
 
 class ViewCourseScreen extends React.Component {
   constructor(props) {
     super(props);
+    this._fetchCourse = this._fetchCourse.bind(this);
+    this._handleDeleteCourse = this._handleDeleteCourse.bind(this);
+    this._deleteCourse = this._deleteCourse.bind(this);
     this.state = {
+      course_id : this.props.navigation.state.params.course_id,
       course : { },
       isLoading : true,
     }
@@ -17,8 +21,10 @@ class ViewCourseScreen extends React.Component {
     this._fetchCourse();
   }
 
+  /*
+   * Fetch recrod for single course.
+   */
   _fetchCourse() {
-    const course_id = this.props.navigation.state.params.course_id;
     const successFunc = (responseData) => {
       this.setState({ course: responseData, isLoading: false });
     }
@@ -26,7 +32,30 @@ class ViewCourseScreen extends React.Component {
       // TODO (caseytaka): Display correct toastr error msg
       console.error(error);
     }
-    getRequest(APIRoutes.getCoursePath(course_id), successFunc, errorFunc);
+    getRequest(APIRoutes.getCoursePath(this.state.course_id), successFunc, errorFunc);
+  }
+
+  /*
+   * Make a delete request. On success, re-render the component.
+   */
+  _deleteCourse() {
+    const successFunc = (responseData) => {
+      this.setState({ isLoading: false });
+      this.props.navigation.state.params.refreshCourses();
+      this.props.navigation.goBack(null);
+    }
+    const errorFunc = (error) => {
+      console.error(error);
+    }
+    deleteRequest(APIRoutes.getCoursePath(this.state.course_id), successFunc, errorFunc);
+  }
+
+  /*
+   * Set loading indicator and call function to delete the course.
+   */
+  _handleDeleteCourse(course_id) {
+    this.setState({ isLoading: true });
+    this._deleteCourse();
   }
 
   render() {
@@ -57,6 +86,10 @@ class ViewCourseScreen extends React.Component {
                   end_date: this.state.course.end_date,
                 })}
               title="Edit Course"
+            />
+            <Button
+              onPress={() => this._handleDeleteCourse()}
+              title='Delete'
             />
           </View>
         </ScrollView>

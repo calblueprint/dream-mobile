@@ -9,7 +9,6 @@ import { cardStyles } from './styles';
  * @prop title - course title
  * @prop onSelectCourse - callback function to show course information
  * @prop onTakeAttendance - callback function to take attendance for today
- * @prop onDeleteCourse - callback function to delete a course
  */
 class CourseCard extends React.Component {
   constructor(props) {
@@ -26,10 +25,6 @@ class CourseCard extends React.Component {
           <Button
             onPress={() => this.props.onTakeAttendance(this.props.course_id, this.props.title)}
             title="Take Attendance"
-          />
-          <Button
-            onPress={() => this.props.onDeleteCourse(this.props.course_id)}
-            title='Delete'
           />
         </View>
       </TouchableHighlight>

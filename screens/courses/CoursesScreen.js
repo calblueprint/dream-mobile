@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, ScrollView, Text, View } from 'react-native';
 import { commonStyles } from '../../styles/styles';
-import { getRequest, deleteRequest } from '../../lib/requests';
+import { getRequest } from '../../lib/requests';
 import { APIRoutes } from '../../config/routes';
 import CourseCard from '../../components/CourseCard/CourseCard';
 
@@ -9,10 +9,8 @@ class CoursesScreen extends React.Component {
   constructor(props) {
     super(props);
     this._fetchCourses = this._fetchCourses.bind(this);
-    this._deleteCourse = this._deleteCourse.bind(this);
     this._handleSelectCourse = this._handleSelectCourse.bind(this);
     this._handleTakeAttendance = this._handleTakeAttendance.bind(this);
-    this._handleDeleteCourse = this._handleDeleteCourse.bind(this);
     this._renderCourses = this._renderCourses.bind(this);
     this.state = {
       courses : { },
@@ -37,22 +35,11 @@ class CoursesScreen extends React.Component {
     getRequest(APIRoutes.getCoursesPath(), successFunc, errorFunc);
   }
 
-  /*
-   * Make a delete request. On success, re-render the component.
-   */
-  _deleteCourse(course_id) {
-    const successFunc = (responseData) => {
-      this.setState({ isLoading: false });
-      this._fetchCourses();
-    }
-    const errorFunc = (error) => {
-      console.error(error);
-    }
-    deleteRequest(APIRoutes.getCoursePath(course_id), successFunc, errorFunc);
-  }
-
   _handleSelectCourse(course_id) {
-    this.props.navigation.navigate('ViewCourse', {course_id: course_id});
+    this.props.navigation.navigate('ViewCourse', {
+      refreshCourses: this._fetchCourses,
+      course_id: course_id
+    });
   }
 
   _handleTakeAttendance(course_id, title) {
@@ -65,22 +52,13 @@ class CoursesScreen extends React.Component {
     });
   }
 
-  /*
-   * Set loading indicator and call function to delete the course.
-   */
-  _handleDeleteCourse(course_id) {
-    this.setState({ isLoading: true });
-    this._deleteCourse(course_id);
-  }
-
   _renderCourses() {
     return this.state.courses.map((course, i) => (
       <CourseCard key={i}
         course_id={course.id}
         title={course.title}
         onSelectCourse={this._handleSelectCourse}
-        onTakeAttendance={this._handleTakeAttendance}
-        onDeleteCourse={this._handleDeleteCourse} />
+        onTakeAttendance={this._handleTakeAttendance} />
       )
     );
   }
