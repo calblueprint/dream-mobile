@@ -34,7 +34,6 @@ class CourseCard extends React.Component {
         </View>
       </TouchableHighlight>
     );
-
   }
 }
 
