@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, ScrollView, Text, View } from 'react-native';
-import { styles } from '../../styles/styles';
+import { commonStyles } from '../../styles/styles';
 import { cardStyles } from '../../components/CourseCard/styles';
 import { getRequest } from '../../lib/requests';
 import { APIRoutes } from '../../config/routes';
@@ -28,18 +28,22 @@ class CoursesScreen extends React.Component {
       // TODO (caseytaka): Display correct toastr error msg
       console.error(error);
     }
-    const retval = getRequest(APIRoutes.getCoursesPath(), successFunc, errorFunc);
-    console.log(retval)
+    getRequest(APIRoutes.getCoursesPath(), successFunc, errorFunc);
   }
 
   _renderCourses() {
+    const date = new Date();
     const { navigate } = this.props.navigation;
     return this.state.courses.map(function(course, i) {
       return(
         <View key={i} style={cardStyles.container}>
           <Text style={cardStyles.title}>{course.title}</Text>
           <Button
-            onPress={() => navigate('Attendances', { courseId: course.id })}
+            onPress={() => navigate('Attendances', {
+              courseId: course.id,
+              courseTitle: course.title,
+              date: date
+            })}
             title="Take Attendance"
           />
           <Button

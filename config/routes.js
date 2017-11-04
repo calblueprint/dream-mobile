@@ -1,14 +1,18 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
 import { StackNavigator } from 'react-navigation';
+import { Button } from 'react-native';
 
 import HomeScreen from '../screens/HomeScreen';
 import CoursesScreen from '../screens/courses/CoursesScreen';
 import CreateCourseScreen from '../screens/courses/CreateCourseScreen';
 import StudentsScreen from '../screens/students/StudentsScreen';
 import CreateStudentScreen from '../screens/students/CreateStudentScreen';
-import AttendanceSheetScreen from '../screens/attendances/AttendanceSheetScreen';
-
+import AttendanceScreen from '../screens/attendances/AttendanceScreen';
+import AttendanceSummaryScreen from '../screens/attendances/AttendanceSummaryScreen';
+/**
+ * HomeStack is the main navigation stack starting from the HomeScreen
+ */
 export const HomeStack = StackNavigator({
   Home: {
     screen: HomeScreen,
@@ -41,15 +45,26 @@ export const HomeStack = StackNavigator({
     },
   },
   Attendances: {
-    screen: AttendanceSheetScreen,
+    screen: AttendanceScreen,
     navigationOptions: {
       headerTitle: 'Attendance',
     },
-  }
+  },
+  AttendanceSummary: {
+    screen: AttendanceSummaryScreen,
+    navigationOptions: ({navigation}) => ({
+      headerTitle: 'Attendance Summary',
+      headerRight: (<Button title='Edit' onPress={() => { navigation.goBack() }}/>),
+    }),
+  },
 });
 
 
+/**
+ * Class for defining API routes
+ */
 export class APIRoutes {
+  // Use to build api routes
   static createRoute(route)           { return `/api/${route}` }
 
   // Courses
