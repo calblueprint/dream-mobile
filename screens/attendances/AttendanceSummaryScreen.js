@@ -137,6 +137,7 @@ class AttendanceSummaryScreen extends React.Component {
     * Renders list of student names in a FlatList.
     * `students` is passed in as a list of { key: name } objects to work with
     * FlatList
+    * TODO (Kelsey): what to do about two scrollviews?
     */
   _renderStudentsList(students) {
     return (
@@ -144,7 +145,6 @@ class AttendanceSummaryScreen extends React.Component {
         <FlatList
           style={styles.studentList}
           data={students}
-          scrollEnabled={false}
           renderItem={({item}) => <Text>{item.key}</Text>}
         />
       </View>
