@@ -8,7 +8,6 @@ class ViewCourseScreen extends React.Component {
   constructor(props) {
     super(props);
     this._fetchCourse = this._fetchCourse.bind(this);
-    this._handleDeleteCourse = this._handleDeleteCourse.bind(this);
     this._deleteCourse = this._deleteCourse.bind(this);
     this.state = {
       course_id : this.props.navigation.state.params.course_id,
@@ -40,7 +39,6 @@ class ViewCourseScreen extends React.Component {
    */
   _deleteCourse() {
     const successFunc = (responseData) => {
-      this.setState({ isLoading: false });
       this.props.navigation.state.params.refreshCourses();
       this.props.navigation.goBack(null);
     }
@@ -48,14 +46,6 @@ class ViewCourseScreen extends React.Component {
       console.error(error);
     }
     deleteRequest(APIRoutes.getCoursePath(this.state.course_id), successFunc, errorFunc);
-  }
-
-  /*
-   * Set loading indicator and call function to delete the course.
-   */
-  _handleDeleteCourse(course_id) {
-    this.setState({ isLoading: true });
-    this._deleteCourse();
   }
 
   render() {
@@ -73,8 +63,9 @@ class ViewCourseScreen extends React.Component {
             <Button
               onPress={() => navigate('EditCourse',
                 {
-                  refreshCourse: this._fetchCourse,
+                  refreshCourses: this._fetchCourse,
                   newCourse: false,
+                  course_id: this.state.course_id,
                   is_active: this.state.course.is_active,
                   title: this.state.course.title,
                   teacher1: this.state.course.teacher_id1,
@@ -88,7 +79,7 @@ class ViewCourseScreen extends React.Component {
               title="Edit Course"
             />
             <Button
-              onPress={() => this._handleDeleteCourse()}
+              onPress={() => this._deleteCourse()}
               title='Delete'
             />
           </View>

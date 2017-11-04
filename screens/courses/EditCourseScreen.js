@@ -5,7 +5,7 @@ import { Form, InputField, PickerField,
 import { APIRoutes } from '../../config/routes';
 import PropTypes from 'prop-types';
 import EditCourseForm from '../../components/Form/EditCourseForm'
-import { postRequest } from '../../lib/requests';
+import { postRequest, putRequest } from '../../lib/requests';
 
 class EditCourseScreen extends React.Component {
   constructor(props) {
@@ -15,9 +15,9 @@ class EditCourseScreen extends React.Component {
   }
 
   /*
-   * Make request to save attributes of the course, and return to courses page.
+   * Make request to create the course, and refresh the courses page.
    */
-  _handleSaveCourse(params) {
+  _handleCreateCourse(params) {
     const successFunc = (responseData) => {
       this.props.navigation.state.params.refreshCourses();
       this.props.navigation.goBack(null);
@@ -28,18 +28,33 @@ class EditCourseScreen extends React.Component {
     postRequest(APIRoutes.getCoursesPath(), successFunc, errorFunc, params=params);
   }
 
+  /*
+   * Make request to save attributes of the course, and return to course page.
+   */
+  _handleUpdateCourse(params) {
+    const successFunc = (responseData) => {
+      this.props.navigation.state.params.refreshCourses();
+      this.props.navigation.goBack(null);
+    }
+    const errorFunc = (error) => {
+      console.error(error);
+    }
+    course_id = this.props.navigation.state.params.course_id;
+    putRequest(APIRoutes.getCoursePath(course_id), successFunc, errorFunc, params=params);
+  }
+
 
   render() {
     const navProps = this.props.navigation.state.params;
     if (navProps.newCourse) {
       return (
         <EditCourseForm
-          onSaveCourse={this._handleSaveCourse.bind(this)} />
+          onSaveCourse={this._handleCreateCourse.bind(this)} />
       );
     } else {
       return (
         <EditCourseForm
-          onSaveCourse={this._handleSaveCourse.bind(this)}
+          onSaveCourse={this._handleUpdateCourse.bind(this)}
           is_active={navProps.is_active}
           title={navProps.title}
           teacher1={navProps.teacher1}
