@@ -20,10 +20,13 @@
   },
   "dependencies": {
     "expo": "^21.0.0",
+    "moment": "^2.19.1",
     "prop-types": "^15.6.0",
     "query-string": "^5.0.0",
     "react": "16.0.0-alpha.12",
     "react-native": "^0.48.4",
+    "react-native-chooser": "^1.6.3",
+    "react-native-collapsible": "^0.9.0",
     "react-native-dropdown": "0.0.6",
     "react-native-elements": "^0.17.0",
     "react-native-form-generator": "^0.9.9",

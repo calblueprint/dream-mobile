@@ -1,12 +1,12 @@
 import React from 'react';
 import { Button, Text, View } from 'react-native';
-import { styles } from '../styles/styles';
+import { commonStyles } from '../styles/styles';
 
 class HomeScreen extends React.Component {
   render() {
     const { navigate } = this.props.navigation;
     return (
-      <View style={styles.container}>
+      <View style={commonStyles.container}>
         <Text>DREAM</Text>
         <Button
           onPress={() => navigate('Courses')}

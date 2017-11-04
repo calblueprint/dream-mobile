@@ -4,11 +4,11 @@ import { styles } from '../../styles/styles';
 import { colors } from '../../styles/colors';
 import { textStyles } from '../../styles/textStyles';
 import { teacherStyles } from '../../styles/teacherStyles';
+import { commonStyles } from '../../styles/styles';
 import { getRequest } from '../../lib/requests';
 import { APIRoutes } from '../../config/routes';
 
 class TeacherProfileScreen extends React.Component {
-
 
   constructor(props) {
     super(props);
