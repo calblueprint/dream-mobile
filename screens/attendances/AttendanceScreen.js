@@ -151,24 +151,22 @@ class AttendanceScreen extends React.Component {
     * (aka if modal is open for a certain attendance)
     */
   _renderModal() {
+    const callback = () => { this._setModal(-1) };
+    const buttons = [{ title: 'Save', callback: callback}]
     if (this.state.modalIndex !== -1) {
       return (
         <SimpleModal
-          visible={this.state.modalIndex !== -1}
-          >
-          <View style={{marginTop: 22}}>
-            <Text>{this._getStudentName(this.state.modalIndex)}</Text>
+          onClosed={callback}
+          title={this._getStudentName(this.state.modalIndex)}
+          buttons={buttons}
+          visible={this.state.modalIndex !== -1}>
+          <View>
             <TextInput
                 style={{height: 40, borderColor: 'gray', borderWidth: 1}}
                 onChangeText={this._setComment(this.state.modalIndex)}
                 value={this.state.attendances[this.state.modalIndex].comment}
                 placeholder='Add a note...'
               />
-            <TouchableHighlight onPress={() => {
-              this._setModal(-1)
-            }}>
-              <Text>Save</Text>
-            </TouchableHighlight>
           </View>
         </SimpleModal>
       )
@@ -198,7 +196,6 @@ class AttendanceScreen extends React.Component {
           })}
           title="Submit"
         />
-        {this._renderModal()}
       </View>
     )
   }
@@ -210,8 +207,11 @@ class AttendanceScreen extends React.Component {
     // TODO (Kelsey): Add loading gif
     const attendances = this.state.isLoading ? (<Text>Loading...</Text>) : this._renderLoadedView();
     return (
-      <View style={styles.container}>
-        { attendances }
+      <View style={{flex: 1}}>
+        <View style={styles.container}>
+          { attendances }
+        </View>
+        {!this.state.isLoading ? this._renderModal(): null}
       </View>
     );
   }

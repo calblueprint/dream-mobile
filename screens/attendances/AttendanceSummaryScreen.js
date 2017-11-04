@@ -171,24 +171,25 @@ class AttendanceSummaryScreen extends React.Component {
     * modal is closed and navigates back to courses page.
     */
   _renderModal() {
+    const callback = () => {
+      this.setState({ isModalOpen: false });
+      this.props.navigation.goBack(this.props.navigation.state.params.parentKey || null);
+    }
+    const buttons = [{ title: 'Okay', callback: callback }]
+
     return (
       <SimpleModal
+        onClosed={callback}
+        title='Status'
+        buttons={buttons}
         visible={this.state.isModalOpen}>
-        <View style={{marginTop: 22}}>
-          <Text>Status</Text>
+        <View>
           <Text>Saved to phone</Text>
           <Text>Synced</Text>
           <Text>
             Attendance not synced because the device is not connected to Wifi.
             Try again when Wifi is available. Attendance saved to phone.
           </Text>
-          <Button
-            onPress={() => {
-              this.setState({ isModalOpen: false });
-              this.props.navigation.goBack(this.props.navigation.state.params.parentKey || null);
-            }}
-            title='Okay'
-          />
         </View>
       </SimpleModal>
     )
@@ -209,7 +210,6 @@ class AttendanceSummaryScreen extends React.Component {
           onPress={this._syncAttendances.bind(this)}
           title="Sync"
         />
-        {this._renderModal()}
       </View>
     )
   }
@@ -221,8 +221,11 @@ class AttendanceSummaryScreen extends React.Component {
     // TODO (Kelsey): Add loading gif
     const view = this.state.isLoading ? (<Text>Loading...</Text>) : this._renderLoadedView();
     return (
-      <View style={styles.container}>
-        { view }
+      <View style={{flex: 1}}>
+        <View style={styles.container}>
+          { view }
+        </View>
+        {!this.state.isLoading ? this._renderModal(): null}
       </View>
     );
   }
