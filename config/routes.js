@@ -1,12 +1,14 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
 import { StackNavigator } from 'react-navigation';
+import { Button } from 'react-native';
 
 import HomeScreen from '../screens/HomeScreen';
 import CoursesScreen from '../screens/courses/CoursesScreen';
 import CreateCourseScreen from '../screens/courses/CreateCourseScreen';
 import StudentsScreen from '../screens/students/StudentsScreen';
 import AttendanceScreen from '../screens/attendances/AttendanceScreen';
+import AttendanceSummaryScreen from '../screens/attendances/AttendanceSummaryScreen';
 
 /**
  * HomeStack is the main navigation stack starting from the HomeScreen
@@ -41,7 +43,14 @@ export const HomeStack = StackNavigator({
     navigationOptions: {
       headerTitle: 'Attendance',
     },
-  }
+  },
+  AttendanceSummary: {
+    screen: AttendanceSummaryScreen,
+    navigationOptions: ({navigation}) => ({
+      headerTitle: 'Attendance Summary',
+      headerRight: (<Button title='Edit' onPress={() => { navigation.goBack() }}/>),
+    }),
+  },
 });
 
 
