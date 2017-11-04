@@ -1,14 +1,16 @@
 import React from 'react';
 import { Button, ScrollView, Text, View } from 'react-native';
 import { commonStyles } from '../../styles/styles';
-import { cardStyles } from '../../components/CourseCard/styles';
 import { getRequest } from '../../lib/requests';
 import { APIRoutes } from '../../config/routes';
+import CourseCard from '../../components/CourseCard/CourseCard';
 
 class CoursesScreen extends React.Component {
   constructor(props) {
     super(props);
     this._fetchCourses = this._fetchCourses.bind(this);
+    this._handleSelectCourse = this._handleSelectCourse.bind(this);
+    this._handleTakeAttendance = this._handleTakeAttendance.bind(this);
     this._renderCourses = this._renderCourses.bind(this);
     this.state = {
       courses : { },
@@ -20,39 +22,44 @@ class CoursesScreen extends React.Component {
     this._fetchCourses();
   }
 
+  /*
+   * Get all course records and rerenders component to display courses.
+   */
   _fetchCourses() {
     const successFunc = (responseData) => {
       this.setState({ courses: responseData, isLoading: false });
     }
     const errorFunc = (error) => {
-      // TODO (caseytaka): Display correct toastr error msg
       console.error(error);
     }
     getRequest(APIRoutes.getCoursesPath(), successFunc, errorFunc);
   }
 
-  _renderCourses() {
-    const date = new Date();
-    const { navigate } = this.props.navigation;
-    return this.state.courses.map(function(course, i) {
-      return(
-        <View key={i} style={cardStyles.container}>
-          <Text style={cardStyles.title}>{course.title}</Text>
-          <Button
-            onPress={() => navigate('Attendances', {
-              courseId: course.id,
-              courseTitle: course.title,
-              date: date
-            })}
-            title="Take Attendance"
-          />
-          <Button
-            onPress={() => navigate('Students', { courseId: course.id })}
-            title="View Students"
-          />
-        </View>
-      );
+  _handleSelectCourse(course_id) {
+    this.props.navigation.navigate('ViewCourse', {
+      refreshCourses: this._fetchCourses,
+      course_id: course_id
     });
+  }
+
+  _handleTakeAttendance(course_id, title) {
+    const date = new Date();
+    this.props.navigation.navigate('Attendances', {
+      courseId: course_id,
+      courseTitle: title,
+      date: date,
+    });
+  }
+
+  _renderCourses() {
+    return this.state.courses.map((course, i) => (
+      <CourseCard key={i}
+        course_id={course.id}
+        title={course.title}
+        onSelectCourse={this._handleSelectCourse}
+        onTakeAttendance={this._handleTakeAttendance} />
+      )
+    );
   }
 
   render() {
@@ -70,7 +77,7 @@ class CoursesScreen extends React.Component {
       <ScrollView>
         <View>
           <Button
-            onPress={() => navigate('CreateCourse', {refreshCourses: this._fetchCourses})}
+            onPress={() => navigate('EditCourse', {refreshCourses: this._fetchCourses, newCourse: true})}
             title="Create Course"
           />
           { courses }
