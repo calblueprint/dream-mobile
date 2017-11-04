@@ -144,6 +144,7 @@ class AttendanceSummaryScreen extends React.Component {
         <FlatList
           style={styles.studentList}
           data={students}
+          scrollEnabled={false}
           renderItem={({item}) => <Text>{item.key}</Text>}
         />
       </View>
@@ -200,16 +201,19 @@ class AttendanceSummaryScreen extends React.Component {
     */
   _renderLoadedView() {
     return(
-      <View>
-        <ScrollView style={styles.scrollView}>
-          <Text>{attendanceDate(this.state.date)}</Text>
-          <Text>{this.state.courseTitle}</Text>
-          {this._renderSummary()}
-        </ScrollView>
-        <Button
-          onPress={this._syncAttendances.bind(this)}
-          title="Sync"
-        />
+      <View style={{flex: 1}}>
+        <View style={styles.summaryContainer}>
+          <ScrollView style={styles.scrollView}>
+            <Text>{attendanceDate(this.state.date)}</Text>
+            <Text>{this.state.courseTitle}</Text>
+            {this._renderSummary()}
+          </ScrollView>
+          <Button
+            onPress={this._syncAttendances.bind(this)}
+            title="Sync"
+          />
+        </View>
+        {this._renderModal()}
       </View>
     )
   }
@@ -221,11 +225,8 @@ class AttendanceSummaryScreen extends React.Component {
     // TODO (Kelsey): Add loading gif
     const view = this.state.isLoading ? (<Text>Loading...</Text>) : this._renderLoadedView();
     return (
-      <View style={{flex: 1}}>
-        <View style={styles.container}>
-          { view }
-        </View>
-        {!this.state.isLoading ? this._renderModal(): null}
+      <View style={styles.container}>
+        { view }
       </View>
     );
   }
@@ -233,13 +234,18 @@ class AttendanceSummaryScreen extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 20,
     flex: 1,
     justifyContent: 'center',
     backgroundColor: '#fff',
   },
+  summaryContainer: {
+    paddingTop: 20,
+    paddingRight: 20,
+    paddingLeft: 20,
+    justifyContent: 'space-between',
+    height: '100%'
+  },
   scrollView: {
-    height: '100%',
     width: '100%',
   },
   collapseHeader: {

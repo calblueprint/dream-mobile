@@ -180,22 +180,25 @@ class AttendanceScreen extends React.Component {
     const { navigate } = this.props.navigation;
 
     return(
-      <View>
-        <ScrollView>
-          <Text>{attendanceDate(this.state.date)}</Text>
-          <Text>{this.state.courseTitle}</Text>
-          {this._renderAttendances()}
-        </ScrollView>
-        <Button
-          onPress={() => navigate('AttendanceSummary', {
-            attendances: this.state.attendances,
-            students: this.state.students,
-            courseTitle: this.state.courseTitle,
-            date: this.state.date,
-            parentKey: this.props.navigation.state.key,
-          })}
-          title="Submit"
-        />
+      <View style={{flex: 1}}>
+        <View style={styles.attendancesContainer}>
+          <ScrollView>
+            <Text>{attendanceDate(this.state.date)}</Text>
+            <Text>{this.state.courseTitle}</Text>
+            {this._renderAttendances()}
+          </ScrollView>
+          <Button
+            onPress={() => navigate('AttendanceSummary', {
+              attendances: this.state.attendances,
+              students: this.state.students,
+              courseTitle: this.state.courseTitle,
+              date: this.state.date,
+              parentKey: this.props.navigation.state.key,
+            })}
+            title="Submit"
+          />
+        </View>
+        {this._renderModal()}
       </View>
     )
   }
@@ -207,11 +210,8 @@ class AttendanceScreen extends React.Component {
     // TODO (Kelsey): Add loading gif
     const attendances = this.state.isLoading ? (<Text>Loading...</Text>) : this._renderLoadedView();
     return (
-      <View style={{flex: 1}}>
-        <View style={styles.container}>
-          { attendances }
-        </View>
-        {!this.state.isLoading ? this._renderModal(): null}
+      <View style={styles.container}>
+        { attendances }
       </View>
     );
   }
@@ -219,10 +219,17 @@ class AttendanceScreen extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 20,
     flex: 1,
     justifyContent: 'center',
     backgroundColor: '#fff',
+  },
+  // Either change styles or generalize to AttendanceSummaryScreen too
+  attendancesContainer: {
+    paddingTop: 20,
+    paddingRight: 20,
+    paddingLeft: 20,
+    justifyContent: 'space-between',
+    height: '100%'
   },
 });
 // TODO (Kelsey): Add PropTypes from navigation
