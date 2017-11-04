@@ -2,7 +2,7 @@
 if (process.env.NODE_ENV === 'production') {
   URL = 'https://dream-rails-production.herokuapp.com';
 } else {
-  URL = 'http://localhost:3000';
+  URL = 'http://100.64.7.143:3000';
 }
 
 export const settings = {

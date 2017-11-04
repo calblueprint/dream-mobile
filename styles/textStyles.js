@@ -7,6 +7,11 @@ const textStyles = StyleSheet.create({
     fontSize: 20
   },
 
+  bodySmall: {
+    color: colors.textDark,
+    fontSize: 16
+  },
+
   titleSmall: {
     color: colors.textDark_70,
     fontSize: 16
@@ -38,6 +43,11 @@ const textStyles = StyleSheet.create({
   linkText: {
     color: colors.primaryYellow,
     fontSize: 20
+  },
+
+  hintText: {
+    color: colors.textDark_30,
+    fontSize: 16
   },
   
 
