@@ -5,7 +5,19 @@ import styles from './styles';
 
 import Modal from 'react-native-modalbox';
 
+/**
+  * Basic Modal that by default enters from bottom, is centered,
+  * has a 50% transparent black backdrop, and a top right cancel button.
+  *
+  * Takes in props for callback when modal is closed, isOpen boolean, title,
+  * and buttons (read renderButtons for more details).
+  */
 class SimpleModal extends React.Component {
+  /**
+    * Renders given buttons from props, received in the form:
+    * eg: [{ title: 'Yes', callback: onYesPressed }, ...]
+    * These buttons will be rendered at the bottom of the modal.
+    */
   renderButtons() {
     const buttons = this.props.buttons.map((value, i) => {
       return(
@@ -24,6 +36,7 @@ class SimpleModal extends React.Component {
     )
   }
 
+  // TODO (Kelsey): replace X button with icon
   render() {
     return (
       <Modal
