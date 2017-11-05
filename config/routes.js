@@ -4,6 +4,8 @@ import { StackNavigator } from 'react-navigation';
 import { Button } from 'react-native';
 
 import HomeScreen from '../screens/HomeScreen';
+import LoginScreen from '../screens/login/LoginScreen';
+import SignUpScreen from '../screens/login/SignUpScreen';
 import ViewCourseScreen from '../screens/courses/ViewCourseScreen';
 import CoursesScreen from '../screens/courses/CoursesScreen';
 import EditCourseScreen from '../screens/courses/EditCourseScreen';
@@ -19,6 +21,18 @@ export const HomeStack = StackNavigator({
     screen: HomeScreen,
     navigationOptions: {
       headerTitle: 'Home',
+    },
+  },
+  Login: {
+    screen: LoginScreen,
+    navigationOptions: {
+      headerTitle: 'Login'
+    },
+  },
+  SignUp: {
+    screen: SignUpScreen,
+    navigationOptions: {
+      headerTitle: 'SignUp'
     },
   },
   ViewCourse: {
@@ -73,6 +87,7 @@ export const HomeStack = StackNavigator({
 export class APIRoutes {
   // Use to build api routes
   static createRoute(route)           { return `/api/${route}` }
+  static deviseRoute(route)           { return `/teachers/${route}` }
 
   // Courses
   static getCoursePath(id)            { return APIRoutes.createRoute(`courses/${id}`) }
@@ -84,4 +99,9 @@ export class APIRoutes {
   // Attendances
   static attendanceItemPath()         { return APIRoutes.createRoute(`attendances/attendance_item`) }
   static attendancePath(id)           { return APIRoutes.createRoute(`attendances/${id}`) }
+
+  // Login
+  static signupPath()                 { return `/sign_up` }
+  static loginPath()                  { return APIRoutes.deviseRoute(`sign_in`) }
+  static signoutPath()                { return APIRoutes.deviseRoute(`sign_out`) }
 }

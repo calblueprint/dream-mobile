@@ -54,15 +54,7 @@ class StudentsScreen extends React.Component {
       students = this._renderStudents()
     }
     return (
-<<<<<<< HEAD
-      <View style={styles.container}>
-        <Button
-          onPress={() => navigate('CreateStudent', {refreshStudents: this._fetchStudents})}
-          title="Create Student"
-        />
-=======
       <View style={commonStyles.container}>
->>>>>>> ac4ab8c371dad64ebb4c17505d42c521f1396ac1
         { students }
       </View>
     );
