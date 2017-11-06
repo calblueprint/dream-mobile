@@ -11,8 +11,18 @@ import DropdownAlert from 'react-native-dropdownalert';
 class EditCourseScreen extends React.Component {
   constructor(props) {
     super(props);
+    this._onError = this._onError.bind(this);
     this.state = {
     }
+  }
+
+  /*
+   * Display error in toaster message.
+   */
+  _onError(response) {
+    response.errors.map((error) => {
+      this.dropdown.alertWithType('error', 'Error', error);
+    });
   }
 
   /*
@@ -23,10 +33,7 @@ class EditCourseScreen extends React.Component {
       this.props.navigation.state.params.refreshCourses();
       this.props.navigation.goBack(null);
     }
-    const errorFunc = (error) => {
-      console.error(error);
-    }
-    postRequest(APIRoutes.getCoursesPath(), successFunc, errorFunc, params=params);
+    postRequest(APIRoutes.getCoursesPath(), successFunc, this._onError, params=params);
   }
 
   /*
@@ -37,13 +44,8 @@ class EditCourseScreen extends React.Component {
       this.props.navigation.state.params.refreshCourses();
       this.props.navigation.goBack(null);
     }
-    const errorFunc = (response) => {
-      response.errors.map((error) => {
-        this.dropdown.alertWithType('error', 'Error', error);
-      });
-    }
     course_id = this.props.navigation.state.params.course_id;
-    putRequest(APIRoutes.getCoursePath(course_id), successFunc, errorFunc, params=params);
+    putRequest(APIRoutes.getCoursePath(course_id), successFunc, this._onError, params=params);
   }
 
 
