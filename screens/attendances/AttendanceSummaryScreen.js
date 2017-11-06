@@ -137,6 +137,7 @@ class AttendanceSummaryScreen extends React.Component {
     * Renders list of student names in a FlatList.
     * `students` is passed in as a list of { key: name } objects to work with
     * FlatList
+    * TODO (Kelsey): what to do about two scrollviews?
     */
   _renderStudentsList(students) {
     return (
@@ -171,24 +172,25 @@ class AttendanceSummaryScreen extends React.Component {
     * modal is closed and navigates back to courses page.
     */
   _renderModal() {
+    const callback = () => {
+      this.setState({ isModalOpen: false });
+      this.props.navigation.goBack(this.props.navigation.state.params.parentKey || null);
+    }
+    const buttons = [{ title: 'Okay', callback: callback }]
+
     return (
       <SimpleModal
+        onClosed={callback}
+        title='Status'
+        buttons={buttons}
         visible={this.state.isModalOpen}>
-        <View style={{marginTop: 22}}>
-          <Text>Status</Text>
+        <View>
           <Text>Saved to phone</Text>
           <Text>Synced</Text>
           <Text>
             Attendance not synced because the device is not connected to Wifi.
             Try again when Wifi is available. Attendance saved to phone.
           </Text>
-          <Button
-            onPress={() => {
-              this.setState({ isModalOpen: false });
-              this.props.navigation.goBack(this.props.navigation.state.params.parentKey || null);
-            }}
-            title='Okay'
-          />
         </View>
       </SimpleModal>
     )
@@ -199,16 +201,18 @@ class AttendanceSummaryScreen extends React.Component {
     */
   _renderLoadedView() {
     return(
-      <View>
-        <ScrollView style={styles.scrollView}>
-          <Text>{attendanceDate(this.state.date)}</Text>
-          <Text>{this.state.courseTitle}</Text>
-          {this._renderSummary()}
-        </ScrollView>
-        <Button
-          onPress={this._syncAttendances.bind(this)}
-          title="Sync"
-        />
+      <View style={{flex: 1}}>
+        <View style={styles.summaryContainer}>
+          <ScrollView style={styles.scrollView}>
+            <Text>{attendanceDate(this.state.date)}</Text>
+            <Text>{this.state.courseTitle}</Text>
+            {this._renderSummary()}
+          </ScrollView>
+          <Button
+            onPress={this._syncAttendances.bind(this)}
+            title="Sync"
+          />
+        </View>
         {this._renderModal()}
       </View>
     )
@@ -230,13 +234,18 @@ class AttendanceSummaryScreen extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 20,
     flex: 1,
     justifyContent: 'center',
     backgroundColor: '#fff',
   },
+  summaryContainer: {
+    paddingTop: 20,
+    paddingRight: 20,
+    paddingLeft: 20,
+    justifyContent: 'space-between',
+    height: '100%'
+  },
   scrollView: {
-    height: '100%',
     width: '100%',
   },
   collapseHeader: {

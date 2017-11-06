@@ -22,13 +22,13 @@ const textStyles = StyleSheet.create({
     fontSize: 20, 
     fontWeight: '700'
   },
-  
+
   titleLarge: {
     color: colors.textDark,
     fontSize: 24, 
     fontWeight: '700'
   },
-  
+
   buttonText: {
     color: colors.textLight,
     fontSize: 20,
@@ -49,7 +49,7 @@ const textStyles = StyleSheet.create({
     color: colors.textDark_30,
     fontSize: 16
   },
-  
+
 
 });
 
