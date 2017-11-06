@@ -43,7 +43,6 @@ class CoursesScreen extends React.Component {
   }
 
   _handleTakeAttendance(course_id, title) {
-    console.log(course_id, title);
     const date = new Date();
     this.props.navigation.navigate('Attendances', {
       courseId: course_id,
