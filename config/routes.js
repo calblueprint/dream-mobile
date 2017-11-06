@@ -50,6 +50,7 @@ export const HomeStack = StackNavigator({
   },
   CreateCourse : {
     screen: CreateCourseScreen,
+  },
   EditCourse : {
     screen: EditCourseScreen,
     navigationOptions: {

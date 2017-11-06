@@ -20,8 +20,22 @@ class TeacherProfileScreen extends React.Component {
     }
   }
 
+  static navigationOptions = ({ navigation }) => {
+      const { params = {} } = navigation.state;
+      return {
+          headerRight: <Button title="Edit" onPress={() => params.handleEdit()} />
+      };
+  };
+
   componentDidMount() {
+    _editProfile = () => {
+       this.props.navigation.navigate('EditTeacherProfile', 
+        { refreshTeacher: this._fetchTeacher, teacher: this.state.teacher })
+     }
+
     this._fetchTeacher();
+    this.props.navigation.setParams({ handleEdit: _editProfile });
+    
   }
 
   _fetchTeacher() {
@@ -101,15 +115,6 @@ class TeacherProfileScreen extends React.Component {
     );
 
   }
-
-  static navigationOptions = ({navigation}) => ({
-      headerRight: 
-        <Button
-           title="Edit Profile" onPress={()=>{ navigation.navigate('EditTeacherProfile', 
-            { refreshTeacher: this._fetchTeacher, teacher: this.state.teacher }); }} 
-        />
-
-  });
 
 }
 
