@@ -29,12 +29,23 @@ class LoginScreen extends React.Component {
     postRequest(APIRoutes.loginPath(), successFunc, errorFunc, params);
   }
 
+  _attemptSignOut() {
+    const successFunc = (responseData) => {
+      this.setState({teacher: responseData});
+      this.props.navigation.navigate('LoginScreen');
+    }
+    const errorFunc = (error) => {
+      console.error(error)
+    }
+    deleteRequest(APIRoutes.signoutPath(), successFunc, errorFunc);
+  }
+
   render() {
     return (
       <View>
         <TextInput
           placeholder='Email'
-          autoCapitalize={false}
+          autoCapitalize='none'
           onChangeText={(text) => this.setState({email: text})}/>
         <TextInput
           placeholder='Password'
@@ -47,6 +58,10 @@ class LoginScreen extends React.Component {
         <Button
           onPress={() => this.props.navigation.navigate('SignUp')}
           title='Sign Up'
+        />
+        <Button
+          onPress={() => this._attemptSignOut.bind(this)}
+          title='Sign Out'
         />
 
       </View>

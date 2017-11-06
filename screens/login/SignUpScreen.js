@@ -15,7 +15,6 @@ class SignUpScreen extends React.Component {
   }
 
   _attemptSignUp(params) {
-    console.log(params);
     const successFunc = (responseData) => {
       this.setState({teacher: responseData});
       this.props.navigation.navigate('Home');

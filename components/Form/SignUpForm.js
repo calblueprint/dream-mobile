@@ -41,7 +41,7 @@ class SignUpForm extends React.Component {
         <TextInput
           placeholder='Email'
           value={this.state.email}
-          autoCapitalize={false}
+          autoCapitalize='none'
           onChangeText={(text) => this.setState({email: text})}/>
         <TextInput
           placeholder='Password'
