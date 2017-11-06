@@ -20,9 +20,10 @@ class AttendanceScreen extends React.Component {
       courseId: this.props.navigation.state.params.courseId,
       courseTitle: this.props.navigation.state.params.courseTitle,
       modalIndex: -1,
+      modalComment: null,
     }
 
-    this._setComment = this._setComment.bind(this)
+    this._saveComment = this._saveComment.bind(this);
   }
 
   componentDidMount() {
@@ -93,18 +94,23 @@ class AttendanceScreen extends React.Component {
   }
 
   /**
-    * Method passed to AttendanceCard to update comment for the attendance at the given index.
-    * Takes in an index and returns a function that takes in a comment.
+    * Sets state for modalComment to the given comment
     */
-  _setComment(index) {
-    return (comment) => {
-      const attendances = this.state.attendances
-      const attendance = this.state.attendances[index]
-      attendance.comment = comment
-      attendance.isChanged = true
-      attendances[index] = attendance
-      this.setState({ attendances: attendances })
-    }
+  _setComment(comment) {
+    this.setState({ modalComment: comment });
+  }
+
+  /**
+    * Updates comment for the attendance at the given index when save button is pressed
+    * in comment modal.
+    */
+  _saveComment(index, comment) {
+    const attendances = this.state.attendances;
+    const attendance = this.state.attendances[index];
+    attendance.comment = comment;
+    attendance.isChanged = true;
+    attendances[index] = attendance;
+    this.setState({ attendances: attendances });
   }
 
   /**
@@ -113,21 +119,24 @@ class AttendanceScreen extends React.Component {
     */
   _setType(index) {
     return (value, label) => {
-      const attendances = this.state.attendances
-      const attendance = this.state.attendances[index]
-      attendance.attendance_type = value
-      attendance.isChanged = true
-      attendances[index] = attendance
-      this.setState({ attendances: attendances })
+      const attendances = this.state.attendances;
+      const attendance = this.state.attendances[index];
+      attendance.attendance_type = value;
+      attendance.isChanged = true;
+      attendances[index] = attendance;
+      this.setState({ attendances: attendances });
     }
   }
 
   /**
     * Sets the comment modal's modalIndex (either to certain attendance's index or -1
-    * if modal isn't open)
+    * if modal isn't open) and sets the comment text as the given comment (null if modal isn't open)
     */
-  _setModal(index) {
-    this.setState({ modalIndex: index });
+  _setModal(index, comment) {
+    this.setState({
+      modalIndex: index,
+      modalComment: comment
+    });
   }
 
   /**
@@ -147,24 +156,33 @@ class AttendanceScreen extends React.Component {
   }
 
   /**
-    * Renders comment modal if modalIndex is not -1
-    * (aka if modal is open for a certain attendance)
+    * Renders comment modal (if modalIndex is not -1) for attendance at modalIndex.
+    *
+    * If cancel is pressed, any changes to the attendance's comment will not be
+    * saved and the modal is closed.
+    * If save is pressed, changes to the comment will be saved and the modal is closed.
     */
   _renderModal() {
-    const callback = () => { this._setModal(-1) };
-    const buttons = [{ title: 'Save', callback: callback}]
+    const cancelCallback = () => {
+      this._setModal(-1, null);
+    }
+    const saveCallback = () => {
+      this._setModal(-1, null);
+      this._saveComment(this.state.modalIndex, this.state.modalComment);
+    };
+    const buttons = [{ title: 'Save', callback: saveCallback}]
     if (this.state.modalIndex !== -1) {
       return (
         <SimpleModal
-          onClosed={callback}
+          onClosed={cancelCallback}
           title={this._getStudentName(this.state.modalIndex)}
           buttons={buttons}
           visible={this.state.modalIndex !== -1}>
           <View>
             <TextInput
                 style={{height: 40, borderColor: 'gray', borderWidth: 1}}
-                onChangeText={this._setComment(this.state.modalIndex)}
-                value={this.state.attendances[this.state.modalIndex].comment}
+                onChangeText={this._setComment.bind(this)}
+                value={this.state.modalComment}
                 placeholder='Add a note...'
               />
           </View>
