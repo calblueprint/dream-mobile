@@ -70,13 +70,13 @@ class EditCourseForm extends React.Component {
             placeholder='e.g. Montessori'/>
 
           <InputField
-            ref='teacher_1'
+            ref='teacher_id1'
             label='Teacher ID 1'
             value={this.state.teacher_id1}
             placeholder='e.g. 19322372'/>
 
           <InputField
-            ref='teacher_2'
+            ref='teacher_id2'
             label='Teacher ID 2'
             value={this.state.teacher_id2}
             placeholder='e.g. 12634669'/>
@@ -124,7 +124,7 @@ class EditCourseForm extends React.Component {
             placeholder='End Date'/>
         </Form>
         <Button
-          onPress={() => this.props.onSaveCourse(this.state)}
+          onPress={() => this.props.onSaveCourse({ course: this.state })}
           title='Save'
         />
       </View>
