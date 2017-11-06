@@ -21,7 +21,7 @@ class TeacherProfileEditScreen extends React.Component {
 	  const successFunc = (responseData) => {
 	    this.setState({ teacher: responseData});
 	    this.props.navigation.state.params.refreshTeacher();
-	    this.props.navigation.goBack(null);
+	    this.props.navigation.goBack();
 	  }
 	  const errorFunc = (error) => {
 	    console.error(error);

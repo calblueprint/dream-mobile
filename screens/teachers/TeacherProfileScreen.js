@@ -41,36 +41,36 @@ class TeacherProfileScreen extends React.Component {
       <View style={teacherStyles.base}>
         <View style={teacherStyles.div_1}>
           <View style={teacherStyles.div_2}>
-          <Text style={textStyles.titleLarge}>
-          {this.state.teacher.first_name} {this.state.teacher.last_name}
-          </Text>
+            <Text style={textStyles.titleLarge}>
+            {this.state.teacher.first_name} {this.state.teacher.last_name}
+            </Text>
           </View>
 
           <View style={teacherStyles.div_2}>
-          <Text style={textStyles.titleSmall}>
-          Dream ID
-          </Text>
-          <Text style={textStyles.body}>
-          {this.state.teacher.dream_id}
-          </Text>
+            <Text style={textStyles.titleSmall}>
+            Dream ID
+            </Text>
+            <Text style={textStyles.body}>
+            {this.state.teacher.dream_id}
+            </Text>
           </View>
 
           <View style={teacherStyles.div_2}>
-          <Text style={textStyles.titleSmall}>
-          Email
-          </Text>
-          <Text style={textStyles.body}>
-          {this.state.teacher.email}
-          </Text>
+            <Text style={textStyles.titleSmall}>
+            Email
+            </Text>
+            <Text style={textStyles.body}>
+            {this.state.teacher.email}
+            </Text>
           </View>
 
           <View style={teacherStyles.div_2}>
-          <Text style={textStyles.titleSmall}>
-          Phone Number
-          </Text>
-          <Text style={textStyles.body}>
-          {this.state.teacher.phone}
-          </Text>
+            <Text style={textStyles.titleSmall}>
+            Phone Number
+            </Text>
+            <Text style={textStyles.body}>
+            {this.state.teacher.phone}
+            </Text>
           </View>
         </View>
       </View>
@@ -103,7 +103,6 @@ class TeacherProfileScreen extends React.Component {
   }
 
   static navigationOptions = ({navigation}) => ({
-    // const { navigate } = this.props.navigation;
       headerRight: 
         <Button
            title="Edit Profile" onPress={()=>{ navigation.navigate('EditTeacherProfile', 
@@ -113,6 +112,5 @@ class TeacherProfileScreen extends React.Component {
   });
 
 }
-
 
 export default TeacherProfileScreen;

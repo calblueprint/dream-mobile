@@ -30,9 +30,7 @@ class EditTeacherForm extends React.Component {
     return (
       <View>
         <Form
-          // ref='editProfileForm'
           onChange={this._handleFormChange.bind(this)}
-          // label="Personal Information"
           >
           
           <InputField
