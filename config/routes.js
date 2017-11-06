@@ -3,10 +3,12 @@ import React from 'react';
 import { StackNavigator } from 'react-navigation';
 import { Button } from 'react-native';
 import HomeScreen from '../screens/HomeScreen';
+import ViewCourseScreen from '../screens/courses/ViewCourseScreen';
 import CoursesScreen from '../screens/courses/CoursesScreen';
 import TeacherProfileScreen from '../screens/teachers/TeacherProfileScreen';
 import TeacherProfileEditScreen from '../screens/teachers/TeacherProfileEditScreen';
 import CreateCourseScreen from '../screens/courses/CreateCourseScreen';
+import EditCourseScreen from '../screens/courses/EditCourseScreen';
 import StudentsScreen from '../screens/students/StudentsScreen';
 import AttendanceScreen from '../screens/attendances/AttendanceScreen';
 import AttendanceSummaryScreen from '../screens/attendances/AttendanceSummaryScreen';
@@ -22,7 +24,13 @@ export const HomeStack = StackNavigator({
       headerTitle: 'Home',
     },
   },
-  Courses: {
+  ViewCourse: {
+    screen: ViewCourseScreen,
+    navigationOptions: {
+      headerTitle: 'ViewCourse',
+    },
+  },
+  Courses : {
     screen: CoursesScreen,
     navigationOptions: {
       headerTitle: 'Courses',
@@ -42,8 +50,10 @@ export const HomeStack = StackNavigator({
   },
   CreateCourse : {
     screen: CreateCourseScreen,
+  EditCourse : {
+    screen: EditCourseScreen,
     navigationOptions: {
-      headerTitle: 'CreateCourse',
+      headerTitle: 'EditCourse',
     },
   },
   Students : {
@@ -76,6 +86,7 @@ export class APIRoutes {
   static createRoute(route)           { return `/api/${route}` }
 
   // Courses
+  static getCoursePath(id)            { return APIRoutes.createRoute(`courses/${id}`) }
   static getCoursesPath()             { return APIRoutes.createRoute(`courses`) }
 
   //Teachers
