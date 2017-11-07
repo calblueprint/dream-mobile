@@ -4,6 +4,7 @@ import { Form, InputField, PickerField,
          DatePickerField, TimePickerField } from 'react-native-form-generator';
 import { APIRoutes } from '../../config/routes';
 import PropTypes from 'prop-types';
+import { timeFormat } from '../../lib/time';
 
 /**
  * @prop onSaveCourse - callback function when course create form is submitted
@@ -11,7 +12,6 @@ import PropTypes from 'prop-types';
 class EditCourseForm extends React.Component {
   constructor(props) {
     super(props);
-    this._timeFormat = this._timeFormat.bind(this);
     this.state = {
       is_active: this.props.is_active,
       title: this.props.title || '',
@@ -46,13 +46,6 @@ class EditCourseForm extends React.Component {
    this.refs.scroll.scrollToFocusedInput(event, reactNode);
   }
 
-  /* Display time in HH:MM AM/PM format. */
-  _timeFormat(date, mode) {
-    if(!date) return "";
-    let value=date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-    return value;
-  }
-
   render() {
     const today = new Date();
     const minDate = new Date(today.getFullYear()-2, today.getMonth(), today.getDate());
@@ -84,26 +77,26 @@ class EditCourseForm extends React.Component {
           <PickerField
             ref='weekday'
             options={{
-              'sun': 'Sunday',
-              'mon': 'Monday',
-              'tue': 'Tuesday',
-              'wed': 'Wednesday',
-              'thu': 'Thursday',
-              'fri': 'Friday',
-              'sat': 'Saturday',
+              'Sunday': 'Sunday',
+              'Monday': 'Monday',
+              'Tuesday': 'Tuesday',
+              'Wednesday': 'Wednesday',
+              'Thursday': 'Thursday',
+              'Friday': 'Friday',
+              'Saturday': 'Saturday',
             }}
             value={this.state.weekday}
             label='Select Day'/>
 
           <TimePickerField
             ref='start_time'
-            dateTimeFormat={this._timeFormat}
+            dateTimeFormat={timeFormat}
             date={this.state.start_time}
             placeholder='Session Start'/>
 
           <TimePickerField
             ref='end_time'
-            dateTimeFormat={this._timeFormat}
+            dateTimeFormat={timeFormat}
             date={this.state.end_time}
             placeholder='Session End'/>
 
