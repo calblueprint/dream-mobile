@@ -3,12 +3,16 @@ import { Button, ScrollView, Text, View } from 'react-native';
 import { commonStyles } from '../../styles/styles';
 import { getRequest, deleteRequest } from '../../lib/requests';
 import { APIRoutes } from '../../config/routes';
+import { timeFormat } from '../../lib/time';
 
 class ViewCourseScreen extends React.Component {
   constructor(props) {
     super(props);
     this._fetchCourse = this._fetchCourse.bind(this);
     this._deleteCourse = this._deleteCourse.bind(this);
+    this._renderCourseTeachers = this._renderCourseTeachers.bind(this);
+    this._renderCourseSession = this._renderCourseSession.bind(this);
+    this._renderCourseDate = this._renderCourseDate.bind(this);
     this.state = {
       course_id : this.props.navigation.state.params.course_id,
       course : { },
@@ -48,6 +52,51 @@ class ViewCourseScreen extends React.Component {
     deleteRequest(APIRoutes.getCoursePath(this.state.course_id), successFunc, errorFunc);
   }
 
+  /*
+   * Display course teacher names.
+   */
+  _renderCourseTeachers() {
+   /*
+    * TODO(caseytaka): Render teacher names of course! Not just teacher dream_ids.
+    * Will need to make another getRequest for the teacher records.
+    */
+
+    // const teachers = this.state.course.teachers.map((teacher, i) => {
+    //   return (
+    //     <Text>{ teacher.first_name } { teacher.last_name }</Text>
+    //   );
+    // });
+    // return (
+    //   <View>
+    //     { teachers }
+    //   </View>
+    // );
+  }
+
+  /*
+   * Display course session day and time.
+   */
+  _renderCourseSession() {
+    const session_start = timeFormat(new Date(this.state.course.start_time))
+    const session_end = timeFormat(new Date(this.state.course.end_time))
+    return (
+      <Text>{ this.state.course.weekday }'s { session_start } to { session_end }</Text>
+    );
+  }
+
+  /*
+   * Display course dates.
+   */
+  _renderCourseDate() {
+    const start_date = new Date(this.state.course.start_date)
+    const end_date = new Date(this.state.course.end_date)
+    const course_start = start_date.toLocaleDateString()
+    const course_end = end_date.toLocaleDateString()
+    return (
+      <Text>In session { course_start } to { course_end } </Text>
+    );
+  }
+
   render() {
     const { navigate } = this.props.navigation;
     if (this.state.isLoading) {
@@ -60,6 +109,10 @@ class ViewCourseScreen extends React.Component {
         <ScrollView>
           <View style={commonStyles.container}>
             <Text>{ this.state.course.title }</Text>
+            <Text>Teacher ID 1: { this.state.course.teacher_id1 }</Text>
+            <Text>Teacher ID 2: { this.state.course.teacher_id2 }</Text>
+            <Text>{ this._renderCourseDate() }</Text>
+            <Text>{ this._renderCourseSession() }</Text>
             <Button
               onPress={() => navigate('EditCourse',
                 {
