@@ -2,10 +2,11 @@
 import React from 'react';
 import { StackNavigator } from 'react-navigation';
 import { Button } from 'react-native';
-
 import HomeScreen from '../screens/HomeScreen';
 import ViewCourseScreen from '../screens/courses/ViewCourseScreen';
 import CoursesScreen from '../screens/courses/CoursesScreen';
+import TeacherProfileScreen from '../screens/teachers/TeacherProfileScreen';
+import TeacherProfileEditScreen from '../screens/teachers/TeacherProfileEditScreen';
 import EditCourseScreen from '../screens/courses/EditCourseScreen';
 import StudentsScreen from '../screens/students/StudentsScreen';
 import AttendanceScreen from '../screens/attendances/AttendanceScreen';
@@ -31,6 +32,18 @@ export const HomeStack = StackNavigator({
     screen: CoursesScreen,
     navigationOptions: {
       headerTitle: 'Courses',
+    },
+  },
+  TeacherProfile : {
+    screen: TeacherProfileScreen,
+    navigationOptions: {
+      headerTitle: 'Profile',
+    },
+  },
+  EditTeacherProfile : {
+    screen: TeacherProfileEditScreen,
+    navigationOptions: {
+      headerTitle: 'Edit Profile',
     },
   },
   EditCourse : {
@@ -71,6 +84,9 @@ export class APIRoutes {
   // Courses
   static getCoursePath(id)            { return APIRoutes.createRoute(`courses/${id}`) }
   static getCoursesPath()             { return APIRoutes.createRoute(`courses`) }
+
+  //Teachers
+  static getTeacherPath(id)          { return APIRoutes.createRoute(`teachers/${id}`) }
 
   // Students
   static getStudentsPath(id)          { return APIRoutes.createRoute(`courses/${id}/students`) }
