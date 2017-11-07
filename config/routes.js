@@ -7,13 +7,11 @@ import ViewCourseScreen from '../screens/courses/ViewCourseScreen';
 import CoursesScreen from '../screens/courses/CoursesScreen';
 import TeacherProfileScreen from '../screens/teachers/TeacherProfileScreen';
 import TeacherProfileEditScreen from '../screens/teachers/TeacherProfileEditScreen';
-import CreateCourseScreen from '../screens/courses/CreateCourseScreen';
 import EditCourseScreen from '../screens/courses/EditCourseScreen';
 import StudentsScreen from '../screens/students/StudentsScreen';
 import AttendanceScreen from '../screens/attendances/AttendanceScreen';
 import AttendanceSummaryScreen from '../screens/attendances/AttendanceSummaryScreen';
 
-// const { navigate } = this.props.navigation;
 /**
  * HomeStack is the main navigation stack starting from the HomeScreen
  */
@@ -47,9 +45,6 @@ export const HomeStack = StackNavigator({
     navigationOptions: {
       headerTitle: 'Edit Profile',
     },
-  },
-  CreateCourse : {
-    screen: CreateCourseScreen,
   },
   EditCourse : {
     screen: EditCourseScreen,
@@ -92,9 +87,6 @@ export class APIRoutes {
 
   //Teachers
   static getTeacherPath(id)          { return APIRoutes.createRoute(`teachers/${id}`) }
-
-  // static createComponentPath(id)    { return APIRoutes.createRoute(`admins/subsections/${id}/components`) }
-  static getStudentsPath()             { return APIRoutes.createRoute(`students`) }
 
   // Students
   static getStudentsPath(id)          { return APIRoutes.createRoute(`courses/${id}/students`) }

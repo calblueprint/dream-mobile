@@ -1,8 +1,6 @@
 import React from 'react';
 import { Button, Text, View } from 'react-native';
-import { styles } from '../../styles/styles';
 import { getRequest, putRequest } from '../../lib/requests';
-import { commonStyles } from '../../styles/styles';
 import { APIRoutes } from '../../config/routes';
 import EditTeacherForm from '../../components/Form/EditTeacherForm'
 import PropTypes from 'prop-types';

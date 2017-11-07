@@ -1,6 +1,5 @@
 import React from 'react';
 import { Button, Text, View, ScrollView } from 'react-native';
-import { styles } from '../../styles/styles';
 import { colors } from '../../styles/colors';
 import { textStyles } from '../../styles/textStyles';
 import { teacherStyles } from '../../styles/teacherStyles';
@@ -52,7 +51,7 @@ class TeacherProfileScreen extends React.Component {
 
   _renderTeacher() {
     return(
-      <View style={teacherStyles.base}>
+      <View>
         <View style={teacherStyles.div_1}>
           <View style={teacherStyles.div_2}>
             <Text style={textStyles.titleLarge}>
@@ -102,15 +101,8 @@ class TeacherProfileScreen extends React.Component {
       teacher = this._renderTeacher()
     }
     return (
-      <ScrollView>
-        <View>
-          { teacher }
-
-          <Button
-             title="Edit Profile" onPress={()=>{ navigate('EditTeacherProfile', 
-              { refreshTeacher: this._fetchTeacher, teacher: this.state.teacher }); }} 
-          />
-        </View>
+      <ScrollView style={teacherStyles.base}>
+        { teacher }
       </ScrollView>
     );
 

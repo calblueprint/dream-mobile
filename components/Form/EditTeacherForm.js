@@ -4,11 +4,12 @@ import { Form, InputField, PickerField,
          DatePickerField, TimePickerField } from 'react-native-form-generator';
 import { APIRoutes } from '../../config/routes';
 import PropTypes from 'prop-types';
+import { teacherStyles } from '../../styles/teacherStyles';
 
 /**
- * @prop onCreateCourse - callback function when course create form is submitted
  * @prop teacher - teacher object information
  */
+
 class EditTeacherForm extends React.Component {
   constructor(props) {
     super(props);
@@ -28,7 +29,7 @@ class EditTeacherForm extends React.Component {
 
   render() {
     return (
-      <View>
+      <View style={teacherStyles.base}>
         <Form
           onChange={this._handleFormChange.bind(this)}
           >
@@ -73,7 +74,6 @@ class EditTeacherForm extends React.Component {
         />
       </View>
     );
-
   }
 }
 
