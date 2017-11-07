@@ -53,7 +53,6 @@ class EditCourseScreen extends React.Component {
     putRequest(APIRoutes.getCoursePath(course_id), this._onSuccess, this._onError, params=params);
   }
 
-
   render() {
     const navProps = this.props.navigation.state.params;
     if (navProps.newCourse) {
