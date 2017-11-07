@@ -6,7 +6,6 @@ import { APIRoutes } from '../../config/routes';
 import PropTypes from 'prop-types';
 import EditCourseForm from '../../components/Form/EditCourseForm'
 import { postRequest, putRequest } from '../../lib/requests';
-import DropdownAlert from 'react-native-dropdownalert';
 
 class EditCourseScreen extends React.Component {
   constructor(props) {
@@ -35,7 +34,6 @@ class EditCourseScreen extends React.Component {
    * Displays success toaster and navigates back to previous screen.
    */
   _onSuccess(response) {
-    // this.dropdown.alertWithType('success', 'Success', "Course Saved!");
     this.props.navigation.state.params.refreshCourses();
     this.props.navigation.goBack(null);
   }
@@ -77,7 +75,6 @@ class EditCourseScreen extends React.Component {
             end_time={navProps.end_time}
             start_date={navProps.start_date}
             end_date={navProps.end_date} />
-          <DropdownAlert ref={(ref) => this.dropdown = ref} />
         </View>
       );
     }
