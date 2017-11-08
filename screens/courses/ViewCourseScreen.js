@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, ScrollView, Text, View } from 'react-native';
+import { Alert, Button, ScrollView, Text, View } from 'react-native';
 import { commonStyles } from '../../styles/styles';
 import { getRequest, deleteRequest } from '../../lib/requests';
 import { APIRoutes } from '../../config/routes';
@@ -11,6 +11,7 @@ class ViewCourseScreen extends React.Component {
     super(props);
     this._fetchCourse = this._fetchCourse.bind(this);
     this._deleteCourse = this._deleteCourse.bind(this);
+    this._handleDeleteCourse = this._handleDeleteCourse.bind(this);
     this._renderCourseTeachers = this._renderCourseTeachers.bind(this);
     this._renderCourseSession = this._renderCourseSession.bind(this);
     this._renderCourseDate = this._renderCourseDate.bind(this);
@@ -26,7 +27,7 @@ class ViewCourseScreen extends React.Component {
   }
 
   /*
-   * Fetch recrod for single course.
+   * Fetch record for single course.
    */
   _fetchCourse() {
     const successFunc = (responseData) => {
@@ -44,6 +45,20 @@ class ViewCourseScreen extends React.Component {
       this.props.navigation.goBack(null);
     }
     deleteRequest(APIRoutes.getCoursePath(this.state.course_id), successFunc, standardError);
+  }
+
+  /*
+   * Delete confirmation before deleting course.
+   */
+  _handleDeleteCourse() {
+    Alert.alert(
+      'Delete Course?',
+      'Are you sure you want to delete this course?',
+      [
+        {text: 'Delete', onPress: this._deleteCourse},
+        {text: 'Cancel', onPress: () => console.log('Cancel Pressed')},
+      ],
+    )
   }
 
   /*
@@ -126,7 +141,7 @@ class ViewCourseScreen extends React.Component {
               title="Edit Course"
             />
             <Button
-              onPress={() => this._deleteCourse()}
+              onPress={() => this._handleDeleteCourse()}
               title='Delete'
             />
           </View>
