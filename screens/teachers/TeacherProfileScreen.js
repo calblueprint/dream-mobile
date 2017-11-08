@@ -6,6 +6,7 @@ import { teacherStyles } from '../../styles/teacherStyles';
 import { commonStyles } from '../../styles/styles';
 import { getRequest } from '../../lib/requests';
 import { APIRoutes } from '../../config/routes';
+import { standardError } from '../../lib/request_callbacks';
 
 class TeacherProfileScreen extends React.Component {
 
@@ -28,24 +29,20 @@ class TeacherProfileScreen extends React.Component {
 
   componentDidMount() {
     _editProfile = () => {
-       this.props.navigation.navigate('EditTeacherProfile', 
+       this.props.navigation.navigate('EditTeacherProfile',
         { refreshTeacher: this._fetchTeacher, teacher: this.state.teacher })
      }
 
     this._fetchTeacher();
     this.props.navigation.setParams({ handleEdit: _editProfile });
-    
+
   }
 
   _fetchTeacher() {
     const successFunc = (responseData) => {
       this.setState({ teacher: responseData, isLoading: false });
-
     }
-    const errorFunc = (error) => {
-      console.error(error);
-    }
-    getRequest(APIRoutes.getTeacherPath(1), successFunc, errorFunc);
+    getRequest(APIRoutes.getTeacherPath(1), successFunc, standardError);
 
   }
 

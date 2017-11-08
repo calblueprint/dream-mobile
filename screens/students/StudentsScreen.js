@@ -3,6 +3,7 @@ import { Button, Text, View } from 'react-native';
 import { commonStyles } from '../../styles/styles';
 import { getRequest } from '../../lib/requests';
 import { APIRoutes } from '../../config/routes';
+import { standardError } from '../../lib/request_callbacks';
 
 class StudentsScreen extends React.Component {
   constructor(props) {
@@ -24,11 +25,7 @@ class StudentsScreen extends React.Component {
     const successFunc = (responseData) => {
       this.setState({ students: responseData, isLoading: false });
     }
-    const errorFunc = (error) => {
-      // TODO: Display correct toastr error msg
-      console.error(error);
-    }
-    getRequest(APIRoutes.getStudentsPath(), successFunc, errorFunc);
+    getRequest(APIRoutes.getStudentsPath(), successFunc, standardError);
   }
 
   _renderStudents() {
