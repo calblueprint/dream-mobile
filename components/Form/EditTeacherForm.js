@@ -1,10 +1,13 @@
 import React from 'react';
-import { Button, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
+import StyledButton from '../../components/Button/Button';
 import { Form, InputField, PickerField,
          DatePickerField, TimePickerField } from 'react-native-form-generator';
 import { APIRoutes } from '../../config/routes';
 import PropTypes from 'prop-types';
 import { teacherStyles } from '../../styles/teacherStyles';
+import colors from '../../styles/colors';
+import { textStyles } from '../../styles/textStyles';
 
 /**
  * @prop teacher - teacher object information
@@ -68,10 +71,14 @@ class EditTeacherForm extends React.Component {
             value={this.state.teacher.phone}/>
 
         </Form>
-        <Button
+
+        <StyledButton
           onPress={() => this.props.onEditTeacher(this.state.teacher)}
-          title='Save Changes'
-        />
+          text='Save Changes'
+          primaryButtonLarge
+          >
+        </StyledButton>
+
       </View>
     );
   }
