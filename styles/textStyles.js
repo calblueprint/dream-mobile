@@ -35,6 +35,12 @@ const textStyles = StyleSheet.create({
     fontWeight: '500'
   },
 
+  buttonTextSmall: {
+    color: colors.textLight,
+    fontSize: 16,
+    fontWeight: '500'
+  },
+
   toastText: {
     color: colors.textLight,
     fontSize: 20

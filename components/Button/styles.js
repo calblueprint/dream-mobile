@@ -22,8 +22,7 @@ const buttonStyles = StyleSheet.create({
 
   clearButtonSmall: {
     borderColor:'rgba(255, 255, 255, 0)',
-    marginTop: 24,
-    marginBottom: 8,
+    marginBottom: 8, 
   },
 });
 

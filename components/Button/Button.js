@@ -29,7 +29,7 @@ export default class StyledButton extends React.Component {
 				<Button
 				  onPress={this.props.onPress}
 				  style={ buttonStyles.clearButtonSmall } 
-				  textStyle={ textStyles.buttonText }
+				  textStyle={ textStyles.buttonTextSmall }
 			  	>{this.props.text}</Button>
 			);
 		}
