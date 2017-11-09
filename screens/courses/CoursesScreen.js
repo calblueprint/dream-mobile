@@ -4,6 +4,7 @@ import { commonStyles } from '../../styles/styles';
 import { getRequest } from '../../lib/requests';
 import { APIRoutes } from '../../config/routes';
 import CourseCard from '../../components/CourseCard/CourseCard';
+import { standardError } from '../../lib/request_callbacks';
 
 class CoursesScreen extends React.Component {
   constructor(props) {
@@ -29,10 +30,7 @@ class CoursesScreen extends React.Component {
     const successFunc = (responseData) => {
       this.setState({ courses: responseData, isLoading: false });
     }
-    const errorFunc = (error) => {
-      console.error(error);
-    }
-    getRequest(APIRoutes.getCoursesPath(), successFunc, errorFunc);
+    getRequest(APIRoutes.getCoursesPath(), successFunc, standardError);
   }
 
   _handleSelectCourse(course_id) {
