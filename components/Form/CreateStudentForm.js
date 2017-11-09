@@ -35,6 +35,7 @@ class CreateStudentForm extends React.Component {
 
   render() {
     const today = new Date();
+    const minDate = new Date(today.getFullYear()-2, today.getMonth(), today.getDate());
     const maxDate = new Date(today.getFullYear()+2, today.getMonth(), today.getDate());
     return (
       <View>
@@ -67,10 +68,12 @@ class CreateStudentForm extends React.Component {
                 }]}
               />
 
-          <TimePickerField
+          <InputField
             ref='birthday'
-            dateTimeFormat={this._timeFormat}
-            placeholder='Birthday'/>
+            label='Birthday'
+            mode='date'
+            format="YYYY-MM-DD"
+            placeholder='1997-10-16'/>
 
           <PickerField
             ref='year'
@@ -96,17 +99,6 @@ class CreateStudentForm extends React.Component {
             placeholder='e.g. 2514 Piedmont Ave, Berkeley, CA'
             />
 
-          <InputField
-            ref='course_id'
-            label='Course ID'
-            placeholder='e.g. 12345678'
-            />
-
-          <InputField
-            ref='teacher_id'
-            label='Teacher ID'
-            placeholder='e.g. 12345678'
-            />
         </Form>
         <Button
           onPress={() => this.props.onCreateStudent(this.state.studentData)}

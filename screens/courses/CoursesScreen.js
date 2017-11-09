@@ -35,6 +35,7 @@ class CoursesScreen extends React.Component {
   _renderCourses() {
     const { navigate } = this.props.navigation;
     return this.state.courses.map(function(course, i) {
+      console.log(course.id)
       return(
         <View key={i} style={cardStyles.container}>
           <Text style={cardStyles.title}>{course.title}</Text>

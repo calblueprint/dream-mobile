@@ -7,6 +7,7 @@ import CoursesScreen from '../screens/courses/CoursesScreen';
 import CreateCourseScreen from '../screens/courses/CreateCourseScreen';
 import StudentsScreen from '../screens/students/StudentsScreen';
 import CreateStudentScreen from '../screens/students/CreateStudentScreen';
+import StudentProfileScreen from '../screens/students/StudentProfileScreen';
 import AttendanceSheetScreen from '../screens/attendances/AttendanceSheetScreen';
 
 export const HomeStack = StackNavigator({
@@ -40,6 +41,12 @@ export const HomeStack = StackNavigator({
       headerTitle: 'CreateStudent',
     },
   },
+  StudentProfile : {
+    screen: StudentProfileScreen,
+    navigationOptions: {
+      headerTitle: 'StudentProfile',
+    },
+  },
   Attendances: {
     screen: AttendanceSheetScreen,
     navigationOptions: {
@@ -56,7 +63,8 @@ export class APIRoutes {
   static getCoursesPath()             { return APIRoutes.createRoute(`courses`) }
 
   // Students
-  static getStudentsPath(id)          { return APIRoutes.createRoute(`courses/${id}/students`) }
+  static getStudentsPath(courseId)          { return APIRoutes.createRoute(`courses/${courseId}/students`) }
+  static getStudentPath(studentId)          { return APIRoutes.createRoute(`students/${studentId}`)}
 
   // Attendances
   static attendanceItemPath()         { return APIRoutes.createRoute(`attendances/attendance_item`) }

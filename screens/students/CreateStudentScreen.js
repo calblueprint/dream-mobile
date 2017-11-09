@@ -5,13 +5,14 @@ import { Form, InputField, PickerField,
 import { APIRoutes } from '../../config/routes';
 import PropTypes from 'prop-types';
 import CreateStudentForm from '../../components/Form/CreateStudentForm'
-import { postRequest } from '../../lib/requests';
+import { getRequest, postRequest, putRequest } from '../../lib/requests';
 
 class CreateStudentScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      student: {}
+      student: {},
+      courseId: this.props.navigation.state.params.courseId,
     }
   }
 
@@ -26,11 +27,12 @@ class CreateStudentScreen extends React.Component {
     const errorFunc = (error) => {
       console.error(error);
     }
-    postRequest(APIRoutes.getStudentsPath(), successFunc, errorFunc, params=params);
+    postRequest(APIRoutes.getStudentsPath(this.state.courseId), successFunc, errorFunc, params=params);
   }
 
 
   render() {
+    const { navigate } = this.props.navigation;
     return (
       <CreateStudentForm
         onCreateStudent={this._handleCreateStudent.bind(this)} />
