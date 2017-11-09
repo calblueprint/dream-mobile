@@ -4,6 +4,7 @@ import { commonStyles } from '../../styles/styles';
 import { getRequest, deleteRequest } from '../../lib/requests';
 import { APIRoutes } from '../../config/routes';
 import { timeFormat } from '../../lib/time';
+import { standardError } from '../../lib/request_callbacks';
 
 class ViewCourseScreen extends React.Component {
   constructor(props) {
@@ -31,11 +32,7 @@ class ViewCourseScreen extends React.Component {
     const successFunc = (responseData) => {
       this.setState({ course: responseData, isLoading: false });
     }
-    const errorFunc = (error) => {
-      // TODO (caseytaka): Display correct toastr error msg
-      console.error(error);
-    }
-    getRequest(APIRoutes.getCoursePath(this.state.course_id), successFunc, errorFunc);
+    getRequest(APIRoutes.getCoursePath(this.state.course_id), successFunc, standardError);
   }
 
   /*
@@ -46,10 +43,7 @@ class ViewCourseScreen extends React.Component {
       this.props.navigation.state.params.refreshCourses();
       this.props.navigation.goBack(null);
     }
-    const errorFunc = (error) => {
-      console.error(error);
-    }
-    deleteRequest(APIRoutes.getCoursePath(this.state.course_id), successFunc, errorFunc);
+    deleteRequest(APIRoutes.getCoursePath(this.state.course_id), successFunc, standardError);
   }
 
   /*

@@ -4,6 +4,7 @@ import { getRequest, putRequest } from '../../lib/requests';
 import { APIRoutes } from '../../config/routes';
 import EditTeacherForm from '../../components/Form/EditTeacherForm'
 import PropTypes from 'prop-types';
+import { standardError } from '../../lib/request_callbacks';
 
 class TeacherProfileEditScreen extends React.Component {
 	constructor(props) {
@@ -21,17 +22,14 @@ class TeacherProfileEditScreen extends React.Component {
 	    this.props.navigation.state.params.refreshTeacher();
 	    this.props.navigation.goBack();
 	  }
-	  const errorFunc = (error) => {
-	    console.error(error);
-	  }
-	  putRequest(APIRoutes.getTeacherPath(this.state.teacher.id), successFunc, errorFunc, params=params);
+	  putRequest(APIRoutes.getTeacherPath(this.state.teacher.id), successFunc, standardError, params=params);
 	}
 
 	render() {
 		return (
 			<View>
 				<EditTeacherForm
-				  onEditTeacher={this._handleEditTeacher.bind(this)} 
+				  onEditTeacher={this._handleEditTeacher.bind(this)}
 				  teacher={this.state.teacher} //passing in teacher to form
 				/>
 			</View>

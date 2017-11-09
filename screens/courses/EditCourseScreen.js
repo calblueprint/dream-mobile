@@ -1,33 +1,19 @@
 import React from 'react';
-import { Alert, Button, Text, View } from 'react-native';
+import { Button, Text, View } from 'react-native';
 import { Form, InputField, PickerField,
          DatePickerField, TimePickerField } from 'react-native-form-generator';
 import { APIRoutes } from '../../config/routes';
 import PropTypes from 'prop-types';
 import EditCourseForm from '../../components/Form/EditCourseForm'
 import { postRequest, putRequest } from '../../lib/requests';
+import { standardError } from '../../lib/request_callbacks';
 
 class EditCourseScreen extends React.Component {
   constructor(props) {
     super(props);
-    this._onError = this._onError.bind(this);
     this._onSuccess = this._onSuccess.bind(this);
     this.state = {
     }
-  }
-
-  /*
-   * Display error in pop-up dialog.
-   */
-  _onError(response) {
-    // TODO(caseytaka): Break this out into a reusable component.
-    Alert.alert(
-      'Error',
-      response.errors.join("\n"),
-      [
-        {text: 'OK', onPress: () => console.log('OK Pressed')},
-      ],
-    )
   }
 
   /*
@@ -42,7 +28,7 @@ class EditCourseScreen extends React.Component {
    * Make request to create the course, and refresh the courses page.
    */
   _handleCreateCourse(params) {
-    postRequest(APIRoutes.getCoursesPath(), this._onSuccess, this._onError, params=params);
+    postRequest(APIRoutes.getCoursesPath(), this._onSuccess, standardError, params=params);
   }
 
   /*
@@ -50,7 +36,7 @@ class EditCourseScreen extends React.Component {
    */
   _handleUpdateCourse(params) {
     course_id = this.props.navigation.state.params.course_id;
-    putRequest(APIRoutes.getCoursePath(course_id), this._onSuccess, this._onError, params=params);
+    putRequest(APIRoutes.getCoursePath(course_id), this._onSuccess, standardError, params=params);
   }
 
   render() {

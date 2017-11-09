@@ -8,6 +8,7 @@ import { getRequest, postRequest, putRequest } from '../../lib/requests';
 import { attendanceDate } from '../../lib/date';
 import AttendanceCard from '../../components/AttendanceCard';
 import SimpleModal from '../../components/SimpleModal';
+import { standardError } from '../../lib/request_callbacks';
 
 class AttendanceScreen extends React.Component {
   constructor(props) {
@@ -39,10 +40,7 @@ class AttendanceScreen extends React.Component {
       this.setState({ students: responseData });
       this._fetchAttendances(responseData);
     }
-    const errorFunc = (error) => {
-      console.log(error)
-    }
-    getRequest(APIRoutes.getStudentsPath(courseId), successFunc, errorFunc);
+    getRequest(APIRoutes.getStudentsPath(courseId), successFunc, standardError);
   }
 
   /**
