@@ -9,6 +9,7 @@ import { attendanceDate } from '../../lib/date';
 import AttendanceCard from '../../components/AttendanceCard';
 import SimpleModal from '../../components/SimpleModal';
 import { standardError } from '../../lib/request_callbacks';
+import StyledButton from '../../components/Button/Button';
 
 class AttendanceScreen extends React.Component {
   constructor(props) {
@@ -203,7 +204,7 @@ class AttendanceScreen extends React.Component {
             <Text>{this.state.courseTitle}</Text>
             {this._renderAttendances()}
           </ScrollView>
-          <Button
+          <StyledButton
             onPress={() => navigate('AttendanceSummary', {
               attendances: this.state.attendances,
               students: this.state.students,
@@ -211,8 +212,10 @@ class AttendanceScreen extends React.Component {
               date: this.state.date,
               parentKey: this.props.navigation.state.key,
             })}
-            title="Submit"
-          />
+            text='Submit'
+            primaryButtonLarge
+          >
+          </StyledButton>
         </View>
         {this._renderModal()}
       </View>

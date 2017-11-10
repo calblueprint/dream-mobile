@@ -4,7 +4,7 @@ const cardStyles = StyleSheet.create({
   container: {
     backgroundColor: '#A1C3BB',
     margin: 8,
-    height: 110,
+    height: 124,
   },
   title: {
     padding: 16,
