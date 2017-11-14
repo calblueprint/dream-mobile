@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import { textStyles } from '../../styles/textStyles';
 
 // TODO (Kelsey): Fix styles
 /**
@@ -7,11 +8,10 @@ import { StyleSheet } from 'react-native';
   */
 export default StyleSheet.create({
   style: {
-    borderWidth: 1,
-    borderColor: '#ccc',
-    padding: 5,
+    borderWidth: 0,
+    backgroundColor: '#3BB273',
+    padding: 8,
     borderRadius: 4,
-    margin: 4,
   },
   optionListStyle: {
     backgroundColor: 'white',
@@ -19,5 +19,5 @@ export default StyleSheet.create({
   },
   backdropStyle: {
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
-  }
+  }, 
 });
