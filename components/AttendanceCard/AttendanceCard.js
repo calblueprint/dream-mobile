@@ -49,6 +49,23 @@ class AttendanceCard extends React.Component {
     )
   }
 
+  renderCommentButton(comment) {
+    if (comment != null) {
+      return (
+        <Image
+          style={styles.commentButton}
+          source={require('../../icons/comment_active.png')}
+        />
+      )
+    } 
+    return (
+      <Image
+        style={styles.commentButton}
+        source={require('../../icons/comment.png')}
+      />
+    )
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -62,10 +79,7 @@ class AttendanceCard extends React.Component {
           <TouchableHighlight
             style={styles.commentButtonOuter}
             onPress={() => this.props.setModal(this.props.index, this.props.attendance.comment)}>
-            <Image
-              style={styles.commentButton}
-              source={require('../../icons/comment.png')}
-            />
+            {this.renderCommentButton(this.props.attendance.comment)}
           </TouchableHighlight>
         </View>
       </View>

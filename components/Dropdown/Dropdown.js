@@ -36,7 +36,6 @@ class Dropdown extends React.Component {
 
   render() {
     const dropdownStyles = this.getStyles()
-    console.log(this.props.optionsColor)
     return (
       <View>
         <Select
