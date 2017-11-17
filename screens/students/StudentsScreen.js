@@ -1,15 +1,9 @@
 import React from 'react';
-<<<<<<< HEAD
-import { Button, ScrollView, Text, View } from 'react-native';
+import { Button, Text, View, ScrollView, TextInput, TouchableHighlight, StyleSheet } from 'react-native';
 import { styles } from '../../styles/styles';
 import { cardStyles } from '../../components/Form/styles';
-=======
-import { Button, Text, View } from 'react-native';
-import { commonStyles } from '../../styles/styles';
->>>>>>> 3ac1b7f8c82b297910a72457ff27e098bf2fbc69
 import { getRequest } from '../../lib/requests';
 import { APIRoutes } from '../../config/routes';
-import { standardError } from '../../lib/request_callbacks';
 
 class StudentsScreen extends React.Component {
   constructor(props) {
@@ -23,7 +17,6 @@ class StudentsScreen extends React.Component {
       isLoading : true,
       courseId: this.props.navigation.state.params.courseId,
     }
-    console.log(this.state)
   }
 
   componentDidMount() {
@@ -34,7 +27,6 @@ class StudentsScreen extends React.Component {
     const successFunc = (responseData) => {
       this.setState({ students: responseData, isLoading: false });
     }
-<<<<<<< HEAD
     const errorFunc = (error) => {
       // TODO: Display correct toastr error msg
       console.error(error);
@@ -52,15 +44,11 @@ class StudentsScreen extends React.Component {
       console.error(error);
     }
     getRequest(APIRoutes.getStudentPath(studentId), successFunc, errorFunc);
-=======
-    getRequest(APIRoutes.getStudentsPath(), successFunc, standardError);
->>>>>>> 3ac1b7f8c82b297910a72457ff27e098bf2fbc69
   }
 
   _renderStudents() {
     const { navigate } = this.props.navigation;
     return this.state.students.map(function(student, i) {
-      console.log(student)
       return(
         <View key={i}>
             <Button
@@ -85,7 +73,6 @@ class StudentsScreen extends React.Component {
       students = this._renderStudents()
     }
     return (
-<<<<<<< HEAD
       <View style={styles.container}>
         <Button
           onPress={() => navigate('CreateStudent', {refreshStudents: this._fetchStudents,
@@ -93,9 +80,6 @@ class StudentsScreen extends React.Component {
                                                     teacherId: 1})}
           title="Create Student"
         />
-=======
-      <View style={commonStyles.container}>
->>>>>>> 3ac1b7f8c82b297910a72457ff27e098bf2fbc69
         { students }
       </View>
     );

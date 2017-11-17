@@ -12,6 +12,7 @@ class CoursesScreen extends React.Component {
     this._fetchCourses = this._fetchCourses.bind(this);
     this._handleSelectCourse = this._handleSelectCourse.bind(this);
     this._handleTakeAttendance = this._handleTakeAttendance.bind(this);
+    this._handleViewStudent = this._handleViewStudent.bind(this);
     this._renderCourses = this._renderCourses.bind(this);
     this.state = {
       courses : { },
@@ -33,25 +34,26 @@ class CoursesScreen extends React.Component {
     getRequest(APIRoutes.getCoursesPath(), successFunc, standardError);
   }
 
-<<<<<<< HEAD
-  _renderCourses() {
-    const { navigate } = this.props.navigation;
-    return this.state.courses.map(function(course, i) {
-      console.log(course.id)
-      return(
-        <View key={i} style={cardStyles.container}>
-          <Text style={cardStyles.title}>{course.title}</Text>
-          <Button
-            onPress={() => navigate('Attendances', { courseId: course.id })}
-            title="Take Attendance"
-          />
-          <Button
-            onPress={() => navigate('Students', { courseId: course.id })}
-            title="View Students"
-          />
-        </View>
-      );
-=======
+  // _renderCourses() {
+  //   const { navigate } = this.props.navigation;
+  //   return this.state.courses.map(function(course, i) {
+  //     console.log(course.id)
+  //     return(
+  //       <View key={i} style={cardStyles.container}>
+  //         <Text style={cardStyles.title}>{course.title}</Text>
+  //         <Button
+  //           onPress={() => navigate('Attendances', { courseId: course.id })}
+  //           title="Take Attendance"
+  //         />
+  //         <Button
+  //           onPress={() => navigate('Students', { courseId: course.id })}
+  //           title="View Students"
+  //         />
+  //       </View>
+  //     );
+  //   }
+  // }
+
   _handleSelectCourse(course_id) {
     this.props.navigation.navigate('ViewCourse', {
       refreshCourses: this._fetchCourses,
@@ -65,8 +67,12 @@ class CoursesScreen extends React.Component {
       courseId: course_id,
       courseTitle: title,
       date: date,
->>>>>>> 3ac1b7f8c82b297910a72457ff27e098bf2fbc69
     });
+  }
+  _handleViewStudent(course_id) {
+    this.props.navigation.navigate('Students', {
+      courseId: course_id,
+    })
   }
 
   _renderCourses() {
@@ -75,7 +81,8 @@ class CoursesScreen extends React.Component {
         course_id={course.id}
         title={course.title}
         onSelectCourse={this._handleSelectCourse}
-        onTakeAttendance={this._handleTakeAttendance} />
+        onTakeAttendance={this._handleTakeAttendance}
+        onViewStudent={this._handleViewStudent} />
       )
     );
   }
@@ -89,7 +96,7 @@ class CoursesScreen extends React.Component {
         <Text>Loading...</Text>
       )
     } else {
-      courses = this._renderCourses()
+      courses = this._renderCourses();
     }
     return (
       <ScrollView>
