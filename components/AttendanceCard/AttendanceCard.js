@@ -1,97 +1,67 @@
 import React from 'react';
-import { View, Text, StyleSheet, Button, TextInput, Modal, TouchableHighlight } from 'react-native';
-import ModalPicker from 'react-native-modal-picker'
+import { View, Text, StyleSheet, Button, TouchableHighlight } from 'react-native';
+import styles from './styles'
+import Dropdown from '../Dropdown'
 
 class AttendanceCard extends React.Component {
-  constructor(props) {
-    super(props);
-    this.data = [
-      { key: 0, label: 'Present' },
-      { key: 1, label: 'Unexcused Absent' },
-      { key: 2, label: 'Excused Absent' },
-      { key: 3, label: 'Unexcused Late' },
-      { key: 4, label: 'Excused Late' },
-    ];
-    this.state = {
-      attendance: this.props.attendance,
-      attendanceLabel: this.data.find((item) => item.key === this.props.attendance.attendance_type).label,
-      modalVisible: false
+  /**
+    * Render attendance option dropdown
+    */
+  renderSelect() {
+    const options = {
+      0: 'Present',
+      1: 'Unexcused Absent',
+      2: 'Excused Absent',
+      3: 'Unexcused Late',
+      4: 'Excused Late'
     }
-  }
 
-  setModalVisible(visible) {
-    this.setState({modalVisible: visible});
-  }
+    const optionsAbbrev = {
+      0: 'Present',
+      1: 'UA',
+      2: 'EA',
+      3: 'UL',
+      4: 'EL'
+    }
 
-  setComment(comment) {
-    const attendance = this.state.attendance
-    attendance.comment = comment
-    this.setState({ attendance: attendance })
-    this.props.updateAttendance(attendance)
-  }
+    const dropdownStyles = {
+      style: styles.dropdownStyle
+    }
 
-  setType(option) {
-    const attendance = this.state.attendance
-    attendance.attendance_type = option.key
-    this.setState({attendance: attendance, attendanceLabel: option.label})
-    this.props.updateAttendance(attendance)
+    return(
+      <Dropdown
+        onSelect={this.props.setType(this.props.index)}
+        value={this.props.attendance.attendance_type}
+        defaultText={optionsAbbrev[this.props.attendance.attendance_type]}
+        options={options}
+        styles={dropdownStyles}
+        />
+    )
   }
 
   render() {
     return (
       <View style={styles.container}>
         <Text>{this.props.name}</Text>
-        <ModalPicker
-          data={this.data}
-          initValue={this.state.attendanceLabel}
-          onChange={this.setType.bind(this)}>
-
-          <Text style={{borderWidth:1, borderColor:'#ccc', padding:5, height: 'auto', borderRadius: 4, margin: 4}} >
-            {this.state.attendanceLabel}
-          </Text>
-        </ModalPicker>
-        <Button onPress={() => this.setModalVisible(true)}
-          title="Comment"
-        />
-        <Modal
-          animationType="slide"
-          transparent={false}
-          visible={this.state.modalVisible}
-          >
-          <View style={{marginTop: 22}}>
-            <TextInput
-                style={{height: 40, borderColor: 'gray', borderWidth: 1}}
-                onChangeText={this.setComment.bind(this)}
-                value={this.state.attendance.comment}
-              />
-            <TouchableHighlight onPress={() => {
-              this.setModalVisible(!this.state.modalVisible)
-            }}>
-              <Text>Hide Modal</Text>
-            </TouchableHighlight>
-          </View>
-        </Modal>
+        <View style={styles.leftContainer}>
+          {this.renderSelect()}
+          <TouchableHighlight
+            style={styles.commentButton}
+            onPress={() => this.props.setModal(this.props.index, this.props.attendance.comment)}>
+            <Text style={{fontSize: 10}}>Comment</Text>
+          </TouchableHighlight>
+        </View>
       </View>
     )
   }
 }
 
-
-
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    padding: 10,
-    alignItems: 'center',
-  },
-  picker: {
-    width: 100,
-  },
-});
-
 AttendanceCard.propTypes = {
-  attendance: React.PropTypes.object,
-  name: React.PropTypes.string,
+  attendance: React.PropTypes.object.isRequired,
+  name: React.PropTypes.string.isRequired,
+  index: React.PropTypes.number.isRequired,
+  setModal: React.PropTypes.func.isRequired,
+  setType: React.PropTypes.func.isRequired,
 };
 
 export default AttendanceCard;
