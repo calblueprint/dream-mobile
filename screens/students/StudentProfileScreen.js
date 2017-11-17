@@ -3,7 +3,7 @@ import { Button, Text, View, ScrollView } from 'react-native';
 import { textStyles } from '../../styles/textStyles';
 import { commonStyles } from '../../styles/styles';
 import { colors } from '../../styles/colors';
-import { getRequest } from '../../lib/requests';
+import { getRequest, deleteRequest } from '../../lib/requests';
 import { APIRoutes } from '../../config/routes';
 import { standardError } from '../../lib/request_callbacks';
 
@@ -19,6 +19,7 @@ class StudentProfileScreen extends React.Component {
     super(props);
     this._renderStudent = this._renderStudent.bind(this);
     this._fetchStudent = this._fetchStudent.bind(this);
+    this._deleteStudent = this._deleteStudent.bind(this);
 
     this.state = {
       student : { },
@@ -27,12 +28,12 @@ class StudentProfileScreen extends React.Component {
     }
   }
 
-  static navigationOptions = ({ navigation }) => {
-    const { params = {} } = navigation.state;
-    return {
-        headerRight: <Button title="Edit" onPress={() => params.handleEdit()} />
-    };
-  };
+  // static navigationOptions = ({ navigation }) => {
+  //   const { params = {} } = navigation.state;
+  //   return {
+  //       headerRight: <Button title="Edit" onPress={() => params.handleEdit()} />
+  //   };
+  // };
 
   componentDidMount() {
     _editProfile = () => {
@@ -53,6 +54,14 @@ class StudentProfileScreen extends React.Component {
       console.error(error);
     }
     getRequest(APIRoutes.getStudentPath(studentId), successFunc, standardError);
+  }
+
+  _deleteStudent(studentId) {
+    const successFunc = (responseData) => {
+      this.props.navigation.state.params.refreshCourses();
+      this.props.navigation.goBack(null);
+    }
+    deleteRequest(APIRoutes.getStudentPath(studentId), successFunc, standardError);
   }
 
   _renderStudent() {
@@ -117,6 +126,17 @@ class StudentProfileScreen extends React.Component {
           <Text style={textStyles.body}>
           {this.state.student.primary_contact_phone2}
           </Text>
+
+          <Button
+            onPress={() => params.handleEdit()}
+            title='Edit'
+          />
+
+          <Button
+            onPress={() => this._deleteStudent()}
+            title='Delete'
+          />
+
         </View>
       )
     // }
