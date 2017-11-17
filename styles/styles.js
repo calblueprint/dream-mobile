@@ -7,6 +7,10 @@ const commonStyles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  header: {
+  	marginTop: 40, 
+  	marginBottom: 24,
+  }
 });
 
 export { commonStyles };

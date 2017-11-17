@@ -2,6 +2,7 @@ import React from 'react';
 import { Button, Text, View, ScrollView, TextInput, TouchableHighlight, StyleSheet } from 'react-native';
 
 import { commonStyles } from '../../styles/styles';
+import { textStyles } from '../../styles/textStyles';
 import { APIRoutes } from '../../config/routes';
 import settings from '../../config/settings';
 import { getRequest, postRequest, putRequest } from '../../lib/requests';
@@ -197,26 +198,28 @@ class AttendanceScreen extends React.Component {
     const { navigate } = this.props.navigation;
 
     return(
-      <View style={{flex: 1}}>
-        <View style={styles.attendancesContainer}>
-          <ScrollView>
-            <Text>{attendanceDate(this.state.date)}</Text>
-            <Text>{this.state.courseTitle}</Text>
+      <View style={styles.container}>
+        <ScrollView>
+          <View style={styles.attendancesContainer}>
+            <View style={commonStyles.header}>
+              <Text style={textStyles.titleSmall}>{attendanceDate(this.state.date)}</Text>
+              <Text style={textStyles.titleLarge}>{this.state.courseTitle}</Text>
+            </View>
             {this._renderAttendances()}
-          </ScrollView>
-          <StyledButton
-            onPress={() => navigate('AttendanceSummary', {
-              attendances: this.state.attendances,
-              students: this.state.students,
-              courseTitle: this.state.courseTitle,
-              date: this.state.date,
-              parentKey: this.props.navigation.state.key,
-            })}
-            text='Submit'
-            primaryButtonLarge
-          >
-          </StyledButton>
-        </View>
+          </View>
+        </ScrollView>
+        <StyledButton
+          onPress={() => navigate('AttendanceSummary', {
+            attendances: this.state.attendances,
+            students: this.state.students,
+            courseTitle: this.state.courseTitle,
+            date: this.state.date,
+            parentKey: this.props.navigation.state.key,
+          })}
+          text='Submit'
+          primaryButtonLarge
+        >
+        </StyledButton>
         {this._renderModal()}
       </View>
     )
@@ -239,16 +242,14 @@ class AttendanceScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: 'space-between',
     backgroundColor: '#fff',
+    height: '100%'
   },
   // Either change styles or generalize to AttendanceSummaryScreen too
   attendancesContainer: {
-    paddingTop: 20,
-    paddingRight: 20,
-    paddingLeft: 20,
-    justifyContent: 'space-between',
-    height: '100%'
+    marginRight: 16,
+    marginLeft: 24,
   },
 });
 // TODO (Kelsey): Add PropTypes from navigation
