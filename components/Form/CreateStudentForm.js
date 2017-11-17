@@ -5,13 +5,13 @@ import { Form, InputField, PickerField,
 import { APIRoutes } from '../../config/routes';
 import PropTypes from 'prop-types';
 
+
 /**
  * @prop onCreateStudent - callback function when student create form is submitted
  */
 class CreateStudentForm extends React.Component {
   constructor(props) {
     super(props);
-    this._timeFormat = this._timeFormat.bind(this);
     this.state = {
       studentData: {}
     }
@@ -26,17 +26,7 @@ class CreateStudentForm extends React.Component {
    this.refs.scroll.scrollToFocusedInput(event, reactNode);
   }
 
-  /* Display time in HH:MM AM/PM format. */
-  _timeFormat(date, mode) {
-    if(!date) return "";
-    let value=date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-    return value;
-  }
-
   render() {
-    const today = new Date();
-    const minDate = new Date(today.getFullYear()-2, today.getMonth(), today.getDate());
-    const maxDate = new Date(today.getFullYear()+2, today.getMonth(), today.getDate());
     return (
       <View>
         <Form
@@ -71,8 +61,11 @@ class CreateStudentForm extends React.Component {
           <InputField
             ref='birthday'
             label='Birthday'
-            mode='date'
-            format="YYYY-MM-DD"
+            // mode='date'
+            type={'date'}
+            options={{
+              format: 'YYYY-MM-DD'
+            }}
             placeholder='1997-10-16'/>
 
           <PickerField
@@ -97,6 +90,31 @@ class CreateStudentForm extends React.Component {
             ref='address'
             label='Address'
             placeholder='e.g. 2514 Piedmont Ave, Berkeley, CA'
+            />
+
+          <InputField
+            ref='nickname'
+            label='Nickname'
+            />
+
+          <InputField
+            ref='primary_contact'
+            label='Primary Contact'
+            />
+
+          <InputField
+            ref='primary_contact_relationship'
+            label='Primary Contact Relationship'
+            />
+
+          <InputField
+            ref='primary_contact_phone'
+            label='Primary Contact Phone'
+            />
+
+          <InputField
+            ref='primary_contact_phone2'
+            label='Primary Contact Phone 2'
             />
 
         </Form>

@@ -16,15 +16,15 @@ class StudentsScreen extends React.Component {
       students : { },
       isLoading : true,
       courseId: this.props.navigation.state.params.courseId,
-      studentId: this.props.navigation.state.params.studentId,
     }
+    console.log(this.state)
   }
 
   componentDidMount() {
     this._fetchStudents(this.state.courseId);
   }
 
-  _fetchStudents(courseId) {
+  _fetchStudents() {
     const successFunc = (responseData) => {
       this.setState({ students: responseData, isLoading: false });
     }
@@ -32,7 +32,7 @@ class StudentsScreen extends React.Component {
       // TODO: Display correct toastr error msg
       console.error(error);
     }
-    getRequest(APIRoutes.getStudentsPath(courseId), successFunc, errorFunc);
+    getRequest(APIRoutes.getStudentsPath(this.state.courseId), successFunc, errorFunc);
   }
 
   _fetchStudent(studentId) {
@@ -54,7 +54,8 @@ class StudentsScreen extends React.Component {
       return(
         <View key={i}>
             <Button
-            onPress={() => navigate('StudentProfile', {refreshStudents: this._fetchStudent})}
+            onPress={() => navigate('StudentProfile', {refreshStudents: this._fetchStudent,
+                                                       studentId: student.id})}
             title={student.first_name + " " + student.last_name}
             />
         </View>
@@ -76,7 +77,9 @@ class StudentsScreen extends React.Component {
     return (
       <View style={styles.container}>
         <Button
-          onPress={() => navigate('CreateStudent', {refreshStudents: this._fetchStudents})}
+          onPress={() => navigate('CreateStudent', {refreshStudents: this._fetchStudents,
+                                                    courseId: this.state.courseId,
+                                                    teacherId: 1})}
           title="Create Student"
         />
         { students }

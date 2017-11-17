@@ -5,6 +5,7 @@ import { commonStyles } from '../../styles/styles';
 import { colors } from '../../styles/colors';
 import { getRequest } from '../../lib/requests';
 import { APIRoutes } from '../../config/routes';
+import { standardError } from '../../lib/request_callbacks';
 
 class StudentProfileScreen extends React.Component {
   // static navigationOptions = ({navigation}) => ({
@@ -16,31 +17,31 @@ class StudentProfileScreen extends React.Component {
   // });
   constructor(props) {
     super(props);
-    // this._fetchStudents = this._fetchStudents.bind(this);
     this._renderStudent = this._renderStudent.bind(this);
     this._fetchStudent = this._fetchStudent.bind(this);
 
     this.state = {
       student : { },
       isLoading : true,
-      courseId: this.props.navigation.state.params.courseId,
       studentId: this.props.navigation.state.params.studentId,
     }
   }
 
-  componentDidMount() {
-    this._fetchStudent(this.state.studentId);
-  }
+  static navigationOptions = ({ navigation }) => {
+    const { params = {} } = navigation.state;
+    return {
+        headerRight: <Button title="Edit" onPress={() => params.handleEdit()} />
+    };
+  };
 
-  // _fetchStudents(courseId) {
-  //   const successFunc = (responseData) => {
-  //     this.setState({ students: responseData, isLoading: false });
-  //   }
-  //   const errorFunc = (error) => {
-  //     console.error(error);
-  //   }
-  //   getRequest(APIRoutes.getStudentsPath(courseId), successFunc, errorFunc);
-  // }
+  componentDidMount() {
+    _editProfile = () => {
+      this.props.navigation.navigate('EditStudentProfile',
+      { refreshStudent: this._fetchStudent, student: this.state.student })
+    }
+    this._fetchStudent(this.state.studentId);
+    this.props.navigation.setParams({ handleEdit: _editProfile });
+  }
 
   _fetchStudent(studentId) {
     const { navigate } = this.props.navigation;
@@ -51,7 +52,7 @@ class StudentProfileScreen extends React.Component {
       // TODO: Display correct toastr error msg
       console.error(error);
     }
-    getRequest(APIRoutes.getStudentPath(studentId), successFunc, errorFunc);
+    getRequest(APIRoutes.getStudentPath(studentId), successFunc, standardError);
   }
 
   _renderStudent() {
@@ -80,6 +81,41 @@ class StudentProfileScreen extends React.Component {
           </Text>
           <Text style={textStyles.body}>
           {this.state.student.address}
+          </Text>
+
+          <Text style={textStyles.titleSmall}>
+          Nickname
+          </Text>
+          <Text style={textStyles.body}>
+          {this.state.student.nickname}
+          </Text>
+
+          <Text style={textStyles.titleSmall}>
+          Primary Contact
+          </Text>
+          <Text style={textStyles.body}>
+          {this.state.student.primary_contact}
+          </Text>
+
+          <Text style={textStyles.titleSmall}>
+          Primary Contact Relationship
+          </Text>
+          <Text style={textStyles.body}>
+          {this.state.student.primary_contact_relationship}
+          </Text>
+
+          <Text style={textStyles.titleSmall}>
+          Primary Contact Phone
+          </Text>
+          <Text style={textStyles.body}>
+          {this.state.student.primary_contact_phone}
+          </Text>
+
+          <Text style={textStyles.titleSmall}>
+          Primary Contact Phone 2
+          </Text>
+          <Text style={textStyles.body}>
+          {this.state.student.primary_contact_phone2}
           </Text>
         </View>
       )

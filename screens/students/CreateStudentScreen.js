@@ -13,11 +13,13 @@ class CreateStudentScreen extends React.Component {
     this.state = {
       student: {},
       courseId: this.props.navigation.state.params.courseId,
+      teacherId: this.props.navigation.state.params.teacherId,
     }
   }
 
   _handleCreateStudent(params) {
-    params.is_active = true;
+    params.course_id = this.state.courseId;
+    params.teacher_id = this.state.teacherId;
 
     const successFunc = (responseData) => {
       this.setState({ student: responseData});
@@ -27,7 +29,7 @@ class CreateStudentScreen extends React.Component {
     const errorFunc = (error) => {
       console.error(error);
     }
-    postRequest(APIRoutes.getStudentsPath(this.state.courseId), successFunc, errorFunc, params=params);
+    postRequest(APIRoutes.getStudentsPath(this.state.courseId), successFunc, errorFunc, params);
   }
 
 
