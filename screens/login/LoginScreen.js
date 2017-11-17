@@ -41,6 +41,7 @@ class LoginScreen extends React.Component {
   }
 
   render() {
+
     return (
       <View>
         <TextInput
@@ -52,7 +53,10 @@ class LoginScreen extends React.Component {
           onChangeText={(text) => this.setState({password: text})}
           secureTextEntry/>
         <Button
-          onPress={this._attemptLogin.bind(this)}
+          onPress={() => {
+                  this._attemptLogin.bind(this);
+                  this.props.navigation.goBack(this.props.navigation.state.params.parentKey || null);
+                  }}
           title='Login'
         />
         <Button

@@ -104,4 +104,6 @@ export class APIRoutes {
   static signupPath()                 { return `/sign_up` }
   static loginPath()                  { return APIRoutes.deviseRoute(`sign_in`) }
   static signoutPath()                { return APIRoutes.deviseRoute(`sign_out`) }
+  static getCurrentUserPath()         { return APIRoutes.createRoute(`current`) }
+
 }
