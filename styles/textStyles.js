@@ -25,25 +25,19 @@ const textStyles = StyleSheet.create({
 
   titleMedium: {
     color: colors.textDark,
-    fontSize: 20, 
+    fontSize: 20,
     fontWeight: '700'
   },
 
   titleLarge: {
     color: colors.textDark,
-    fontSize: 24, 
+    fontSize: 24,
     fontWeight: '700'
   },
 
   buttonText: {
     color: colors.textLight,
     fontSize: 20,
-    fontWeight: '500'
-  },
-
-  buttonTextSmall: {
-    color: colors.textLight,
-    fontSize: 16,
     fontWeight: '500'
   },
 

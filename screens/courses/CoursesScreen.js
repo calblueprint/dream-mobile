@@ -12,6 +12,7 @@ class CoursesScreen extends React.Component {
     this._fetchCourses = this._fetchCourses.bind(this);
     this._handleSelectCourse = this._handleSelectCourse.bind(this);
     this._handleTakeAttendance = this._handleTakeAttendance.bind(this);
+    this._handleViewStudents = this._handleViewStudents.bind(this);
     this._renderCourses = this._renderCourses.bind(this);
     this.state = {
       courses : { },
@@ -48,6 +49,11 @@ class CoursesScreen extends React.Component {
       date: date,
     });
   }
+  _handleViewStudents(course_id) {
+    this.props.navigation.navigate('Students', {
+      courseId: course_id,
+    })
+  }
 
   _renderCourses() {
     return this.state.courses.map((course, i) => (
@@ -55,7 +61,8 @@ class CoursesScreen extends React.Component {
         course_id={course.id}
         title={course.title}
         onSelectCourse={this._handleSelectCourse}
-        onTakeAttendance={this._handleTakeAttendance} />
+        onTakeAttendance={this._handleTakeAttendance}
+        onViewStudents={this._handleViewStudents} />
       )
     );
   }
@@ -69,7 +76,7 @@ class CoursesScreen extends React.Component {
         <Text>Loading...</Text>
       )
     } else {
-      courses = this._renderCourses()
+      courses = this._renderCourses();
     }
     return (
       <ScrollView>
