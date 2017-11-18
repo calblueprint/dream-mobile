@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Text, View, ScrollView, StyleSheet, FlatList } from 'react-native';
+import { Image, Button, Text, View, ScrollView, StyleSheet, FlatList } from 'react-native';
 
 import { commonStyles } from '../../styles/styles';
 import { textStyles } from '../../styles/textStyles';
@@ -62,6 +62,7 @@ class AttendanceSummaryScreen extends React.Component {
     const list = this.state.isCollapsedList;
     list[index] = !list[index];
     this.setState({ isCollapsedList: list });
+    this.render
   }
 
   /**
@@ -113,33 +114,55 @@ class AttendanceSummaryScreen extends React.Component {
       4: 'Excused Late'
     }
 
+    const numberColor = {
+      0: colors.successGreen,
+      1: colors.errorRed,
+      2: colors.errorRed,
+      3: colors.lateOrange,
+      4: colors.lateOrange
+    }
+
     return Object.keys(types).map((type, i) => {
+      const isCollapsed = this.state.isCollapsedList[type];
       const studentsList = this._filterAttendances(type);
       return this._renderCollapsible(
-        this._renderCollapseHeader(types[type], studentsList.length),
+        this._renderCollapseHeader(types[type], studentsList.length, numberColor[type], isCollapsed),
         this._renderStudentsList(studentsList),
         i
       );
     });
   }
 
+  _renderIcon(isCollapsed) {
+    if (isCollapsed) {
+      return (
+        <Image
+          style={styles.icon}
+          source={require('../../icons/right.png')}
+        />
+      )
+    } 
+    return (
+     <Image
+       style={styles.icon}
+       source={require('../../icons/down.png')}
+     />
+    )
+  }
+
   /**
     * Renders collapse header. Take in a type title, eg 'Present' and the
     * number of students with the given attendance type.
     */
-  _renderCollapseHeader(typeTitle, length) {
-    var numberColor = { color: colors.successGreen }
-    if (typeTitle == 'Unexcused Absent' || typeTitle == 'Excused Absent') {
-      numberColor = { color: colors.errorRed }
-    } 
-    if (typeTitle == 'Unexcused Late' || typeTitle == 'Excused Late') {
-      numberColor = { color: colors.lateOrange }
-    } 
+  _renderCollapseHeader(typeTitle, length, numberColor, isCollapsed) {
 
     return (
       <View style={styles.collapseHeader}>
-        <Text style={textStyles.body}>{typeTitle}</Text>
-        <Text style={[textStyles.numbers, numberColor]}>{length}</Text>
+        <View style={styles.containerInner}>
+          {this._renderIcon(isCollapsed)}
+          <Text style={textStyles.body}>{typeTitle}</Text>
+        </View>
+        <Text style={[textStyles.numbers, {color: numberColor}]}>{length}</Text>
       </View>
     )
   }
@@ -153,11 +176,15 @@ class AttendanceSummaryScreen extends React.Component {
   _renderStudentsList(students) {
     return (
       <View>
+        <ScrollView>
         <FlatList
           style={styles.studentList}
           data={students}
-          renderItem={({item}) => <Text>{item.key}</Text>}
+          renderItem={({item}) => <Text style={textStyles.bodySmall}>{item.key}</Text>}
+          removeClippedSubviews={true}
+          ListEmptyComponent={<Text style={textStyles.bodySmall}>None</Text>}
         />
+        </ScrollView>
       </View>
     );
   }
@@ -254,6 +281,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     height: '100%'
   },
+  containerInner: {
+    flexDirection: 'row', 
+    alignItems: 'center'
+  },
   summaryContainer: {
     marginRight: 16,
     marginLeft: 24,
@@ -264,7 +295,13 @@ const styles = StyleSheet.create({
     marginBottom: 24,
   },
   studentList: {
-    padding: 4,
+    marginLeft: 24,
+    marginBottom: 24, 
+  },
+  icon: {
+    height: 16, 
+    width: 16,
+    marginRight: 8
   },
 });
 // TODO (Kelsey): Add PropTypes from navigation
