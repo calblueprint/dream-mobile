@@ -2,12 +2,15 @@ import React from 'react';
 import { Button, Text, View, ScrollView, StyleSheet, FlatList } from 'react-native';
 
 import { commonStyles } from '../../styles/styles';
+import { textStyles } from '../../styles/textStyles';
+import StyledButton from '../../components/Button/Button';
 import { APIRoutes } from '../../config/routes';
 import settings from '../../config/settings';
 import { postRequest, putRequest } from '../../lib/requests';
 import { attendanceDate } from '../../lib/date';
 import Collapse from '../../components/Collapse';
 import SimpleModal from '../../components/SimpleModal';
+import colors from '../../styles/colors';
 
 class AttendanceSummaryScreen extends React.Component {
   constructor(props) {
@@ -125,10 +128,18 @@ class AttendanceSummaryScreen extends React.Component {
     * number of students with the given attendance type.
     */
   _renderCollapseHeader(typeTitle, length) {
+    var numberColor = { color: colors.successGreen }
+    if (typeTitle == 'Unexcused Absent' || typeTitle == 'Excused Absent') {
+      numberColor = { color: colors.errorRed }
+    } 
+    if (typeTitle == 'Unexcused Late' || typeTitle == 'Excused Late') {
+      numberColor = { color: colors.lateOrange }
+    } 
+
     return (
       <View style={styles.collapseHeader}>
-        <Text>{typeTitle}</Text>
-        <Text>{length}</Text>
+        <Text style={textStyles.body}>{typeTitle}</Text>
+        <Text style={[textStyles.numbers, numberColor]}>{length}</Text>
       </View>
     )
   }
@@ -201,18 +212,22 @@ class AttendanceSummaryScreen extends React.Component {
     */
   _renderLoadedView() {
     return(
-      <View style={{flex: 1}}>
-        <View style={styles.summaryContainer}>
-          <ScrollView style={styles.scrollView}>
-            <Text>{attendanceDate(this.state.date)}</Text>
-            <Text>{this.state.courseTitle}</Text>
+      <View style={styles.container}>
+        <ScrollView>
+          <View style={styles.summaryContainer}>
+            <View style={commonStyles.header}>
+              <Text style={textStyles.titleSmall}>{attendanceDate(this.state.date)}</Text>
+              <Text style={textStyles.titleLarge}>{this.state.courseTitle}</Text>
+            </View>
             {this._renderSummary()}
-          </ScrollView>
-          <Button
-            onPress={this._syncAttendances.bind(this)}
-            title="Sync"
-          />
-        </View>
+          </View>
+        </ScrollView>
+        <StyledButton
+          onPress={this._syncAttendances.bind(this)}
+          text='Sync'
+          primaryButtonLarge
+        >
+        </StyledButton>
         {this._renderModal()}
       </View>
     )
@@ -235,22 +250,18 @@ class AttendanceSummaryScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    backgroundColor: '#fff',
-  },
-  summaryContainer: {
-    paddingTop: 20,
-    paddingRight: 20,
-    paddingLeft: 20,
     justifyContent: 'space-between',
+    backgroundColor: '#fff',
     height: '100%'
   },
-  scrollView: {
-    width: '100%',
+  summaryContainer: {
+    marginRight: 16,
+    marginLeft: 24,
   },
   collapseHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    marginBottom: 24,
   },
   studentList: {
     padding: 4,

@@ -7,6 +7,12 @@ const textStyles = StyleSheet.create({
     fontSize: 20
   },
 
+  numbers: {
+    color: colors.textDark,
+    fontSize: 20,
+    fontWeight: '500'
+  },
+
   bodySmall: {
     color: colors.textDark,
     fontSize: 16
