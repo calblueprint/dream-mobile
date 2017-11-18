@@ -82,11 +82,15 @@ export class APIRoutes {
   static createRoute(route)           { return `/api/${route}` }
 
   // Courses
-  static getCoursePath(id)            { return APIRoutes.createRoute(`courses/${id}`) }
   static getCoursesPath()             { return APIRoutes.createRoute(`courses`) }
+  static getCoursePath(id)            { return APIRoutes.createRoute(`courses/${id}`) }
+
+  // Sessions
+  static getSessionsPath(id)          { return APIRoutes.createRoute(`courses/${id}/sessions`) }
+  static getSessionPath(id)           { return APIRoutes.createRoute(`sessions/${id}`) }
 
   //Teachers
-  static getTeacherPath(id)          { return APIRoutes.createRoute(`teachers/${id}`) }
+  static getTeacherPath(id)           { return APIRoutes.createRoute(`teachers/${id}`) }
 
   // Students
   static getStudentsPath(id)          { return APIRoutes.createRoute(`courses/${id}/students`) }
