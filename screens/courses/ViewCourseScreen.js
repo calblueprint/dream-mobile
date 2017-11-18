@@ -16,6 +16,7 @@ class ViewCourseScreen extends React.Component {
     this._renderCourseDate = this._renderCourseDate.bind(this);
     this.state = {
       course_id : this.props.navigation.state.params.course_id,
+      sessions: [],
       course : { },
       isLoading : true,
     }
@@ -26,13 +27,24 @@ class ViewCourseScreen extends React.Component {
   }
 
   /*
-   * Fetch recrod for single course.
+   * Fetch record for single course.
    */
   _fetchCourse() {
     const successFunc = (responseData) => {
-      this.setState({ course: responseData, isLoading: false });
+      this.setState({ course: responseData });
+      this._fetchSessions();
     }
     getRequest(APIRoutes.getCoursePath(this.state.course_id), successFunc, standardError);
+  }
+
+  /*
+   * Fetch record for single course.
+   */
+  _fetchSessions() {
+    const successFunc = (responseData) => {
+      this.setState({ sessions: responseData.sessions, isLoading: false });
+    }
+    getRequest(APIRoutes.getSessionsPath(this.state.course_id), successFunc, standardError);
   }
 
   /*
@@ -117,11 +129,12 @@ class ViewCourseScreen extends React.Component {
                   title: this.state.course.title,
                   teacher1: this.state.course.teacher_id1,
                   teacher2: this.state.course.teacher_id2,
+                  start_date: this.state.course.start_date,
+                  end_date: this.state.course.end_date,
+                  sessions: this.state.sessions,
                   weekday: this.state.course.weekday,
                   start_time: this.state.course.start_time,
                   end_time: this.state.course.end_time,
-                  start_date: this.state.course.start_date,
-                  end_date: this.state.course.end_date,
                 })}
               title="Edit Course"
             />
