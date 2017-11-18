@@ -10,13 +10,26 @@ import Session from '../Session';
 
 /**
  * @prop onSaveCourse - callback function when course create form is submitted
+ * @prop refreshCourses - callback function to refresh CoursesScreen
+ * @prop newCourse - true if creating new course, false if editing a course
+ * @prop course_id - id of course
+ * @prop is_active - true if course is ative (within the start and end date)
+ * @prop title - course title
+ * @prop teacher1 - dream_id of teacher 1
+ * @prop teacher2 - dream_id of teacher 2
+ * @prop start_date - start date of course
+ * @prop end_date - end date of course
+ * @prop sessionList - list of session records
  */
 class EditCourseForm extends React.Component {
   constructor(props) {
     super(props);
-    this._handleFormChange = this._handleFormChange.bind(this);
+    this._initializeSessionList = this._initializeSessionList.bind(this);
+    this._initializeSession = this._initializeSession.bind(this);
     this._mapSessions = this._mapSessions.bind(this);
+    this._addNewSession = this._addNewSession.bind(this);
     this._renderAddSessionButton = this._renderAddSessionButton.bind(this);
+    this._handleFormChange = this._handleFormChange.bind(this);
     this.state = {
       is_active: this.props.is_active,
       title: this.props.title || '',
@@ -24,7 +37,7 @@ class EditCourseForm extends React.Component {
       teacher_id2: this.props.teacher2 || '',
       start_date: this.props.start_date || '',
       end_date: this.props.end_date || '',
-      sessionList: this.props.sessionList || [],
+      sessionList: [],
 
       weekday: this.props.weekday || '',
       start_time: this.props.start_time || '',
@@ -32,18 +45,26 @@ class EditCourseForm extends React.Component {
     }
   }
 
-  /*
-   * Update component state each time a form field changes.
-   */
-  _handleFormChange(courseData){
-    this.setState({ ...courseData });
+  componentDidMount() {
+    this._initializeSessionList();
+  }
 
-    const today = new Date();
-    if (this.state.end_date && this.state.end_date < today) {
-      this.setState({ is_active: false })
-    } else {
-      this.setState({ is_active: true })
-    }
+  /*
+   * Parse sessionList from props to create state sessionList.
+   */
+  _initializeSessionList() {
+    this.props.sessionList.map(this._initializeSession)
+  }
+
+  /*
+   * Add individual session to state sessionList.
+   */
+  _initializeSession(session, index) {
+    let stateSession = { ...session }
+    stateSession.modified = false
+    newSessionList = this.state.sessionList
+    newSessionList.push(stateSession)
+    this.setState({ sessionList: newSessionList })
   }
 
   /*
@@ -61,14 +82,37 @@ class EditCourseForm extends React.Component {
     );
   }
 
+  /*
+   * Add new session to state sessionList
+   */
+  _addNewSession() {
+  }
+
+  /*
+   * Return the add session button component.
+   */
   _renderAddSessionButton() {
     return (
       <StyledButton
-        onPress={this._addSession}
+        onPress={this.state._addNewSession}
         text='Add Session'
         clearButtonSmall>
       </StyledButton>
     );
+  }
+
+  /*
+   * Update component state each time a form field changes.
+   */
+  _handleFormChange(courseData){
+    this.setState({ ...courseData });
+
+    const today = new Date();
+    if (this.state.end_date && this.state.end_date < today) {
+      this.setState({ is_active: false })
+    } else {
+      this.setState({ is_active: true })
+    }
   }
 
   render() {
