@@ -1,7 +1,9 @@
 import React from 'react';
 import { Image, View, Text, StyleSheet, Button } from 'react-native';
+import { Form, PickerField, TimePickerField } from 'react-native-form-generator';
 import styles from './styles'
 import { textStyles } from '../../styles/textStyles';
+import { timeFormat } from '../../lib/time';
 
 class Session extends React.Component {
   constructor(props) {
@@ -15,7 +17,7 @@ class Session extends React.Component {
       <View>
         <Form
           ref='sessionForm'
-          onChange={this._handleFormChange.bind(this)}>
+          onChange={() => console.log("Changed session")}>
 
           <PickerField
             ref='weekday'
