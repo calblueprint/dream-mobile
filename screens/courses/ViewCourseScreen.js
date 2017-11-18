@@ -132,9 +132,6 @@ class ViewCourseScreen extends React.Component {
                   start_date: this.state.course.start_date,
                   end_date: this.state.course.end_date,
                   sessions: this.state.sessions,
-                  weekday: this.state.course.weekday,
-                  start_time: this.state.course.start_time,
-                  end_time: this.state.course.end_time,
                 })}
               title="Edit Course"
             />

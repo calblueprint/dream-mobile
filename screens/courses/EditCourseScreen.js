@@ -78,9 +78,6 @@ class EditCourseScreen extends React.Component {
             start_date={navProps.start_date}
             end_date={navProps.end_date}
             sessionList={navProps.sessions}
-            weekday={navProps.weekday}
-            start_time={navProps.start_time}
-            end_time={navProps.end_time}
             onSaveCourse={this._handleUpdateCourse} />
         </View>
       );
