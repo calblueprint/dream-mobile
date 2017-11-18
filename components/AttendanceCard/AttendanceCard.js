@@ -1,7 +1,8 @@
 import React from 'react';
-import { View, Text, StyleSheet, Button, TouchableHighlight } from 'react-native';
+import { Image, View, Text, StyleSheet, Button, TouchableHighlight } from 'react-native';
 import styles from './styles'
 import Dropdown from '../Dropdown'
+import { textStyles } from '../../styles/textStyles';
 
 class AttendanceCard extends React.Component {
   /**
@@ -24,6 +25,14 @@ class AttendanceCard extends React.Component {
       4: 'EL'
     }
 
+    const optionsColor = {
+      0: '#3BB273',
+      1: '#E53935',
+      2: '#E53935',
+      3: '#FF8300',
+      4: '#FF8300'
+    }
+
     const dropdownStyles = {
       style: styles.dropdownStyle
     }
@@ -35,20 +44,42 @@ class AttendanceCard extends React.Component {
         defaultText={optionsAbbrev[this.props.attendance.attendance_type]}
         options={options}
         styles={dropdownStyles}
+        optionsColor={optionsColor[this.props.attendance.attendance_type]}
         />
+    )
+  }
+
+  renderCommentButton(comment) {
+    if (comment != null) {
+      return (
+        <Image
+          style={styles.commentButton}
+          source={require('../../icons/comment_active.png')}
+        />
+      )
+    } 
+    return (
+      <Image
+        style={styles.commentButton}
+        source={require('../../icons/comment.png')}
+      />
     )
   }
 
   render() {
     return (
       <View style={styles.container}>
-        <Text>{this.props.name}</Text>
+        <View style={styles.nameContainer}>
+          <Text style={textStyles.body}>{this.props.name}</Text>
+        </View>
+        <View style={styles.spaceContainer}>
+        </View>
         <View style={styles.leftContainer}>
           {this.renderSelect()}
           <TouchableHighlight
-            style={styles.commentButton}
+            style={styles.commentButtonOuter}
             onPress={() => this.props.setModal(this.props.index, this.props.attendance.comment)}>
-            <Text style={{fontSize: 10}}>Comment</Text>
+            {this.renderCommentButton(this.props.attendance.comment)}
           </TouchableHighlight>
         </View>
       </View>

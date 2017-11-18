@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, Button, TextInput, Modal, TouchableHighlight } from 'react-native';
 import { Select, Option } from 'react-native-chooser';
 import styles from './styles';
+import { textStyles } from '../../styles/textStyles';
 
 class Dropdown extends React.Component {
   /**
@@ -24,7 +25,7 @@ class Dropdown extends React.Component {
     if (this.props.styles) {
       return {
         style: [styles.style, this.props.styles.style],
-        textStyle: [styles.textStyle, this.props.styles.textStyle],
+        textStyle: [textStyles.buttonText, this.props.styles.textStyle],
         backdropStyle: [styles.backdropStyle, this.props.styles.backdropStyle],
         optionListStyle: [styles.optionListStyle, this.props.styles.optionListStyle],
       }
@@ -41,7 +42,7 @@ class Dropdown extends React.Component {
             transparent={true}
             onSelect={this.props.onSelect}
             defaultText={this.props.defaultText ? this.props.defaultText : this.props.value}
-            style={dropdownStyles.style}
+            style={ [dropdownStyles.style, {backgroundColor: this.props.optionsColor}] }
             textStyle={dropdownStyles.textStyle}
             backdropStyle ={dropdownStyles.backdropStyle}
             optionListStyle={dropdownStyles.optionListStyle}
