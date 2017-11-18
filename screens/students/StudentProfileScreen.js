@@ -8,18 +8,11 @@ import { APIRoutes } from '../../config/routes';
 import { standardError } from '../../lib/request_callbacks';
 
 class StudentProfileScreen extends React.Component {
-  // static navigationOptions = ({navigation}) => ({
-  // const { navigate } = this.props.navigation;
-  //   headerRight:
-  //     <Button
-  //        title="Edit Profile" onPress={()=>{ navigation.navigate('EditStudentProfile'); }}
-  //     />
-  // });
+
   constructor(props) {
     super(props);
     this._renderStudent = this._renderStudent.bind(this);
     this._fetchStudent = this._fetchStudent.bind(this);
-    this._deleteStudent = this._deleteStudent.bind(this);
 
     this.state = {
       student : { },
@@ -28,20 +21,8 @@ class StudentProfileScreen extends React.Component {
     }
   }
 
-  // static navigationOptions = ({ navigation }) => {
-  //   const { params = {} } = navigation.state;
-  //   return {
-  //       headerRight: <Button title="Edit" onPress={() => params.handleEdit()} />
-  //   };
-  // };
-
   componentDidMount() {
-    _editProfile = () => {
-      this.props.navigation.navigate('EditStudentProfile',
-      { refreshStudent: this._fetchStudent, student: this.state.student })
-    }
     this._fetchStudent(this.state.studentId);
-    this.props.navigation.setParams({ handleEdit: _editProfile });
   }
 
   _fetchStudent(studentId) {
@@ -56,112 +37,101 @@ class StudentProfileScreen extends React.Component {
     getRequest(APIRoutes.getStudentPath(studentId), successFunc, standardError);
   }
 
-  _deleteStudent(studentId) {
-    const successFunc = (responseData) => {
-      this.props.navigation.state.params.refreshCourses();
-      this.props.navigation.goBack(null);
-    }
-    deleteRequest(APIRoutes.getStudentPath(studentId), successFunc, standardError);
-  }
-
   _renderStudent() {
     const { navigate } = this.props.navigation;
-    // return this.state.students.map(function(student, i) {
-      return(
-        <View /*key={i}*/>
-          <Text>{this.state.student.id} {this.state.student.first_name} {this.state.student.last_name}</Text>
+    return(
+      <View>
+        <Text style={textStyles.titleLarge}>
+        {this.state.student.first_name} {this.state.student.last_name}
+        </Text>
 
-          <Text style={textStyles.titleSmall}>
-          Birthday
-          </Text>
-          <Text style={textStyles.body}>
-          {this.state.student.birthday}
-          </Text>
+        <Text style={textStyles.titleSmall}>
+        DREAM ID
+        </Text>
+        <Text style={textStyles.body}>
+        {this.state.student.dream_id}
+        </Text>
 
-          <Text style={textStyles.titleSmall}>
-          Year
-          </Text>
-          <Text style={textStyles.body}>
-          {this.state.student.year}
-          </Text>
+        <Text style={textStyles.titleSmall}>
+        Birthday
+        </Text>
+        <Text style={textStyles.body}>
+        {this.state.student.birthday}
+        </Text>
 
-          <Text style={textStyles.titleSmall}>
-          Address
-          </Text>
-          <Text style={textStyles.body}>
-          {this.state.student.address}
-          </Text>
+        <Text style={textStyles.titleSmall}>
+        Year
+        </Text>
+        <Text style={textStyles.body}>
+        {this.state.student.year}
+        </Text>
 
-          <Text style={textStyles.titleSmall}>
-          Nickname
-          </Text>
-          <Text style={textStyles.body}>
-          {this.state.student.nickname}
-          </Text>
+        <Text style={textStyles.titleSmall}>
+        Address
+        </Text>
+        <Text style={textStyles.body}>
+        {this.state.student.address}
+        </Text>
 
-          <Text style={textStyles.titleSmall}>
-          Primary Contact
-          </Text>
-          <Text style={textStyles.body}>
-          {this.state.student.primary_contact}
-          </Text>
+        <Text style={textStyles.titleSmall}>
+        Nickname
+        </Text>
+        <Text style={textStyles.body}>
+        {this.state.student.nickname}
+        </Text>
 
-          <Text style={textStyles.titleSmall}>
-          Primary Contact Relationship
-          </Text>
-          <Text style={textStyles.body}>
-          {this.state.student.primary_contact_relationship}
-          </Text>
+        <Text style={textStyles.titleSmall}>
+        Primary Contact
+        </Text>
+        <Text style={textStyles.body}>
+        {this.state.student.primary_contact}
+        </Text>
 
-          <Text style={textStyles.titleSmall}>
-          Primary Contact Phone
-          </Text>
-          <Text style={textStyles.body}>
-          {this.state.student.primary_contact_phone}
-          </Text>
+        <Text style={textStyles.titleSmall}>
+        Primary Contact Relationship
+        </Text>
+        <Text style={textStyles.body}>
+        {this.state.student.primary_contact_relationship}
+        </Text>
 
-          <Text style={textStyles.titleSmall}>
-          Primary Contact Phone 2
-          </Text>
-          <Text style={textStyles.body}>
-          {this.state.student.primary_contact_phone2}
-          </Text>
+        <Text style={textStyles.titleSmall}>
+        Primary Contact Phone
+        </Text>
+        <Text style={textStyles.body}>
+        {this.state.student.primary_contact_phone}
+        </Text>
 
-          <Button
-            onPress={() => params.handleEdit()}
-            title='Edit'
-          />
+        <Text style={textStyles.titleSmall}>
+        Primary Contact Phone 2
+        </Text>
+        <Text style={textStyles.body}>
+        {this.state.student.primary_contact_phone2}
+        </Text>
 
-          <Button
-            onPress={() => this._deleteStudent()}
-            title='Delete'
-          />
-
-        </View>
-      )
-    // }
+      </View>
+    )
   }
 
-        render() {
-          const { navigate } = this.props.navigation;
-          let students;
-          if (this.state.isLoading) {
-            // TODO: Add loading gif.
-            student = (
-              <Text>Loading...</Text>
-            )
-          } else {
-            student = this._renderStudent()
-          }
-          return (
-            <ScrollView>
-              <View>
-                { student }
-              </View>
-            </ScrollView>
-          );
+  render() {
+    const { navigate } = this.props.navigation;
+    let students;
+    if (this.state.isLoading) {
+      // TODO: Add loading gif.
+      student = (
+        <Text>Loading...</Text>
+      )
+    } else {
+      student = this._renderStudent()
+    }
+    return (
+      <ScrollView>
+        <View>
+          { student }
+        </View>
+      </ScrollView>
+    );
 
-        }
-      }
+  }
+}
 
 export default StudentProfileScreen;

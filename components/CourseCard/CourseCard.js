@@ -10,7 +10,7 @@ import { cardStyles } from './styles';
  * @prop title - course title
  * @prop onSelectCourse - callback function to show course information
  * @prop onTakeAttendance - callback function to take attendance for today
- * @prop onViewStudent - callback function to view student for the course
+ * @prop onViewStudents - callback function to view students for the course
  */
 class CourseCard extends React.Component {
   constructor(props) {
@@ -30,7 +30,7 @@ class CourseCard extends React.Component {
             clearButtonSmall>
           </StyledButton>
           <StyledButton
-            onPress={() => this.props.onViewStudent(this.props.course_id)}
+            onPress={() => this.props.onViewStudents(this.props.course_id)}
             text='View Student'
             clearButtonSmall>
           </StyledButton>

@@ -36,7 +36,6 @@ class CreateStudentForm extends React.Component {
           <InputField
             ref='first_name'
             label='First Name'
-            // placeholder='e.g. Montessori'
             validationFunction=
               {[(value)=>{
                 if(value == '') return "First name required";
@@ -48,7 +47,6 @@ class CreateStudentForm extends React.Component {
             <InputField
               ref='last_name'
               label='Last Name'
-              // placeholder='e.g. Montessori'
               validationFunction=
                 {[(value)=>{
                   if(value == '') return "Last name required";
@@ -59,9 +57,20 @@ class CreateStudentForm extends React.Component {
               />
 
           <InputField
+            ref='dream_id'
+            label='DREAM ID'
+            validationFunction=
+                {[(value)=>{
+                  if(value == '') return "DREAM ID required";
+                  //Initial state is null/undefined
+                  if(!value) return "DREAM ID entered is invalid";
+                  return true;
+                }]}
+          />
+
+          <InputField
             ref='birthday'
             label='Birthday'
-            // mode='date'
             type={'date'}
             options={{
               format: 'YYYY-MM-DD'

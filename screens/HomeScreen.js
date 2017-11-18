@@ -17,10 +17,6 @@ class HomeScreen extends React.Component {
           onPress={() => navigate('TeacherProfile')}
           title="See Teacher's Profile"
         />
-        <Button
-          onPress={() => navigate('Students')}
-          title="See Students"
-        />
       </View>
     );
   }

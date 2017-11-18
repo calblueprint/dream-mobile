@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, Text, View, ScrollView, TextInput, TouchableHighlight, StyleSheet } from 'react-native';
-import { styles } from '../../styles/styles';
+import { commonStyles } from '../../styles/styles';
 import { cardStyles } from '../../components/Form/styles';
 import { getRequest } from '../../lib/requests';
 import { APIRoutes } from '../../config/routes';
@@ -73,7 +73,7 @@ class StudentsScreen extends React.Component {
       students = this._renderStudents()
     }
     return (
-      <View style={styles.container}>
+      <View style={commonStyles.container}>
         <Button
           onPress={() => navigate('CreateStudent', {refreshStudents: this._fetchStudents,
                                                     courseId: this.state.courseId,
