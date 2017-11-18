@@ -29,8 +29,10 @@ class EditCourseForm extends React.Component {
     this._mapSessions = this._mapSessions.bind(this);
     this._addNewSession = this._addNewSession.bind(this);
     this._renderAddSessionButton = this._renderAddSessionButton.bind(this);
+    this._renderSessions = this._renderSessions.bind(this);
     this._handleFormChange = this._handleFormChange.bind(this);
     this.state = {
+      isLoading : true,
       is_active: this.props.is_active,
       title: this.props.title || '',
       teacher_id1: this.props.teacher1 || '',
@@ -38,10 +40,6 @@ class EditCourseForm extends React.Component {
       start_date: this.props.start_date || '',
       end_date: this.props.end_date || '',
       sessionList: [],
-
-      weekday: this.props.weekday || '',
-      start_time: this.props.start_time || '',
-      end_time: this.props.end_time || '',
     }
   }
 
@@ -62,9 +60,9 @@ class EditCourseForm extends React.Component {
   _initializeSession(session, index) {
     let stateSession = { ...session }
     stateSession.modified = false
-    newSessionList = this.state.sessionList
-    newSessionList.push(stateSession)
-    this.setState({ sessionList: newSessionList })
+    sessionList = this.state.sessionList
+    sessionList.push(stateSession)
+    this.setState({ sessionList: sessionList })
   }
 
   /*
@@ -73,10 +71,10 @@ class EditCourseForm extends React.Component {
   _mapSessions(session, index) {
     return (
       <Session
+        key        = {index}
         weekday    = {session.weekday}
         start_time = {session.start_time}
         end_time   = {session.end_time}
-        key        = {session.id}
         number     = {index}
       />
     );
@@ -86,6 +84,16 @@ class EditCourseForm extends React.Component {
    * Add new session to state sessionList
    */
   _addNewSession() {
+    let newSession = {
+      modified: true,
+      weekday: "",
+      start_time: "",
+      end_time: "",
+      number: this.state.sessionList.length + 1,
+    }
+    sessionList = this.state.sessionList
+    sessionList.push(newSession)
+    this.setState({ sessionList: sessionList })
   }
 
   /*
@@ -94,11 +102,19 @@ class EditCourseForm extends React.Component {
   _renderAddSessionButton() {
     return (
       <StyledButton
-        onPress={this.state._addNewSession}
+        onPress={this._addNewSession}
         text='Add Session'
         clearButtonSmall>
       </StyledButton>
     );
+  }
+
+  /*
+   * Display sessions.
+   */
+  _renderSessions() {
+    let sessions = this.state.sessionList.map(this._mapSessions);
+    return sessions;
   }
 
   /*
@@ -119,15 +135,6 @@ class EditCourseForm extends React.Component {
     const today = new Date();
     const minDate = new Date(today.getFullYear()-2, today.getMonth(), today.getDate());
     const maxDate = new Date(today.getFullYear()+2, today.getMonth(), today.getDate());
-
-    let sessions;
-    if (this.state.isLoading) {
-      sessions = (
-        <Text>Loading...</Text>
-      )
-    } else {
-      sessions = this.state.sessionList.map(this._mapSessions);
-    }
 
     return (
       <View>
@@ -169,7 +176,7 @@ class EditCourseForm extends React.Component {
             date={this.state.end_date}
             placeholder='End Date'/>
 
-          { sessions }
+          { this._renderSessions() }
           { this._renderAddSessionButton() }
         </Form>
         <Button
