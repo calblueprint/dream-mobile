@@ -120,14 +120,14 @@ class EditCourseForm extends React.Component {
     const minDate = new Date(today.getFullYear()-2, today.getMonth(), today.getDate());
     const maxDate = new Date(today.getFullYear()+2, today.getMonth(), today.getDate());
 
-    // let sessions;
-    // if (this.state.isLoading) {
-    //   sessions = (
-    //     <Text>Loading...</Text>
-    //   )
-    // } else {
-    //   sessions = this.state.sessionList.map(this._mapSessions);
-    // }
+    let sessions;
+    if (this.state.isLoading) {
+      sessions = (
+        <Text>Loading...</Text>
+      )
+    } else {
+      sessions = this.state.sessionList.map(this._mapSessions);
+    }
 
     return (
       <View>
@@ -169,32 +169,7 @@ class EditCourseForm extends React.Component {
             date={this.state.end_date}
             placeholder='End Date'/>
 
-          <PickerField
-            ref='weekday'
-            options={{
-              'Sunday': 'Sunday',
-              'Monday': 'Monday',
-              'Tuesday': 'Tuesday',
-              'Wednesday': 'Wednesday',
-              'Thursday': 'Thursday',
-              'Friday': 'Friday',
-              'Saturday': 'Saturday',
-            }}
-            value={this.state.weekday}
-            label='Select Day'/>
-
-          <TimePickerField
-            ref='start_time'
-            dateTimeFormat={timeFormat}
-            date={this.state.start_time}
-            placeholder='Session Start'/>
-
-          <TimePickerField
-            ref='end_time'
-            dateTimeFormat={timeFormat}
-            date={this.state.end_time}
-            placeholder='Session End'/>
-
+          { sessions }
           { this._renderAddSessionButton() }
         </Form>
         <Button
