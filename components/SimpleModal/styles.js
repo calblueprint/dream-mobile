@@ -3,8 +3,10 @@ import { StyleSheet } from 'react-native';
 export default StyleSheet.create({
   modal: {
     height: null,
-    width: '80%',
-    padding: 4,
+    width: '90%',
+    padding: 16,
+    paddingBottom: 0, 
+    borderRadius: 4,
     justifyContent: 'space-between',
   },
   header: {
@@ -16,7 +18,7 @@ export default StyleSheet.create({
     width: '100%',
     flexDirection: 'row',
     justifyContent: 'flex-end',
-    padding: 2,
+    marginLeft: 8,
   },
   children: {
     marginBottom: 6,

@@ -170,7 +170,7 @@ class AttendanceScreen extends React.Component {
       this._setModal(-1, null);
       this._saveComment(this.state.modalIndex, this.state.modalComment);
     };
-    const buttons = [{ title: 'Save', callback: saveCallback}]
+    const buttons = [{ title: 'Save', callback: saveCallback, type: 'primary'},{title: 'Cancel', callback: cancelCallback, type: 'secondary'}]
     if (this.state.modalIndex !== -1) {
       return (
         <SimpleModal
@@ -180,7 +180,7 @@ class AttendanceScreen extends React.Component {
           visible={this.state.modalIndex !== -1}>
           <View>
             <TextInput
-                style={{height: 40, borderColor: 'gray', borderWidth: 1}}
+                style={{height: 40}}
                 onChangeText={this._setComment.bind(this)}
                 value={this.state.modalComment}
                 placeholder='Add a note...'

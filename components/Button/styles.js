@@ -15,8 +15,10 @@ const buttonStyles = StyleSheet.create({
   primaryButtonSmall: {
     backgroundColor: colors.primaryYellow,
     borderColor: colors.primaryYellow,
-    width: 160,
+    width: 104,
+    height: 40,
     marginTop: 24,
+    marginLeft: 8,
     marginBottom: 8,
   },
 
@@ -24,6 +26,16 @@ const buttonStyles = StyleSheet.create({
     borderColor:'rgba(255, 255, 255, 0)',
     marginBottom: 8, 
   },
+
+  secondaryButtonSmall: {
+    backgroundColor: colors.dividerGrey,
+    borderColor: colors.dividerGrey,
+    width: 104,
+    height: 40,
+    marginTop: 24,
+    marginLeft: 8,
+    marginBottom: 8,
+  }
 });
 
 export { buttonStyles };

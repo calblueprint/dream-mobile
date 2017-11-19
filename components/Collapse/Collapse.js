@@ -3,7 +3,6 @@ import { View, TouchableHighlight } from 'react-native';
 import { commonStyles } from '../../styles/styles';
 import styles from './styles';
 import Collapsible from 'react-native-collapsible';
-import { textStyles } from '../../styles/textStyles';
 
 class Collapse extends React.Component {
   render() {
@@ -12,7 +11,6 @@ class Collapse extends React.Component {
         <TouchableHighlight
           underlayColor='transparent'
           style={this.props.headerStyle}
-          textStyle={textStyles.body}
           onPress={this.props.setCollapsed}>
           {this.props.header}
         </TouchableHighlight>

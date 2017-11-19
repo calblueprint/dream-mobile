@@ -162,7 +162,7 @@ class AttendanceSummaryScreen extends React.Component {
           {this._renderIcon(isCollapsed)}
           <Text style={textStyles.body}>{typeTitle}</Text>
         </View>
-        <Text style={[textStyles.numbers, {color: numberColor}]}>{length}</Text>
+        <Text style={[textStyles.bodyBold, {color: numberColor}]}>{length}</Text>
       </View>
     )
   }
@@ -214,7 +214,7 @@ class AttendanceSummaryScreen extends React.Component {
       this.setState({ isModalOpen: false });
       this.props.navigation.goBack(this.props.navigation.state.params.parentKey || null);
     }
-    const buttons = [{ title: 'Okay', callback: callback }]
+    const buttons = [{ title: 'Okay', callback: callback, type: 'primary' }]
 
     return (
       <SimpleModal
@@ -222,13 +222,27 @@ class AttendanceSummaryScreen extends React.Component {
         title='Status'
         buttons={buttons}
         visible={this.state.isModalOpen}>
-        <View>
-          <Text>Saved to phone</Text>
-          <Text>Synced</Text>
-          <Text>
-            Attendance not synced because the device is not connected to Wifi.
-            Try again when Wifi is available. Attendance saved to phone.
-          </Text>
+        <View style={styles.modalContent}>
+          <View style={[styles.containerInner, {marginBottom: 8}]}>
+            <Image
+              style={styles.statusIcon}
+              source={require('../../icons/success.png')}
+            />
+            <Text style={textStyles.bodyBold}>Saved to phone</Text>
+          </View>
+          <View style={styles.containerInner}>
+            <Image
+              style={styles.statusIcon}
+              source={require('../../icons/error.png')}
+            />
+            <Text style={textStyles.bodyBold}>Synced</Text>
+          </View>
+          <View style={styles.modalContent}>
+            <Text style={textStyles.bodySmall}>
+              Attendance not synced because the device is not connected to Wifi.
+              Try again when Wifi is available. Attendance saved to phone.
+            </Text>
+          </View>
         </View>
       </SimpleModal>
     )
@@ -303,6 +317,14 @@ const styles = StyleSheet.create({
     width: 16,
     marginRight: 8
   },
+  statusIcon: {
+    height: 24, 
+    width: 24,
+    marginRight: 8
+  },
+  modalContent: {
+    marginTop: 16
+  }
 });
 // TODO (Kelsey): Add PropTypes from navigation
 
