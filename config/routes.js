@@ -2,17 +2,20 @@
 import React from 'react';
 import { StackNavigator } from 'react-navigation';
 import { Button } from 'react-native';
-
 import HomeScreen from '../screens/HomeScreen';
 import LoginScreen from '../screens/login/LoginScreen';
 import SignUpScreen from '../screens/login/SignUpScreen';
 import ViewCourseScreen from '../screens/courses/ViewCourseScreen';
 import CoursesScreen from '../screens/courses/CoursesScreen';
+import TeacherProfileScreen from '../screens/teachers/TeacherProfileScreen';
+import TeacherProfileEditScreen from '../screens/teachers/TeacherProfileEditScreen';
 import EditCourseScreen from '../screens/courses/EditCourseScreen';
 import StudentsScreen from '../screens/students/StudentsScreen';
 import CreateStudentScreen from '../screens/students/CreateStudentScreen';
+import StudentProfileScreen from '../screens/students/StudentProfileScreen';
 import AttendanceScreen from '../screens/attendances/AttendanceScreen';
 import AttendanceSummaryScreen from '../screens/attendances/AttendanceSummaryScreen';
+
 /**
  * HomeStack is the main navigation stack starting from the HomeScreen
  */
@@ -47,6 +50,18 @@ export const HomeStack = StackNavigator({
       headerTitle: 'Courses',
     },
   },
+  TeacherProfile : {
+    screen: TeacherProfileScreen,
+    navigationOptions: {
+      headerTitle: 'Profile',
+    },
+  },
+  EditTeacherProfile : {
+    screen: TeacherProfileEditScreen,
+    navigationOptions: {
+      headerTitle: 'Edit Profile',
+    },
+  },
   EditCourse : {
     screen: EditCourseScreen,
     navigationOptions: {
@@ -63,6 +78,12 @@ export const HomeStack = StackNavigator({
     screen: CreateStudentScreen,
     navigationOptions: {
       headerTitle: 'CreateStudent',
+    },
+  },
+  StudentProfile : {
+    screen: StudentProfileScreen,
+    navigationOptions: {
+      headerTitle: 'StudentProfile',
     },
   },
   Attendances: {
@@ -93,8 +114,12 @@ export class APIRoutes {
   static getCoursePath(id)            { return APIRoutes.createRoute(`courses/${id}`) }
   static getCoursesPath()             { return APIRoutes.createRoute(`courses`) }
 
+  //Teachers
+  static getTeacherPath(id)          { return APIRoutes.createRoute(`teachers/${id}`) }
+
   // Students
-  static getStudentsPath(id)          { return APIRoutes.createRoute(`courses/${id}/students`) }
+  static getStudentsPath(courseId)          { return APIRoutes.createRoute(`courses/${courseId}/students`) }
+  static getStudentPath(studentId)          { return APIRoutes.createRoute(`students/${studentId}`)}
 
   // Attendances
   static attendanceItemPath()         { return APIRoutes.createRoute(`attendances/attendance_item`) }
@@ -104,6 +129,5 @@ export class APIRoutes {
   static signupPath()                 { return `/sign_up` }
   static loginPath()                  { return APIRoutes.deviseRoute(`sign_in`) }
   static signoutPath()                { return APIRoutes.deviseRoute(`sign_out`) }
-  static getCurrentUserPath()         { return APIRoutes.createRoute(`current`) }
 
 }

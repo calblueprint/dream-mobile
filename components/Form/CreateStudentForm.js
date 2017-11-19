@@ -5,13 +5,13 @@ import { Form, InputField, PickerField,
 import { APIRoutes } from '../../config/routes';
 import PropTypes from 'prop-types';
 
+
 /**
  * @prop onCreateStudent - callback function when student create form is submitted
  */
 class CreateStudentForm extends React.Component {
   constructor(props) {
     super(props);
-    this._timeFormat = this._timeFormat.bind(this);
     this.state = {
       studentData: {}
     }
@@ -26,16 +26,7 @@ class CreateStudentForm extends React.Component {
    this.refs.scroll.scrollToFocusedInput(event, reactNode);
   }
 
-  /* Display time in HH:MM AM/PM format. */
-  _timeFormat(date, mode) {
-    if(!date) return "";
-    let value=date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-    return value;
-  }
-
   render() {
-    const today = new Date();
-    const maxDate = new Date(today.getFullYear()+2, today.getMonth(), today.getDate());
     return (
       <View>
         <Form
@@ -45,7 +36,6 @@ class CreateStudentForm extends React.Component {
           <InputField
             ref='first_name'
             label='First Name'
-            // placeholder='e.g. Montessori'
             validationFunction=
               {[(value)=>{
                 if(value == '') return "First name required";
@@ -57,7 +47,6 @@ class CreateStudentForm extends React.Component {
             <InputField
               ref='last_name'
               label='Last Name'
-              // placeholder='e.g. Montessori'
               validationFunction=
                 {[(value)=>{
                   if(value == '') return "Last name required";
@@ -67,10 +56,26 @@ class CreateStudentForm extends React.Component {
                 }]}
               />
 
-          <TimePickerField
+          <InputField
+            ref='dream_id'
+            label='DREAM ID'
+            validationFunction=
+                {[(value)=>{
+                  if(value == '') return "DREAM ID required";
+                  //Initial state is null/undefined
+                  if(!value) return "DREAM ID entered is invalid";
+                  return true;
+                }]}
+          />
+
+          <InputField
             ref='birthday'
-            dateTimeFormat={this._timeFormat}
-            placeholder='Birthday'/>
+            label='Birthday'
+            type={'date'}
+            options={{
+              format: 'YYYY-MM-DD'
+            }}
+            placeholder='1997-10-16'/>
 
           <PickerField
             ref='year'
@@ -97,16 +102,30 @@ class CreateStudentForm extends React.Component {
             />
 
           <InputField
-            ref='course_id'
-            label='Course ID'
-            placeholder='e.g. 12345678'
+            ref='nickname'
+            label='Nickname'
             />
 
           <InputField
-            ref='teacher_id'
-            label='Teacher ID'
-            placeholder='e.g. 12345678'
+            ref='primary_contact'
+            label='Primary Contact'
             />
+
+          <InputField
+            ref='primary_contact_relationship'
+            label='Primary Contact Relationship'
+            />
+
+          <InputField
+            ref='primary_contact_phone'
+            label='Primary Contact Phone'
+            />
+
+          <InputField
+            ref='primary_contact_phone2'
+            label='Primary Contact Phone 2'
+            />
+
         </Form>
         <Button
           onPress={() => this.props.onCreateStudent(this.state.studentData)}

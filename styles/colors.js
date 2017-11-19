@@ -1,6 +1,4 @@
-import { StyleSheet } from 'react-native';
-
-const colors = StyleSheet.create({
+const colors = {
   primaryYellow: '#FFC107',
   courseGreen: '#26A69A',
   courseBlue: '#3F51B5',
@@ -8,21 +6,22 @@ const colors = StyleSheet.create({
   coursePink: '#C2185B',
   courseBrown: '#795548',
 
-  successGreen: '#3BB273', 
-  lateOrange: '#FF8300', 
-  errorRed: '#E53935', 
+  successGreen: '#3BB273',
+  lateOrange: '#FF8300',
+  errorRed: '#E53935',
   errorPink: '#FFEAE9',
 
-  textDark: '#212121', 
+  textDark: '#212121',
   textDark_70: 'rgba(33, 33, 33, .7)',
   textDark_30: 'rgba(33, 33, 33, .3)',
-  textLight: '#FFF', 
+  textLight: '#FFF',
 
-  backgroundGrey: '#F5F5F6', 
-  dividerGrey: '#E0E0E0', 
+  backgroundGrey: '#F5F5F6',
+  backgroundWhite: '#FFFFFF',
+  dividerGrey: '#E0E0E0',
   iconDark: 'rgba(33, 33, 33, .85)',
   iconLight: 'rgba(255, 255, 255, .85)',
 
-});
+};
 
-export { colors };
+module.exports = colors;

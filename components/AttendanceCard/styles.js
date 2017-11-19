@@ -5,23 +5,30 @@ export default StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingTop: 10,
-    paddingBottom: 10,
+    marginBottom: 24,
+  },
+  nameContainer: {
+    flexDirection: 'row',
+    flex: 1,
+  },
+  spaceContainer:{
+    flex: 0.1,
   },
   leftContainer: {
     flexDirection: 'row',
-    justifyContent: 'flex-end',
+    alignItems: 'center',
+    marginRight: 16,
     flex: 1,
   },
   dropdownStyle: {
-    width: 80,
+    width: 116,
+    height: 40,
   },
   commentButton: {
-    padding: 2,
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 4,
-    margin: 2,
-    justifyContent: 'center',
+    width: 32, 
+    height: 31,
+  },
+  commentButtonOuter: {
+    marginLeft: 16,
   },
 });

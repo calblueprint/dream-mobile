@@ -1,5 +1,6 @@
 import React from 'react';
 import { Button, Text, TouchableHighlight, View } from 'react-native';
+import StyledButton from '../../components/Button/Button';
 import { APIRoutes } from '../../config/routes';
 import PropTypes from 'prop-types';
 import { cardStyles } from './styles';
@@ -9,6 +10,7 @@ import { cardStyles } from './styles';
  * @prop title - course title
  * @prop onSelectCourse - callback function to show course information
  * @prop onTakeAttendance - callback function to take attendance for today
+ * @prop onViewStudents - callback function to view students for the course
  */
 class CourseCard extends React.Component {
   constructor(props) {
@@ -22,10 +24,16 @@ class CourseCard extends React.Component {
       <TouchableHighlight onPress={() => this.props.onSelectCourse(this.props.course_id)}>
         <View style={cardStyles.container}>
           <Text style={cardStyles.title}>{this.props.course_id} {this.props.title}</Text>
-          <Button
+          <StyledButton
             onPress={() => this.props.onTakeAttendance(this.props.course_id, this.props.title)}
-            title="Take Attendance"
-          />
+            text='Take Attendance'
+            clearButtonSmall>
+          </StyledButton>
+          <StyledButton
+            onPress={() => this.props.onViewStudents(this.props.course_id)}
+            text='View Student'
+            clearButtonSmall>
+          </StyledButton>
         </View>
       </TouchableHighlight>
     );
