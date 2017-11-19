@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Text, View } from 'react-native';
+import { Button, ScrollView, Text, View } from 'react-native';
 import { Form, InputField, PickerField,
          DatePickerField, TimePickerField } from 'react-native-form-generator';
 import { APIRoutes } from '../../config/routes';
@@ -30,6 +30,8 @@ class EditCourseForm extends React.Component {
     this._addNewSession = this._addNewSession.bind(this);
     this._renderAddSessionButton = this._renderAddSessionButton.bind(this);
     this._renderSessions = this._renderSessions.bind(this);
+    this._handleSessionChange = this._handleSessionChange.bind(this);
+    this._handleSessionDelete = this._handleSessionDelete.bind(this);
     this._handleFormChange = this._handleFormChange.bind(this);
     this.state = {
       isLoading : true,
@@ -60,24 +62,9 @@ class EditCourseForm extends React.Component {
   _initializeSession(session, index) {
     let stateSession = { ...session }
     stateSession.modified = false
-    sessionList = this.state.sessionList
+    sessionList = this.state.sessionList.slice();
     sessionList.push(stateSession)
     this.setState({ sessionList: sessionList })
-  }
-
-  /*
-   * Map session to its view in the Course form.
-   */
-  _mapSessions(session, index) {
-    return (
-      <Session
-        key        = {index}
-        weekday    = {session.weekday}
-        start_time = {session.start_time}
-        end_time   = {session.end_time}
-        number     = {index}
-      />
-    );
   }
 
   /*
@@ -89,9 +76,9 @@ class EditCourseForm extends React.Component {
       weekday: "",
       start_time: "",
       end_time: "",
-      number: this.state.sessionList.length + 1,
+      number: this.state.sessionList.length,
     }
-    sessionList = this.state.sessionList
+    sessionList = this.state.sessionList.slice();
     sessionList.push(newSession)
     this.setState({ sessionList: sessionList })
   }
@@ -118,6 +105,46 @@ class EditCourseForm extends React.Component {
   }
 
   /*
+   * Update sessionList state each time a session changes
+   */
+  _handleSessionChange(session, number){
+    sessionList = this.state.sessionList.slice();
+    sessionList[number] = { ...sessionList[number], ...session }
+    this.setState({ sessionList: sessionList })
+  }
+
+  /*
+   * Delete session from sessionList.
+   */
+  _handleSessionDelete(number){
+    sessionList = this.state.sessionList.slice();
+    sessionList.splice(number, 1);
+
+    // Decrement question number for all following questions
+    for (let i = number; i < sessionList.length; i++) {
+      sessionList[i].number -= 1;
+    }
+    this.setState({ sessionList: sessionList })
+  }
+
+  /*
+   * Map session to its view in the Course form.
+   */
+  _mapSessions(session, index) {
+    return (
+      <Session
+        key             = {index}
+        weekday         = {session.weekday}
+        start_time      = {session.start_time}
+        end_time        = {session.end_time}
+        number          = {session.number}
+        onSessionChange = {this._handleSessionChange}
+        onSessionDelete = {this._handleSessionDelete}
+      />
+    );
+  }
+
+  /*
    * Update component state each time a form field changes.
    */
   _handleFormChange(courseData){
@@ -137,53 +164,55 @@ class EditCourseForm extends React.Component {
     const maxDate = new Date(today.getFullYear()+2, today.getMonth(), today.getDate());
 
     return (
-      <View>
-        <Form
-          ref='registrationForm'
-          onChange={this._handleFormChange}
-          label="Personal Information">
-          <InputField
-            ref='title'
-            label='Course Title'
-            value={this.state.title}
-            placeholder='e.g. Montessori'/>
+      <ScrollView>
+        <View>
+          <Form
+            ref='registrationForm'
+            onChange={this._handleFormChange}
+            label="Personal Information">
+            <InputField
+              ref='title'
+              label='Course Title'
+              value={this.state.title}
+              placeholder='e.g. Montessori'/>
 
-          <InputField
-            ref='teacher_id1'
-            label='Teacher ID 1'
-            value={this.state.teacher_id1}
-            placeholder='e.g. 19322372'/>
+            <InputField
+              ref='teacher_id1'
+              label='Teacher ID 1'
+              value={this.state.teacher_id1}
+              placeholder='e.g. 19322372'/>
 
-          <InputField
-            ref='teacher_id2'
-            label='Teacher ID 2'
-            value={this.state.teacher_id2}
-            placeholder='e.g. 12634669'/>
+            <InputField
+              ref='teacher_id2'
+              label='Teacher ID 2'
+              value={this.state.teacher_id2}
+              placeholder='e.g. 12634669'/>
 
-          <DatePickerField
-            ref='start_date'
-            minimumDate={minDate}
-            maximumDate={maxDate}
-            mode="date"
-            date={this.state.start_date}
-            placeholder='Start Date'/>
+            <DatePickerField
+              ref='start_date'
+              minimumDate={minDate}
+              maximumDate={maxDate}
+              mode="date"
+              date={this.state.start_date}
+              placeholder='Start Date'/>
 
-          <DatePickerField
-            ref='end_date'
-            minimumDate={minDate}
-            maximumDate={maxDate}
-            mode='date'
-            date={this.state.end_date}
-            placeholder='End Date'/>
+            <DatePickerField
+              ref='end_date'
+              minimumDate={minDate}
+              maximumDate={maxDate}
+              mode='date'
+              date={this.state.end_date}
+              placeholder='End Date'/>
 
-          { this._renderSessions() }
-          { this._renderAddSessionButton() }
-        </Form>
-        <Button
-          onPress={() => this.props.onSaveCourse({ course: this.state })}
-          title='Save'
-        />
-      </View>
+            { this._renderSessions() }
+            { this._renderAddSessionButton() }
+          </Form>
+          <Button
+            onPress={() => this.props.onSaveCourse({ course: this.state })}
+            title='Save'
+          />
+        </View>
+      </ScrollView>
     );
 
   }
