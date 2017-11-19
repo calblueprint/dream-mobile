@@ -4,6 +4,7 @@ import { commonStyles } from '../../styles/styles';
 import { getRequest } from '../../lib/requests';
 import { APIRoutes } from '../../config/routes';
 import CourseCard from '../../components/CourseCard/CourseCard';
+import LocalStorage from '../../helpers/LocalStorage'
 
 class CoursesScreen extends React.Component {
   constructor(props) {
@@ -14,25 +15,39 @@ class CoursesScreen extends React.Component {
     this._renderCourses = this._renderCourses.bind(this);
     this.state = {
       courses : { },
+      teacher_dream_id : null,
+      promiseLoading: true,
       isLoading : true,
     }
   }
 
   componentDidMount() {
-    this._fetchCourses();
+    LocalStorage.getUser().then((user) => {
+      this.setState({ teacher_dream_id: user.dream_id, promiseLoading: false });
+      console.log(user.id)
+      this._fetchCourses();
+    });
+
   }
 
   /*
    * Get all course records and rerenders component to display courses.
    */
   _fetchCourses() {
+    const params = {
+      teacher_id: this.state.teacher_dream_id,
+    }
+
+    console.log(params)
+
     const successFunc = (responseData) => {
+      console.log(responseData);
       this.setState({ courses: responseData, isLoading: false });
     }
     const errorFunc = (error) => {
       console.error(error);
     }
-    getRequest(APIRoutes.getCoursesPath(), successFunc, errorFunc);
+    getRequest(APIRoutes.getCoursesPath(), successFunc, errorFunc, params);
   }
 
   _handleSelectCourse(course_id) {

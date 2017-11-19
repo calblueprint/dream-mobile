@@ -1,6 +1,7 @@
 import React from 'react';
+import LocalStorage from '../../helpers/LocalStorage'
 import { Button, ScrollView, Text, TextInput, View } from 'react-native';
-import { styles } from '../../styles/styles';
+import { commonStyles } from '../../styles/styles';
 import { postRequest } from '../../lib/requests';
 import { APIRoutes } from '../../config/routes';
 import SignUpForm from '../../components/Form/SignUpForm'
@@ -17,6 +18,7 @@ class SignUpScreen extends React.Component {
   _attemptSignUp(params) {
     const successFunc = (responseData) => {
       this.setState({teacher: responseData});
+      LocalStorage.storeUser(responseData);
       this.props.navigation.navigate('Home');
     }
     const errorFunc = (error) => {

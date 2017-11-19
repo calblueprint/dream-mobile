@@ -1,4 +1,5 @@
 import React from 'react';
+import LocalStorage from '../../helpers/LocalStorage'
 import { Button, ScrollView, Text, TextInput, View } from 'react-native';
 import { styles } from '../../styles/styles';
 import { postRequest } from '../../lib/requests';
@@ -16,16 +17,20 @@ class LoginScreen extends React.Component {
 
   _attemptLogin() {
     const successFunc = (responseData) => {
-      this.setState({teacher: responseData});
-      this.props.navigation.navigate('Home');
+      console.log(responseData);
+      LocalStorage.storeUser(responseData);
+      this.props.navigation.navigate('Courses');
     }
     const errorFunc = (error) => {
       console.error(error)
     }
     const params = {
-      email: this.state.email,
-      password: this.state.password,
+      teacher: {
+        email: this.state.email,
+        password: this.state.password,
+      }
     }
+    console.log(params);
     postRequest(APIRoutes.loginPath(), successFunc, errorFunc, params);
   }
 
@@ -41,7 +46,6 @@ class LoginScreen extends React.Component {
   }
 
   render() {
-
     return (
       <View>
         <TextInput
@@ -53,10 +57,7 @@ class LoginScreen extends React.Component {
           onChangeText={(text) => this.setState({password: text})}
           secureTextEntry/>
         <Button
-          onPress={() => {
-                  this._attemptLogin.bind(this);
-                  this.props.navigation.goBack(this.props.navigation.state.params.parentKey || null);
-                  }}
+          onPress={this._attemptLogin.bind(this)}
           title='Login'
         />
         <Button

@@ -1,4 +1,5 @@
 import React from 'react';
+import LocalStorage from '../../helpers/LocalStorage'
 import { Button, ScrollView, Text, TextInput, View } from 'react-native';
 import { styles } from '../../styles/styles';
 import { postRequest } from '../../lib/requests';
