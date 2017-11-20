@@ -96,7 +96,6 @@ class ViewCourseScreen extends React.Component {
             <Text>Teacher ID 1: { this.state.course.teacher_id1 }</Text>
             <Text>Teacher ID 2: { this.state.course.teacher_id2 }</Text>
             <Text>{ this._renderCourseDate() }</Text>
-            <Text>{ this._renderCourseSession() }</Text>
             <Button
               onPress={() => navigate('EditCourse',
                 {
