@@ -65,6 +65,7 @@ class EditCourseScreen extends React.Component {
     if (navProps.newCourse) {
       return (
         <EditCourseForm
+          sessionList={navProps.sessions}
           onSaveCourse={this._handleCreateCourse} />
       );
     } else {

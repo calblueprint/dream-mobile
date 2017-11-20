@@ -1,13 +1,10 @@
 import React from 'react';
 import { ScrollView, Text, View } from 'react-native';
-import { Form, InputField, PickerField,
-         DatePickerField, TimePickerField } from 'react-native-form-generator';
-import { APIRoutes } from '../../config/routes';
-import PropTypes from 'prop-types';
-import { timeFormat } from '../../lib/time';
+import { Form, t } from '../../components/Form/Form';
+import { formStyles } from '../Form/styles.js';
+import { timeFormat, dateFormat } from '../../lib/datetime_formats';
 import StyledButton from '../Button/Button';
 import Session from '../Session';
-import SessionTcomb from '../Session/SessionTcomb';
 
 /**
  * @prop onSaveCourse - callback function when course create form is submitted
@@ -23,26 +20,31 @@ import SessionTcomb from '../Session/SessionTcomb';
  * @prop sessionList - list of session records
  */
 class EditCourseForm extends React.Component {
+
   constructor(props) {
     super(props);
+
     this._initializeSessionList = this._initializeSessionList.bind(this);
     this._initializeSession = this._initializeSession.bind(this);
+
+    this._getInitialFormValues = this._getInitialFormValues.bind(this);
+    this._getFormType = this._getFormType.bind(this);
+    this._getFormOptions = this._getFormOptions.bind(this);
+    this._clearFormErrors = this._clearFormErrors.bind(this);
+    this._onFormChange = this._onFormChange.bind(this);
+
     this._mapSessions = this._mapSessions.bind(this);
-    this._addNewSession = this._addNewSession.bind(this);
-    this._renderAddSessionButton = this._renderAddSessionButton.bind(this);
-    this._renderSaveCourseButton = this._renderSaveCourseButton.bind(this);
-    this._renderSessions = this._renderSessions.bind(this);
+    this._handleAddSession = this._handleAddSession.bind(this);
     this._handleSessionChange = this._handleSessionChange.bind(this);
     this._handleSessionDelete = this._handleSessionDelete.bind(this);
-    this._handleFormChange = this._handleFormChange.bind(this);
+    this._handleSaveCourse = this._handleSaveCourse.bind(this);
+    this._renderSessions = this._renderSessions.bind(this);
+    this._renderAddSessionButton = this._renderAddSessionButton.bind(this);
+    this._renderSaveCourseButton = this._renderSaveCourseButton.bind(this);
+
     this.state = {
-      isLoading : true,
-      is_active: this.props.is_active,
-      title: this.props.title || '',
-      teacher_id1: this.props.teacher1 || '',
-      teacher_id2: this.props.teacher2 || '',
-      start_date: this.props.start_date || '',
-      end_date: this.props.end_date || '',
+      formValues: this._getInitialFormValues(),
+      errors: [],
       sessionList: [],
     }
   }
@@ -70,9 +72,97 @@ class EditCourseForm extends React.Component {
   }
 
   /*
+   * Populate form if fields already exist.
+   */
+  _getInitialFormValues() {
+    return {
+      is_active: this.props.is_active,
+      title: this.props.title,
+      teacher_id1: this.props.teacher1,
+      teacher_id2: this.props.teacher2,
+      start_date: new Date(this.props.start_date),
+      end_date: new Date(this.props.end_date),
+    };
+  }
+
+  /*
+   * Define fields in form.
+   */
+  _getFormType() {
+    return t.struct({
+      title: t.String,
+      teacher_id1: t.Number,
+      teacher_id2: t.Number,
+      start_date: t.Date,
+      end_date: t.Date,
+    });
+  }
+
+  /*
+   * Specify options for form fields.
+   */
+  _getFormOptions() {
+    return {
+      error: this.state.errors,
+      fields: {
+        start_date: {
+          mode:'date',
+          config: {
+            format:dateFormat,
+          }
+        },
+        end_date: {
+          mode:'date',
+          config: {
+            format:dateFormat,
+          }
+        },
+      },
+    };
+  }
+
+  /**
+   * Clear the error state at the beginning of each validation (login)
+   */
+  _clearFormErrors() {
+    this.setState({ errors: [] });
+  }
+
+  /*
+   * Update component state each time a form field changes.
+   */
+  _onFormChange(values) {
+    const today = new Date();
+    if (values.end_date && values.end_date < today) {
+      values.is_active = false
+    } else {
+      values.is_active = true
+    }
+
+    this.setState({ formValues: values });
+  }
+
+  /*
+   * Map session to its view in the Course form.
+   */
+  _mapSessions(session, index) {
+    return (
+      <Session
+        key             = {index}
+        weekday         = {session.weekday}
+        start_time      = {session.start_time}
+        end_time        = {session.end_time}
+        number          = {session.number}
+        onSessionChange = {this._handleSessionChange}
+        onSessionDelete = {this._handleSessionDelete}
+      />
+    );
+  }
+
+  /*
    * Add new session to state sessionList
    */
-  _addNewSession() {
+  _handleAddSession() {
     let newSession = {
       modified: true,
       weekday: "",
@@ -83,40 +173,6 @@ class EditCourseForm extends React.Component {
     sessionList = this.state.sessionList.slice();
     sessionList.push(newSession)
     this.setState({ sessionList: sessionList })
-  }
-
-  /*
-   * Return the add session button component.
-   */
-  _renderAddSessionButton() {
-    return (
-      <StyledButton
-        onPress={this._addNewSession}
-        text='+ Add Session'
-        clearButtonSmall>
-      </StyledButton>
-    );
-  }
-
-  /*
-   * Return the save course button component.
-   */
-  _renderSaveCourseButton() {
-    return (
-      <StyledButton
-        onPress={() => this.props.onSaveCourse({ course: this.state })}
-        text='Save'
-        primaryButtonLarge>
-      </StyledButton>
-    );
-  }
-
-  /*
-   * Display sessions.
-   */
-  _renderSessions() {
-    let sessions = this.state.sessionList.map(this._mapSessions);
-    return sessions;
   }
 
   /*
@@ -143,91 +199,70 @@ class EditCourseForm extends React.Component {
   }
 
   /*
-   * Map session to its view in the Course form.
+   * Extract values from form and call onSaveCourse callback.
    */
-  _mapSessions(session, index) {
+  _handleSaveCourse() {
+    this._clearFormErrors();
+    const values = this.form.getValue();
+    if (values) {
+      this.props.onSaveCourse({ course: values })
+    } else {
+      // TODO (casey): fix
+      console.log("Validation failed!")
+    }
+  }
+
+  /*
+   * Display sessions.
+   */
+  _renderSessions() {
+    let sessions = this.state.sessionList.map(this._mapSessions);
+    return sessions;
+  }
+
+  /*
+   * Return the add session button component.
+   */
+  _renderAddSessionButton() {
     return (
-      <Session
-        key             = {index}
-        weekday         = {session.weekday}
-        start_time      = {session.start_time}
-        end_time        = {session.end_time}
-        number          = {session.number}
-        onSessionChange = {this._handleSessionChange}
-        onSessionDelete = {this._handleSessionDelete}
-      />
+      <StyledButton
+        onPress={this._handleAddSession}
+        text='+ Add Session'
+        clearButtonSmall>
+      </StyledButton>
     );
   }
 
   /*
-   * Update component state each time a form field changes.
+   * Return the save course button component.
    */
-  _handleFormChange(courseData){
-    this.setState({ ...courseData });
-
-    const today = new Date();
-    if (this.state.end_date && this.state.end_date < today) {
-      this.setState({ is_active: false })
-    } else {
-      this.setState({ is_active: true })
-    }
+  _renderSaveCourseButton() {
+    return (
+      <StyledButton
+        onPress={this._handleSaveCourse}
+        text='Save'
+        primaryButtonLarge>
+      </StyledButton>
+    );
   }
 
   render() {
-    const today = new Date();
-    const minDate = new Date(today.getFullYear()-2, today.getMonth(), today.getDate());
-    const maxDate = new Date(today.getFullYear()+2, today.getMonth(), today.getDate());
-
     return (
       <ScrollView>
-        <View>
+        <View style={formStyles.container}>
           <Form
-            ref='registrationForm'
-            onChange={this._handleFormChange}
-            label="Personal Information">
-            <InputField
-              ref='title'
-              label='Course Title'
-              value={this.state.title}
-              placeholder='e.g. Montessori'/>
-
-            <InputField
-              ref='teacher_id1'
-              label='Teacher ID 1'
-              value={this.state.teacher_id1}
-              placeholder='e.g. 19322372'/>
-
-            <InputField
-              ref='teacher_id2'
-              label='Teacher ID 2'
-              value={this.state.teacher_id2}
-              placeholder='e.g. 12634669'/>
-
-            <DatePickerField
-              ref='start_date'
-              minimumDate={minDate}
-              maximumDate={maxDate}
-              mode="date"
-              date={this.state.start_date}
-              placeholder='Start Date'/>
-
-            <DatePickerField
-              ref='end_date'
-              minimumDate={minDate}
-              maximumDate={maxDate}
-              mode='date'
-              date={this.state.end_date}
-              placeholder='End Date'/>
-
-            { this._renderSessions() }
-            { this._renderAddSessionButton() }
-          </Form>
-          <SessionTcomb />
+            refCallback={(ref) => this.form = ref}
+            type={this._getFormType()}
+            options={this._getFormOptions()}
+            value={this.state.formValues}
+            onChange={this._onFormChange}
+          />
+          { this._renderSessions() }
+          { this._renderAddSessionButton() }
           { this._renderSaveCourseButton() }
         </View>
       </ScrollView>
     );
-
   }
 }
 

@@ -1,10 +1,14 @@
+/**
+ * Session Form component for course creation and editing.
+ */
+
 import React from 'react';
-import { Image, View, Text, StyleSheet, Button } from 'react-native';
-import { Form, PickerField, TimePickerField } from 'react-native-form-generator';
-import { timeFormat } from '../../lib/time';
-import styles from './styles'
-import { textStyles } from '../../styles/textStyles';
+import { Text, View } from 'react-native';
+import { Form, t } from '../../components/Form/Form';
 import StyledButton from '../Button/Button';
+import { formStyles } from '../Form/styles.js';
+import { timeFormat } from '../../lib/datetime_formats';
+import { sessionStyles } from './styles';
 
 /**
  * @prop weekday - session weekday
@@ -15,20 +19,87 @@ import StyledButton from '../Button/Button';
  * @prop onSessionDelete - callback function to delete a session
  */
 class Session extends React.Component {
+
   constructor(props) {
     super(props);
+
+    this._getInitialFormValues = this._getInitialFormValues.bind(this);
+    this._getFormType = this._getFormType.bind(this);
+    this._getFormOptions = this._getFormOptions.bind(this);
+    this._clearFormErrors = this._clearFormErrors.bind(this);
+
     this._handleSessionChange = this._handleSessionChange.bind(this);
     this._renderDeleteSessionButton = this._renderDeleteSessionButton.bind(this);
+
     this.state = {
+      formValues: this._getInitialFormValues(),
+      errors: [],
     }
   }
 
-  /*
-   * Call the onSessionChange callback. Pass in the session number and field value.
+  _getInitialFormValues() {
+    return {
+      weekday: this.props.weekday,
+    };
+  }
+
+  _getFormType() {
+    const Weekday = t.enums({
+      'Sunday': 'Sunday',
+      'Monday': 'Monday',
+      'Tuesday': 'Tuesday',
+      'Wednesday': 'Wednesday',
+      'Thursday': 'Thursday',
+      'Friday': 'Friday',
+      'Saturday': 'Saturday',
+    });
+    return t.struct({
+      weekday: Weekday,
+      start_time: t.Date,
+      end_time: t.Date,
+    });
+  }
+
+  _getFormOptions() {
+    return {
+      error: this.state.errors,
+      fields: {
+        start_time: {
+          mode:'time',
+          config: {
+            format:timeFormat,
+          }
+        },
+        end_time: {
+          mode:'time',
+          config: {
+            format:timeFormat,
+          }
+        },
+      },
+    };
+  }
+
+  /**
+   * Clear the error state at the beginning of each validation (login)
    */
-  _handleSessionChange(session) {
-    session.modified = true;
-    this.props.onSessionChange(session, this.props.number);
+  _clearFormErrors() {
+    this.setState({ errors: [] });
+  }
+
+  /*
+   * Call the onSessionChange callback. Pass in the session number and form values.
+   */
+  _handleSessionChange() {
+    this._clearFormErrors();
+    const values = this.form.getValue();
+    if (values) {
+      values.modified = true;
+      this.props.onSessionChange(values, this.props.number);
+    } else {
+      // TODO (casey): fix
+      console.log("Validation failed!")
+    }
   }
 
   /*
@@ -47,38 +118,19 @@ class Session extends React.Component {
   render() {
     return (
       <View>
-        <Form
-          ref='sessionForm'
-          onChange={this._handleSessionChange}>
-
-          <PickerField
-            ref='weekday'
-            options={{
-              'Sunday': 'Sunday',
-              'Monday': 'Monday',
-              'Tuesday': 'Tuesday',
-              'Wednesday': 'Wednesday',
-              'Thursday': 'Thursday',
-              'Friday': 'Friday',
-              'Saturday': 'Saturday',
-            }}
-            value={this.props.weekday}
-            label='Select Day'/>
-
-          <TimePickerField
-            ref='start_time'
-            dateTimeFormat={timeFormat}
-            date={this.props.start_time}
-            placeholder='Session Start'/>
-
-          <TimePickerField
-            ref='end_time'
-            dateTimeFormat={timeFormat}
-            date={this.props.end_time}
-            placeholder='Session End'/>
-
+        <View style={formStyles.container}>
+          <Text style={sessionStyles.headerText}>
+            Session
+          </Text>
+          <Form
+            refCallback={(ref) => this.form = ref}
+            type={this._getFormType()}
+            options={this._getFormOptions()}
+            value={this.state.formValues}
+            onChange={this._handleSessionChange}
+          />
           { this._renderDeleteSessionButton() }
-        </Form>
+        </View>
       </View>
     );
   }

@@ -82,7 +82,7 @@ class CoursesScreen extends React.Component {
       <ScrollView>
         <View>
           <Button
-            onPress={() => navigate('EditCourse', {refreshCourses: this._fetchCourses, newCourse: true})}
+            onPress={() => navigate('EditCourse', {refreshCourses: this._fetchCourses, newCourse: true, sessions: []})}
             title="Create Course"
           />
           { courses }
