@@ -11,7 +11,6 @@ class ViewCourseScreen extends React.Component {
     super(props);
     this._fetchCourse = this._fetchCourse.bind(this);
     this._deleteCourse = this._deleteCourse.bind(this);
-    this._renderCourseTeachers = this._renderCourseTeachers.bind(this);
     this._renderCourseSession = this._renderCourseSession.bind(this);
     this._renderCourseDate = this._renderCourseDate.bind(this);
     this.state = {
@@ -56,27 +55,6 @@ class ViewCourseScreen extends React.Component {
       this.props.navigation.goBack(null);
     }
     deleteRequest(APIRoutes.getCoursePath(this.state.course_id), successFunc, standardError);
-  }
-
-  /*
-   * Display course teacher names.
-   */
-  _renderCourseTeachers() {
-   /*
-    * TODO(caseytaka): Render teacher names of course! Not just teacher dream_ids.
-    * Will need to make another getRequest for the teacher records.
-    */
-
-    // const teachers = this.state.course.teachers.map((teacher, i) => {
-    //   return (
-    //     <Text>{ teacher.first_name } { teacher.last_name }</Text>
-    //   );
-    // });
-    // return (
-    //   <View>
-    //     { teachers }
-    //   </View>
-    // );
   }
 
   /*
