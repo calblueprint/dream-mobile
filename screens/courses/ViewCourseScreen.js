@@ -3,7 +3,7 @@ import { Button, ScrollView, Text, View } from 'react-native';
 import { commonStyles } from '../../styles/styles';
 import { getRequest, deleteRequest } from '../../lib/requests';
 import { APIRoutes } from '../../config/routes';
-import { timeFormat } from '../../lib/time';
+import { timeFormat } from '../../lib/datetime_formats';
 import { standardError } from '../../lib/request_callbacks';
 
 class ViewCourseScreen extends React.Component {
