@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, ScrollView, Text, View } from 'react-native';
+import { ScrollView, Text, View } from 'react-native';
 import { Form, InputField, PickerField,
          DatePickerField, TimePickerField } from 'react-native-form-generator';
 import { APIRoutes } from '../../config/routes';
@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 import { timeFormat } from '../../lib/time';
 import StyledButton from '../Button/Button';
 import Session from '../Session';
+import SessionTcomb from '../Session/SessionTcomb';
 
 /**
  * @prop onSaveCourse - callback function when course create form is submitted
@@ -29,6 +30,7 @@ class EditCourseForm extends React.Component {
     this._mapSessions = this._mapSessions.bind(this);
     this._addNewSession = this._addNewSession.bind(this);
     this._renderAddSessionButton = this._renderAddSessionButton.bind(this);
+    this._renderSaveCourseButton = this._renderSaveCourseButton.bind(this);
     this._renderSessions = this._renderSessions.bind(this);
     this._handleSessionChange = this._handleSessionChange.bind(this);
     this._handleSessionDelete = this._handleSessionDelete.bind(this);
@@ -90,8 +92,21 @@ class EditCourseForm extends React.Component {
     return (
       <StyledButton
         onPress={this._addNewSession}
-        text='Add Session'
+        text='+ Add Session'
         clearButtonSmall>
+      </StyledButton>
+    );
+  }
+
+  /*
+   * Return the save course button component.
+   */
+  _renderSaveCourseButton() {
+    return (
+      <StyledButton
+        onPress={() => this.props.onSaveCourse({ course: this.state })}
+        text='Save'
+        primaryButtonLarge>
       </StyledButton>
     );
   }
@@ -207,10 +222,8 @@ class EditCourseForm extends React.Component {
             { this._renderSessions() }
             { this._renderAddSessionButton() }
           </Form>
-          <Button
-            onPress={() => this.props.onSaveCourse({ course: this.state })}
-            title='Save'
-          />
+          <SessionTcomb />
+          { this._renderSaveCourseButton() }
         </View>
       </ScrollView>
     );
