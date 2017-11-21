@@ -49,11 +49,16 @@ class Session extends React.Component {
    * Populate form if fields already exist.
    */
   _getInitialFormValues(props) {
-    return {
+    values = {
       weekday: props.weekday,
-      start_time: new Date(props.start_time),
-      end_time: new Date(props.end_time),
     };
+    if (props.start_time) {
+      values.start_time = new Date(props.start_time)
+    }
+    if (props.end_time) {
+      values.end_time = new Date(props.end_time)
+    }
+    return values
   }
 
   /*
@@ -83,6 +88,9 @@ class Session extends React.Component {
     return {
       error: this.state.errors,
       fields: {
+        weekday: {
+          label: 'Day',
+        },
         start_time: {
           mode:'time',
           config: {
