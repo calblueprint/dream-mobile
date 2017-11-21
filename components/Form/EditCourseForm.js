@@ -58,18 +58,16 @@ class EditCourseForm extends React.Component {
    * Parse sessionList from props to create state sessionList.
    */
   _initializeSessionList() {
-    this.props.sessionList.map(this._initializeSession)
+    const sessionList = this.props.sessionList.map(this._initializeSession)
+    this.setState({ sessionList: sessionList })
   }
 
   /*
    * Add individual session to state sessionList.
    */
   _initializeSession(session, index) {
-    let stateSession = { ...session }
-    stateSession.modified = false
-    sessionList = this.state.sessionList.slice();
-    sessionList.push(stateSession)
-    this.setState({ sessionList: sessionList })
+    session.modified = false
+    return session
   }
 
   /*
@@ -207,6 +205,7 @@ class EditCourseForm extends React.Component {
     // Decrement question number for all following questions
     for (let i = number; i < sessionList.length; i++) {
       sessionList[i].number -= 1;
+      sessionList[i].modified = true
     }
     this.setState({ sessionList: sessionList })
   }
