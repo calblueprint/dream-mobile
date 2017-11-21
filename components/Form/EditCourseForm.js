@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView, Text, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { Form, t } from '../../components/Form/Form';
 import { formStyles } from '../Form/styles.js';
 import { timeFormat, dateFormat } from '../../lib/datetime_formats';
@@ -237,6 +237,7 @@ class EditCourseForm extends React.Component {
    * Return the save course button component.
    */
   _renderSaveCourseButton() {
+    // TODO (casey): make static button
     return (
       <StyledButton
         onPress={this._handleSaveCourse}

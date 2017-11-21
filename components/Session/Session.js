@@ -40,6 +40,8 @@ class Session extends React.Component {
   _getInitialFormValues() {
     return {
       weekday: this.props.weekday,
+      start_time: new Date(this.props.start_time),
+      end_time: new Date(this.props.end_time),
     };
   }
 
@@ -95,6 +97,7 @@ class Session extends React.Component {
     const values = this.form.getValue();
     if (values) {
       values.modified = true;
+      this.setState({ formValues: values });
       this.props.onSessionChange(values, this.props.number);
     } else {
       // TODO (casey): fix
@@ -117,20 +120,18 @@ class Session extends React.Component {
 
   render() {
     return (
-      <View>
-        <View style={formStyles.container}>
-          <Text style={sessionStyles.headerText}>
-            Session
-          </Text>
-          <Form
-            refCallback={(ref) => this.form = ref}
-            type={this._getFormType()}
-            options={this._getFormOptions()}
-            value={this.state.formValues}
-            onChange={this._handleSessionChange}
-          />
-          { this._renderDeleteSessionButton() }
-        </View>
+      <View style={formStyles.container}>
+        <Text style={sessionStyles.headerText}>
+          Session { this.props.number + 1 }
+        </Text>
+        <Form
+          refCallback={(ref) => this.form = ref}
+          type={this._getFormType()}
+          options={this._getFormOptions()}
+          value={this.state.formValues}
+          onChange={this._handleSessionChange}
+        />
+        { this._renderDeleteSessionButton() }
       </View>
     );
   }
