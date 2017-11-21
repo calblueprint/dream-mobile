@@ -95,7 +95,7 @@ class EditCourseForm extends React.Component {
   _getFormType() {
     return t.struct({
       title: t.String,
-      teacher_id1: t.maybe(t.Number), // TODO: NOT OPTIONAL! For testing purposes
+      teacher_id1: t.Number,
       teacher_id2: t.maybe(t.Number),
       start_date: t.Date,
       end_date: t.Date,
