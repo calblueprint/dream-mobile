@@ -4,6 +4,8 @@ import { Button, ScrollView, Text, TextInput, View } from 'react-native';
 import { styles } from '../../styles/styles';
 import { postRequest } from '../../lib/requests';
 import { APIRoutes } from '../../config/routes';
+import { standardError } from '../../lib/request_callbacks';
+
 
 class LoginScreen extends React.Component {
   constructor(props) {
@@ -17,12 +19,8 @@ class LoginScreen extends React.Component {
 
   _attemptLogin() {
     const successFunc = (responseData) => {
-      console.log(responseData);
       LocalStorage.storeUser(responseData);
       this.props.navigation.navigate('Courses');
-    }
-    const errorFunc = (error) => {
-      console.error(error)
     }
     const params = {
       teacher: {
@@ -30,19 +28,7 @@ class LoginScreen extends React.Component {
         password: this.state.password,
       }
     }
-    console.log(params);
-    postRequest(APIRoutes.loginPath(), successFunc, errorFunc, params);
-  }
-
-  _attemptSignOut() {
-    const successFunc = (responseData) => {
-      this.setState({teacher: responseData});
-      this.props.navigation.navigate('LoginScreen');
-    }
-    const errorFunc = (error) => {
-      console.error(error)
-    }
-    deleteRequest(APIRoutes.signoutPath(), successFunc, errorFunc);
+    postRequest(APIRoutes.loginPath(), successFunc, standardError, params);
   }
 
   render() {
@@ -63,10 +49,6 @@ class LoginScreen extends React.Component {
         <Button
           onPress={() => this.props.navigation.navigate('SignUp')}
           title='Sign Up'
-        />
-        <Button
-          onPress={() => this._attemptSignOut.bind(this)}
-          title='Sign Out'
         />
 
       </View>

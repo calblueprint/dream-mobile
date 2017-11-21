@@ -8,11 +8,10 @@ import { APIRoutes } from '../config/routes';
 class HomeScreen extends React.Component {
 
   componentDidMount() {
-    // LocalStorage.clearUser();
-    this._fetchUser();
+    this._fetchTeacher();
   }
 
-  _fetchUser() {
+  _fetchTeacher() {
     const { navigate } = this.props.navigation;
     setTimeout(() => {
       LocalStorage.getUser().then((user) => {

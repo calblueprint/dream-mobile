@@ -35,13 +35,13 @@ export const HomeStack = StackNavigator({
   SignUp: {
     screen: SignUpScreen,
     navigationOptions: {
-      headerTitle: 'SignUp'
+      headerTitle: 'Sign Up'
     },
   },
   ViewCourse: {
     screen: ViewCourseScreen,
     navigationOptions: {
-      headerTitle: 'ViewCourse',
+      headerTitle: 'View Course',
     },
   },
   Courses : {
@@ -65,7 +65,7 @@ export const HomeStack = StackNavigator({
   EditCourse : {
     screen: EditCourseScreen,
     navigationOptions: {
-      headerTitle: 'EditCourse',
+      headerTitle: 'Edit Course',
     },
   },
   Students : {
@@ -77,13 +77,13 @@ export const HomeStack = StackNavigator({
   CreateStudent : {
     screen: CreateStudentScreen,
     navigationOptions: {
-      headerTitle: 'CreateStudent',
+      headerTitle: 'Enroll Student',
     },
   },
   StudentProfile : {
     screen: StudentProfileScreen,
     navigationOptions: {
-      headerTitle: 'StudentProfile',
+      headerTitle: 'Student Profile',
     },
   },
   Attendances: {

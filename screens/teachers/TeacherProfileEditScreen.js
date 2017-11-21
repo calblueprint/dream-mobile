@@ -5,6 +5,7 @@ import { APIRoutes } from '../../config/routes';
 import EditTeacherForm from '../../components/Form/EditTeacherForm'
 import PropTypes from 'prop-types';
 import { standardError } from '../../lib/request_callbacks';
+import LocalStorage from '../../helpers/LocalStorage'
 
 class TeacherProfileEditScreen extends React.Component {
 	constructor(props) {
@@ -18,11 +19,12 @@ class TeacherProfileEditScreen extends React.Component {
 	  params.is_active = true;
 
 	  const successFunc = (responseData) => {
+	    LocalStorage.storeUser(responseData);
 	    this.setState({ teacher: responseData});
 	    this.props.navigation.state.params.refreshTeacher();
 	    this.props.navigation.goBack();
 	  }
-	  putRequest(APIRoutes.getTeacherPath(this.state.teacher.id), successFunc, standardError, params=params);
+	  putRequest(APIRoutes.getTeacherPath(this.state.teacher.id), successFunc, standardError, params);
 	}
 
 	render() {

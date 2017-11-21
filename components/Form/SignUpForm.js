@@ -12,13 +12,13 @@ class SignUpForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      first_name: 'John',
-      last_name: 'Doe',
-      email: 'asdf@gmail.com',
-      password: 'asdfasdf',
-      password_confimation: 'asdfasdf',
-      dream_id: '1234',
-      phone: '1234567890',
+      first_name: '',
+      last_name: '',
+      email: '',
+      password: '',
+      password_confimation: '',
+      dream_id: '',
+      phone: '',
     }
 
     this.onSignUp = this.onSignUp.bind(this);

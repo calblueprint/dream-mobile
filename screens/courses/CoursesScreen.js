@@ -17,17 +17,29 @@ class CoursesScreen extends React.Component {
     this._renderCourses = this._renderCourses.bind(this);
     this.state = {
       courses : { },
+      teacher : { },
       teacher_dream_id : null,
-      promiseLoading: true,
       isLoading : true,
     }
   }
 
+  static navigationOptions = ({ navigation }) => {
+      const { params = {} } = navigation.state;
+      return {
+          headerLeft: <Button title="Profile" onPress={() => params.handleProfile()} />
+      };
+  };
+
   componentDidMount() {
     LocalStorage.getUser().then((user) => {
-      this.setState({ teacher_dream_id: user.dream_id, promiseLoading: false });
-      console.log(user.id)
+      this.setState({ teacher_dream_id: user.dream_id,
+                      teacher: user });
+      _profileView = () => {
+        this.props.navigation.navigate('TeacherProfile',
+                                      { teacher: this.state.teacher })
+      }
       this._fetchCourses();
+      this.props.navigation.setParams({ handleProfile: _profileView });
     });
 
   }
@@ -36,24 +48,14 @@ class CoursesScreen extends React.Component {
    * Get all course records and rerenders component to display courses.
    */
   _fetchCourses() {
+    const successFunc = (responseData) => {
+      console.log()
+      this.setState({ courses: responseData, isLoading: false });
+    }
     const params = {
       teacher_id: this.state.teacher_dream_id,
     }
-
-    console.log(params)
-
-    const successFunc = (responseData) => {
-      console.log(responseData);
-      this.setState({ courses: responseData, isLoading: false });
-    }
-<<<<<<< HEAD
-    const errorFunc = (error) => {
-      console.error(error);
-    }
-    getRequest(APIRoutes.getCoursesPath(), successFunc, errorFunc, params);
-=======
-    getRequest(APIRoutes.getCoursesPath(), successFunc, standardError);
->>>>>>> master
+    getRequest(APIRoutes.getCoursesPath(), successFunc, standardError, params);
   }
 
   _handleSelectCourse(course_id) {
