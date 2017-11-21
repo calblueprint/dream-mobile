@@ -6,7 +6,7 @@ import { teacherStyles } from '../../styles/teacherStyles';
 import { commonStyles } from '../../styles/styles';
 import { getRequest } from '../../lib/requests';
 import { APIRoutes } from '../../config/routes';
-import { standardError } from '../../lib/request_callbacks';
+import { standardError } from '../../lib/alerts';
 
 class TeacherProfileScreen extends React.Component {
 

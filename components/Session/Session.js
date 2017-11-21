@@ -9,6 +9,7 @@ import StyledButton from '../Button/Button';
 import { formStyles } from '../Form/styles.js';
 import { timeFormat } from '../../lib/datetime_formats';
 import { sessionStyles } from './styles';
+import { frontendError } from '../../lib/alerts';
 
 /**
  * @prop weekday - session weekday
@@ -116,8 +117,7 @@ class Session extends React.Component {
       this.setState({ formValues: values });
       this.props.onSessionChange(values, this.props.number);
     } else {
-      // TODO (casey): fix
-      console.log("Validation failed!")
+      frontendError("Validation failed. Session not updated.")
     }
   }
 

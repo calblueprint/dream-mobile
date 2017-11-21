@@ -4,7 +4,7 @@ import { getRequest, putRequest } from '../../lib/requests';
 import { APIRoutes } from '../../config/routes';
 import EditTeacherForm from '../../components/Form/EditTeacherForm'
 import PropTypes from 'prop-types';
-import { standardError } from '../../lib/request_callbacks';
+import { standardError } from '../../lib/alerts';
 
 class TeacherProfileEditScreen extends React.Component {
 	constructor(props) {
