@@ -32,19 +32,32 @@ class Session extends React.Component {
     this._renderDeleteSessionButton = this._renderDeleteSessionButton.bind(this);
 
     this.state = {
-      formValues: this._getInitialFormValues(),
+      formValues: this._getInitialFormValues(this.props),
       errors: [],
     }
   }
 
-  _getInitialFormValues() {
+  /*
+   * Force form fields to refresh when a session is deleted and props change.
+   */
+  componentWillReceiveProps (nextProps) {
+    this.setState({ formValues: this._getInitialFormValues(nextProps) });
+  }
+
+  /*
+   * Populate form if fields already exist.
+   */
+  _getInitialFormValues(props) {
     return {
-      weekday: this.props.weekday,
-      start_time: new Date(this.props.start_time),
-      end_time: new Date(this.props.end_time),
+      weekday: props.weekday,
+      start_time: new Date(props.start_time),
+      end_time: new Date(props.end_time),
     };
   }
 
+  /*
+   * Define fields in form.
+   */
   _getFormType() {
     const Weekday = t.enums({
       'Sunday': 'Sunday',
@@ -62,6 +75,9 @@ class Session extends React.Component {
     });
   }
 
+  /*
+   * Specify options for form fields.
+   */
   _getFormOptions() {
     return {
       error: this.state.errors,
@@ -82,7 +98,7 @@ class Session extends React.Component {
     };
   }
 
-  /**
+  /*
    * Clear the error state at the beginning of each validation (login)
    */
   _clearFormErrors() {

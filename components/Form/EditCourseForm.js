@@ -121,7 +121,7 @@ class EditCourseForm extends React.Component {
     };
   }
 
-  /**
+  /*
    * Clear the error state at the beginning of each validation (login)
    */
   _clearFormErrors() {
