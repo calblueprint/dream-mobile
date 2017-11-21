@@ -80,7 +80,7 @@ class CoursesScreen extends React.Component {
       <ScrollView>
         <View>
           <Button
-            onPress={() => navigate('EditCourse', {refreshCourses: this.props.fetchCourses, newCourse: true})}
+            onPress={() => navigate('EditCourse', {refreshCourses: this.props.fetchCourses, newCourse: true, sessions: []})}
             title="Create Course"
           />
           { courses }
@@ -91,11 +91,11 @@ class CoursesScreen extends React.Component {
   }
 }
 
-const fetchCourses = () => {
+const fetchCourses = (params) => {
   return (dispatch) => {
     dispatch(actions.requestCourses());
     return getRequest(
-      APIRoutes.getCoursesPath(),
+      APIRoutes.getCoursesPath(params),
       (responseData) => dispatch(actions.receiveCoursesSuccess(responseData)),
       (error) => dispatch(actions.receiveCoursesError(error))
     );
