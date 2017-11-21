@@ -121,7 +121,6 @@ class Session extends React.Component {
     this._clearFormErrors();
     const values = this.form.getValue();
     if (values) {
-      values.modified = true;
       this.setState({ formValues: values });
       this.props.onSessionChange(values, this.props.number);
     } else {
