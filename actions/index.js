@@ -2,10 +2,15 @@
 import types from '../lib/actionTypes'
 
 let actions = {
-  requestCourses: (courseId) => {
+  requestCourses: () => {
     return {
       type: types.REQUEST_COURSES,
-      courseId
+    }
+  },
+  receiveCoursesSuccess: (courses) => {
+    return {
+      type: types.RECEIVE_COURSES_SUCCESS,
+      courses
     }
   },
 };

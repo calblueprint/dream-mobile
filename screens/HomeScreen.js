@@ -30,18 +30,4 @@ class HomeScreen extends React.Component {
   }
 }
 
-function mapStateToProps(state) {
-  return {
-    state
-  };
-}
-
-function mapDispatchToProps(dispatch) {
-  return {
-    toggleButton: () => {
-      dispatch(actions.requestCourses(1));
-    }
-  };
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(HomeScreen);
+export default HomeScreen;

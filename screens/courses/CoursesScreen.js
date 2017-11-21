@@ -1,5 +1,10 @@
 import React from 'react';
 import { Button, ScrollView, Text, View } from 'react-native';
+
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import actions from '../../actions';
+
 import { commonStyles } from '../../styles/styles';
 import { getRequest } from '../../lib/requests';
 import { APIRoutes } from '../../config/routes';
@@ -10,17 +15,10 @@ import LocalStorage from '../../helpers/LocalStorage'
 class CoursesScreen extends React.Component {
   constructor(props) {
     super(props);
-    this._fetchCourses = this._fetchCourses.bind(this);
     this._handleSelectCourse = this._handleSelectCourse.bind(this);
     this._handleTakeAttendance = this._handleTakeAttendance.bind(this);
     this._handleViewStudents = this._handleViewStudents.bind(this);
     this._renderCourses = this._renderCourses.bind(this);
-    this.state = {
-      courses : { },
-      teacher : { },
-      teacher_dream_id : null,
-      isLoading : true,
-    }
   }
 
   static navigationOptions = ({ navigation }) => {
@@ -31,32 +29,12 @@ class CoursesScreen extends React.Component {
   };
 
   componentDidMount() {
-    LocalStorage.getUser().then((user) => {
-      this.setState({ teacher_dream_id: user.dream_id,
-                      teacher: user });
-      _profileView = () => {
-        this.props.navigation.navigate('TeacherProfile',
-                                      { teacher: this.state.teacher })
-      }
-      this._fetchCourses();
-      this.props.navigation.setParams({ handleProfile: _profileView });
-    });
-
-  }
-
-  /*
-   * Get all course records and rerenders component to display courses.
-   */
-  _fetchCourses() {
-    const successFunc = (responseData) => {
-      this.setState({ courses: responseData, isLoading: false });
-    }
-    getRequest(APIRoutes.getTeacherCoursesPath(this.state.teacher.id), successFunc, standardError);
+    this.props.fetchCourses();
   }
 
   _handleSelectCourse(course_id) {
     this.props.navigation.navigate('ViewCourse', {
-      refreshCourses: this._fetchCourses,
+      refreshCourses: this.props.fetchCourses,
       course_id: course_id
     });
   }
@@ -76,7 +54,7 @@ class CoursesScreen extends React.Component {
   }
 
   _renderCourses() {
-    return this.state.courses.map((course, i) => (
+    return this.props.courses.map((course, i) => (
       <CourseCard key={i}
         course_id={course.id}
         title={course.title}
@@ -90,7 +68,7 @@ class CoursesScreen extends React.Component {
   render() {
     const { navigate } = this.props.navigation;
     let courses;
-    if (this.state.isLoading) {
+    if (this.props.isLoading) {
       // TODO (caseytaka): Add loading gif.
       courses = (
         <Text>Loading...</Text>
@@ -102,7 +80,7 @@ class CoursesScreen extends React.Component {
       <ScrollView>
         <View>
           <Button
-            onPress={() => navigate('EditCourse', {refreshCourses: this._fetchCourses, newCourse: true, sessions: []})}
+            onPress={() => navigate('EditCourse', {refreshCourses: this.props.fetchCourses, newCourse: true})}
             title="Create Course"
           />
           { courses }
@@ -113,4 +91,29 @@ class CoursesScreen extends React.Component {
   }
 }
 
-export default CoursesScreen;
+const fetchCourses = () => {
+  return (dispatch) => {
+    dispatch(actions.requestCourses());
+    return getRequest(
+      APIRoutes.getCoursesPath(),
+      (responseData) => dispatch(actions.receiveCoursesSuccess(responseData)),
+      (error) => dispatch(actions.receiveCoursesError(error))
+    );
+  }
+}
+
+const mapStateToProps = (state) => {
+  return {
+    courses: state.courses,
+    isLoading: state.isLoading,
+  };
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    actions: bindActionCreators(actions, dispatch),
+    fetchCourses: () => dispatch(fetchCourses()),
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(CoursesScreen);
