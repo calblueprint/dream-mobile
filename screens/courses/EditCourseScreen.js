@@ -5,7 +5,7 @@ import { Form, InputField, PickerField,
 import { APIRoutes } from '../../config/routes';
 import PropTypes from 'prop-types';
 import EditCourseForm from '../../components/Form/EditCourseForm'
-import { postRequest, putRequest } from '../../lib/requests';
+import { postRequest, putRequest, deleteRequest } from '../../lib/requests';
 import { standardError } from '../../lib/alerts';
 
 class EditCourseScreen extends React.Component {
@@ -14,8 +14,6 @@ class EditCourseScreen extends React.Component {
     this._onSuccess = this._onSuccess.bind(this);
     this._handleCreateCourse = this._handleCreateCourse.bind(this);
     this._handleUpdateCourse = this._handleUpdateCourse.bind(this);
-    this._handleCreateSession = this._handleCreateSession.bind(this);
-    this._handleUpdateSession = this._handleUpdateSession.bind(this);
     this.state = {
       course_id: this.props.navigation.state.params.course_id,
     }
@@ -41,23 +39,6 @@ class EditCourseScreen extends React.Component {
    */
   _handleUpdateCourse(params) {
     putRequest(APIRoutes.getCoursePath(this.state.course_id), this._onSuccess, standardError, params=params);
-  }
-
-  /*
-   * Make request to add new session to course.
-   */
-  _handleCreateSession(params) {
-    const successFunc = (responseData) => {
-      console.log("New Session");
-    }
-    postRequest(APIRoutes.getSessionsPath(), successFunc, standardError, params=params);
-  }
-
-  /*
-   * Make request to update a course session.
-   */
-  _handleUpdateSession(params) {
-    putRequest(APIRoutes.getSessionPath(this.state.course_id), this._onSuccess, standardError, params=params);
   }
 
   render() {

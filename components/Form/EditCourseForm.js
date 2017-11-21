@@ -97,7 +97,7 @@ class EditCourseForm extends React.Component {
   _getFormType() {
     return t.struct({
       title: t.String,
-      teacher_id1: t.Number,
+      teacher_id1: t.maybe(t.Number), // TODO: NOT OPTIONAL! For testing purposes
       teacher_id2: t.maybe(t.Number),
       start_date: t.Date,
       end_date: t.Date,
@@ -115,7 +115,7 @@ class EditCourseForm extends React.Component {
           label: 'Teacher ID 1',
         },
         teacher_id2: {
-          label: 'Teacher ID 2',
+          label: 'Teacher ID 2 (optional)',
         },
         start_date: {
           mode:'date',
@@ -193,6 +193,7 @@ class EditCourseForm extends React.Component {
   _handleSessionChange(session, number){
     sessionList = this.state.sessionList.slice();
     sessionList[number] = { ...sessionList[number], ...session }
+    sessionList[number].modified = true
     this.setState({ sessionList: sessionList })
   }
 
