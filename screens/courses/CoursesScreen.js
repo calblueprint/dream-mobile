@@ -4,7 +4,7 @@ import { commonStyles } from '../../styles/styles';
 import { getRequest } from '../../lib/requests';
 import { APIRoutes } from '../../config/routes';
 import CourseCard from '../../components/CourseCard/CourseCard';
-import { standardError } from '../../lib/request_callbacks';
+import { standardError } from '../../lib/alerts';
 
 class CoursesScreen extends React.Component {
   constructor(props) {
@@ -82,7 +82,7 @@ class CoursesScreen extends React.Component {
       <ScrollView>
         <View>
           <Button
-            onPress={() => navigate('EditCourse', {refreshCourses: this._fetchCourses, newCourse: true})}
+            onPress={() => navigate('EditCourse', {refreshCourses: this._fetchCourses, newCourse: true, sessions: []})}
             title="Create Course"
           />
           { courses }

@@ -5,7 +5,7 @@ import { commonStyles } from '../../styles/styles';
 import { colors } from '../../styles/colors';
 import { getRequest, deleteRequest } from '../../lib/requests';
 import { APIRoutes } from '../../config/routes';
-import { standardError } from '../../lib/request_callbacks';
+import { standardError } from '../../lib/alerts';
 
 class StudentProfileScreen extends React.Component {
 

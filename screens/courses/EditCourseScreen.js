@@ -5,14 +5,17 @@ import { Form, InputField, PickerField,
 import { APIRoutes } from '../../config/routes';
 import PropTypes from 'prop-types';
 import EditCourseForm from '../../components/Form/EditCourseForm'
-import { postRequest, putRequest } from '../../lib/requests';
-import { standardError } from '../../lib/request_callbacks';
+import { postRequest, putRequest, deleteRequest } from '../../lib/requests';
+import { standardError } from '../../lib/alerts';
 
 class EditCourseScreen extends React.Component {
   constructor(props) {
     super(props);
     this._onSuccess = this._onSuccess.bind(this);
+    this._handleCreateCourse = this._handleCreateCourse.bind(this);
+    this._handleUpdateCourse = this._handleUpdateCourse.bind(this);
     this.state = {
+      course_id: this.props.navigation.state.params.course_id,
     }
   }
 
@@ -35,8 +38,7 @@ class EditCourseScreen extends React.Component {
    * Make request to save attributes of the course, and return to course page.
    */
   _handleUpdateCourse(params) {
-    course_id = this.props.navigation.state.params.course_id;
-    putRequest(APIRoutes.getCoursePath(course_id), this._onSuccess, standardError, params=params);
+    putRequest(APIRoutes.getCoursePath(this.state.course_id), this._onSuccess, standardError, params=params);
   }
 
   render() {
@@ -44,22 +46,21 @@ class EditCourseScreen extends React.Component {
     if (navProps.newCourse) {
       return (
         <EditCourseForm
-          onSaveCourse={this._handleCreateCourse.bind(this)} />
+          sessionList={navProps.sessions}
+          onSaveCourse={this._handleCreateCourse} />
       );
     } else {
       return (
         <View>
           <EditCourseForm
-            onSaveCourse={this._handleUpdateCourse.bind(this)}
             is_active={navProps.is_active}
             title={navProps.title}
             teacher1={navProps.teacher1}
             teacher2={navProps.teacher2}
-            weekday={navProps.weekday}
-            start_time={navProps.start_time}
-            end_time={navProps.end_time}
             start_date={navProps.start_date}
-            end_date={navProps.end_date} />
+            end_date={navProps.end_date}
+            sessionList={navProps.sessions}
+            onSaveCourse={this._handleUpdateCourse} />
         </View>
       );
     }

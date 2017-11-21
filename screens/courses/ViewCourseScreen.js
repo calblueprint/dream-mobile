@@ -3,19 +3,19 @@ import { Button, ScrollView, Text, View } from 'react-native';
 import { commonStyles } from '../../styles/styles';
 import { getRequest, deleteRequest } from '../../lib/requests';
 import { APIRoutes } from '../../config/routes';
-import { timeFormat } from '../../lib/time';
-import { standardError } from '../../lib/request_callbacks';
+import { timeFormat } from '../../lib/datetime_formats';
+import { standardError } from '../../lib/alerts';
 
 class ViewCourseScreen extends React.Component {
   constructor(props) {
     super(props);
     this._fetchCourse = this._fetchCourse.bind(this);
     this._deleteCourse = this._deleteCourse.bind(this);
-    this._renderCourseTeachers = this._renderCourseTeachers.bind(this);
     this._renderCourseSession = this._renderCourseSession.bind(this);
     this._renderCourseDate = this._renderCourseDate.bind(this);
     this.state = {
       course_id : this.props.navigation.state.params.course_id,
+      sessions: [],
       course : { },
       isLoading : true,
     }
@@ -26,13 +26,24 @@ class ViewCourseScreen extends React.Component {
   }
 
   /*
-   * Fetch recrod for single course.
+   * Fetch record for single course.
    */
   _fetchCourse() {
     const successFunc = (responseData) => {
-      this.setState({ course: responseData, isLoading: false });
+      this.setState({ course: responseData });
+      this._fetchSessions();
     }
     getRequest(APIRoutes.getCoursePath(this.state.course_id), successFunc, standardError);
+  }
+
+  /*
+   * Fetch record for single course.
+   */
+  _fetchSessions() {
+    const successFunc = (responseData) => {
+      this.setState({ sessions: responseData.sessions, isLoading: false });
+    }
+    getRequest(APIRoutes.getSessionsPath(this.state.course_id), successFunc, standardError);
   }
 
   /*
@@ -44,27 +55,6 @@ class ViewCourseScreen extends React.Component {
       this.props.navigation.goBack(null);
     }
     deleteRequest(APIRoutes.getCoursePath(this.state.course_id), successFunc, standardError);
-  }
-
-  /*
-   * Display course teacher names.
-   */
-  _renderCourseTeachers() {
-   /*
-    * TODO(caseytaka): Render teacher names of course! Not just teacher dream_ids.
-    * Will need to make another getRequest for the teacher records.
-    */
-
-    // const teachers = this.state.course.teachers.map((teacher, i) => {
-    //   return (
-    //     <Text>{ teacher.first_name } { teacher.last_name }</Text>
-    //   );
-    // });
-    // return (
-    //   <View>
-    //     { teachers }
-    //   </View>
-    // );
   }
 
   /*
@@ -106,7 +96,6 @@ class ViewCourseScreen extends React.Component {
             <Text>Teacher ID 1: { this.state.course.teacher_id1 }</Text>
             <Text>Teacher ID 2: { this.state.course.teacher_id2 }</Text>
             <Text>{ this._renderCourseDate() }</Text>
-            <Text>{ this._renderCourseSession() }</Text>
             <Button
               onPress={() => navigate('EditCourse',
                 {
@@ -117,11 +106,9 @@ class ViewCourseScreen extends React.Component {
                   title: this.state.course.title,
                   teacher1: this.state.course.teacher_id1,
                   teacher2: this.state.course.teacher_id2,
-                  weekday: this.state.course.weekday,
-                  start_time: this.state.course.start_time,
-                  end_time: this.state.course.end_time,
                   start_date: this.state.course.start_date,
                   end_date: this.state.course.end_date,
+                  sessions: this.state.sessions,
                 })}
               title="Edit Course"
             />
