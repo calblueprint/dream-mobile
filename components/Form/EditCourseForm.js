@@ -76,14 +76,19 @@ class EditCourseForm extends React.Component {
    * Populate form if fields already exist.
    */
   _getInitialFormValues() {
-    return {
+    let values = {
       is_active: this.props.is_active,
       title: this.props.title,
       teacher_id1: this.props.teacher1,
       teacher_id2: this.props.teacher2,
-      start_date: new Date(this.props.start_date),
-      end_date: new Date(this.props.end_date),
     };
+    if (this.props.start_date) {
+      values.start_date = new Date(this.props.start_date)
+    }
+    if (this.props.start_date) {
+      values.end_date = new Date(this.props.end_date)
+    }
+    return values
   }
 
   /*
@@ -93,7 +98,7 @@ class EditCourseForm extends React.Component {
     return t.struct({
       title: t.String,
       teacher_id1: t.Number,
-      teacher_id2: t.Number,
+      teacher_id2: t.maybe(t.Number),
       start_date: t.Date,
       end_date: t.Date,
     });
@@ -106,6 +111,12 @@ class EditCourseForm extends React.Component {
     return {
       error: this.state.errors,
       fields: {
+        teacher_id1: {
+          label: 'Teacher ID 1',
+        },
+        teacher_id2: {
+          label: 'Teacher ID 2',
+        },
         start_date: {
           mode:'date',
           config: {
@@ -206,7 +217,7 @@ class EditCourseForm extends React.Component {
     this._clearFormErrors();
     const values = this.form.getValue();
     if (values) {
-      this.props.onSaveCourse({ course: values })
+      this.props.onSaveCourse({ course: values, sessions: this.state.sessionList })
     } else {
       frontendError("Validation failed. Course not saved.")
     }
