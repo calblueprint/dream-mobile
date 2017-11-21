@@ -7,9 +7,21 @@ const textStyles = StyleSheet.create({
     fontSize: 20
   },
 
+  bodyBold: {
+    color: colors.textDark,
+    fontSize: 20,
+    fontWeight: '500'
+  },
+
   bodySmall: {
     color: colors.textDark,
     fontSize: 16
+  },
+
+  bodySmallBold: {
+    color: colors.textDark,
+    fontSize: 16,
+    fontWeight: '500'
   },
 
   titleSmall: {
@@ -32,6 +44,18 @@ const textStyles = StyleSheet.create({
   buttonText: {
     color: colors.textLight,
     fontSize: 20,
+    fontWeight: '500'
+  },
+
+  buttonTextSmall: {
+    color: colors.textLight,
+    fontSize: 16,
+    fontWeight: '500'
+  },
+
+  buttonTextSecondarySmall: {
+    color: colors.textDark_30,
+    fontSize: 16,
     fontWeight: '500'
   },
 

@@ -20,7 +20,7 @@ export default StyleSheet.create({
     marginRight: 16,
     flex: 1,
   },
-  dropdownStyle: {
+  attendanceButton: {
     width: 116,
     height: 40,
   },

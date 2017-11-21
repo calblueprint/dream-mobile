@@ -5,7 +5,7 @@ import { Form, InputField, PickerField,
          DatePickerField, TimePickerField } from 'react-native-form-generator';
 import { APIRoutes } from '../../config/routes';
 import PropTypes from 'prop-types';
-import { teacherStyles } from '../../styles/teacherStyles';
+import { formViewStyles } from '../../styles/formViewStyles';
 import colors from '../../styles/colors';
 import { textStyles } from '../../styles/textStyles';
 
@@ -32,7 +32,7 @@ class EditTeacherForm extends React.Component {
 
   render() {
     return (
-      <View style={teacherStyles.base}>
+      <View style={formViewStyles.base}>
         <Form
           onChange={this._handleFormChange.bind(this)}
           >

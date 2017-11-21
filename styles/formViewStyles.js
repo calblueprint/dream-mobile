@@ -3,7 +3,7 @@ import colors from './colors';
 import commonStyles from './styles';
 import textStyles from './textStyles';
 
-const teacherStyles = StyleSheet.create({
+const formViewStyles = StyleSheet.create({
   base: {
 		backgroundColor: colors.backgroundWhite
 	}, 
@@ -16,4 +16,4 @@ const teacherStyles = StyleSheet.create({
   }
 });
 
-export { teacherStyles };
+export { formViewStyles };

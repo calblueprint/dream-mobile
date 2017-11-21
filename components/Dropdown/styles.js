@@ -14,6 +14,8 @@ export default StyleSheet.create({
     borderRadius: 4,
   },
   optionListStyle: {
+    borderRadius: 4,
+    borderColor: 'white',
     backgroundColor: 'white',
     height: 'auto',
   },
