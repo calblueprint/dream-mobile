@@ -3,6 +3,7 @@ import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { Form, t } from '../../components/Form/Form';
 import { formStyles } from '../Form/styles.js';
 import { timeFormat, dateFormat } from '../../lib/datetime_formats';
+import { frontendError } from '../../lib/alerts';
 import StyledButton from '../Button/Button';
 import Session from '../Session';
 
@@ -207,8 +208,7 @@ class EditCourseForm extends React.Component {
     if (values) {
       this.props.onSaveCourse({ course: values })
     } else {
-      // TODO (casey): fix
-      console.log("Validation failed!")
+      frontendError("Validation failed. Course not saved.")
     }
   }
 
@@ -237,7 +237,7 @@ class EditCourseForm extends React.Component {
    * Return the save course button component.
    */
   _renderSaveCourseButton() {
-    // TODO (casey): make static button
+    // TODO (caseytaka): make static button
     return (
       <StyledButton
         onPress={this._handleSaveCourse}

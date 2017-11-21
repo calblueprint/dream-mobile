@@ -3,7 +3,7 @@ import { Button, Text, View } from 'react-native';
 import { commonStyles } from '../../styles/styles';
 import { getRequest } from '../../lib/requests';
 import { APIRoutes } from '../../config/routes';
-import { standardError } from '../../lib/request_callbacks';
+import { standardError } from '../../lib/alerts';
 
 class StudentsScreen extends React.Component {
   constructor(props) {

@@ -9,7 +9,7 @@ import { getRequest, postRequest, putRequest } from '../../lib/requests';
 import { attendanceDate } from '../../lib/date';
 import AttendanceCard from '../../components/AttendanceCard';
 import SimpleModal from '../../components/SimpleModal';
-import { standardError } from '../../lib/request_callbacks';
+import { standardError } from '../../lib/alerts';
 import StyledButton from '../../components/Button/Button';
 
 class AttendanceScreen extends React.Component {

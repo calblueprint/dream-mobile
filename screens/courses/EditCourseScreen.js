@@ -6,7 +6,7 @@ import { APIRoutes } from '../../config/routes';
 import PropTypes from 'prop-types';
 import EditCourseForm from '../../components/Form/EditCourseForm'
 import { postRequest, putRequest } from '../../lib/requests';
-import { standardError } from '../../lib/request_callbacks';
+import { standardError } from '../../lib/alerts';
 
 class EditCourseScreen extends React.Component {
   constructor(props) {
