@@ -198,7 +198,7 @@ class AttendanceScreen extends React.Component {
     const { navigate } = this.props.navigation;
 
     return(
-      <View style={styles.container}>
+      <View style={commonStyles.containerStatic}>
         <ScrollView>
           <View style={styles.attendancesContainer}>
             <View style={commonStyles.header}>
@@ -232,7 +232,7 @@ class AttendanceScreen extends React.Component {
     // TODO (Kelsey): Add loading gif
     const attendances = this.state.isLoading ? (<Text>Loading...</Text>) : this._renderLoadedView();
     return (
-      <View style={styles.container}>
+      <View style={commonStyles.containerStatic}>
         { attendances }
       </View>
     );
@@ -240,12 +240,6 @@ class AttendanceScreen extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'space-between',
-    backgroundColor: '#fff',
-    height: '100%'
-  },
   // Either change styles or generalize to AttendanceSummaryScreen too
   attendancesContainer: {
     marginRight: 16,

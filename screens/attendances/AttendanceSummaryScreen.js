@@ -253,7 +253,7 @@ class AttendanceSummaryScreen extends React.Component {
     */
   _renderLoadedView() {
     return(
-      <View style={styles.container}>
+      <View style={commonStyles.containerStatic}>
         <ScrollView>
           <View style={styles.summaryContainer}>
             <View style={commonStyles.header}>
@@ -281,7 +281,7 @@ class AttendanceSummaryScreen extends React.Component {
     // TODO (Kelsey): Add loading gif
     const view = this.state.isLoading ? (<Text>Loading...</Text>) : this._renderLoadedView();
     return (
-      <View style={styles.container}>
+      <View style={commonStyles.containerStatic}>
         { view }
       </View>
     );
@@ -289,12 +289,6 @@ class AttendanceSummaryScreen extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'space-between',
-    backgroundColor: '#fff',
-    height: '100%'
-  },
   containerInner: {
     flexDirection: 'row', 
     alignItems: 'center'

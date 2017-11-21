@@ -7,6 +7,12 @@ const commonStyles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  containerStatic: {
+    flex: 1,
+    justifyContent: 'space-between',
+    backgroundColor: '#fff',
+    height: '100%'
+  },
   header: {
   	marginTop: 40, 
   	marginBottom: 24,
