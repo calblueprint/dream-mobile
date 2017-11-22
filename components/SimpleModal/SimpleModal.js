@@ -2,8 +2,9 @@ import React from 'react';
 import { View, Text, Button } from 'react-native';
 import { commonStyles } from '../../styles/styles';
 import styles from './styles';
-
+import StyledButton from '../../components/Button/Button';
 import Modal from 'react-native-modalbox';
+import { textStyles } from '../../styles/textStyles';
 
 /**
   * Basic Modal that by default enters from bottom, is centered,
@@ -20,12 +21,26 @@ class SimpleModal extends React.Component {
     */
   renderButtons() {
     const buttons = this.props.buttons.map((value, i) => {
+      if (value.type == 'secondary') {
+        return(
+          <StyledButton
+            key={i}
+            onPress={value.callback}
+            text={value.title}
+            secondaryButtonSmall
+          >
+          </StyledButton>
+        )
+      }
+
       return(
-        <Button
+        <StyledButton
           key={i}
-          title={value.title}
           onPress={value.callback}
-        />
+          text={value.title}
+          primaryButtonSmall
+        >
+        </StyledButton>
       )
     })
 
@@ -36,7 +51,6 @@ class SimpleModal extends React.Component {
     )
   }
 
-  // TODO (Kelsey): replace X button with icon
   render() {
     return (
       <Modal
@@ -44,8 +58,7 @@ class SimpleModal extends React.Component {
         onClosed={this.props.onClosed}
         isOpen={this.props.visible}>
         <View style={styles.header}>
-          <Text>{this.props.title}</Text>
-          <Button title='X' onPress={this.props.onClosed} />
+          <Text style={[textStyles.titleMedium, {marginRight: 8}]}>{this.props.title}</Text>
         </View>
         <View style={styles.children}>
           {this.props.children}

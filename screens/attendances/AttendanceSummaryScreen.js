@@ -1,13 +1,16 @@
 import React from 'react';
-import { Button, Text, View, ScrollView, StyleSheet, FlatList } from 'react-native';
+import { Image, Button, Text, View, ScrollView, StyleSheet, FlatList } from 'react-native';
 
 import { commonStyles } from '../../styles/styles';
+import { textStyles } from '../../styles/textStyles';
+import StyledButton from '../../components/Button/Button';
 import { APIRoutes } from '../../config/routes';
 import settings from '../../config/settings';
 import { postRequest, putRequest } from '../../lib/requests';
 import { attendanceDate } from '../../lib/date';
 import Collapse from '../../components/Collapse';
 import SimpleModal from '../../components/SimpleModal';
+import colors from '../../styles/colors';
 
 class AttendanceSummaryScreen extends React.Component {
   constructor(props) {
@@ -59,6 +62,7 @@ class AttendanceSummaryScreen extends React.Component {
     const list = this.state.isCollapsedList;
     list[index] = !list[index];
     this.setState({ isCollapsedList: list });
+    this.render
   }
 
   /**
@@ -110,25 +114,55 @@ class AttendanceSummaryScreen extends React.Component {
       4: 'Excused Late'
     }
 
+    const numberColor = {
+      0: colors.successGreen,
+      1: colors.errorRed,
+      2: colors.errorRed,
+      3: colors.lateOrange,
+      4: colors.lateOrange
+    }
+
     return Object.keys(types).map((type, i) => {
+      const isCollapsed = this.state.isCollapsedList[type];
       const studentsList = this._filterAttendances(type);
       return this._renderCollapsible(
-        this._renderCollapseHeader(types[type], studentsList.length),
+        this._renderCollapseHeader(types[type], studentsList.length, numberColor[type], isCollapsed),
         this._renderStudentsList(studentsList),
         i
       );
     });
   }
 
+  _renderIcon(isCollapsed) {
+    if (isCollapsed) {
+      return (
+        <Image
+          style={styles.icon}
+          source={require('../../icons/right.png')}
+        />
+      )
+    } 
+    return (
+     <Image
+       style={styles.icon}
+       source={require('../../icons/down.png')}
+     />
+    )
+  }
+
   /**
     * Renders collapse header. Take in a type title, eg 'Present' and the
     * number of students with the given attendance type.
     */
-  _renderCollapseHeader(typeTitle, length) {
+  _renderCollapseHeader(typeTitle, length, numberColor, isCollapsed) {
+
     return (
       <View style={styles.collapseHeader}>
-        <Text>{typeTitle}</Text>
-        <Text>{length}</Text>
+        <View style={styles.containerInner}>
+          {this._renderIcon(isCollapsed)}
+          <Text style={textStyles.body}>{typeTitle}</Text>
+        </View>
+        <Text style={[textStyles.bodyBold, {color: numberColor}]}>{length}</Text>
       </View>
     )
   }
@@ -142,11 +176,15 @@ class AttendanceSummaryScreen extends React.Component {
   _renderStudentsList(students) {
     return (
       <View>
+        <ScrollView>
         <FlatList
           style={styles.studentList}
           data={students}
-          renderItem={({item}) => <Text>{item.key}</Text>}
+          renderItem={({item}) => <Text style={textStyles.bodySmall}>{item.key}</Text>}
+          removeClippedSubviews={true}
+          ListEmptyComponent={<Text style={textStyles.bodySmall}>None</Text>}
         />
+        </ScrollView>
       </View>
     );
   }
@@ -176,7 +214,7 @@ class AttendanceSummaryScreen extends React.Component {
       this.setState({ isModalOpen: false });
       this.props.navigation.goBack(this.props.navigation.state.params.parentKey || null);
     }
-    const buttons = [{ title: 'Okay', callback: callback }]
+    const buttons = [{ title: 'Okay', callback: callback, type: 'primary' }]
 
     return (
       <SimpleModal
@@ -184,13 +222,27 @@ class AttendanceSummaryScreen extends React.Component {
         title='Status'
         buttons={buttons}
         visible={this.state.isModalOpen}>
-        <View>
-          <Text>Saved to phone</Text>
-          <Text>Synced</Text>
-          <Text>
-            Attendance not synced because the device is not connected to Wifi.
-            Try again when Wifi is available. Attendance saved to phone.
-          </Text>
+        <View style={styles.modalContent}>
+          <View style={[styles.containerInner, {marginBottom: 8}]}>
+            <Image
+              style={styles.statusIcon}
+              source={require('../../icons/success.png')}
+            />
+            <Text style={textStyles.bodyBold}>Saved to phone</Text>
+          </View>
+          <View style={styles.containerInner}>
+            <Image
+              style={styles.statusIcon}
+              source={require('../../icons/error.png')}
+            />
+            <Text style={textStyles.bodyBold}>Synced</Text>
+          </View>
+          <View style={styles.modalContent}>
+            <Text style={textStyles.bodySmall}>
+              Attendance not synced because the device is not connected to Wifi.
+              Try again when Wifi is available. Attendance saved to phone.
+            </Text>
+          </View>
         </View>
       </SimpleModal>
     )
@@ -201,18 +253,22 @@ class AttendanceSummaryScreen extends React.Component {
     */
   _renderLoadedView() {
     return(
-      <View style={{flex: 1}}>
-        <View style={styles.summaryContainer}>
-          <ScrollView style={styles.scrollView}>
-            <Text>{attendanceDate(this.state.date)}</Text>
-            <Text>{this.state.courseTitle}</Text>
+      <View style={commonStyles.containerStatic}>
+        <ScrollView>
+          <View style={styles.summaryContainer}>
+            <View style={commonStyles.header}>
+              <Text style={textStyles.titleSmall}>{attendanceDate(this.state.date)}</Text>
+              <Text style={textStyles.titleLarge}>{this.state.courseTitle}</Text>
+            </View>
             {this._renderSummary()}
-          </ScrollView>
-          <Button
-            onPress={this._syncAttendances.bind(this)}
-            title="Sync"
-          />
-        </View>
+          </View>
+        </ScrollView>
+        <StyledButton
+          onPress={this._syncAttendances.bind(this)}
+          text='Sync'
+          primaryButtonLarge
+        >
+        </StyledButton>
         {this._renderModal()}
       </View>
     )
@@ -225,7 +281,7 @@ class AttendanceSummaryScreen extends React.Component {
     // TODO (Kelsey): Add loading gif
     const view = this.state.isLoading ? (<Text>Loading...</Text>) : this._renderLoadedView();
     return (
-      <View style={styles.container}>
+      <View style={commonStyles.containerStatic}>
         { view }
       </View>
     );
@@ -233,28 +289,36 @@ class AttendanceSummaryScreen extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    backgroundColor: '#fff',
+  containerInner: {
+    flexDirection: 'row', 
+    alignItems: 'center'
   },
   summaryContainer: {
-    paddingTop: 20,
-    paddingRight: 20,
-    paddingLeft: 20,
-    justifyContent: 'space-between',
-    height: '100%'
-  },
-  scrollView: {
-    width: '100%',
+    marginRight: 16,
+    marginLeft: 24,
   },
   collapseHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    marginBottom: 24,
   },
   studentList: {
-    padding: 4,
+    marginLeft: 24,
+    marginBottom: 24, 
   },
+  icon: {
+    height: 16, 
+    width: 16,
+    marginRight: 8
+  },
+  statusIcon: {
+    height: 24, 
+    width: 24,
+    marginRight: 8
+  },
+  modalContent: {
+    marginTop: 16
+  }
 });
 // TODO (Kelsey): Add PropTypes from navigation
 

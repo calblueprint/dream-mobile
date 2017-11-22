@@ -33,8 +33,8 @@ class AttendanceCard extends React.Component {
       4: '#FF8300'
     }
 
-    const dropdownStyles = {
-      style: styles.dropdownStyle
+    const attendanceButtonStyles = {
+      style: styles.attendanceButton
     }
 
     return(
@@ -43,7 +43,7 @@ class AttendanceCard extends React.Component {
         value={this.props.attendance.attendance_type}
         defaultText={optionsAbbrev[this.props.attendance.attendance_type]}
         options={options}
-        styles={dropdownStyles}
+        styles={attendanceButtonStyles}
         optionsColor={optionsColor[this.props.attendance.attendance_type]}
         />
     )

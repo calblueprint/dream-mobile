@@ -9,7 +9,7 @@ import { getRequest, postRequest, putRequest } from '../../lib/requests';
 import { attendanceDate } from '../../lib/date';
 import AttendanceCard from '../../components/AttendanceCard';
 import SimpleModal from '../../components/SimpleModal';
-import { standardError } from '../../lib/request_callbacks';
+import { standardError } from '../../lib/alerts';
 import StyledButton from '../../components/Button/Button';
 
 class AttendanceScreen extends React.Component {
@@ -170,7 +170,7 @@ class AttendanceScreen extends React.Component {
       this._setModal(-1, null);
       this._saveComment(this.state.modalIndex, this.state.modalComment);
     };
-    const buttons = [{ title: 'Save', callback: saveCallback}]
+    const buttons = [{ title: 'Save', callback: saveCallback, type: 'primary'},{title: 'Cancel', callback: cancelCallback, type: 'secondary'}]
     if (this.state.modalIndex !== -1) {
       return (
         <SimpleModal
@@ -180,7 +180,7 @@ class AttendanceScreen extends React.Component {
           visible={this.state.modalIndex !== -1}>
           <View>
             <TextInput
-                style={{height: 40, borderColor: 'gray', borderWidth: 1}}
+                style={{height: 40}}
                 onChangeText={this._setComment.bind(this)}
                 value={this.state.modalComment}
                 placeholder='Add a note...'
@@ -198,7 +198,7 @@ class AttendanceScreen extends React.Component {
     const { navigate } = this.props.navigation;
 
     return(
-      <View style={styles.container}>
+      <View style={commonStyles.containerStatic}>
         <ScrollView>
           <View style={styles.attendancesContainer}>
             <View style={commonStyles.header}>
@@ -232,7 +232,7 @@ class AttendanceScreen extends React.Component {
     // TODO (Kelsey): Add loading gif
     const attendances = this.state.isLoading ? (<Text>Loading...</Text>) : this._renderLoadedView();
     return (
-      <View style={styles.container}>
+      <View style={commonStyles.containerStatic}>
         { attendances }
       </View>
     );
@@ -240,12 +240,6 @@ class AttendanceScreen extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'space-between',
-    backgroundColor: '#fff',
-    height: '100%'
-  },
   // Either change styles or generalize to AttendanceSummaryScreen too
   attendancesContainer: {
     marginRight: 16,

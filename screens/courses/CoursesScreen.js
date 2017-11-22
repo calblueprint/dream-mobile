@@ -3,9 +3,9 @@ import { Button, ScrollView, Text, View } from 'react-native';
 import { commonStyles } from '../../styles/styles';
 import { getRequest } from '../../lib/requests';
 import { APIRoutes } from '../../config/routes';
+import { standardError } from '../../lib/alerts';
 import CourseCard from '../../components/CourseCard/CourseCard';
 import LocalStorage from '../../helpers/LocalStorage'
-import { standardError } from '../../lib/request_callbacks';
 
 class CoursesScreen extends React.Component {
   constructor(props) {
@@ -49,7 +49,6 @@ class CoursesScreen extends React.Component {
    */
   _fetchCourses() {
     const successFunc = (responseData) => {
-      console.log()
       this.setState({ courses: responseData, isLoading: false });
     }
     const params = {
@@ -106,7 +105,7 @@ class CoursesScreen extends React.Component {
       <ScrollView>
         <View>
           <Button
-            onPress={() => navigate('EditCourse', {refreshCourses: this._fetchCourses, newCourse: true})}
+            onPress={() => navigate('EditCourse', {refreshCourses: this._fetchCourses, newCourse: true, sessions: []})}
             title="Create Course"
           />
           { courses }

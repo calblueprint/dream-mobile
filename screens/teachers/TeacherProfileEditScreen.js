@@ -2,9 +2,9 @@ import React from 'react';
 import { Button, Text, View } from 'react-native';
 import { getRequest, putRequest } from '../../lib/requests';
 import { APIRoutes } from '../../config/routes';
+import { standardError } from '../../lib/alerts';
 import EditTeacherForm from '../../components/Form/EditTeacherForm'
 import PropTypes from 'prop-types';
-import { standardError } from '../../lib/request_callbacks';
 import LocalStorage from '../../helpers/LocalStorage'
 
 class TeacherProfileEditScreen extends React.Component {

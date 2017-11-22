@@ -2,14 +2,13 @@ import React from 'react';
 import { Button, Text, View, ScrollView } from 'react-native';
 import { colors } from '../../styles/colors';
 import { textStyles } from '../../styles/textStyles';
-import { teacherStyles } from '../../styles/teacherStyles';
+import { formViewStyles } from '../../styles/formViewStyles';
 import { commonStyles } from '../../styles/styles';
-import { getRequest, deleteRequest } from '../../lib/requests';
+import { getRequest } from '../../lib/requests';
 import { APIRoutes } from '../../config/routes';
-import { standardError } from '../../lib/request_callbacks';
+import { standardError } from '../../lib/alerts';
 import PropTypes from 'prop-types';
 import LocalStorage from '../../helpers/LocalStorage'
-
 
 class TeacherProfileScreen extends React.Component {
 
@@ -56,14 +55,14 @@ class TeacherProfileScreen extends React.Component {
   _renderTeacher() {
     return(
       <View>
-        <View style={teacherStyles.div_1}>
-          <View style={teacherStyles.div_2}>
+        <View style={formViewStyles.div_1}>
+          <View style={formViewStyles.div_2}>
             <Text style={textStyles.titleLarge}>
             {this.state.teacher.first_name} {this.state.teacher.last_name}
             </Text>
           </View>
 
-          <View style={teacherStyles.div_2}>
+          <View style={formViewStyles.div_2}>
             <Text style={textStyles.titleSmall}>
             Dream ID
             </Text>
@@ -72,7 +71,7 @@ class TeacherProfileScreen extends React.Component {
             </Text>
           </View>
 
-          <View style={teacherStyles.div_2}>
+          <View style={formViewStyles.div_2}>
             <Text style={textStyles.titleSmall}>
             Email
             </Text>
@@ -81,7 +80,7 @@ class TeacherProfileScreen extends React.Component {
             </Text>
           </View>
 
-          <View style={teacherStyles.div_2}>
+          <View style={formViewStyles.div_2}>
             <Text style={textStyles.titleSmall}>
             Phone Number
             </Text>
@@ -111,7 +110,7 @@ class TeacherProfileScreen extends React.Component {
       teacher = this._renderTeacher()
     }
     return (
-      <ScrollView style={teacherStyles.base}>
+      <ScrollView style={formViewStyles.base}>
         { teacher }
       </ScrollView>
     );

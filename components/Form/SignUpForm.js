@@ -11,6 +11,8 @@ import { APIRoutes } from '../../config/routes';
 class SignUpForm extends React.Component {
   constructor(props) {
     super(props);
+    this._onSignUp = this._onSignUp.bind(this);
+
     this.state = {
       first_name: '',
       last_name: '',
@@ -20,11 +22,9 @@ class SignUpForm extends React.Component {
       dream_id: '',
       phone: '',
     }
-
-    this.onSignUp = this.onSignUp.bind(this);
   }
 
-  onSignUp() {
+  _onSignUp() {
     this.props.onSignUp(this.state);
   }
 
@@ -33,37 +33,30 @@ class SignUpForm extends React.Component {
       <View>
         <TextInput
           placeholder='First Name'
-          value={this.state.first_name}
           onChangeText={(text) => this.setState({first_name: text})}/>
         <TextInput
           placeholder='Last Name'
-          value={this.state.last_name}
           onChangeText={(text) => this.setState({last_name: text})}/>
         <TextInput
           placeholder='Email'
-          value={this.state.email}
           autoCapitalize='none'
           onChangeText={(text) => this.setState({email: text})}/>
         <TextInput
           placeholder='Password'
-          value={this.state.password}
           onChangeText={(text) => this.setState({password: text})}
           secureTextEntry/>
         <TextInput
           placeholder='Password Confirmation'
-          value={this.state.password_confimation}
           onChangeText={(text) => this.setState({password: text})}
           secureTextEntry/>
         <TextInput
           placeholder='Dream ID'
-          value={this.state.dream_id}
           onChangeText={(text) => this.setState({dream_id: text})}/>
         <TextInput
           placeholder='Phone Number'
-          value={this.state.phone}
           onChangeText={(text) => this.setState({phone: text})}/>
         <Button
-          onPress={this.onSignUp}
+          onPress={this._onSignUp}
           title='Sign Up'
         />
 

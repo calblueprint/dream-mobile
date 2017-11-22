@@ -4,7 +4,7 @@ import { Button, ScrollView, Text, TextInput, View } from 'react-native';
 import { styles } from '../../styles/styles';
 import { postRequest } from '../../lib/requests';
 import { APIRoutes } from '../../config/routes';
-import { standardError } from '../../lib/request_callbacks';
+import { standardError } from '../../lib/alerts';
 
 
 class LoginScreen extends React.Component {

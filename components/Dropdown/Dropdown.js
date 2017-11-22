@@ -12,7 +12,9 @@ class Dropdown extends React.Component {
   renderOptions() {
     return Object.keys(this.props.options).map((value, i) => {
       return(
-        <Option key={i} value={value}>{this.props.options[value]}</Option>
+        <Option key={i} value={value} styleText={textStyles.body} style={{marginTop: 4}}>
+        {this.props.options[value]}
+        </Option>
       );
     });
   }

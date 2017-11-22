@@ -111,11 +111,14 @@ export class APIRoutes {
   static deviseRoute(route)           { return `/teachers/${route}` }
 
   // Courses
-  static getCoursePath(id)            { return APIRoutes.createRoute(`courses/${id}`) }
   static getCoursesPath()             { return APIRoutes.createRoute(`courses`) }
+  static getCoursePath(id)            { return APIRoutes.createRoute(`courses/${id}`) }
+
+  // Sessions
+  static getSessionsPath(id)          { return APIRoutes.createRoute(`courses/${id}/sessions`) }
 
   //Teachers
-  static getTeacherPath(id)          { return APIRoutes.createRoute(`teachers/${id}`) }
+  static getTeacherPath(id)           { return APIRoutes.createRoute(`teachers/${id}`) }
 
   // Students
   static getStudentsPath(courseId)          { return APIRoutes.createRoute(`courses/${courseId}/students`) }
@@ -128,6 +131,5 @@ export class APIRoutes {
   // Login
   static signupPath()                 { return `/sign_up` }
   static loginPath()                  { return APIRoutes.deviseRoute(`sign_in`) }
-  static signoutPath()                { return APIRoutes.deviseRoute(`sign_out`) }
 
 }
