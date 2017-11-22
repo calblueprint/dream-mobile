@@ -7,6 +7,8 @@ import { commonStyles } from '../../styles/styles';
 import { getRequest } from '../../lib/requests';
 import { APIRoutes } from '../../config/routes';
 import { standardError } from '../../lib/alerts';
+import PropTypes from 'prop-types';
+import LocalStorage from '../../helpers/LocalStorage'
 
 class TeacherProfileScreen extends React.Component {
 
@@ -15,7 +17,7 @@ class TeacherProfileScreen extends React.Component {
     this._fetchTeacher = this._fetchTeacher.bind(this);
     this._renderTeacher = this._renderTeacher.bind(this);
     this.state = {
-      teacher : { },
+      teacher : this.props.navigation.state.params.teacher,
       isLoading : true,
     }
   }
@@ -42,8 +44,12 @@ class TeacherProfileScreen extends React.Component {
     const successFunc = (responseData) => {
       this.setState({ teacher: responseData, isLoading: false });
     }
-    getRequest(APIRoutes.getTeacherPath(1), successFunc, standardError);
+    getRequest(APIRoutes.getTeacherPath(this.state.teacher.id), successFunc, standardError);
+  }
 
+  _attemptSignOut() {
+    LocalStorage.clearUser();
+    this.props.navigation.navigate('Login');
   }
 
   _renderTeacher() {
@@ -82,6 +88,12 @@ class TeacherProfileScreen extends React.Component {
             {this.state.teacher.phone}
             </Text>
           </View>
+
+          <Button
+          onPress={this._attemptSignOut.bind(this)}
+          title='Sign Out'
+          />
+
         </View>
       </View>
     );
@@ -102,9 +114,7 @@ class TeacherProfileScreen extends React.Component {
         { teacher }
       </ScrollView>
     );
-
   }
-
 }
 
 export default TeacherProfileScreen;

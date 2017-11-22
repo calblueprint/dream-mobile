@@ -1,7 +1,6 @@
 import React from 'react';
-import { Button, Text, View, ScrollView, TextInput, TouchableHighlight, StyleSheet } from 'react-native';
+import { Button, Text, View } from 'react-native';
 import { commonStyles } from '../../styles/styles';
-import { cardStyles } from '../../components/Form/styles';
 import { getRequest } from '../../lib/requests';
 import { APIRoutes } from '../../config/routes';
 import { standardError } from '../../lib/alerts';
