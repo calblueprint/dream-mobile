@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, ScrollView, Text, View } from 'react-native';
+import { Button, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { commonStyles } from '../../styles/styles';
 import { getRequest, deleteRequest } from '../../lib/requests';
 import { APIRoutes } from '../../config/routes';
@@ -10,9 +10,12 @@ class ViewCourseScreen extends React.Component {
   constructor(props) {
     super(props);
     this._fetchCourse = this._fetchCourse.bind(this);
+    this._fetchSessions = this._fetchSessions.bind(this);
+    this._fetchTeachers = this._fetchTeachers.bind(this);
     this._deleteCourse = this._deleteCourse.bind(this);
-    this._renderCourseSession = this._renderCourseSession.bind(this);
     this._renderCourseDate = this._renderCourseDate.bind(this);
+    this._renderSessions = this._renderSessions.bind(this);
+    this._renderTeachers = this._renderTeachers.bind(this);
     this.state = {
       course_id : this.props.navigation.state.params.course_id,
       sessions: [],
@@ -41,9 +44,20 @@ class ViewCourseScreen extends React.Component {
    */
   _fetchSessions() {
     const successFunc = (responseData) => {
-      this.setState({ sessions: responseData.sessions, isLoading: false });
+      this.setState({ sessions: responseData.sessions });
+      this._fetchTeachers();
     }
     getRequest(APIRoutes.getSessionsPath(this.state.course_id), successFunc, standardError);
+  }
+
+  /*
+   * Fetch record for the course.
+   */
+  _fetchTeachers() {
+    const successFunc = (responseData) => {
+      this.setState({ teachers: responseData.teachers, isLoading: false });
+    }
+    getRequest(APIRoutes.getTeachersPath(this.state.course_id), successFunc, standardError);
   }
 
   /*
@@ -55,17 +69,6 @@ class ViewCourseScreen extends React.Component {
       this.props.navigation.goBack(null);
     }
     deleteRequest(APIRoutes.getCoursePath(this.state.course_id), successFunc, standardError);
-  }
-
-  /*
-   * Display course session day and time.
-   */
-  _renderCourseSession() {
-    const session_start = timeFormat(new Date(this.state.course.start_time))
-    const session_end = timeFormat(new Date(this.state.course.end_time))
-    return (
-      <Text>{ this.state.course.weekday }'s { session_start } to { session_end }</Text>
-    );
   }
 
   /*
@@ -81,21 +84,44 @@ class ViewCourseScreen extends React.Component {
     );
   }
 
+  /*
+   * Display course teachers.
+   */
+  _renderTeachers() {
+    return this.state.teachers.map((teacher, index) => {
+      return (
+        <Text key={index}>Teacher {index + 1}: {teacher.first_name} {teacher.last_name}</Text>
+      );
+    });
+  }
+
+  /*
+   * Display course sessions.
+   */
+  _renderSessions() {
+    return this.state.sessions.map((session, index) => {
+      const start = timeFormat(new Date(session.start_time))
+      const end = timeFormat(new Date(session.end_time))
+      return (
+        <Text key={index}>Session {index + 1}: { session.weekday }'s { start } to { end }</Text>
+      );
+    });
+  }
+
   render() {
     const { navigate } = this.props.navigation;
     if (this.state.isLoading) {
-      // TODO (caseytaka): Add loading gif.
       return (
         <Text>Loading...</Text>
       );
     } else {
       return (
         <ScrollView>
-          <View style={commonStyles.container}>
+          <View style={viewStyles.container}>
             <Text>{ this.state.course.title }</Text>
-            <Text>Teacher ID 1: { this.state.course.teacher_id1 }</Text>
-            <Text>Teacher ID 2: { this.state.course.teacher_id2 }</Text>
-            <Text>{ this._renderCourseDate() }</Text>
+            { this._renderTeachers() }
+            { this._renderCourseDate() }
+            { this._renderSessions() }
             <Button
               onPress={() => navigate('EditCourse',
                 {
@@ -122,5 +148,13 @@ class ViewCourseScreen extends React.Component {
     }
   }
 }
+
+const viewStyles = StyleSheet.create({
+  container: {
+    justifyContent: 'flex-start',
+    paddingTop: 16,
+    paddingLeft: 16,
+  },
+});
 
 export default ViewCourseScreen;
