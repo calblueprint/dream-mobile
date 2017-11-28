@@ -95,9 +95,10 @@ const fetchCourses = (params) => {
   return (dispatch) => {
     dispatch(actions.requestCourses());
     return getRequest(
-      APIRoutes.getCoursesPath(params),
+      APIRoutes.getCoursesPath(),
       (responseData) => dispatch(actions.receiveCoursesSuccess(responseData)),
-      (error) => dispatch(actions.receiveCoursesError(error))
+      (error) => dispatch(actions.receiveCoursesError(error)),
+      params
     );
   }
 }
@@ -112,7 +113,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     actions: bindActionCreators(actions, dispatch),
-    fetchCourses: () => dispatch(fetchCourses()),
+    fetchCourses: (params) => dispatch(fetchCourses(params)),
   }
 }
 

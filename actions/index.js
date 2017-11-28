@@ -13,6 +13,12 @@ let actions = {
       courses
     }
   },
+  receiveCoursesError: (error) => {
+    return {
+      type: types.RECEIVE_COURSES_ERROR,
+      error
+    }
+  },
 };
 
 export default actions;
