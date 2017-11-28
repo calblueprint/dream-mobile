@@ -51,10 +51,7 @@ class CoursesScreen extends React.Component {
     const successFunc = (responseData) => {
       this.setState({ courses: responseData, isLoading: false });
     }
-    const params = {
-      teacher_id: this.state.teacher_dream_id,
-    }
-    getRequest(APIRoutes.getCoursesPath(), successFunc, standardError, params);
+    getRequest(APIRoutes.getTeacherCoursesPath(this.state.teacher.id), successFunc, standardError);
   }
 
   _handleSelectCourse(course_id) {
