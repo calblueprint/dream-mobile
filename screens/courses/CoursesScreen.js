@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, ScrollView, Text, View } from 'react-native';
+import { Image, Button, ScrollView, Text, View } from 'react-native';
 import { commonStyles } from '../../styles/styles';
 import { getRequest } from '../../lib/requests';
 import { APIRoutes } from '../../config/routes';
@@ -13,7 +13,6 @@ class CoursesScreen extends React.Component {
     this._fetchCourses = this._fetchCourses.bind(this);
     this._handleSelectCourse = this._handleSelectCourse.bind(this);
     this._handleTakeAttendance = this._handleTakeAttendance.bind(this);
-    this._handleViewStudents = this._handleViewStudents.bind(this);
     this._renderCourses = this._renderCourses.bind(this);
     this.state = {
       courses : { },
@@ -72,20 +71,18 @@ class CoursesScreen extends React.Component {
       date: date,
     });
   }
-  _handleViewStudents(course_id) {
-    this.props.navigation.navigate('Students', {
-      courseId: course_id,
-    })
-  }
 
   _renderCourses() {
+    <Button
+      onPress={() => navigate('EditCourse', {refreshCourses: this._fetchCourses, newCourse: true, sessions: []})}
+      title="Create Course"
+    />
     return this.state.courses.map((course, i) => (
       <CourseCard key={i}
         course_id={course.id}
         title={course.title}
         onSelectCourse={this._handleSelectCourse}
-        onTakeAttendance={this._handleTakeAttendance}
-        onViewStudents={this._handleViewStudents} />
+        onTakeAttendance={this._handleTakeAttendance}/>
       )
     );
   }
@@ -94,9 +91,11 @@ class CoursesScreen extends React.Component {
     const { navigate } = this.props.navigation;
     let courses;
     if (this.state.isLoading) {
-      // TODO (caseytaka): Add loading gif.
       courses = (
-        <Text>Loading...</Text>
+        <Image
+          style={commonStyles.icon}
+          source={require('../../icons/spinner.gif')}
+        />
       )
     } else {
       courses = this._renderCourses();
@@ -104,10 +103,6 @@ class CoursesScreen extends React.Component {
     return (
       <ScrollView>
         <View>
-          <Button
-            onPress={() => navigate('EditCourse', {refreshCourses: this._fetchCourses, newCourse: true, sessions: []})}
-            title="Create Course"
-          />
           { courses }
         </View>
       </ScrollView>

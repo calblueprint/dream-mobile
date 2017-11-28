@@ -5,7 +5,6 @@ import { Form, InputField, PickerField,
 import { APIRoutes } from '../../config/routes';
 import PropTypes from 'prop-types';
 
-
 /**
  * @prop onCreateStudent - callback function when student create form is submitted
  */

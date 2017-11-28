@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Text, View } from 'react-native';
+import { Image, Button, Text, View } from 'react-native';
 import { commonStyles } from '../../styles/styles';
 import { getRequest } from '../../lib/requests';
 import { APIRoutes } from '../../config/routes';
@@ -67,7 +67,10 @@ class StudentsScreen extends React.Component {
     if (this.state.isLoading) {
       // TODO: Add loading gif.
       students = (
-        <Text>Loading...</Text>
+        <Image
+          style={commonStyles.icon}
+          source={require('../../icons/spinner.gif')}
+        />
       )
     } else {
       students = this._renderStudents()

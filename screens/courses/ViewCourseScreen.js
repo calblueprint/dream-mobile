@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Image, Button, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { commonStyles } from '../../styles/styles';
 import { getRequest, deleteRequest } from '../../lib/requests';
 import { APIRoutes } from '../../config/routes';
@@ -112,7 +112,12 @@ class ViewCourseScreen extends React.Component {
     const { navigate } = this.props.navigation;
     if (this.state.isLoading) {
       return (
-        <Text>Loading...</Text>
+        <View style={commonStyles.containerStatic}>
+          <Image
+            style={commonStyles.icon}
+            source={require('../../icons/spinner.gif')}
+          />
+      </View>
       );
     } else {
       return (

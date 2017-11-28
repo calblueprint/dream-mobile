@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Text, View, ScrollView } from 'react-native';
+import { Image, Button, Text, View, ScrollView } from 'react-native';
 import { colors } from '../../styles/colors';
 import { textStyles } from '../../styles/textStyles';
 import { formViewStyles } from '../../styles/formViewStyles';
@@ -104,7 +104,10 @@ class TeacherProfileScreen extends React.Component {
     let teachers;
     if (this.state.isLoading) {
       teacher = (
-        <Text>Loading...</Text>
+        <Image
+          style={commonStyles.icon}
+          source={require('../../icons/spinner.gif')}
+        />
       )
     } else {
       teacher = this._renderTeacher()
