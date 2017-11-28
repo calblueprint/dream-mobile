@@ -1,7 +1,6 @@
 import React from 'react';
 import { Button, ScrollView, Text, View } from 'react-native';
 
-import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import actions from '../../actions';
 
@@ -22,14 +21,18 @@ class CoursesScreen extends React.Component {
   }
 
   static navigationOptions = ({ navigation }) => {
-      const { params = {} } = navigation.state;
+      profileView = () => {
+       navigation.navigate('TeacherProfile', { teacher: this.props.teacher })
+      }
       return {
-          headerLeft: <Button title="Profile" onPress={() => params.handleProfile()} />
+          headerLeft: <Button title="Profile" onPress={profileView.bind(this)} />
       };
   };
 
   componentDidMount() {
-    this.props.fetchCourses();
+    this.props.fetchCourses({
+      teacher_id: this.props.teacher.dream_id,
+    });
   }
 
   _handleSelectCourse(course_id) {
@@ -97,7 +100,10 @@ const fetchCourses = (params) => {
     return getRequest(
       APIRoutes.getCoursesPath(),
       (responseData) => dispatch(actions.receiveCoursesSuccess(responseData)),
-      (error) => dispatch(actions.receiveCoursesError(error)),
+      (error) => {
+        dispatch(actions.receiveStandardError(error));
+        standardError(error);
+      },
       params
     );
   }
@@ -105,6 +111,7 @@ const fetchCourses = (params) => {
 
 const mapStateToProps = (state) => {
   return {
+    teacher: state.teacher,
     courses: state.courses,
     isLoading: state.isLoading,
   };
@@ -112,7 +119,6 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    actions: bindActionCreators(actions, dispatch),
     fetchCourses: (params) => dispatch(fetchCourses(params)),
   }
 }

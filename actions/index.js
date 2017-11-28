@@ -2,6 +2,12 @@
 import types from '../lib/actionTypes'
 
 let actions = {
+  receiveStandardError: (error) => {
+    return {
+      type: types.RECEIVE_STANDARD_ERROR,
+      error
+    }
+  },
   requestCourses: () => {
     return {
       type: types.REQUEST_COURSES,
@@ -13,10 +19,15 @@ let actions = {
       courses
     }
   },
-  receiveCoursesError: (error) => {
+  requestTeacher: () => {
     return {
-      type: types.RECEIVE_COURSES_ERROR,
-      error
+      type: types.REQUEST_TEACHER,
+    }
+  },
+  receiveTeacherSuccess: (teacher) => {
+    return {
+      type: types.RECEIVE_TEACHER_SUCCESS,
+      teacher
     }
   },
 };
