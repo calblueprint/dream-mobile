@@ -248,7 +248,6 @@ class EditCourseForm extends React.Component {
    * Return the save course button component.
    */
   _renderSaveCourseButton() {
-    // TODO (caseytaka): make static button
     return (
       <StyledButton
         onPress={this._handleSaveCourse}
