@@ -73,17 +73,10 @@ const fetchTeacher = (params, navigation) => {
   }
 }
 
-
-const mapStateToProps = (state) => {
-  return {
-    isLoading: state.isLoading,
-  };
-}
-
 const mapDispatchToProps = (dispatch) => {
   return {
     fetchTeacher: (params, navigation) => dispatch(fetchTeacher(params, navigation)),
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(LoginScreen);
+export default connect(mapDispatchToProps)(LoginScreen);

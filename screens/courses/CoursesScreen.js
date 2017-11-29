@@ -21,18 +21,21 @@ class CoursesScreen extends React.Component {
   }
 
   static navigationOptions = ({ navigation }) => {
-      profileView = () => {
-       navigation.navigate('TeacherProfile', { teacher: this.props.teacher })
-      }
-      return {
-          headerLeft: <Button title="Profile" onPress={profileView.bind(this)} />
-      };
+    const { params = {} } = navigation.state;
+    return {
+      headerLeft: <Button title="Profile" onPress={() => params.handleProfile()} />
+    };
   };
 
   componentDidMount() {
     this.props.fetchCourses({
       teacher_id: this.props.teacher.dream_id,
     });
+
+    profileView = () => {
+      this.props.navigation.navigate('TeacherProfile', { teacher: this.props.teacher })
+    }
+    this.props.navigation.setParams({ handleProfile: profileView });
   }
 
   _handleSelectCourse(course_id) {
@@ -57,6 +60,7 @@ class CoursesScreen extends React.Component {
   }
 
   _renderCourses() {
+    console.log(this.props)
     return this.props.courses.map((course, i) => (
       <CourseCard key={i}
         course_id={course.id}
@@ -113,7 +117,7 @@ const mapStateToProps = (state) => {
   return {
     teacher: state.teacher,
     courses: state.courses,
-    isLoading: state.isLoading,
+    isLoading: state.isLoading.value,
   };
 }
 

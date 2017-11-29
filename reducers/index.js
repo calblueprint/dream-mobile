@@ -1,12 +1,11 @@
-import { combineReducers } from 'redux';
 import { courses } from './courses';
 import { isLoading } from './isLoading';
 import { teacher } from './teacher';
 
-const rootReducer = combineReducers({
+const reducers = {
   teacher,
   courses,
   isLoading
-});
+};
 
-export default rootReducer;
+export default reducers;

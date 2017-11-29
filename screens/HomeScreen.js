@@ -14,13 +14,11 @@ class HomeScreen extends React.Component {
 
   _fetchTeacher() {
     const { navigate } = this.props.navigation;
-    setTimeout(() => {
-      LocalStorage.getUser().then((user) => {
-        navigate('Courses');
-      }).catch((error) => {
-        navigate('Login');
-      });
-    }, 2000);
+    if (Object.keys(this.props.teacher).length != 0) {
+      navigate('Courses');
+    } else {
+      navigate('Login');
+    }
   }
 
   render() {
@@ -30,4 +28,11 @@ class HomeScreen extends React.Component {
   }
 }
 
-export default HomeScreen;
+const mapStateToProps = (state) => {
+  return {
+    teacher: state.teacher,
+  };
+}
+
+export default connect(mapStateToProps)(HomeScreen);
+
