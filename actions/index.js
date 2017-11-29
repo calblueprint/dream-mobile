@@ -30,6 +30,11 @@ let actions = {
       teacher
     }
   },
+  logout: () => {
+    return {
+      type: types.LOGOUT
+    }
+  },
 };
 
 export default actions;

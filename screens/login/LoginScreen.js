@@ -3,7 +3,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import actions from '../../actions';
 
-import LocalStorage from '../../helpers/LocalStorage'
 import { Button, ScrollView, Text, TextInput, View } from 'react-native';
 import { styles } from '../../styles/styles';
 import { postRequest } from '../../lib/requests';
@@ -65,8 +64,8 @@ const fetchTeacher = (params, navigation) => {
         navigation.navigate('Courses');
       },
       (error) => {
-        // dispatch(actions.receiveStandardError(error));
-        // standardError(error);
+        dispatch(actions.receiveStandardError(error));
+        standardError(error);
       },
       params
     );
@@ -79,4 +78,4 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export default connect(mapDispatchToProps)(LoginScreen);
+export default connect(null, mapDispatchToProps)(LoginScreen);

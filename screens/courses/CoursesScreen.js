@@ -9,7 +9,6 @@ import { getRequest } from '../../lib/requests';
 import { APIRoutes } from '../../config/routes';
 import { standardError } from '../../lib/alerts';
 import CourseCard from '../../components/CourseCard/CourseCard';
-import LocalStorage from '../../helpers/LocalStorage'
 
 class CoursesScreen extends React.Component {
   constructor(props) {
@@ -60,7 +59,6 @@ class CoursesScreen extends React.Component {
   }
 
   _renderCourses() {
-    console.log(this.props)
     return this.props.courses.map((course, i) => (
       <CourseCard key={i}
         course_id={course.id}

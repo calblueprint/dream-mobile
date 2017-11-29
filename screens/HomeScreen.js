@@ -1,5 +1,4 @@
 import React from 'react';
-import LocalStorage from '../helpers/LocalStorage'
 import { Button, Text, View } from 'react-native';
 import { commonStyles } from '../styles/styles';
 import { getRequest } from '../lib/requests';
