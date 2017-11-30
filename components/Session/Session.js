@@ -3,12 +3,14 @@
  */
 
 import React from 'react';
-import { Button, Text, TouchableWithoutFeedback, View } from 'react-native';
+import { Button, Text, TouchableHighlight, TouchableWithoutFeedback, View } from 'react-native';
 import { Form, t } from '../../components/Form/Form';
 import { formStyles } from '../Form/styles.js';
 import { timeFormat } from '../../lib/datetime_formats';
 import { textStyles } from '../../styles/textStyles';
 import { frontendError } from '../../lib/alerts';
+import { Ionicons } from '@expo/vector-icons';
+import colors from '../../styles/colors';
 
 /**
  * @prop weekday - session weekday
@@ -146,7 +148,7 @@ class Session extends React.Component {
     return (
       <TouchableWithoutFeedback onPress={() => this.props.onSessionDelete(this.props.number)}>
         <View>
-          <Text style={textStyles.buttonTextDeleteSession}>Delete</Text>
+          <Ionicons name="ios-trash" size={32} color={colors.errorRed} />
         </View>
       </TouchableWithoutFeedback>
     );
@@ -154,20 +156,22 @@ class Session extends React.Component {
 
   render() {
     return (
-      <View>
+      <View style={{paddingTop: 8}}>
         <View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
           <Text style={textStyles.sessionHeaderText}>
             Session #{ this.props.number + 1 }
           </Text>
           { this._renderDeleteSessionButton() }
         </View>
-        <Form
-          refCallback={(ref) => this.form = ref}
-          type={this._getFormType()}
-          options={this._getFormOptions()}
-          value={this.state.formValues}
-          onChange={this._handleSessionChange}
-        />
+        <View style={{paddingLeft: 8}}>
+          <Form
+            refCallback={(ref) => this.form = ref}
+            type={this._getFormType()}
+            options={this._getFormOptions()}
+            value={this.state.formValues}
+            onChange={this._handleSessionChange}
+          />
+        </View>
       </View>
     );
   }

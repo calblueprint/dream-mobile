@@ -5,6 +5,7 @@ import { formStyles } from '../Form/styles.js';
 import { timeFormat, dateFormat } from '../../lib/datetime_formats';
 import { frontendError } from '../../lib/alerts';
 import { textStyles } from '../../styles/textStyles';
+import { commonStyles } from '../../styles/styles';
 import StyledButton from '../Button/Button';
 import Session from '../Session';
 
@@ -260,20 +261,22 @@ class EditCourseForm extends React.Component {
 
   render() {
     return (
-      <ScrollView>
-        <View style={formStyles.container}>
-          <Form
-            refCallback={(ref) => this.form = ref}
-            type={this._getFormType()}
-            options={this._getFormOptions()}
-            value={this.state.formValues}
-            onChange={this._onFormChange}
-          />
-          { this._renderSessions() }
-          { this._renderAddSessionButton() }
-          { this._renderSaveCourseButton() }
-        </View>
-      </ScrollView>
+      <View style={commonStyles.containerStatic}>
+        <ScrollView>
+          <View style={formStyles.container}>
+            <Form
+              refCallback={(ref) => this.form = ref}
+              type={this._getFormType()}
+              options={this._getFormOptions()}
+              value={this.state.formValues}
+              onChange={this._onFormChange}
+            />
+            { this._renderSessions() }
+            { this._renderAddSessionButton() }
+          </View>
+        </ScrollView>
+        { this._renderSaveCourseButton() }
+      </View>
     );
   }
 }
