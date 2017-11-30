@@ -1,9 +1,10 @@
 import React from 'react';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native';
 import { Form, t } from '../../components/Form/Form';
 import { formStyles } from '../Form/styles.js';
 import { timeFormat, dateFormat } from '../../lib/datetime_formats';
 import { frontendError } from '../../lib/alerts';
+import { textStyles } from '../../styles/textStyles';
 import StyledButton from '../Button/Button';
 import Session from '../Session';
 
@@ -236,11 +237,11 @@ class EditCourseForm extends React.Component {
    */
   _renderAddSessionButton() {
     return (
-      <StyledButton
-        onPress={this._handleAddSession}
-        text='+ Add Another Session'
-        addSessionButton>
-      </StyledButton>
+      <TouchableWithoutFeedback onPress={this._handleAddSession}>
+        <View>
+          <Text style={textStyles.buttonTextAddSession}>+ Add Session</Text>
+        </View>
+      </TouchableWithoutFeedback>
     );
   }
 

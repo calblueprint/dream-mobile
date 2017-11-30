@@ -3,12 +3,11 @@
  */
 
 import React from 'react';
-import { Text, View } from 'react-native';
+import { Button, Text, TouchableWithoutFeedback, View } from 'react-native';
 import { Form, t } from '../../components/Form/Form';
-import StyledButton from '../Button/Button';
 import { formStyles } from '../Form/styles.js';
 import { timeFormat } from '../../lib/datetime_formats';
-import { sessionStyles } from './styles';
+import { textStyles } from '../../styles/textStyles';
 import { frontendError } from '../../lib/alerts';
 
 /**
@@ -50,7 +49,7 @@ class Session extends React.Component {
    */
   _getInitialFormValues(props) {
     values = {
-      weekday: props.weekday,
+      weekday: props.weekday || 'Monday',
     };
     if (props.start_time) {
       values.start_time = new Date(props.start_time)
@@ -145,20 +144,23 @@ class Session extends React.Component {
    */
   _renderDeleteSessionButton() {
     return (
-      <StyledButton
-        onPress={() => this.props.onSessionDelete(this.props.number)}
-        text='Delete Session'
-        addSessionButton>
-      </StyledButton>
+      <TouchableWithoutFeedback onPress={() => this.props.onSessionDelete(this.props.number)}>
+        <View>
+          <Text style={textStyles.buttonTextDeleteSession}>Delete</Text>
+        </View>
+      </TouchableWithoutFeedback>
     );
   }
 
   render() {
     return (
       <View>
-        <Text style={sessionStyles.headerText}>
-          Session #{ this.props.number + 1 }
-        </Text>
+        <View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
+          <Text style={textStyles.sessionHeaderText}>
+            Session #{ this.props.number + 1 }
+          </Text>
+          { this._renderDeleteSessionButton() }
+        </View>
         <Form
           refCallback={(ref) => this.form = ref}
           type={this._getFormType()}
@@ -166,7 +168,6 @@ class Session extends React.Component {
           value={this.state.formValues}
           onChange={this._handleSessionChange}
         />
-        { this._renderDeleteSessionButton() }
       </View>
     );
   }

@@ -62,6 +62,14 @@ const textStyles = StyleSheet.create({
   buttonTextAddSession: {
     color: colors.primaryYellow,
     fontSize: 16,
+    fontWeight: '500',
+    textDecorationLine: 'underline',
+    textDecorationColor: colors.primaryYellow,
+  },
+
+  buttonTextDeleteSession: {
+    color: colors.errorRed,
+    fontSize: 16,
     fontWeight: '500'
   },
 
@@ -79,6 +87,12 @@ const textStyles = StyleSheet.create({
     color: colors.textDark_30,
     fontSize: 16
   },
+
+  sessionHeaderText: {
+    color: colors.textDark,
+    fontSize: 16,
+    fontWeight: '700',
+  }
 
 });
 

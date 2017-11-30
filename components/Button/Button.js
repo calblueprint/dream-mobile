@@ -42,14 +42,5 @@ export default class StyledButton extends React.Component {
 			  	>{this.props.text}</Button>
 			);
 		}
-		if (this.props.addSessionButton) {
-			return (
-				<Button
-				  onPress={this.props.onPress}
-				  style={ buttonStyles.addSessionButton }
-				  textStyle={ textStyles.buttonTextAddSession }
-			  	>{this.props.text}</Button>
-			);
-		}
 	}
 };
