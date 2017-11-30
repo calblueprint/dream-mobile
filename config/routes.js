@@ -10,7 +10,6 @@ import CoursesScreen from '../screens/courses/CoursesScreen';
 import TeacherProfileScreen from '../screens/teachers/TeacherProfileScreen';
 import TeacherProfileEditScreen from '../screens/teachers/TeacherProfileEditScreen';
 import EditCourseScreen from '../screens/courses/EditCourseScreen';
-import StudentsScreen from '../screens/students/StudentsScreen';
 import CreateStudentScreen from '../screens/students/CreateStudentScreen';
 import StudentProfileScreen from '../screens/students/StudentProfileScreen';
 import AttendanceScreen from '../screens/attendances/AttendanceScreen';
@@ -67,12 +66,6 @@ export const HomeStack = StackNavigator({
     screen: EditCourseScreen,
     navigationOptions: {
       headerTitle: 'Edit Course',
-    },
-  },
-  Students : {
-    screen: StudentsScreen,
-    navigationOptions: {
-      headerTitle: 'Students',
     },
   },
   CreateStudent : {

@@ -5,13 +5,16 @@ import { getRequest, deleteRequest } from '../../lib/requests';
 import { APIRoutes } from '../../config/routes';
 import { timeFormat } from '../../lib/datetime_formats';
 import { standardError } from '../../lib/alerts';
+import StudentCard from '../../components/StudentCard/StudentCard';
 
 class ViewCourseScreen extends React.Component {
   constructor(props) {
     super(props);
     this._fetchCourse = this._fetchCourse.bind(this);
     this._fetchSessions = this._fetchSessions.bind(this);
+    this._fetchStudents = this._fetchStudents.bind(this);
     this._fetchTeachers = this._fetchTeachers.bind(this);
+    this._handleSelectStudent = this._handleSelectStudent.bind(this);
     this._deleteCourse = this._deleteCourse.bind(this);
     this._renderCourseDate = this._renderCourseDate.bind(this);
     this._renderSessions = this._renderSessions.bind(this);
@@ -21,11 +24,26 @@ class ViewCourseScreen extends React.Component {
       sessions: [],
       course : { },
       isLoading : true,
+      students: { },
     }
   }
 
+  static navigationOptions = ({ navigation }) => {
+    const { params = {} } = navigation.state;
+    return {
+        headerRight: <Button title="Enroll Student" onPress={() => params.handleCreate()} />
+    };
+  };
+
   componentDidMount() {
     this._fetchCourse();
+
+    _enrollStudent = () => {
+       this.props.navigation.navigate('CreateStudent',
+        { refreshStudents: this._fetchStudents, courseId: this.state.course_id })
+     }
+
+    this.props.navigation.setParams({ handleCreate: _enrollStudent });
   }
 
   /*
@@ -55,9 +73,28 @@ class ViewCourseScreen extends React.Component {
    */
   _fetchTeachers() {
     const successFunc = (responseData) => {
-      this.setState({ teachers: responseData.teachers, isLoading: false });
+      this.setState({ teachers: responseData.teachers});
+      this._fetchStudents();
     }
     getRequest(APIRoutes.getTeachersPath(this.state.course_id), successFunc, standardError);
+  }
+
+  /*
+   * Fetch students for the course.
+   */
+  _fetchStudents() {
+    const successFunc = (responseData) => {
+      this.setState({ students: responseData, isLoading: false });
+    }
+
+    getRequest(APIRoutes.getStudentsPath(this.state.course_id), successFunc, standardError);
+  }
+
+  _handleSelectStudent(id) {
+    this.props.navigation.navigate('StudentProfile', {
+      refreshStudents: this._fetchStudents(),
+      studentId: id,
+    });
   }
 
   /*
@@ -108,6 +145,20 @@ class ViewCourseScreen extends React.Component {
     });
   }
 
+  /*
+   * Display course students
+   */
+  _renderStudents() {
+    const { navigate } = this.props.navigation;
+    return this.state.students.map((student, i) =>  (
+      <StudentCard key={i}
+        student={student}
+        onSelectStudent={this._handleSelectStudent}
+      />
+      )
+    );
+  }
+
   render() {
     const { navigate } = this.props.navigation;
     if (this.state.isLoading) {
@@ -147,6 +198,7 @@ class ViewCourseScreen extends React.Component {
               onPress={() => this._deleteCourse()}
               title='Delete'
             />
+            { this._renderStudents() }
           </View>
         </ScrollView>
       );
