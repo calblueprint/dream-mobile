@@ -67,12 +67,6 @@ const textStyles = StyleSheet.create({
     textDecorationColor: colors.primaryYellow,
   },
 
-  buttonTextDeleteSession: {
-    color: colors.errorRed,
-    fontSize: 16,
-    fontWeight: '500'
-  },
-
   toastText: {
     color: colors.textLight,
     fontSize: 20
@@ -90,7 +84,7 @@ const textStyles = StyleSheet.create({
 
   sessionHeaderText: {
     color: colors.textDark,
-    fontSize: 16,
+    fontSize: 20,
     fontWeight: '700',
   }
 

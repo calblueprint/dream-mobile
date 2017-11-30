@@ -3,6 +3,7 @@ import colors from '../../styles/colors';
 
 const formStyles = StyleSheet.create({
   container: {
+    flex:1,
     justifyContent: 'center',
     paddingTop: 20,
     paddingBottom: 20,
