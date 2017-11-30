@@ -6,7 +6,7 @@ const buttonStyles = StyleSheet.create({
   primaryButtonLarge: {
     backgroundColor: colors.primaryYellow,
     borderColor: colors.primaryYellow,
-    marginRight: 16, 
+    marginRight: 16,
     marginLeft: 16,
     marginTop: 24,
     marginBottom: 8,
@@ -24,7 +24,7 @@ const buttonStyles = StyleSheet.create({
 
   clearButtonSmall: {
     borderColor:'rgba(255, 255, 255, 0)',
-    marginBottom: 8, 
+    marginBottom: 8,
   },
 
   secondaryButtonSmall: {
@@ -35,7 +35,13 @@ const buttonStyles = StyleSheet.create({
     marginTop: 24,
     marginLeft: 8,
     marginBottom: 8,
-  }
+  },
+
+  addSessionButton: {
+    borderColor: 'transparent',
+    marginTop: 24,
+    marginBottom: 8,
+  },
 });
 
 export { buttonStyles };

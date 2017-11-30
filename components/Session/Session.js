@@ -148,16 +148,16 @@ class Session extends React.Component {
       <StyledButton
         onPress={() => this.props.onSessionDelete(this.props.number)}
         text='Delete Session'
-        clearButtonSmall>
+        addSessionButton>
       </StyledButton>
     );
   }
 
   render() {
     return (
-      <View style={formStyles.container}>
+      <View>
         <Text style={sessionStyles.headerText}>
-          Session { this.props.number + 1 }
+          Session #{ this.props.number + 1 }
         </Text>
         <Form
           refCallback={(ref) => this.form = ref}

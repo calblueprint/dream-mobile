@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import colors from '../../styles/colors';
 
 const formStyles = StyleSheet.create({
   container: {
@@ -7,6 +8,7 @@ const formStyles = StyleSheet.create({
     paddingBottom: 20,
     paddingLeft: 20,
     paddingRight: 20,
+    backgroundColor: colors.backgroundWhite,
   }
 })
 
