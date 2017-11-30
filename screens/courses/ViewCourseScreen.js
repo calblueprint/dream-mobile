@@ -4,7 +4,8 @@ import { commonStyles } from '../../styles/styles';
 import { getRequest, deleteRequest } from '../../lib/requests';
 import { APIRoutes } from '../../config/routes';
 import { timeFormat } from '../../lib/datetime_formats';
-import { standardError } from '../../lib/alerts';
+import { standardError, confirmDelete } from '../../lib/alerts';
+import StyledButton from '../../components/Button/Button';
 import StudentCard from '../../components/StudentCard/StudentCard';
 
 class ViewCourseScreen extends React.Component {
@@ -16,6 +17,7 @@ class ViewCourseScreen extends React.Component {
     this._fetchTeachers = this._fetchTeachers.bind(this);
     this._handleSelectStudent = this._handleSelectStudent.bind(this);
     this._deleteCourse = this._deleteCourse.bind(this);
+    this._renderDeleteCourseButton = this._renderDeleteCourseButton.bind(this);
     this._renderCourseDate = this._renderCourseDate.bind(this);
     this._renderSessions = this._renderSessions.bind(this);
     this._renderTeachers = this._renderTeachers.bind(this);
@@ -108,6 +110,16 @@ class ViewCourseScreen extends React.Component {
     deleteRequest(APIRoutes.getCoursePath(this.state.course_id), successFunc, standardError);
   }
 
+  _renderDeleteCourseButton() {
+    return (
+      <StyledButton
+        onPress={() => confirmDelete("Are you sure you want to delete this course?", this._deleteCourse)}
+        text='Delete'
+        secondaryButtonSmall>
+      </StyledButton>
+    );
+  }
+
   /*
    * Display course dates.
    */
@@ -194,11 +206,15 @@ class ViewCourseScreen extends React.Component {
                 })}
               title="Edit Course"
             />
+<<<<<<< HEAD
             <Button
               onPress={() => this._deleteCourse()}
               title='Delete'
             />
             { this._renderStudents() }
+=======
+            { this._renderDeleteCourseButton() }
+>>>>>>> master
           </View>
         </ScrollView>
       );
