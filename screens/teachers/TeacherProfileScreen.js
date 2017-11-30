@@ -1,5 +1,9 @@
 import React from 'react';
 import { Image, Button, Text, View, ScrollView } from 'react-native';
+
+import { connect } from 'react-redux';
+import actions from '../../actions';
+
 import { colors } from '../../styles/colors';
 import { textStyles } from '../../styles/textStyles';
 import { formViewStyles } from '../../styles/formViewStyles';
@@ -8,7 +12,6 @@ import { getRequest } from '../../lib/requests';
 import { APIRoutes } from '../../config/routes';
 import { standardError } from '../../lib/alerts';
 import PropTypes from 'prop-types';
-import LocalStorage from '../../helpers/LocalStorage'
 
 class TeacherProfileScreen extends React.Component {
 
@@ -48,7 +51,7 @@ class TeacherProfileScreen extends React.Component {
   }
 
   _attemptSignOut() {
-    LocalStorage.clearUser();
+    this.props.logout();
     this.props.navigation.navigate('Login');
   }
 
@@ -120,4 +123,10 @@ class TeacherProfileScreen extends React.Component {
   }
 }
 
-export default TeacherProfileScreen;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    logout: () => dispatch(actions.logout()),
+  }
+}
+
+export default connect(null, mapDispatchToProps)(TeacherProfileScreen);

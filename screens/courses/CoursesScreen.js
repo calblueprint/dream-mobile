@@ -1,64 +1,42 @@
 import React from 'react';
 import { Image, Button, ScrollView, Text, View } from 'react-native';
+
+import { connect } from 'react-redux';
+import actions from '../../actions';
+
 import { commonStyles } from '../../styles/styles';
 import { getRequest } from '../../lib/requests';
 import { APIRoutes } from '../../config/routes';
 import { standardError } from '../../lib/alerts';
 import CourseCard from '../../components/CourseCard/CourseCard';
-import LocalStorage from '../../helpers/LocalStorage'
 
 class CoursesScreen extends React.Component {
   constructor(props) {
     super(props);
-    this._fetchCourses = this._fetchCourses.bind(this);
     this._handleSelectCourse = this._handleSelectCourse.bind(this);
     this._handleTakeAttendance = this._handleTakeAttendance.bind(this);
     this._renderCourses = this._renderCourses.bind(this);
-    this.state = {
-      courses : { },
-      teacher : { },
-      teacher_dream_id : null,
-      isLoading : true,
-    }
   }
 
   static navigationOptions = ({ navigation }) => {
-      const { params = {} } = navigation.state;
-      return {
-          headerLeft: <Button title="Profile" onPress={() => params.handleProfile()} />
-      };
+    const { params = {} } = navigation.state;
+    return {
+      headerLeft: <Button title="Profile" onPress={() => params.handleProfile()} />
+    };
   };
 
   componentDidMount() {
-    LocalStorage.getUser().then((user) => {
-      this.setState({ teacher_dream_id: user.dream_id,
-                      teacher: user });
-      _profileView = () => {
-        this.props.navigation.navigate('TeacherProfile',
-                                      { teacher: this.state.teacher })
-      }
-      this._fetchCourses();
-      this.props.navigation.setParams({ handleProfile: _profileView });
-    });
+    this.props.fetchCourses(this.props.teacher.id);
 
-  }
-
-  /*
-   * Get all course records and rerenders component to display courses.
-   */
-  _fetchCourses() {
-    const successFunc = (responseData) => {
-      this.setState({ courses: responseData, isLoading: false });
+    profileView = () => {
+      this.props.navigation.navigate('TeacherProfile', { teacher: this.props.teacher })
     }
-    const params = {
-      teacher_id: this.state.teacher_dream_id,
-    }
-    getRequest(APIRoutes.getCoursesPath(), successFunc, standardError, params);
+    this.props.navigation.setParams({ handleProfile: profileView });
   }
 
   _handleSelectCourse(course_id) {
     this.props.navigation.navigate('ViewCourse', {
-      refreshCourses: this._fetchCourses,
+      refreshCourses: this.props.fetchCourses,
       course_id: course_id
     });
   }
@@ -90,7 +68,7 @@ class CoursesScreen extends React.Component {
   render() {
     const { navigate } = this.props.navigation;
     let courses;
-    if (this.state.isLoading) {
+    if (this.props.isLoading) {
       courses = (
         <Image
           style={commonStyles.icon}
@@ -111,4 +89,32 @@ class CoursesScreen extends React.Component {
   }
 }
 
-export default CoursesScreen;
+const fetchCourses = (teacherId) => {
+  return (dispatch) => {
+    dispatch(actions.requestCourses());
+    return getRequest(
+      APIRoutes.getTeacherCoursesPath(teacherId),
+      (responseData) => dispatch(actions.receiveCoursesSuccess(responseData)),
+      (error) => {
+        dispatch(actions.receiveStandardError(error));
+        standardError(error);
+      }
+    );
+  }
+}
+
+const mapStateToProps = (state) => {
+  return {
+    teacher: state.teacher,
+    courses: state.courses,
+    isLoading: state.isLoading.value,
+  };
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    fetchCourses: (teacherId) => dispatch(fetchCourses(teacherId)),
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(CoursesScreen);
