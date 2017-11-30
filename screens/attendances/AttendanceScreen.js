@@ -51,7 +51,7 @@ class AttendanceScreen extends React.Component {
     */
   _fetchAttendances(students) {
     const attendances = students.map((student) => {
-      return this._fetchAttendance(student.id, this.state.date);
+      return this._fetchAttendance(student.id, this.state.date.toDateString());
     });
 
     Promise.all(attendances).then((attendances) => {

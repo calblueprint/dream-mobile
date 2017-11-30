@@ -1,5 +1,8 @@
 import React from 'react';
-import LocalStorage from '../../helpers/LocalStorage'
+
+import { connect } from 'react-redux';
+import actions from '../../actions';
+
 import { Button, ScrollView, Text, TextInput, View } from 'react-native';
 import { styles } from '../../styles/styles';
 import { postRequest } from '../../lib/requests';
@@ -13,22 +16,17 @@ class LoginScreen extends React.Component {
     this.state = {
       email: "",
       password: "",
-      teacher: { },
     }
   }
 
   _attemptLogin() {
-    const successFunc = (responseData) => {
-      LocalStorage.storeUser(responseData);
-      this.props.navigation.navigate('Courses');
-    }
     const params = {
       teacher: {
         email: this.state.email,
         password: this.state.password,
       }
     }
-    postRequest(APIRoutes.loginPath(), successFunc, standardError, params);
+    this.props.fetchTeacher(params, this.props.navigation);
   }
 
   render() {
@@ -56,4 +54,28 @@ class LoginScreen extends React.Component {
   }
 }
 
-export default LoginScreen;
+const fetchTeacher = (params, navigation) => {
+  return (dispatch) => {
+    dispatch(actions.requestTeacher(params));
+    return postRequest(
+      APIRoutes.loginPath(),
+      (responseData) => {
+        dispatch(actions.receiveTeacherSuccess(responseData));
+        navigation.navigate('Courses');
+      },
+      (error) => {
+        dispatch(actions.receiveStandardError(error));
+        standardError(error);
+      },
+      params
+    );
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    fetchTeacher: (params, navigation) => dispatch(fetchTeacher(params, navigation)),
+  }
+}
+
+export default connect(null, mapDispatchToProps)(LoginScreen);
