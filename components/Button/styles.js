@@ -36,12 +36,6 @@ const buttonStyles = StyleSheet.create({
     marginLeft: 8,
     marginBottom: 8,
   },
-
-  addSessionButton: {
-    borderColor: 'transparent',
-    marginTop: 24,
-    marginBottom: 8,
-  },
 });
 
 export { buttonStyles };

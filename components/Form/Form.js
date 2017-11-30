@@ -70,17 +70,12 @@ class Form extends React.Component {
       borderWidth: 0,
     };
 
-    textbox.notEditable = {
-      color: INPUT_COLOR,
-      backgroundColor: BACKGROUND_COLOR,
-      fontSize: FONT_SIZE,
-      height: HEIGHT,
-      paddingVertical: Platform.OS === "ios" ? 7 : 0,
-      paddingHorizontal: PADDING_HORIZONTAL,
-      borderRadius: HEIGHT / 2,
-      borderColor: colors.dividerGrey,
-      borderWidth: 1,
-      marginBottom: 5,
+    // Picker container styles
+    let picker = stylesheet.pickerContainer
+    picker.normal = {
+      marginBottom: 4,
+      borderRadius: 4,
+      borderColor: 'transparent',
     };
 
     // Label styles
@@ -88,17 +83,17 @@ class Form extends React.Component {
     label.normal = {
       color: LABEL_COLOR,
       fontSize: LABEL_FONT_SIZE,
-      marginBottom: 7,
+      marginBottom: 4,
+      paddingTop: 8,
       fontWeight: LABEL_FONT_WEIGHT,
-      letterSpacing: 0.5,
     };
 
     label.error = {
       color: colors.errorRed,
       fontSize: LABEL_FONT_SIZE,
-      marginBottom: 7,
+      marginBottom: 4,
+      paddingTop: 8,
       fontWeight: LABEL_FONT_WEIGHT,
-      letterSpacing: 0.5,
     };
 
     // Helpblock styles (help and error messages)
