@@ -238,8 +238,8 @@ class EditCourseForm extends React.Component {
     return (
       <StyledButton
         onPress={this._handleAddSession}
-        text='+ Add Session'
-        clearButtonSmall>
+        text='+ Add Another Session'
+        addSessionButton>
       </StyledButton>
     );
   }

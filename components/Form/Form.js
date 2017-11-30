@@ -38,47 +38,41 @@ class Form extends React.Component {
     let stylesheet = t.form.Form.stylesheet;
 
     const FONT_SIZE = 15;
-    const HEIGHT = 40;
+    const HEIGHT = 24;
     const INPUT_COLOR = colors.textDark;
     const PADDING_HORIZONTAL = 15;
+    const BACKGROUND_COLOR = colors.backgroundWhite;
 
-    const LABEL_FONT_SIZE = 15;
-    const LABEL_COLOR = colors.primaryYellow
-    const LABEL_FONT_WEIGHT = 'bold';
+    const LABEL_FONT_SIZE = 16;
+    const LABEL_COLOR = colors.textDark;
+    const LABEL_FONT_WEIGHT = '700';
 
     const HELPBLOCK_FONT_SIZE = 13;
 
     // Textbox styles
     let textbox = stylesheet.textbox;
     textbox.normal = {
+      flex: 1,
       color: INPUT_COLOR,
-      backgroundColor: colors.backgroundGrey,
       fontSize: FONT_SIZE,
+      backgroundColor: BACKGROUND_COLOR,
+      borderBottomColor: colors.dividerGrey,
+      borderBottomWidth: 1,
       height: HEIGHT,
-      paddingVertical: Platform.OS === "ios" ? 7 : 0,
-      paddingHorizontal: PADDING_HORIZONTAL,
-      borderRadius: HEIGHT / 2,
-      borderColor: colors.primaryYellow,
-      borderWidth: 1,
-      marginBottom: 5,
     };
 
     textbox.error = {
+      flex: 1,
       color: INPUT_COLOR,
-      backgroundColor: colors.backgroundGrey,
-      fontSize: FONT_SIZE,
-      height: HEIGHT,
-      paddingVertical: Platform.OS === "ios" ? 7 : 0,
-      paddingHorizontal: PADDING_HORIZONTAL,
-      borderRadius: HEIGHT / 2,
-      borderColor: colors.errorRed,
-      borderWidth: 1,
-      marginBottom: 5,
+      backgroundColor: BACKGROUND_COLOR,
+      borderBottomColor: colors.errorRed,
+      borderBottomWidth: 1,
+      borderWidth: 0,
     };
 
     textbox.notEditable = {
       color: INPUT_COLOR,
-      backgroundColor: colors.backgroundGrey,
+      backgroundColor: BACKGROUND_COLOR,
       fontSize: FONT_SIZE,
       height: HEIGHT,
       paddingVertical: Platform.OS === "ios" ? 7 : 0,
@@ -110,7 +104,7 @@ class Form extends React.Component {
     // Helpblock styles (help and error messages)
     let helpBlock = stylesheet.helpBlock;
     helpBlock.normal = {
-      color: colors.primaryYellow,
+      color: colors.dividerGrey,
       fontSize: HELPBLOCK_FONT_SIZE,
       marginBottom: 2,
     };

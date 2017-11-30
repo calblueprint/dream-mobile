@@ -4,8 +4,8 @@ import colors from '../../styles/colors';
 const sessionStyles = StyleSheet.create({
   headerText: {
     justifyContent: 'center',
-    color: colors.primaryYellow,
-    fontSize: 20,
+    color: colors.textDark,
+    fontSize: 16,
     fontWeight: '700'
   }
 })
