@@ -27,9 +27,7 @@ class CoursesScreen extends React.Component {
   };
 
   componentDidMount() {
-    this.props.fetchCourses({
-      teacher_id: this.props.teacher.dream_id,
-    });
+    this.props.fetchCourses(this.props.teacher.id);
 
     profileView = () => {
       this.props.navigation.navigate('TeacherProfile', { teacher: this.props.teacher })
@@ -96,17 +94,16 @@ class CoursesScreen extends React.Component {
   }
 }
 
-const fetchCourses = (params) => {
+const fetchCourses = (teacherId) => {
   return (dispatch) => {
     dispatch(actions.requestCourses());
     return getRequest(
-      APIRoutes.getCoursesPath(),
+      APIRoutes.getTeacherCoursesPath(teacherId),
       (responseData) => dispatch(actions.receiveCoursesSuccess(responseData)),
       (error) => {
         dispatch(actions.receiveStandardError(error));
         standardError(error);
-      },
-      params
+      }
     );
   }
 }
@@ -121,7 +118,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    fetchCourses: (params) => dispatch(fetchCourses(params)),
+    fetchCourses: (teacherId) => dispatch(fetchCourses(teacherId)),
   }
 }
 
