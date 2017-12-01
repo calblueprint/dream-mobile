@@ -1,6 +1,5 @@
 import React from 'react';
-import { Button, Text, TouchableHighlight, View } from 'react-native';
-import { APIRoutes } from '../../config/routes';
+import { Text, TouchableHighlight, View } from 'react-native';
 import PropTypes from 'prop-types';
 
 /**
@@ -10,9 +9,6 @@ import PropTypes from 'prop-types';
 class StudentCard extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      student: this.props.student,
-    }
   }
 
   render() {

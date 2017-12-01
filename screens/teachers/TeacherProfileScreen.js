@@ -18,9 +18,6 @@ class TeacherProfileScreen extends React.Component {
   constructor(props) {
     super(props);
     this._renderTeacher = this._renderTeacher.bind(this);
-    this.state = {
-      isLoading: true,
-    }
   }
 
   componentDidMount() {

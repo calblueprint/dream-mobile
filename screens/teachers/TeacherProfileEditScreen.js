@@ -14,8 +14,6 @@ import LocalStorage from '../../helpers/LocalStorage'
 class TeacherProfileEditScreen extends React.Component {
 	constructor(props) {
 	  super(props);
-	  this.state = {
-	  }
 	}
 
 	_handleEditTeacher(params) {
