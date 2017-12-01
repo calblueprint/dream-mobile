@@ -46,15 +46,17 @@ export const HomeStack = StackNavigator({
   },
   Courses : {
     screen: CoursesScreen,
-    navigationOptions: {
+    navigationOptions: ({navigation}) => ({
       headerTitle: 'Courses',
-    },
+      headerLeft: (<Button title='Profile' onPress={() => { navigation.navigate('TeacherProfile') }}/>),
+    }),
   },
   TeacherProfile : {
     screen: TeacherProfileScreen,
-    navigationOptions: {
+    navigationOptions: ({navigation}) => ({
       headerTitle: 'Profile',
-    },
+      headerLeft: (<Button title='Edit' onPress={() => { navigation.navigate('EditTeacherProfile') }}/>),
+    }),
   },
   EditTeacherProfile : {
     screen: TeacherProfileEditScreen,

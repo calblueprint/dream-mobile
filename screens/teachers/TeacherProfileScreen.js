@@ -17,37 +17,24 @@ class TeacherProfileScreen extends React.Component {
 
   constructor(props) {
     super(props);
+    console.log(this.props.teacher);
     this._fetchTeacher = this._fetchTeacher.bind(this);
     this._renderTeacher = this._renderTeacher.bind(this);
     this.state = {
-      teacher : this.props.navigation.state.params.teacher,
+      teacher : { },
       isLoading : true,
     }
   }
 
-  static navigationOptions = ({ navigation }) => {
-      const { params = {} } = navigation.state;
-      return {
-          headerRight: <Button title="Edit" onPress={() => params.handleEdit()} />
-      };
-  };
-
   componentDidMount() {
-    _editProfile = () => {
-       this.props.navigation.navigate('EditTeacherProfile',
-        { refreshTeacher: this._fetchTeacher, teacher: this.state.teacher })
-     }
-
     this._fetchTeacher();
-    this.props.navigation.setParams({ handleEdit: _editProfile });
-
   }
 
   _fetchTeacher() {
     const successFunc = (responseData) => {
       this.setState({ teacher: responseData, isLoading: false });
     }
-    getRequest(APIRoutes.getTeacherPath(this.state.teacher.id), successFunc, standardError);
+    getRequest(APIRoutes.getTeacherPath(this.props.teacher.id), successFunc, standardError);
   }
 
   _attemptSignOut() {
@@ -61,7 +48,7 @@ class TeacherProfileScreen extends React.Component {
         <View style={formViewStyles.div_1}>
           <View style={formViewStyles.div_2}>
             <Text style={textStyles.titleLarge}>
-            {this.state.teacher.first_name} {this.state.teacher.last_name}
+            {this.props.teacher.first_name} {this.props.teacher.last_name}
             </Text>
           </View>
 
@@ -70,7 +57,7 @@ class TeacherProfileScreen extends React.Component {
             Dream ID
             </Text>
             <Text style={textStyles.body}>
-            {this.state.teacher.dream_id}
+            {this.props.teacher.dream_id}
             </Text>
           </View>
 
@@ -79,7 +66,7 @@ class TeacherProfileScreen extends React.Component {
             Email
             </Text>
             <Text style={textStyles.body}>
-            {this.state.teacher.email}
+            {this.props.teacher.email}
             </Text>
           </View>
 
@@ -88,7 +75,7 @@ class TeacherProfileScreen extends React.Component {
             Phone Number
             </Text>
             <Text style={textStyles.body}>
-            {this.state.teacher.phone}
+            {this.props.teacher.phone}
             </Text>
           </View>
 
@@ -123,10 +110,16 @@ class TeacherProfileScreen extends React.Component {
   }
 }
 
+const mapStateToProps = (state) => {
+  return {
+    teacher: state.teacher,
+  };
+}
+
 const mapDispatchToProps = (dispatch) => {
   return {
     logout: () => dispatch(actions.logout()),
   }
 }
 
-export default connect(null, mapDispatchToProps)(TeacherProfileScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(TeacherProfileScreen);

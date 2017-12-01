@@ -18,20 +18,8 @@ class CoursesScreen extends React.Component {
     this._renderCourses = this._renderCourses.bind(this);
   }
 
-  static navigationOptions = ({ navigation }) => {
-    const { params = {} } = navigation.state;
-    return {
-      headerLeft: <Button title="Profile" onPress={() => params.handleProfile()} />
-    };
-  };
-
   componentDidMount() {
     this.props.fetchCourses(this.props.teacher.id);
-
-    profileView = () => {
-      this.props.navigation.navigate('TeacherProfile', { teacher: this.props.teacher })
-    }
-    this.props.navigation.setParams({ handleProfile: profileView });
   }
 
   _handleSelectCourse(course_id) {
@@ -55,7 +43,7 @@ class CoursesScreen extends React.Component {
       onPress={() => navigate('EditCourse', {refreshCourses: this._fetchCourses, newCourse: true, sessions: []})}
       title="Create Course"
     />
-    return this.state.courses.map((course, i) => (
+    return this.props.courses.map((course, i) => (
       <CourseCard key={i}
         course_id={course.id}
         title={course.title}

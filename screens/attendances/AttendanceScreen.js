@@ -228,7 +228,6 @@ class AttendanceScreen extends React.Component {
     * Renders loading state if data is still loading or uses _renderLoadedView
     */
   render() {
-    // TODO (Kelsey): Add loading gif
     const attendances = this.state.isLoading ? (<Image style={commonStyles.icon}
                         source={require('../../icons/spinner.gif')}/>) : this._renderLoadedView();
     return (

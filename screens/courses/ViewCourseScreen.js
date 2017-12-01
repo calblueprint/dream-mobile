@@ -26,7 +26,7 @@ class ViewCourseScreen extends React.Component {
       sessions: [],
       course : { },
       isLoading : true,
-      students: { },
+      students: [],
     }
   }
 
@@ -206,15 +206,8 @@ class ViewCourseScreen extends React.Component {
                 })}
               title="Edit Course"
             />
-<<<<<<< HEAD
-            <Button
-              onPress={() => this._deleteCourse()}
-              title='Delete'
-            />
-            { this._renderStudents() }
-=======
             { this._renderDeleteCourseButton() }
->>>>>>> master
+            { this._renderStudents() }
           </View>
         </ScrollView>
       );
