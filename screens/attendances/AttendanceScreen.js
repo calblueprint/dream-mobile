@@ -1,19 +1,14 @@
 import React from 'react';
-<<<<<<< HEAD
 import { Image, Button, Text, View, ScrollView, TextInput, TouchableHighlight, StyleSheet } from 'react-native';
-=======
-import { Button, Text, View, ScrollView, TextInput, TouchableHighlight, StyleSheet } from 'react-native';
 
 import { connect } from 'react-redux';
 import actions from '../../actions';
 
->>>>>>> Get redux working for loading attendances
 import { commonStyles } from '../../styles/styles';
 import { textStyles } from '../../styles/textStyles';
 import { APIRoutes } from '../../config/routes';
 import settings from '../../config/settings';
-import { getRequest, postRequest, putRequest } from '../../lib/requests';
-import { attendanceDate } from '../../lib/date';
+import { getRequest, postRequestNoCatch } from '../../lib/requests';
 import AttendanceCard from '../../components/AttendanceCard';
 import SimpleModal from '../../components/SimpleModal';
 import { standardError } from '../../lib/alerts';
@@ -24,7 +19,6 @@ class AttendanceScreen extends React.Component {
     super(props);
     this.state = {
       attendances: this.props.attendances ? this.props.attendances : [],
-      // isLoading: true,
       modalIndex: -1,
       modalComment: null,
     }
@@ -161,7 +155,7 @@ class AttendanceScreen extends React.Component {
         <ScrollView>
           <View style={styles.attendancesContainer}>
             <View style={commonStyles.header}>
-              <Text style={textStyles.titleSmall}>{attendanceDate(this.props.date)}</Text>
+              <Text style={textStyles.titleSmall}>{this.props.date}</Text>
               <Text style={textStyles.titleLarge}>{this.props.courseTitle}</Text>
             </View>
             {this._renderAttendances()}
@@ -174,6 +168,7 @@ class AttendanceScreen extends React.Component {
             courseTitle: this.props.courseTitle,
             date: this.props.date,
             parentKey: this.props.navigation.state.key,
+            courseId: this.props.courseId,
           })}
           text='Submit'
           primaryButtonLarge
@@ -237,13 +232,12 @@ const fetchAttendances = (students, courseId, date) => {
   return (dispatch) => {
     dispatch(actions.requestAttendances(courseId, date));
     const attendances = students.map((student) => {
-      return fetchAttendance(student.id, courseId, date.toDateString());
+      return fetchAttendance(student.id, courseId, date);
     });
 
     Promise.all(attendances).then((attendances) => {
       dispatch(actions.receiveAttendancesSuccess(attendances, courseId, date));
     }).catch((error) => {
-      console.log(error)
       dispatch(actions.receiveStandardError(error));
       standardError(error);
     });
@@ -268,18 +262,16 @@ const fetchAttendance = (studentId, courseId, date) => {
       course_id: courseId
     }
   }
-  return postRequest(APIRoutes.attendanceItemPath(), successFunc, errorFunc, params);
+  return postRequestNoCatch(APIRoutes.attendanceItemPath(), successFunc, errorFunc, params);
 }
 
-
 const mapStateToProps = (state, props) => {
-  // TODO (Kelsey): clean up
-  console.log(state.courses)
   const course = state.courses.find((course) => course.id === props.navigation.state.params.courseId);
+  const date = props.navigation.state.params.date;
   return {
     ...props.navigation.state.params,
     students: course.students ? course.students : {},
-    attendances: course.attendances ? course.attendances[props.navigation.state.params.date]: [],
+    attendances: course.attendances && course.attendances[date] ? course.attendances[date].list : [],
     isLoading: state.isLoading.value,
   };
 }

@@ -14,6 +14,16 @@ let actions = {
       type: types.LOGOUT
     }
   },
+  openModal: () => {
+    return {
+      type: types.OPEN_MODAL
+    }
+  },
+  closeModal: () => {
+    return {
+      type: types.CLOSE_MODAL
+    }
+  },
 
   // COURSES
   requestCourses: () => {
@@ -67,6 +77,29 @@ let actions = {
   receiveAttendancesSuccess: (attendances, courseId, date) => {
     return {
       type: types.RECEIVE_ATTENDANCES_SUCCESS,
+      attendances,
+      courseId,
+      date
+    }
+  },
+  requestUpdateAttendances: (courseId, date) => {
+    return {
+      type: types.REQUEST_UPDATE_ATTENDANCES,
+      courseId,
+      date
+    }
+  },
+  receiveUpdateAttendancesSuccess: (attendances, courseId, date) => {
+    return {
+      type: types.RECEIVE_UPDATE_ATTENDANCES_SUCCESS,
+      attendances,
+      courseId,
+      date
+    }
+  },
+  receiveUpdateAttendancesError: (attendances, courseId, date) => {
+    return {
+      type: types.RECEIVE_UPDATE_ATTENDANCES_ERROR,
       attendances,
       courseId,
       date

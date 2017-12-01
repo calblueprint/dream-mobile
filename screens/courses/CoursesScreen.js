@@ -8,6 +8,7 @@ import { commonStyles } from '../../styles/styles';
 import { getRequest } from '../../lib/requests';
 import { APIRoutes } from '../../config/routes';
 import { standardError } from '../../lib/alerts';
+import { attendanceDate } from '../../lib/date';
 import CourseCard from '../../components/CourseCard/CourseCard';
 
 class CoursesScreen extends React.Component {
@@ -30,7 +31,7 @@ class CoursesScreen extends React.Component {
   }
 
   _handleTakeAttendance(course_id, title) {
-    const date = new Date();
+    const date = attendanceDate(new Date());
     this.props.navigation.navigate('Attendances', {
       courseId: course_id,
       courseTitle: title,

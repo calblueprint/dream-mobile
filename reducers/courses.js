@@ -8,11 +8,13 @@ export const courses = (state = {}, action) => {
       return action.courses;
     case types.RECEIVE_STUDENTS_SUCCESS:
     case types.RECEIVE_ATTENDANCES_SUCCESS:
+    case types.RECEIVE_UPDATE_ATTENDANCES_SUCCESS:
+    case types.RECEIVE_UPDATE_ATTENDANCES_ERROR:
       return state.map((item) => {
         return item.id == action.courseId ? course(item, action) : item;
       });
     default:
-      return state
+      return state;
   }
 }
 
@@ -23,9 +25,13 @@ const course = (state = {}, action) => {
         students: students(state.students, action)
       });
     case types.RECEIVE_ATTENDANCES_SUCCESS:
+    case types.RECEIVE_UPDATE_ATTENDANCES_SUCCESS:
+    case types.RECEIVE_UPDATE_ATTENDANCES_ERROR:
       return Object.assign({}, state, {
         attendances: attendances(state.attendances, action)
       });
+    default:
+      return state;
   }
 }
 
