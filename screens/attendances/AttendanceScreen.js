@@ -18,6 +18,8 @@ class AttendanceScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      // Keep state for attendances since they shouldn't be updated to store
+      // until user has reviewed the AttendanceSummaryScreen and submitted
       attendances: this.props.attendances ? this.props.attendances : [],
       modalIndex: -1,
       modalComment: null,
@@ -30,6 +32,9 @@ class AttendanceScreen extends React.Component {
     this.props.fetchStudents(this.props.courseId, this.props.date);
   }
 
+  /**
+    * Update attendances after dispatching a network call for them
+    */
   componentWillReceiveProps(nextProps) {
     if (nextProps !== this.props) {
       this.setState({ attendances: nextProps.attendances });
@@ -226,7 +231,7 @@ const fetchStudents = (courseId, date) => {
 
 /**
   * Attempts to get attendance for each students and waits for each request to succeed
-  * before setting state for attendances
+  * before updating state for attendances
   */
 const fetchAttendances = (students, courseId, date) => {
   return (dispatch) => {
@@ -245,7 +250,8 @@ const fetchAttendances = (students, courseId, date) => {
 }
 
 /**
-  * Makes a request to get attendance for the specified student
+  * Makes a request to get attendance for the specified student.
+  * (Uses postRequestNoCatch so any errors get caught in Promise.all)
   */
 const fetchAttendance = (studentId, courseId, date) => {
   const successFunc = (responseData) => {
@@ -266,6 +272,7 @@ const fetchAttendance = (studentId, courseId, date) => {
 }
 
 const mapStateToProps = (state, props) => {
+  // Get course and date associated with this attendance screen
   const course = state.courses.find((course) => course.id === props.navigation.state.params.courseId);
   const date = props.navigation.state.params.date;
   return {

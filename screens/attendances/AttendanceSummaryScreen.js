@@ -175,7 +175,9 @@ class AttendanceSummaryScreen extends React.Component {
       this.props.navigation.goBack(this.props.navigation.state.params.parentKey || null);
     }
     const buttons = [{ title: 'Okay', callback: callback, type: 'primary' }];
+    // Indicates wheter saved to phone text should be visible
     const savedToPhoneStyle = this.props.isSynced ? { display: 'none' } : {};
+    // Indicates whether synced icon should be a success or error
     const syncedIcon = this.props.isSynced ? require('../../icons/success.png') : require('../../icons/error.png');
 
     return (
@@ -288,7 +290,7 @@ const styles = StyleSheet.create({
 /**
   * Attempts to update each changed attendance and waits for each request to succeed
   * and shows different modal based on whether sync succeeded or failed. Saves attendances
-  * to store.
+  * to store regardless of success/failiure.
   */
 syncAttendances = (attendances, courseId, date) => {
   return (dispatch) => {
@@ -309,6 +311,7 @@ syncAttendances = (attendances, courseId, date) => {
 
 /**
   * Makes put request to update given attendance if it has been changed
+  * (Uses putRequestNoCatch so any errors get caught in Promise.all)
   */
 updateAttendance = (attendance, index) => {
   const successFunc = (responseData) => {
@@ -327,6 +330,7 @@ updateAttendance = (attendance, index) => {
 }
 
 const mapStateToProps = (state, props) => {
+  // Get course and date associated with this attendance screen
   const course = state.courses.find((course) => course.id === props.navigation.state.params.courseId);
   const date = props.navigation.state.params.date;
   return {
