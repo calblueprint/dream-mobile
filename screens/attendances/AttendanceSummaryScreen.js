@@ -141,7 +141,7 @@ class AttendanceSummaryScreen extends React.Component {
           source={require('../../icons/right.png')}
         />
       )
-    } 
+    }
     return (
      <Image
        style={styles.icon}
@@ -278,8 +278,9 @@ class AttendanceSummaryScreen extends React.Component {
     * Renders loading state if data is still loading or uses _renderLoadedView
     */
   render() {
-    // TODO (Kelsey): Add loading gif
-    const view = this.state.isLoading ? (<Text>Loading...</Text>) : this._renderLoadedView();
+    const view = this.state.isLoading ?
+                  (<Image style={commonStyles.icon} source={require('../../icons/spinner.gif')}/>) :
+                  this._renderLoadedView();
     return (
       <View style={commonStyles.containerStatic}>
         { view }
@@ -290,7 +291,7 @@ class AttendanceSummaryScreen extends React.Component {
 
 const styles = StyleSheet.create({
   containerInner: {
-    flexDirection: 'row', 
+    flexDirection: 'row',
     alignItems: 'center'
   },
   summaryContainer: {
@@ -304,15 +305,15 @@ const styles = StyleSheet.create({
   },
   studentList: {
     marginLeft: 24,
-    marginBottom: 24, 
+    marginBottom: 24,
   },
   icon: {
-    height: 16, 
+    height: 16,
     width: 16,
     marginRight: 8
   },
   statusIcon: {
-    height: 24, 
+    height: 24,
     width: 24,
     marginRight: 8
   },

@@ -1,6 +1,5 @@
 import React from 'react';
-import { Button, Text, View, ScrollView, TextInput, TouchableHighlight, StyleSheet } from 'react-native';
-
+import { Image, Button, Text, View, ScrollView, TextInput, TouchableHighlight, StyleSheet } from 'react-native';
 import { commonStyles } from '../../styles/styles';
 import { textStyles } from '../../styles/textStyles';
 import { APIRoutes } from '../../config/routes';
@@ -229,8 +228,8 @@ class AttendanceScreen extends React.Component {
     * Renders loading state if data is still loading or uses _renderLoadedView
     */
   render() {
-    // TODO (Kelsey): Add loading gif
-    const attendances = this.state.isLoading ? (<Text>Loading...</Text>) : this._renderLoadedView();
+    const attendances = this.state.isLoading ? (<Image style={commonStyles.icon}
+                        source={require('../../icons/spinner.gif')}/>) : this._renderLoadedView();
     return (
       <View style={commonStyles.containerStatic}>
         { attendances }

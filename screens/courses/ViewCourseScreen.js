@@ -1,18 +1,21 @@
 import React from 'react';
-import { Button, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Image, Button, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { commonStyles } from '../../styles/styles';
 import { getRequest, deleteRequest } from '../../lib/requests';
 import { APIRoutes } from '../../config/routes';
 import { timeFormat } from '../../lib/datetime_formats';
 import { standardError, confirmDelete } from '../../lib/alerts';
 import StyledButton from '../../components/Button/Button';
+import StudentCard from '../../components/StudentCard/StudentCard';
 
 class ViewCourseScreen extends React.Component {
   constructor(props) {
     super(props);
     this._fetchCourse = this._fetchCourse.bind(this);
     this._fetchSessions = this._fetchSessions.bind(this);
+    this._fetchStudents = this._fetchStudents.bind(this);
     this._fetchTeachers = this._fetchTeachers.bind(this);
+    this._handleSelectStudent = this._handleSelectStudent.bind(this);
     this._deleteCourse = this._deleteCourse.bind(this);
     this._renderDeleteCourseButton = this._renderDeleteCourseButton.bind(this);
     this._renderCourseDate = this._renderCourseDate.bind(this);
@@ -23,11 +26,26 @@ class ViewCourseScreen extends React.Component {
       sessions: [],
       course : { },
       isLoading : true,
+      students: [],
     }
   }
 
+  static navigationOptions = ({ navigation }) => {
+    const { params = {} } = navigation.state;
+    return {
+        headerRight: <Button title="Enroll Student" onPress={() => params.handleCreate()} />
+    };
+  };
+
   componentDidMount() {
     this._fetchCourse();
+
+    const _enrollStudent = () => {
+       this.props.navigation.navigate('CreateStudent',
+        { refreshStudents: this._fetchStudents, courseId: this.state.course_id })
+     }
+
+    this.props.navigation.setParams({ handleCreate: _enrollStudent });
   }
 
   /*
@@ -57,9 +75,28 @@ class ViewCourseScreen extends React.Component {
    */
   _fetchTeachers() {
     const successFunc = (responseData) => {
-      this.setState({ teachers: responseData.teachers, isLoading: false });
+      this.setState({ teachers: responseData.teachers});
+      this._fetchStudents();
     }
     getRequest(APIRoutes.getTeachersPath(this.state.course_id), successFunc, standardError);
+  }
+
+  /*
+   * Fetch students for the course.
+   */
+  _fetchStudents() {
+    const successFunc = (responseData) => {
+      this.setState({ students: responseData, isLoading: false });
+    }
+
+    getRequest(APIRoutes.getStudentsPath(this.state.course_id), successFunc, standardError);
+  }
+
+  _handleSelectStudent(id) {
+    this.props.navigation.navigate('StudentProfile', {
+      refreshStudents: this._fetchStudents(),
+      studentId: id,
+    });
   }
 
   /*
@@ -115,16 +152,35 @@ class ViewCourseScreen extends React.Component {
       const start = timeFormat(new Date(session.start_time))
       const end = timeFormat(new Date(session.end_time))
       return (
-        <Text key={index}>Session {index + 1}: { session.weekday }'s { start } to { end }</Text>
+        <Text key={index}>{`Session ${index + 1}: ${ session.weekday }'s ${ start } to ${ end }`}</Text>
       );
     });
+  }
+
+  /*
+   * Display course students
+   */
+  _renderStudents() {
+    const { navigate } = this.props.navigation;
+    return this.state.students.map((student, i) =>  (
+      <StudentCard key={i}
+        student={student}
+        onSelectStudent={this._handleSelectStudent}
+      />
+      )
+    );
   }
 
   render() {
     const { navigate } = this.props.navigation;
     if (this.state.isLoading) {
       return (
-        <Text>Loading...</Text>
+        <View style={commonStyles.containerStatic}>
+          <Image
+            style={commonStyles.icon}
+            source={require('../../icons/spinner.gif')}
+          />
+      </View>
       );
     } else {
       return (
@@ -151,6 +207,7 @@ class ViewCourseScreen extends React.Component {
               title="Edit Course"
             />
             { this._renderDeleteCourseButton() }
+            { this._renderStudents() }
           </View>
         </ScrollView>
       );
