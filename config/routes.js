@@ -56,7 +56,7 @@ export const HomeStack = StackNavigator({
     screen: TeacherProfileScreen,
     navigationOptions: ({navigation}) => ({
       headerTitle: 'Profile',
-      headerLeft: (<Button title='Edit' onPress={() => { navigation.navigate('EditTeacherProfile') }}/>),
+      headerRight: (<Button title='Edit' onPress={() => { navigation.navigate('EditTeacherProfile') }}/>),
     }),
   },
   EditTeacherProfile : {
