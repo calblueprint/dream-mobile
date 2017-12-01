@@ -2,12 +2,20 @@
 import types from '../lib/actionTypes'
 
 let actions = {
+  // GENERAL
   receiveStandardError: (error) => {
     return {
       type: types.RECEIVE_STANDARD_ERROR,
       error
     }
   },
+  logout: () => {
+    return {
+      type: types.LOGOUT
+    }
+  },
+
+  // COURSES
   requestCourses: () => {
     return {
       type: types.REQUEST_COURSES,
@@ -19,6 +27,8 @@ let actions = {
       courses
     }
   },
+
+  // TEACHERS
   requestTeacher: () => {
     return {
       type: types.REQUEST_TEACHER,
@@ -30,9 +40,36 @@ let actions = {
       teacher
     }
   },
-  logout: () => {
+
+  // STUDENTS
+  requestStudents: (courseId) => {
     return {
-      type: types.LOGOUT
+      type: types.REQUEST_STUDENTS,
+      courseId
+    }
+  },
+  receiveStudentsSuccess: (students, courseId) => {
+    return {
+      type: types.RECEIVE_STUDENTS_SUCCESS,
+      students,
+      courseId
+    }
+  },
+
+  // ATTENDANCES
+  requestAttendances: (courseId, date) => {
+    return {
+      type: types.REQUEST_ATTENDANCES,
+      courseId,
+      date
+    }
+  },
+  receiveAttendancesSuccess: (attendances, courseId, date) => {
+    return {
+      type: types.RECEIVE_ATTENDANCES_SUCCESS,
+      attendances,
+      courseId,
+      date
     }
   },
 };

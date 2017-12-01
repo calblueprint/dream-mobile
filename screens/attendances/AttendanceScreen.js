@@ -1,5 +1,13 @@
 import React from 'react';
+<<<<<<< HEAD
 import { Image, Button, Text, View, ScrollView, TextInput, TouchableHighlight, StyleSheet } from 'react-native';
+=======
+import { Button, Text, View, ScrollView, TextInput, TouchableHighlight, StyleSheet } from 'react-native';
+
+import { connect } from 'react-redux';
+import actions from '../../actions';
+
+>>>>>>> Get redux working for loading attendances
 import { commonStyles } from '../../styles/styles';
 import { textStyles } from '../../styles/textStyles';
 import { APIRoutes } from '../../config/routes';
@@ -15,12 +23,8 @@ class AttendanceScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      attendances: { },
-      students: { },
-      isLoading: true,
-      date: this.props.navigation.state.params.date,
-      courseId: this.props.navigation.state.params.courseId,
-      courseTitle: this.props.navigation.state.params.courseTitle,
+      attendances: this.props.attendances ? this.props.attendances : [],
+      // isLoading: true,
       modalIndex: -1,
       modalComment: null,
     }
@@ -29,64 +33,20 @@ class AttendanceScreen extends React.Component {
   }
 
   componentDidMount() {
-    this._fetchStudents(this.state.courseId);
+    this.props.fetchStudents(this.props.courseId, this.props.date);
   }
 
-  /**
-    * Fetches all students with the given course id and on success
-    * gets attendances for each student
-    */
-  _fetchStudents(courseId) {
-    const successFunc = (responseData) => {
-      this.setState({ students: responseData });
-      this._fetchAttendances(responseData);
+  componentWillReceiveProps(nextProps) {
+    if (nextProps !== this.props) {
+      this.setState({ attendances: nextProps.attendances });
     }
-    getRequest(APIRoutes.getStudentsPath(courseId), successFunc, standardError);
-  }
-
-  /**
-    * Attempts to get attendance for each students and waits for each request to succeed
-    * before setting state for attendances, or logs failure
-    */
-  _fetchAttendances(students) {
-    const attendances = students.map((student) => {
-      return this._fetchAttendance(student.id, this.state.date.toDateString());
-    });
-
-    Promise.all(attendances).then((attendances) => {
-      this.setState({ attendances: attendances, isLoading: false })
-    }).catch((error) => {
-      console.log(error);
-    });
-  }
-
-
-  /**
-    * Makes a request to get attendance for the specified student
-    */
-  _fetchAttendance(studentId, date) {
-    const successFunc = (responseData) => {
-      return responseData;
-    }
-    const errorFunc = (error) => {
-      // TODO (Kelsey): address what happens when attendance for student on given date doesn't exist
-      console.log(error)
-    }
-    const params = {
-      attendance: {
-        student_id: studentId,
-        date: date,
-        course_id: this.state.courseId
-      }
-    }
-    return postRequest(APIRoutes.attendanceItemPath(), successFunc, errorFunc, params);
   }
 
   /**
     * Gets students full name at the given index (assumes attendance index is same as student index)
     */
   _getStudentName(index) {
-    const student = this.state.students[index]
+    const student = this.props.students[index]
     if (student) {
       return `${student.first_name} ${student.last_name}`
     }
@@ -201,8 +161,8 @@ class AttendanceScreen extends React.Component {
         <ScrollView>
           <View style={styles.attendancesContainer}>
             <View style={commonStyles.header}>
-              <Text style={textStyles.titleSmall}>{attendanceDate(this.state.date)}</Text>
-              <Text style={textStyles.titleLarge}>{this.state.courseTitle}</Text>
+              <Text style={textStyles.titleSmall}>{attendanceDate(this.props.date)}</Text>
+              <Text style={textStyles.titleLarge}>{this.props.courseTitle}</Text>
             </View>
             {this._renderAttendances()}
           </View>
@@ -210,9 +170,9 @@ class AttendanceScreen extends React.Component {
         <StyledButton
           onPress={() => navigate('AttendanceSummary', {
             attendances: this.state.attendances,
-            students: this.state.students,
-            courseTitle: this.state.courseTitle,
-            date: this.state.date,
+            students: this.props.students,
+            courseTitle: this.props.courseTitle,
+            date: this.props.date,
             parentKey: this.props.navigation.state.key,
           })}
           text='Submit'
@@ -228,7 +188,7 @@ class AttendanceScreen extends React.Component {
     * Renders loading state if data is still loading or uses _renderLoadedView
     */
   render() {
-    const attendances = this.state.isLoading ? (<Image style={commonStyles.icon}
+    const attendances = this.props.isLoading ? (<Image style={commonStyles.icon}
                         source={require('../../icons/spinner.gif')}/>) : this._renderLoadedView();
     return (
       <View style={commonStyles.containerStatic}>
@@ -247,4 +207,88 @@ const styles = StyleSheet.create({
 });
 // TODO (Kelsey): Add PropTypes from navigation
 
-export default AttendanceScreen;
+
+/**
+  * Fetches all students with the given course id and on success
+  * gets attendances for each student
+  */
+const fetchStudents = (courseId, date) => {
+  return (dispatch) => {
+    dispatch(actions.requestStudents(courseId));
+    return getRequest(
+      APIRoutes.getStudentsPath(courseId),
+      (responseData) => {
+        dispatch(actions.receiveStudentsSuccess(responseData, courseId));
+        dispatch(fetchAttendances(responseData, courseId, date));
+      },
+      (error) => {
+        dispatch(actions.receiveStandardError(error));
+        standardError(error);
+      }
+    );
+  }
+}
+
+/**
+  * Attempts to get attendance for each students and waits for each request to succeed
+  * before setting state for attendances
+  */
+const fetchAttendances = (students, courseId, date) => {
+  return (dispatch) => {
+    dispatch(actions.requestAttendances(courseId, date));
+    const attendances = students.map((student) => {
+      return fetchAttendance(student.id, courseId, date.toDateString());
+    });
+
+    Promise.all(attendances).then((attendances) => {
+      dispatch(actions.receiveAttendancesSuccess(attendances, courseId, date));
+    }).catch((error) => {
+      console.log(error)
+      dispatch(actions.receiveStandardError(error));
+      standardError(error);
+    });
+  }
+}
+
+/**
+  * Makes a request to get attendance for the specified student
+  */
+const fetchAttendance = (studentId, courseId, date) => {
+  const successFunc = (responseData) => {
+    return responseData;
+  }
+  const errorFunc = (error) => {
+    // TODO (Kelsey): address what happens when attendance for student on given date doesn't exist
+    console.log(error)
+  }
+  const params = {
+    attendance: {
+      student_id: studentId,
+      date: date,
+      course_id: courseId
+    }
+  }
+  return postRequest(APIRoutes.attendanceItemPath(), successFunc, errorFunc, params);
+}
+
+
+const mapStateToProps = (state, props) => {
+  // TODO (Kelsey): clean up
+  console.log(state.courses)
+  const course = state.courses.find((course) => course.id === props.navigation.state.params.courseId);
+  return {
+    ...props.navigation.state.params,
+    students: course.students ? course.students : {},
+    attendances: course.attendances ? course.attendances[props.navigation.state.params.date]: [],
+    isLoading: state.isLoading.value,
+  };
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    fetchStudents: (courseId, date) => dispatch(fetchStudents(courseId, date)),
+    fetchAttendances: (students, courseId, date) => dispatch(fetchAttendances(students, courseId, date)),
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(AttendanceScreen);
