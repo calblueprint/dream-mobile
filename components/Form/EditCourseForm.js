@@ -177,11 +177,22 @@ class EditCourseForm extends React.Component {
   _handleAddSession() {
     let newSession = {
       modified: true,
-      weekday: "",
-      start_time: "",
-      end_time: "",
+      weekday: 'Monday',
       number: this.state.sessionList.length,
     }
+
+    // Default start_time is 8AM
+    start = new Date();
+    start.setHours(8);
+    start.setMinutes(0);
+    newSession.start_time = start;
+
+    // Default end_time is 9AM
+    end = new Date();
+    end.setHours(9);
+    end.setMinutes(0);
+    newSession.end_time = end;
+
     sessionList = this.state.sessionList.slice();
     sessionList.push(newSession)
     this.setState({ sessionList: sessionList })

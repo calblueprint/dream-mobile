@@ -51,26 +51,10 @@ class Session extends React.Component {
    */
   _getInitialFormValues(props) {
     values = {
-      weekday: props.weekday || 'Monday',
+      weekday: props.weekday,
+      start_time: new Date(props.start_time),
+      end_time: new Date(props.end_time),
     };
-    if (props.start_time) {
-      values.start_time = new Date(props.start_time)
-    } else {
-      // Default start_time is 8AM
-      start = new Date()
-      start.setHours(8)
-      start.setMinutes(0)
-      values.start_time = start
-    }
-    if (props.end_time) {
-      values.end_time = new Date(props.end_time)
-    } else {
-      // Default end_time is 9AM
-      end = new Date()
-      end.setHours(9)
-      end.setMinutes(0)
-      values.end_time = end
-    }
     return values
   }
 
