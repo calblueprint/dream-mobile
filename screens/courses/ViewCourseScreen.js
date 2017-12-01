@@ -40,7 +40,7 @@ class ViewCourseScreen extends React.Component {
   componentDidMount() {
     this._fetchCourse();
 
-    _enrollStudent = () => {
+    const _enrollStudent = () => {
        this.props.navigation.navigate('CreateStudent',
         { refreshStudents: this._fetchStudents, courseId: this.state.course_id })
      }
@@ -152,7 +152,7 @@ class ViewCourseScreen extends React.Component {
       const start = timeFormat(new Date(session.start_time))
       const end = timeFormat(new Date(session.end_time))
       return (
-        <Text key={index}>Session {index + 1}: { session.weekday }'s { start } to { end }</Text>
+        <Text key={index}>{`Session ${index + 1}: ${ session.weekday }'s ${ start } to ${ end }`}</Text>
       );
     });
   }

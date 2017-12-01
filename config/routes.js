@@ -27,10 +27,11 @@ export const HomeStack = StackNavigator({
   },
   Login: {
     screen: LoginScreen,
-    navigationOptions: ({navigation}) => ({
+    navigationOptions: {
       headerTitle: 'Login',
       headerLeft: null,
-    }),
+      gesturesEnabled: false,
+    },
   },
   SignUp: {
     screen: SignUpScreen,

@@ -16,7 +16,6 @@ import { formStyles } from '../Form/styles.js';
 class EditTeacherForm extends React.Component {
   constructor(props) {
     super(props);
-    console.log(this.props.teacher);
 
     this._getInitialFormValues = this._getInitialFormValues.bind(this);
     this._getFormType = this._getFormType.bind(this);
@@ -56,7 +55,7 @@ class EditTeacherForm extends React.Component {
       last_name: t.String,
       dream_id: t.Number,
       email: t.String,
-      phone: t.Number,
+      phone: t.String,
     });
   }
 

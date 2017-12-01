@@ -14,9 +14,7 @@ import LocalStorage from '../../helpers/LocalStorage'
 class TeacherProfileEditScreen extends React.Component {
 	constructor(props) {
 	  super(props);
-	  console.log(this.props.teacher);
 	  this.state = {
-	    teacher: { },
 	  }
 	}
 
@@ -46,7 +44,7 @@ const updateTeacher = (params, navigation) => {
 			APIRoutes.getTeacherPath(params.id),
 			(responseData) => {
 				dispatch(actions.receiveTeacherSuccess(responseData));
-				navigation.goBack(null);
+				navigation.goBack();
 			},
 			(error) => {
 				dispatch(actions.receiveStandardError(error));

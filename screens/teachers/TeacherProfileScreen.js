@@ -17,24 +17,14 @@ class TeacherProfileScreen extends React.Component {
 
   constructor(props) {
     super(props);
-    console.log(this.props.teacher);
-    this._fetchTeacher = this._fetchTeacher.bind(this);
     this._renderTeacher = this._renderTeacher.bind(this);
     this.state = {
-      teacher : { },
-      isLoading : true,
+      isLoading: true,
     }
   }
 
   componentDidMount() {
-    this._fetchTeacher();
-  }
-
-  _fetchTeacher() {
-    const successFunc = (responseData) => {
-      this.setState({ teacher: responseData, isLoading: false });
-    }
-    getRequest(APIRoutes.getTeacherPath(this.props.teacher.id), successFunc, standardError);
+    this.props.fetchTeacher(this.props.teacher);
   }
 
   _attemptSignOut() {
@@ -91,8 +81,8 @@ class TeacherProfileScreen extends React.Component {
 
   render() {
     const { navigate } = this.props.navigation;
-    let teachers;
-    if (this.state.isLoading) {
+    let teacher;
+    if (this.props.isLoading) {
       teacher = (
         <Image
           style={commonStyles.icon}
@@ -110,14 +100,32 @@ class TeacherProfileScreen extends React.Component {
   }
 }
 
+const fetchTeacher = (teacher) => {
+  return (dispatch) => {
+    dispatch(actions.requestTeacher(teacher));
+    return getRequest(
+      APIRoutes.getTeacherPath(teacher.id),
+      (responseData) => {
+        dispatch(actions.receiveTeacherSuccess(responseData));
+      },
+      (error) => {
+        dispatch(actions.receiveStandardError(error));
+        standardError(error);
+      }
+    );
+  }
+}
+
 const mapStateToProps = (state) => {
   return {
     teacher: state.teacher,
+    isLoading: state.isLoading.value,
   };
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    fetchTeacher: (teacher) => dispatch(fetchTeacher(teacher)),
     logout: () => dispatch(actions.logout()),
   }
 }

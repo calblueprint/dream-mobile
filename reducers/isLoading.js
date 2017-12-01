@@ -5,6 +5,7 @@ export const isLoading = (state = {}, action) => {
     case types.REQUEST_COURSES:
     case types.REQUEST_TEACHER:
       return { value: true }
+    case types.RECEIVE_TEACHER_SUCCESS:
     case types.RECEIVE_COURSES_SUCCESS:
     case types.RECEIVE_STANDARD_ERROR:
       return { value: false }
