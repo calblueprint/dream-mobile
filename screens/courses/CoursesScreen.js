@@ -40,11 +40,8 @@ class CoursesScreen extends React.Component {
   }
 
   _renderCourses() {
-    <Button
-      onPress={() => navigate('EditCourse', {refreshCourses: this._fetchCourses, newCourse: true, sessions: []})}
-      title="Create Course"
-    />
-    return this.props.courses.map((course, i) => (
+    const { navigate } = this.props.navigation;
+    const courses = this.props.courses.map((course, i) => (
       <CourseCard key={i}
         course_id={course.id}
         title={course.title}
@@ -52,10 +49,18 @@ class CoursesScreen extends React.Component {
         onTakeAttendance={this._handleTakeAttendance}/>
       )
     );
+    return (
+      <View>
+        <Button
+          onPress={() => navigate('EditCourse', {refreshCourses: this.props.fetchCourses, newCourse: true, sessions: []})}
+          title="Create Course"
+        />
+        { courses }
+      </View>
+    );
   }
 
   render() {
-    const { navigate } = this.props.navigation;
     let courses;
     if (this.props.isLoading) {
       courses = (

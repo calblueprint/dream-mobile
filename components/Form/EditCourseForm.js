@@ -1,9 +1,11 @@
 import React from 'react';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native';
 import { Form, t } from '../../components/Form/Form';
 import { formStyles } from '../Form/styles.js';
 import { timeFormat, dateFormat } from '../../lib/datetime_formats';
 import { frontendError } from '../../lib/alerts';
+import { textStyles } from '../../styles/textStyles';
+import { commonStyles } from '../../styles/styles';
 import StyledButton from '../Button/Button';
 import Session from '../Session';
 
@@ -175,11 +177,22 @@ class EditCourseForm extends React.Component {
   _handleAddSession() {
     let newSession = {
       modified: true,
-      weekday: "",
-      start_time: "",
-      end_time: "",
+      weekday: 'Monday',
       number: this.state.sessionList.length,
     }
+
+    // Default start_time is 8AM
+    start = new Date();
+    start.setHours(8);
+    start.setMinutes(0);
+    newSession.start_time = start;
+
+    // Default end_time is 9AM
+    end = new Date();
+    end.setHours(9);
+    end.setMinutes(0);
+    newSession.end_time = end;
+
     sessionList = this.state.sessionList.slice();
     sessionList.push(newSession)
     this.setState({ sessionList: sessionList })
@@ -219,7 +232,7 @@ class EditCourseForm extends React.Component {
     if (values) {
       this.props.onSaveCourse({ course: values, sessions: this.state.sessionList })
     } else {
-      frontendError("Validation failed. Course not saved.")
+      frontendError("Validation failed.")
     }
   }
 
@@ -236,11 +249,11 @@ class EditCourseForm extends React.Component {
    */
   _renderAddSessionButton() {
     return (
-      <StyledButton
-        onPress={this._handleAddSession}
-        text='+ Add Session'
-        clearButtonSmall>
-      </StyledButton>
+      <TouchableWithoutFeedback onPress={this._handleAddSession}>
+        <View>
+          <Text style={textStyles.buttonTextAddSession}>+ Add Session</Text>
+        </View>
+      </TouchableWithoutFeedback>
     );
   }
 
@@ -259,20 +272,22 @@ class EditCourseForm extends React.Component {
 
   render() {
     return (
-      <ScrollView>
-        <View style={formStyles.container}>
-          <Form
-            refCallback={(ref) => this.form = ref}
-            type={this._getFormType()}
-            options={this._getFormOptions()}
-            value={this.state.formValues}
-            onChange={this._onFormChange}
-          />
-          { this._renderSessions() }
-          { this._renderAddSessionButton() }
-          { this._renderSaveCourseButton() }
-        </View>
-      </ScrollView>
+      <View style={commonStyles.containerStatic}>
+        <ScrollView>
+          <View style={formStyles.container}>
+            <Form
+              refCallback={(ref) => this.form = ref}
+              type={this._getFormType()}
+              options={this._getFormOptions()}
+              value={this.state.formValues}
+              onChange={this._onFormChange}
+            />
+            { this._renderSessions() }
+            { this._renderAddSessionButton() }
+          </View>
+        </ScrollView>
+        { this._renderSaveCourseButton() }
+      </View>
     );
   }
 }

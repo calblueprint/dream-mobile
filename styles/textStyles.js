@@ -59,6 +59,14 @@ const textStyles = StyleSheet.create({
     fontWeight: '500'
   },
 
+  buttonTextAddSession: {
+    color: colors.primaryYellow,
+    fontSize: 16,
+    fontWeight: '500',
+    textDecorationLine: 'underline',
+    textDecorationColor: colors.primaryYellow,
+  },
+
   toastText: {
     color: colors.textLight,
     fontSize: 20
@@ -74,6 +82,11 @@ const textStyles = StyleSheet.create({
     fontSize: 16
   },
 
+  sessionHeaderText: {
+    color: colors.textDark_70,
+    fontSize: 16,
+    fontWeight: '700',
+  }
 
 });
 

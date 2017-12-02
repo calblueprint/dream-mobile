@@ -8,6 +8,7 @@ import colors from '../../styles/colors';
 import { textStyles } from '../../styles/textStyles';
 import { frontendError } from '../../lib/alerts';
 import { formStyles } from '../Form/styles.js';
+import { commonStyles } from '../../styles/styles';
 
 /**
  * @prop teacher - teacher object information
@@ -121,18 +122,20 @@ class EditTeacherForm extends React.Component {
 
   render() {
     return (
-      <ScrollView>
-        <View style={formStyles.container}>
-          <Form
-            refCallback={(ref) => this.form = ref}
-            type={this._getFormType()}
-            options={this._getFormOptions()}
-            value={this.state.formValues}
-            onChange={this._onFormChange}
-          />
-          { this._renderSaveButton() }
-        </View>
-      </ScrollView>
+      <View style={commonStyles.containerStatic}>
+        <ScrollView>
+          <View style={formStyles.container}>
+            <Form
+              refCallback={(ref) => this.form = ref}
+              type={this._getFormType()}
+              options={this._getFormOptions()}
+              value={this.state.formValues}
+              onChange={this._onFormChange}
+            />
+          </View>
+        </ScrollView>
+        { this._renderSaveButton() }
+      </View>
     );
   }
 }

@@ -8,7 +8,6 @@ const commonStyles = StyleSheet.create({
     justifyContent: 'center',
   },
   containerStatic: {
-    flex: 1,
     justifyContent: 'space-between',
     backgroundColor: '#fff',
     height: '100%'

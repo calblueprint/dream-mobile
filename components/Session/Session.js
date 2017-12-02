@@ -3,13 +3,14 @@
  */
 
 import React from 'react';
-import { Text, View } from 'react-native';
+import { Button, Text, TouchableHighlight, TouchableWithoutFeedback, View } from 'react-native';
 import { Form, t } from '../../components/Form/Form';
-import StyledButton from '../Button/Button';
 import { formStyles } from '../Form/styles.js';
 import { timeFormat } from '../../lib/datetime_formats';
-import { sessionStyles } from './styles';
+import { textStyles } from '../../styles/textStyles';
 import { frontendError } from '../../lib/alerts';
+import { Ionicons } from '@expo/vector-icons';
+import colors from '../../styles/colors';
 
 /**
  * @prop weekday - session weekday
@@ -32,6 +33,8 @@ class Session extends React.Component {
     this._handleSessionChange = this._handleSessionChange.bind(this);
     this._renderDeleteSessionButton = this._renderDeleteSessionButton.bind(this);
 
+    this.template = this.template.bind(this);
+
     this.state = {
       formValues: this._getInitialFormValues(this.props),
       errors: [],
@@ -51,25 +54,9 @@ class Session extends React.Component {
   _getInitialFormValues(props) {
     values = {
       weekday: props.weekday,
+      start_time: new Date(props.start_time),
+      end_time: new Date(props.end_time),
     };
-    if (props.start_time) {
-      values.start_time = new Date(props.start_time)
-    } else {
-      // Default start_time is 8AM
-      start = new Date()
-      start.setHours(8)
-      start.setMinutes(0)
-      values.start_time = start
-    }
-    if (props.end_time) {
-      values.end_time = new Date(props.end_time)
-    } else {
-      // Default end_time is 9AM
-      end = new Date()
-      end.setHours(9)
-      end.setMinutes(0)
-      values.end_time = end
-    }
     return values
   }
 
@@ -93,27 +80,45 @@ class Session extends React.Component {
     });
   }
 
+  template(locals) {
+    // All the rendered fields in locals.inputs
+    return (
+      <View>
+        {locals.inputs.weekday}
+        <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', flex: 1}}>
+          <View style={{flex: 1}}>
+            {locals.inputs.start_time}
+          </View>
+          <View style={{flex: 1}}>
+            {locals.inputs.end_time}
+          </View>
+        </View>
+      </View>
+    );
+  }
+
   /*
    * Specify options for form fields.
    */
   _getFormOptions() {
     return {
+      auto: 'none',
+      template: this.template,
       error: this.state.errors,
       fields: {
-        weekday: {
-          label: 'Day',
-        },
         start_time: {
           mode:'time',
           config: {
-            format:timeFormat,
-          }
+            format: timeFormat,
+          },
+          label: 'Start',
         },
         end_time: {
           mode:'time',
           config: {
-            format:timeFormat,
-          }
+            format: timeFormat,
+          },
+          label: 'End',
         },
       },
     };
@@ -136,7 +141,7 @@ class Session extends React.Component {
       this.setState({ formValues: values });
       this.props.onSessionChange(values, this.props.number);
     } else {
-      frontendError("Validation failed. Session not updated.")
+      frontendError("Validation failed.")
     }
   }
 
@@ -145,28 +150,32 @@ class Session extends React.Component {
    */
   _renderDeleteSessionButton() {
     return (
-      <StyledButton
-        onPress={() => this.props.onSessionDelete(this.props.number)}
-        text='Delete Session'
-        clearButtonSmall>
-      </StyledButton>
+      <TouchableWithoutFeedback onPress={() => this.props.onSessionDelete(this.props.number)}>
+        <View>
+          <Ionicons name="ios-trash" size={32} color={colors.errorRed} />
+        </View>
+      </TouchableWithoutFeedback>
     );
   }
 
   render() {
     return (
-      <View style={formStyles.container}>
-        <Text style={sessionStyles.headerText}>
-          Session { this.props.number + 1 }
-        </Text>
-        <Form
-          refCallback={(ref) => this.form = ref}
-          type={this._getFormType()}
-          options={this._getFormOptions()}
-          value={this.state.formValues}
-          onChange={this._handleSessionChange}
-        />
-        { this._renderDeleteSessionButton() }
+      <View style={{paddingTop: 16}}>
+        <View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
+          <Text style={textStyles.sessionHeaderText}>
+            Session #{ this.props.number + 1 }
+          </Text>
+          { this._renderDeleteSessionButton() }
+        </View>
+        <View style={{paddingLeft: 8}}>
+          <Form
+            refCallback={(ref) => this.form = ref}
+            type={this._getFormType()}
+            options={this._getFormOptions()}
+            value={this.state.formValues}
+            onChange={this._handleSessionChange}
+          />
+        </View>
       </View>
     );
   }

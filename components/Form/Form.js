@@ -37,14 +37,23 @@ class Form extends React.Component {
   overrideStyles() {
     let stylesheet = t.form.Form.stylesheet;
 
-    const FONT_SIZE = 15;
-    const HEIGHT = 40;
-    const INPUT_COLOR = colors.textDark;
+    const HEIGHT = 24;
     const PADDING_HORIZONTAL = 15;
+    const LABEL_PADDING_TOP = 15;
+    const MARGIN_BOTTOM = 4;
+    const BACKGROUND_COLOR = colors.backgroundWhite;
 
-    const LABEL_FONT_SIZE = 15;
-    const LABEL_COLOR = colors.primaryYellow
-    const LABEL_FONT_WEIGHT = 'bold';
+    const INPUT_FONT_SIZE = 20;
+    const INPUT_COLOR = colors.textDark;
+
+    const LABEL_FONT_SIZE = 16;
+    const LABEL_COLOR = colors.textDark_70;
+    const LABEL_FONT_WEIGHT = '700';
+
+    const ERROR_COLOR = colors.errorRed;
+    const UNDERLINE_COLOR = colors.dividerGrey;
+    const UNDERLINE_WIDTH = 1;
+    const UNDERLINE_LENGTH = 0.5;
 
     const HELPBLOCK_FONT_SIZE = 13;
 
@@ -52,41 +61,45 @@ class Form extends React.Component {
     let textbox = stylesheet.textbox;
     textbox.normal = {
       color: INPUT_COLOR,
-      backgroundColor: colors.backgroundGrey,
-      fontSize: FONT_SIZE,
+      fontSize: INPUT_FONT_SIZE,
+      backgroundColor: BACKGROUND_COLOR,
+      borderBottomColor: UNDERLINE_COLOR,
+      borderBottomWidth: UNDERLINE_WIDTH,
       height: HEIGHT,
-      paddingVertical: Platform.OS === "ios" ? 7 : 0,
-      paddingHorizontal: PADDING_HORIZONTAL,
-      borderRadius: HEIGHT / 2,
-      borderColor: colors.primaryYellow,
-      borderWidth: 1,
-      marginBottom: 5,
     };
 
     textbox.error = {
       color: INPUT_COLOR,
-      backgroundColor: colors.backgroundGrey,
-      fontSize: FONT_SIZE,
-      height: HEIGHT,
-      paddingVertical: Platform.OS === "ios" ? 7 : 0,
-      paddingHorizontal: PADDING_HORIZONTAL,
-      borderRadius: HEIGHT / 2,
-      borderColor: colors.errorRed,
-      borderWidth: 1,
-      marginBottom: 5,
+      fontSize: INPUT_FONT_SIZE,
+      backgroundColor: BACKGROUND_COLOR,
+      borderBottomColor: ERROR_COLOR,
+      borderBottomWidth: UNDERLINE_WIDTH,
+      borderWidth: 0,
     };
 
-    textbox.notEditable = {
+    // Picker container styles
+    let picker = stylesheet.pickerContainer;
+    picker.normal = {
+      borderColor: 'transparent',
+    };
+
+    let pickerValue = stylesheet.pickerValue;
+    pickerValue.normal = {
+      fontSize: INPUT_FONT_SIZE,
       color: INPUT_COLOR,
-      backgroundColor: colors.backgroundGrey,
-      fontSize: FONT_SIZE,
-      height: HEIGHT,
-      paddingVertical: Platform.OS === "ios" ? 7 : 0,
-      paddingHorizontal: PADDING_HORIZONTAL,
-      borderRadius: HEIGHT / 2,
-      borderColor: colors.dividerGrey,
-      borderWidth: 1,
-      marginBottom: 5,
+    };
+
+    // Datepicker styles
+    let datepicker = stylesheet.datepicker;
+    datepicker.normal = {
+      marginBottom: MARGIN_BOTTOM,
+      borderColor: 'transparent',
+    };
+
+    let dateValue = stylesheet.dateValue;
+    dateValue.normal = {
+      fontSize: INPUT_FONT_SIZE,
+      color: INPUT_COLOR,
     };
 
     // Label styles
@@ -94,33 +107,33 @@ class Form extends React.Component {
     label.normal = {
       color: LABEL_COLOR,
       fontSize: LABEL_FONT_SIZE,
-      marginBottom: 7,
+      marginBottom: MARGIN_BOTTOM,
       fontWeight: LABEL_FONT_WEIGHT,
-      letterSpacing: 0.5,
+      paddingTop: LABEL_PADDING_TOP,
     };
 
     label.error = {
-      color: colors.errorRed,
+      color: ERROR_COLOR,
       fontSize: LABEL_FONT_SIZE,
-      marginBottom: 7,
+      marginBottom: MARGIN_BOTTOM,
       fontWeight: LABEL_FONT_WEIGHT,
-      letterSpacing: 0.5,
+      paddingTop: LABEL_PADDING_TOP,
     };
 
     // Helpblock styles (help and error messages)
     let helpBlock = stylesheet.helpBlock;
     helpBlock.normal = {
-      color: colors.primaryYellow,
+      color: UNDERLINE_COLOR,
       fontSize: HELPBLOCK_FONT_SIZE,
       marginBottom: 2,
     };
     helpBlock.error = {
-      color: colors.errorRed,
+      color: ERROR_COLOR,
       fontSize: HELPBLOCK_FONT_SIZE,
       marginBottom: 2,
     };
     stylesheet.errorBlock = {
-      color: colors.errorRed,
+      color: ERROR_COLOR,
       fontSize: HELPBLOCK_FONT_SIZE,
       marginBottom: 2,
     };
