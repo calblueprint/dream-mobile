@@ -24,6 +24,7 @@
     "@types/react-native-modalbox": "^1.4.3",
     "apsl-react-native-button": "^3.1.0",
     "expo": "^21.0.0",
+    "lodash": "^4.17.4",
     "moment": "^2.19.1",
     "prop-types": "^15.6.0",
     "query-string": "^5.0.0",

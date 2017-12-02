@@ -331,7 +331,7 @@ updateAttendance = (attendance, index) => {
 
 const mapStateToProps = (state, props) => {
   // Get course and date associated with this attendance screen
-  const course = state.courses.find((course) => course.id === props.navigation.state.params.courseId);
+  const course = state.courses[props.navigation.state.params.courseId];
   const date = props.navigation.state.params.date;
   return {
     ...props.navigation.state.params,

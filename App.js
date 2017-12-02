@@ -12,7 +12,11 @@ const { persistor, store } = configureStore();
 
 export default class App extends React.Component {
   render() {
-    const Home = withNetworkConnectivity({ withRedux: true })(HomeStack);
+    const Home = withNetworkConnectivity({
+      withRedux: true,
+      // pingServerUrl: 'woodedoo.com'
+    })(HomeStack);
+
     return (
       <Provider store={store}>
         <PersistGate
