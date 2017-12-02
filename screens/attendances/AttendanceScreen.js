@@ -30,13 +30,28 @@ class AttendanceScreen extends React.Component {
 
   componentDidMount() {
     this.props.fetchStudents(this.props.courseId, this.props.date);
+    // If not connected to internet and there are no attendances for this course/date
+    // yet, create list of local attendances
+    if (!this.props.isConnected && this.props.attendances.length == 0) {
+      const attendances = this.props.students.map((student) => {
+        return {
+          student_id: student.id,
+          course_id: this.props.courseId,
+          date: this.props.date,
+          attendance_type: 0,
+          comment: null,
+          is_synced: false
+        }
+      });
+      this.props.createOfflineAttendances(attendances, this.props.courseId, this.props.date);
+    }
   }
 
   /**
     * Update attendances after dispatching a network call for them
     */
   componentWillReceiveProps(nextProps) {
-    if (nextProps !== this.props) {
+    if (nextProps.attendances !== this.props.attendances) {
       this.setState({ attendances: nextProps.attendances });
     }
   }
@@ -213,7 +228,7 @@ const styles = StyleSheet.create({
   * gets attendances for each student
   */
 const fetchStudents = (courseId, date) => {
-  return (dispatch) => {
+  function thunk(dispatch) {
     dispatch(actions.requestStudents(courseId));
     return getRequest(
       APIRoutes.getStudentsPath(courseId),
@@ -227,6 +242,10 @@ const fetchStudents = (courseId, date) => {
       }
     );
   }
+
+  // Intercept action if offline
+  thunk.interceptInOffline = true;
+  return thunk;
 }
 
 /**
@@ -234,7 +253,7 @@ const fetchStudents = (courseId, date) => {
   * before updating state for attendances
   */
 const fetchAttendances = (students, courseId, date) => {
-  return (dispatch) => {
+  function thunk(dispatch) {
     dispatch(actions.requestAttendances(courseId, date));
     const attendances = students.map((student) => {
       return fetchAttendance(student.id, courseId, date);
@@ -247,6 +266,10 @@ const fetchAttendances = (students, courseId, date) => {
       standardError(error);
     });
   }
+
+  // Intercept action if offline
+  thunk.interceptInOffline = true;
+  return thunk;
 }
 
 /**
@@ -277,9 +300,10 @@ const mapStateToProps = (state, props) => {
   const date = props.navigation.state.params.date;
   return {
     ...props.navigation.state.params,
-    students: course.students ? course.students : {},
+    students: course.students ? course.students : [],
     attendances: course.attendances && course.attendances[date] ? course.attendances[date].list : [],
     isLoading: state.isLoading.value,
+    isConnected: state.network.isConnected,
   };
 }
 
@@ -287,6 +311,8 @@ const mapDispatchToProps = (dispatch) => {
   return {
     fetchStudents: (courseId, date) => dispatch(fetchStudents(courseId, date)),
     fetchAttendances: (students, courseId, date) => dispatch(fetchAttendances(students, courseId, date)),
+    createOfflineAttendances: (attendances, courseId, date) => dispatch(actions.receiveAttendancesSuccess(
+      attendances, courseId, date)),
   }
 }
 
