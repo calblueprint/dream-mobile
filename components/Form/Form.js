@@ -81,7 +81,6 @@ class Form extends React.Component {
     let picker = stylesheet.pickerContainer;
     picker.normal = {
       borderColor: 'transparent',
-      height: HEIGHT,
     };
 
     let pickerValue = stylesheet.pickerValue;
