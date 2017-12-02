@@ -241,7 +241,7 @@ class EditCourseForm extends React.Component {
    */
   _renderSessions() {
     let sessions = this.state.sessionList.map(this._mapSessions);
-    return sessions
+    return sessions;
   }
 
   /*
@@ -282,7 +282,7 @@ class EditCourseForm extends React.Component {
               value={this.state.formValues}
               onChange={this._onFormChange}
             />
-            <Text style={textStyles.body}>{ this._renderSessions() }</Text>
+            { this._renderSessions() }
             { this._renderAddSessionButton() }
           </View>
         </ScrollView>
