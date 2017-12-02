@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, Button, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Image, Button, ScrollView, StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import { commonStyles } from '../../styles/styles';
 import { getRequest, deleteRequest } from '../../lib/requests';
 import { APIRoutes } from '../../config/routes';
@@ -9,6 +9,7 @@ import StyledButton from '../../components/Button/Button';
 import StudentCard from '../../components/StudentCard/StudentCard';
 import { formViewStyles } from '../../styles/formViewStyles';
 import { textStyles } from '../../styles/textStyles';
+import FontAwesome, { Icons } from 'react-native-fontawesome';
 
 
 class ViewCourseScreen extends React.Component {
@@ -36,7 +37,12 @@ class ViewCourseScreen extends React.Component {
   static navigationOptions = ({ navigation }) => {
     const { params = {} } = navigation.state;
     return {
-        headerRight: <Button title="Enroll Student" onPress={() => params.handleCreate()} />
+        // headerRight: <Button title="Enroll Student" onPress={() => params.handleCreate()} />
+        headerRight: (
+          <TouchableOpacity onPress={() => params.handleCreate()}>
+            <Text><FontAwesome>{Icons.userPlus}</FontAwesome></Text>
+          </TouchableOpacity>
+        )
     };
   };
 
