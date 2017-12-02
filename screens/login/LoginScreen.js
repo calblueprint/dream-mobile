@@ -2,15 +2,13 @@ import React from 'react';
 
 import { connect } from 'react-redux';
 import actions from '../../actions';
+
 import StyledButton from '../../components/Button/Button';
 import { Button, ScrollView, Text, TextInput, View, Image, StyleSheet } from 'react-native';
-// import { styles } from '../../styles/styles';
 import { postRequest } from '../../lib/requests';
 import { APIRoutes } from '../../config/routes';
 import { standardError } from '../../lib/alerts';
 import { textStyles } from '../../styles/textStyles';
-// import { Form, t } from '../../components/Form/Form';
-// import { formStyles } from '../Form/styles.js';
 
 
 class LoginScreen extends React.Component {
@@ -40,7 +38,7 @@ class LoginScreen extends React.Component {
   render() {
     return (
       <View style={{flex: 1, alignItems: 'center'}}>
-        <Image 
+        <Image
         style={styles.bg}
         source={require('../../img/log_in.png')}>
           <View style={styles.container}>
@@ -109,10 +107,10 @@ const styles = StyleSheet.create({
     borderBottomColor: '#fff',
     color: '#fff'
 
-  }, 
+  },
   container: {
-    marginRight: 40, 
-    marginLeft: 40, 
+    marginRight: 40,
+    marginLeft: 40,
     marginTop: 180,
     alignSelf: 'stretch'
   }

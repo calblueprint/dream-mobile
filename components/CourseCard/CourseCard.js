@@ -35,7 +35,7 @@ class CourseCard extends React.Component {
         <View style={[cardStyles.outerContainer, {backgroundColor: colorList[colorKey]}]}>
           <View style={cardStyles.topContainer}>
             <Text style={[cardStyles.title, textStyles.titleMediumLight]}>{this.props.title}</Text>
-            <Text style={[cardStyles.count, textStyles.titleSmallLight]}>6 Students</Text>
+            <Text style={[cardStyles.count, textStyles.titleSmallLight]}>5 Students</Text>
           </View>
           <View style={cardStyles.bottomContainer}>
             <StyledButton

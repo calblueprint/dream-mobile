@@ -19,7 +19,6 @@ class CoursesScreen extends React.Component {
   static navigationOptions = ({ navigation }) => {
     const { params = {} } = navigation.state;
     return {
-        // headerRight: <Button title="Enroll Student" onPress={() => params.handleCreate()} />
         headerRight: (
           <TouchableOpacity onPress={() => params.handleCreate()}>
             <View style={{marginRight: 8}}><MaterialCommunityIcons name="book-plus" size={30} color={colors.iconDark} /></View>
@@ -40,7 +39,7 @@ class CoursesScreen extends React.Component {
 
     const _createCourse = () => {
        this.props.navigation.navigate('EditCourse', {refreshCourses: this.props.fetchCourses, newCourse: true, sessions: []})}
-          
+
 
     this.props.navigation.setParams({ handleCreate: _createCourse });
   }

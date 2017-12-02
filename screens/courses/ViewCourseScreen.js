@@ -39,7 +39,6 @@ class ViewCourseScreen extends React.Component {
   static navigationOptions = ({ navigation }) => {
     const { params = {} } = navigation.state;
     return {
-        // headerRight: <Button title="Enroll Student" onPress={() => params.handleCreate()} />
         headerRight: (
           <TouchableOpacity onPress={() => params.handleCreate()}>
             <View style={{marginRight: 8}}><Entypo name="add-user" size={28} color={colors.iconDark} /></View>
@@ -253,7 +252,7 @@ class ViewCourseScreen extends React.Component {
 
           <View style={[formViewStyles.div_1, {marginBottom: 16}]}>
               <Text style={textStyles.titleMedium}>Students</Text>
-              <View style={{marginTop: 8}}> 
+              <View style={{marginTop: 8}}>
               { this._renderStudents() }
             </View>
           </View>
