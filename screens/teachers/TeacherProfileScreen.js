@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Text, View, ScrollView } from 'react-native';
+import { Image, Button, Text, View, ScrollView } from 'react-native';
 
 import { connect } from 'react-redux';
 import actions from '../../actions';
@@ -17,37 +17,11 @@ class TeacherProfileScreen extends React.Component {
 
   constructor(props) {
     super(props);
-    this._fetchTeacher = this._fetchTeacher.bind(this);
     this._renderTeacher = this._renderTeacher.bind(this);
-    this.state = {
-      teacher : this.props.navigation.state.params.teacher,
-      isLoading : true,
-    }
   }
-
-  static navigationOptions = ({ navigation }) => {
-      const { params = {} } = navigation.state;
-      return {
-          headerRight: <Button title="Edit" onPress={() => params.handleEdit()} />
-      };
-  };
 
   componentDidMount() {
-    _editProfile = () => {
-       this.props.navigation.navigate('EditTeacherProfile',
-        { refreshTeacher: this._fetchTeacher, teacher: this.state.teacher })
-     }
-
-    this._fetchTeacher();
-    this.props.navigation.setParams({ handleEdit: _editProfile });
-
-  }
-
-  _fetchTeacher() {
-    const successFunc = (responseData) => {
-      this.setState({ teacher: responseData, isLoading: false });
-    }
-    getRequest(APIRoutes.getTeacherPath(this.state.teacher.id), successFunc, standardError);
+    this.props.fetchTeacher(this.props.teacher);
   }
 
   _attemptSignOut() {
@@ -61,7 +35,7 @@ class TeacherProfileScreen extends React.Component {
         <View style={formViewStyles.div_1}>
           <View style={formViewStyles.div_2}>
             <Text style={textStyles.titleLarge}>
-            {this.state.teacher.first_name} {this.state.teacher.last_name}
+            {this.props.teacher.first_name} {this.props.teacher.last_name}
             </Text>
           </View>
 
@@ -70,7 +44,7 @@ class TeacherProfileScreen extends React.Component {
             Dream ID
             </Text>
             <Text style={textStyles.body}>
-            {this.state.teacher.dream_id}
+            {this.props.teacher.dream_id}
             </Text>
           </View>
 
@@ -79,7 +53,7 @@ class TeacherProfileScreen extends React.Component {
             Email
             </Text>
             <Text style={textStyles.body}>
-            {this.state.teacher.email}
+            {this.props.teacher.email}
             </Text>
           </View>
 
@@ -88,7 +62,7 @@ class TeacherProfileScreen extends React.Component {
             Phone Number
             </Text>
             <Text style={textStyles.body}>
-            {this.state.teacher.phone}
+            {this.props.teacher.phone}
             </Text>
           </View>
 
@@ -104,10 +78,13 @@ class TeacherProfileScreen extends React.Component {
 
   render() {
     const { navigate } = this.props.navigation;
-    let teachers;
-    if (this.state.isLoading) {
+    let teacher;
+    if (this.props.isLoading) {
       teacher = (
-        <Text>Loading...</Text>
+        <Image
+          style={commonStyles.icon}
+          source={require('../../icons/spinner.gif')}
+        />
       )
     } else {
       teacher = this._renderTeacher()
@@ -120,10 +97,34 @@ class TeacherProfileScreen extends React.Component {
   }
 }
 
+const fetchTeacher = (teacher) => {
+  return (dispatch) => {
+    dispatch(actions.requestTeacher(teacher));
+    return getRequest(
+      APIRoutes.getTeacherPath(teacher.id),
+      (responseData) => {
+        dispatch(actions.receiveTeacherSuccess(responseData));
+      },
+      (error) => {
+        dispatch(actions.receiveStandardError(error));
+        standardError(error);
+      }
+    );
+  }
+}
+
+const mapStateToProps = (state) => {
+  return {
+    teacher: state.teacher,
+    isLoading: state.isLoading.value,
+  };
+}
+
 const mapDispatchToProps = (dispatch) => {
   return {
+    fetchTeacher: (teacher) => dispatch(fetchTeacher(teacher)),
     logout: () => dispatch(actions.logout()),
   }
 }
 
-export default connect(null, mapDispatchToProps)(TeacherProfileScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(TeacherProfileScreen);

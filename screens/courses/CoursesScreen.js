@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, ScrollView, Text, View } from 'react-native';
+import { Image, Button, ScrollView, Text, View } from 'react-native';
 
 import { connect } from 'react-redux';
 import actions from '../../actions';
@@ -8,6 +8,7 @@ import { commonStyles } from '../../styles/styles';
 import { getRequest } from '../../lib/requests';
 import { APIRoutes } from '../../config/routes';
 import { standardError } from '../../lib/alerts';
+import { attendanceDate } from '../../lib/date';
 import CourseCard from '../../components/CourseCard/CourseCard';
 import StyledButton from '../../components/Button/Button';
 
@@ -16,24 +17,11 @@ class CoursesScreen extends React.Component {
     super(props);
     this._handleSelectCourse = this._handleSelectCourse.bind(this);
     this._handleTakeAttendance = this._handleTakeAttendance.bind(this);
-    this._handleViewStudents = this._handleViewStudents.bind(this);
     this._renderCourses = this._renderCourses.bind(this);
   }
 
-  static navigationOptions = ({ navigation }) => {
-    const { params = {} } = navigation.state;
-    return {
-      headerLeft: <Button title="Profile" onPress={() => params.handleProfile()} />
-    };
-  };
-
   componentDidMount() {
     this.props.fetchCourses(this.props.teacher.id);
-
-    profileView = () => {
-      this.props.navigation.navigate('TeacherProfile', { teacher: this.props.teacher })
-    }
-    this.props.navigation.setParams({ handleProfile: profileView });
   }
 
   _handleSelectCourse(course_id) {
@@ -44,27 +32,25 @@ class CoursesScreen extends React.Component {
   }
 
   _handleTakeAttendance(course_id, title) {
-    const date = new Date();
+    const date = attendanceDate(new Date());
     this.props.navigation.navigate('Attendances', {
       courseId: course_id,
       courseTitle: title,
       date: date,
     });
   }
-  _handleViewStudents(course_id) {
-    this.props.navigation.navigate('Students', {
-      courseId: course_id,
-    })
-  }
 
   _renderCourses() {
+    <Button
+      onPress={() => navigate('EditCourse', {refreshCourses: this._fetchCourses, newCourse: true, sessions: []})}
+      title="Create Course"
+    />
     return this.props.courses.map((course, i) => (
       <CourseCard key={i}
         course_id={course.id}
         title={course.title}
         onSelectCourse={this._handleSelectCourse}
-        onTakeAttendance={this._handleTakeAttendance}
-        onViewStudents={this._handleViewStudents} />
+        onTakeAttendance={this._handleTakeAttendance}/>
       )
     );
   }
@@ -73,9 +59,11 @@ class CoursesScreen extends React.Component {
     const { navigate } = this.props.navigation;
     let courses;
     if (this.props.isLoading) {
-      // TODO (caseytaka): Add loading gif.
       courses = (
-        <Text>Loading...</Text>
+        <Image
+          style={commonStyles.icon}
+          source={require('../../icons/spinner.gif')}
+        />
       )
     } else {
       courses = this._renderCourses();
@@ -84,7 +72,6 @@ class CoursesScreen extends React.Component {
       <ScrollView>
         <View style={{backgroundColor: '#f5f5f6'}}>
           { courses }
-          
           <StyledButton
             onPress={() => navigate('EditCourse', {refreshCourses: this.props.fetchCourses, newCourse: true, sessions: []})}
             text='Create Course'

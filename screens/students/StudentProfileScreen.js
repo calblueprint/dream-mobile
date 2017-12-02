@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Text, View, ScrollView } from 'react-native';
+import { Image, Button, Text, View, ScrollView } from 'react-native';
 import { textStyles } from '../../styles/textStyles';
 import { commonStyles } from '../../styles/styles';
 import { colors } from '../../styles/colors';
@@ -138,9 +138,11 @@ class StudentProfileScreen extends React.Component {
     const { navigate } = this.props.navigation;
     let students;
     if (this.state.isLoading) {
-      // TODO: Add loading gif.
       student = (
-        <Text>Loading...</Text>
+        <Image
+          style={commonStyles.icon}
+          source={require('../../icons/spinner.gif')}
+        />
       )
     } else {
       student = this._renderStudent()

@@ -14,8 +14,15 @@ const commonStyles = StyleSheet.create({
     height: '100%'
   },
   header: {
-  	marginTop: 40, 
+  	marginTop: 40,
   	marginBottom: 24,
+  },
+  icon: {
+    height: 64,
+    width: 64,
+    marginTop: '65%',
+    marginBottom: '65%',
+    alignSelf: 'center',
   }
 });
 

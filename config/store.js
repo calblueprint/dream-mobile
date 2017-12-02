@@ -7,7 +7,7 @@ import thunk from 'redux-thunk';
 
 const config = {
   key: 'root',
-  blacklist: ['isLoading'],
+  blacklist: ['isLoading', 'modal'],
   storage,
 }
 

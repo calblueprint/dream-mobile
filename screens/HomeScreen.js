@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Text, View } from 'react-native';
+import { Image, Button, Text, View } from 'react-native';
 import { commonStyles } from '../styles/styles';
 import { getRequest } from '../lib/requests';
 import { APIRoutes } from '../config/routes';
@@ -22,7 +22,12 @@ class HomeScreen extends React.Component {
 
   render() {
     return (
-      <Text>Loading...</Text>
+      <View>
+        <Image
+          style={commonStyles.icon}
+          source={require('../icons/spinner.gif')}
+        />
+      </View>
     );
   }
 }

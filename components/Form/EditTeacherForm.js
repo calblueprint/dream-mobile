@@ -55,7 +55,7 @@ class EditTeacherForm extends React.Component {
       last_name: t.String,
       dream_id: t.Number,
       email: t.String,
-      phone: t.Number,
+      phone: t.String,
     });
   }
 

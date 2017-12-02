@@ -11,7 +11,6 @@ import { textStyles } from '../../styles/textStyles';
  * @prop title - course title
  * @prop onSelectCourse - callback function to show course information
  * @prop onTakeAttendance - callback function to take attendance for today
- * @prop onViewStudents - callback function to view students for the course
  */
 class CourseCard extends React.Component {
   constructor(props) {

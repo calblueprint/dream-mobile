@@ -10,7 +10,6 @@ import CoursesScreen from '../screens/courses/CoursesScreen';
 import TeacherProfileScreen from '../screens/teachers/TeacherProfileScreen';
 import TeacherProfileEditScreen from '../screens/teachers/TeacherProfileEditScreen';
 import EditCourseScreen from '../screens/courses/EditCourseScreen';
-import StudentsScreen from '../screens/students/StudentsScreen';
 import CreateStudentScreen from '../screens/students/CreateStudentScreen';
 import StudentProfileScreen from '../screens/students/StudentProfileScreen';
 import AttendanceScreen from '../screens/attendances/AttendanceScreen';
@@ -29,7 +28,9 @@ export const HomeStack = StackNavigator({
   Login: {
     screen: LoginScreen,
     navigationOptions: {
-      headerTitle: 'Login'
+      headerTitle: 'Login',
+      headerLeft: null,
+      gesturesEnabled: false,
     },
   },
   SignUp: {
@@ -46,15 +47,17 @@ export const HomeStack = StackNavigator({
   },
   Courses : {
     screen: CoursesScreen,
-    navigationOptions: {
+    navigationOptions: ({navigation}) => ({
       headerTitle: 'Courses',
-    },
+      headerLeft: (<Button title='Profile' onPress={() => { navigation.navigate('TeacherProfile') }}/>),
+    }),
   },
   TeacherProfile : {
     screen: TeacherProfileScreen,
-    navigationOptions: {
+    navigationOptions: ({navigation}) => ({
       headerTitle: 'Profile',
-    },
+      headerRight: (<Button title='Edit' onPress={() => { navigation.navigate('EditTeacherProfile') }}/>),
+    }),
   },
   EditTeacherProfile : {
     screen: TeacherProfileEditScreen,
@@ -66,12 +69,6 @@ export const HomeStack = StackNavigator({
     screen: EditCourseScreen,
     navigationOptions: {
       headerTitle: 'Edit Course',
-    },
-  },
-  Students : {
-    screen: StudentsScreen,
-    navigationOptions: {
-      headerTitle: 'Students',
     },
   },
   CreateStudent : {

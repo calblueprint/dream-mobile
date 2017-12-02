@@ -1,29 +1,26 @@
 import React from 'react';
 import { Image, Button, Text, View, ScrollView, StyleSheet, FlatList } from 'react-native';
 
+import { connect } from 'react-redux';
+import actions from '../../actions';
+
 import { commonStyles } from '../../styles/styles';
 import { textStyles } from '../../styles/textStyles';
 import StyledButton from '../../components/Button/Button';
 import { APIRoutes } from '../../config/routes';
 import settings from '../../config/settings';
-import { postRequest, putRequest } from '../../lib/requests';
-import { attendanceDate } from '../../lib/date';
+import { putRequestNoCatch } from '../../lib/requests';
 import Collapse from '../../components/Collapse';
 import SimpleModal from '../../components/SimpleModal';
 import colors from '../../styles/colors';
+import { standardError } from '../../lib/alerts';
+import constants from '../../lib/constants';
 
 class AttendanceSummaryScreen extends React.Component {
   constructor(props) {
     super(props);
-    const { params } = this.props.navigation.state;
     this.state = {
-      attendances: params.attendances,
-      students: params.students,
-      date: params.date,
-      courseTitle: params.courseTitle,
-      isLoading: false,
       isCollapsedList: [true, true, true, true, true],
-      isModalOpen: false,
     }
 
     this._toggleCollapsed = this._toggleCollapsed.bind(this)
@@ -34,7 +31,7 @@ class AttendanceSummaryScreen extends React.Component {
     * of student names in the form { key: STUDENT_NAME }
     */
   _filterAttendances(type) {
-    const filteredStudents = this.state.attendances.reduce((result, attendance, i) => {
+    const filteredStudents = this.props.attendances.reduce((result, attendance, i) => {
       if (attendance.attendance_type == type) {
         result.push({key: this._getStudentName(i)});
       }
@@ -49,7 +46,7 @@ class AttendanceSummaryScreen extends React.Component {
     * Gets students full name at the given index (assumes attendance index is same as student index)
     */
   _getStudentName(index) {
-    const student = this.state.students[index]
+    const student = this.props.students[index]
     if (student) {
       return `${student.first_name} ${student.last_name}`
     }
@@ -63,43 +60,6 @@ class AttendanceSummaryScreen extends React.Component {
     list[index] = !list[index];
     this.setState({ isCollapsedList: list });
     this.render
-  }
-
-  /**
-    * TODO (Kelsey): have this save locally too and indicate success for saving locally/network
-    * Attempts to update each changed attendance and waits for each request to succeed
-    * before navigating backwards or logging failure
-    */
-  _syncAttendances() {
-    this.setState({ isLoading: true });
-
-    const attendances = this.state.attendances.map((attendance, i) => {
-      return this._updateAttendance(attendance, i);
-    });
-
-    Promise.all(attendances).then((attendances) => {
-      this.setState({ isLoading: false, isModalOpen: true })
-    }).catch((error) => {
-      console.log(error);
-    });
-  }
-
-  /**
-    * Makes put request to update given attendance if it has been changed
-    */
-  _updateAttendance(attendance, index) {
-    const successFunc = (responseData) => {
-      return responseData;
-    }
-    const errorFunc = (error) => {
-      // TODO (Kelsey): address what happens when editing attendance fails
-      console.log(error);
-    }
-    const params = attendance
-
-    if (attendance.isChanged) {
-      return putRequest(APIRoutes.attendancePath(), successFunc, errorFunc, params);
-    }
   }
 
   /**
@@ -141,7 +101,7 @@ class AttendanceSummaryScreen extends React.Component {
           source={require('../../icons/right.png')}
         />
       )
-    } 
+    }
     return (
      <Image
        style={styles.icon}
@@ -211,19 +171,23 @@ class AttendanceSummaryScreen extends React.Component {
     */
   _renderModal() {
     const callback = () => {
-      this.setState({ isModalOpen: false });
+      this.props.closeModal();
       this.props.navigation.goBack(this.props.navigation.state.params.parentKey || null);
     }
-    const buttons = [{ title: 'Okay', callback: callback, type: 'primary' }]
+    const buttons = [{ title: 'Okay', callback: callback, type: 'primary' }];
+    // Indicates wheter saved to phone text should be visible
+    const savedToPhoneStyle = this.props.isSynced ? { display: 'none' } : {};
+    // Indicates whether synced icon should be a success or error
+    const syncedIcon = this.props.isSynced ? require('../../icons/success.png') : require('../../icons/error.png');
 
     return (
       <SimpleModal
         onClosed={callback}
         title='Status'
         buttons={buttons}
-        visible={this.state.isModalOpen}>
+        visible={this.props.isModalOpen}>
         <View style={styles.modalContent}>
-          <View style={[styles.containerInner, {marginBottom: 8}]}>
+          <View style={[styles.containerInner, {marginBottom: 8}, savedToPhoneStyle]}>
             <Image
               style={styles.statusIcon}
               source={require('../../icons/success.png')}
@@ -233,14 +197,13 @@ class AttendanceSummaryScreen extends React.Component {
           <View style={styles.containerInner}>
             <Image
               style={styles.statusIcon}
-              source={require('../../icons/error.png')}
+              source={syncedIcon}
             />
             <Text style={textStyles.bodyBold}>Synced</Text>
           </View>
           <View style={styles.modalContent}>
             <Text style={textStyles.bodySmall}>
-              Attendance not synced because the device is not connected to Wifi.
-              Try again when Wifi is available. Attendance saved to phone.
+              {this.props.isSynced ? constants.attendance_synced : constants.attendance_not_synced }
             </Text>
           </View>
         </View>
@@ -257,14 +220,15 @@ class AttendanceSummaryScreen extends React.Component {
         <ScrollView>
           <View style={styles.summaryContainer}>
             <View style={commonStyles.header}>
-              <Text style={textStyles.titleSmall}>{attendanceDate(this.state.date)}</Text>
-              <Text style={textStyles.titleLarge}>{this.state.courseTitle}</Text>
+              <Text style={textStyles.titleSmall}>{this.props.date}</Text>
+              <Text style={textStyles.titleLarge}>{this.props.courseTitle}</Text>
             </View>
             {this._renderSummary()}
           </View>
         </ScrollView>
         <StyledButton
-          onPress={this._syncAttendances.bind(this)}
+          onPress={() => this.props.syncAttendances(
+            this.props.attendances, this.props.courseId, this.props.date)}
           text='Sync'
           primaryButtonLarge
         >
@@ -278,8 +242,9 @@ class AttendanceSummaryScreen extends React.Component {
     * Renders loading state if data is still loading or uses _renderLoadedView
     */
   render() {
-    // TODO (Kelsey): Add loading gif
-    const view = this.state.isLoading ? (<Text>Loading...</Text>) : this._renderLoadedView();
+    const view = this.props.isLoading ?
+                  (<Image style={commonStyles.icon} source={require('../../icons/spinner.gif')}/>) :
+                  this._renderLoadedView();
     return (
       <View style={commonStyles.containerStatic}>
         { view }
@@ -290,7 +255,7 @@ class AttendanceSummaryScreen extends React.Component {
 
 const styles = StyleSheet.create({
   containerInner: {
-    flexDirection: 'row', 
+    flexDirection: 'row',
     alignItems: 'center'
   },
   summaryContainer: {
@@ -304,15 +269,15 @@ const styles = StyleSheet.create({
   },
   studentList: {
     marginLeft: 24,
-    marginBottom: 24, 
+    marginBottom: 24,
   },
   icon: {
-    height: 16, 
+    height: 16,
     width: 16,
     marginRight: 8
   },
   statusIcon: {
-    height: 24, 
+    height: 24,
     width: 24,
     marginRight: 8
   },
@@ -322,4 +287,65 @@ const styles = StyleSheet.create({
 });
 // TODO (Kelsey): Add PropTypes from navigation
 
-export default AttendanceSummaryScreen;
+/**
+  * Attempts to update each changed attendance and waits for each request to succeed
+  * and shows different modal based on whether sync succeeded or failed. Saves attendances
+  * to store regardless of success/failiure.
+  */
+syncAttendances = (attendances, courseId, date) => {
+  return (dispatch) => {
+    dispatch(actions.requestUpdateAttendances(courseId, date));
+    const attendancePromises = attendances.map((attendance, i) => {
+      return updateAttendance(attendance, i);
+    });
+
+    Promise.all(attendancePromises).then((responseData) => {
+      dispatch(actions.receiveUpdateAttendancesSuccess(responseData, courseId, date));
+      dispatch(actions.openModal());
+    }).catch((error) => {
+      dispatch(actions.receiveUpdateAttendancesError(attendances, courseId, date));
+      dispatch(actions.openModal());
+    });
+  }
+}
+
+/**
+  * Makes put request to update given attendance if it has been changed
+  * (Uses putRequestNoCatch so any errors get caught in Promise.all)
+  */
+updateAttendance = (attendance, index) => {
+  const successFunc = (responseData) => {
+    return responseData;
+  }
+  const errorFunc = (error) => {
+    console.log(error);
+  }
+  const params = attendance
+
+  if (attendance.isChanged) {
+    return putRequestNoCatch(APIRoutes.attendancePath(), successFunc, errorFunc, params);
+  } else {
+    return attendance;
+  }
+}
+
+const mapStateToProps = (state, props) => {
+  // Get course and date associated with this attendance screen
+  const course = state.courses.find((course) => course.id === props.navigation.state.params.courseId);
+  const date = props.navigation.state.params.date;
+  return {
+    ...props.navigation.state.params,
+    isLoading: state.isLoading.value,
+    isSynced: course.attendances[date].isSynced,
+    isModalOpen: state.modal.isOpen,
+  };
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    syncAttendances: (attendances, courseId, date) => dispatch(syncAttendances(attendances, courseId, date)),
+    closeModal: () => dispatch(actions.closeModal()),
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(AttendanceSummaryScreen);

@@ -1,6 +1,10 @@
 import React from 'react';
 import { Button, Text, View } from 'react-native';
-import { getRequest, putRequest } from '../../lib/requests';
+
+import { connect } from 'react-redux';
+import actions from '../../actions';
+
+import { putRequest } from '../../lib/requests';
 import { APIRoutes } from '../../config/routes';
 import { standardError } from '../../lib/alerts';
 import EditTeacherForm from '../../components/Form/EditTeacherForm'
@@ -10,21 +14,13 @@ import LocalStorage from '../../helpers/LocalStorage'
 class TeacherProfileEditScreen extends React.Component {
 	constructor(props) {
 	  super(props);
-	  this.state = {
-	    teacher: this.props.navigation.state.params.teacher,
-	  }
 	}
 
 	_handleEditTeacher(params) {
 	  params.is_active = true;
+	  params.id = this.props.teacher.id;
 
-	  const successFunc = (responseData) => {
-	    LocalStorage.storeUser(responseData);
-	    this.setState({ teacher: responseData});
-	    this.props.navigation.state.params.refreshTeacher();
-	    this.props.navigation.goBack();
-	  }
-	  putRequest(APIRoutes.getTeacherPath(this.state.teacher.id), successFunc, standardError, params);
+    this.props.updateTeacher(params, this.props.navigation);
 	}
 
 	render() {
@@ -32,11 +28,41 @@ class TeacherProfileEditScreen extends React.Component {
 			<View>
 				<EditTeacherForm
 				  onEditTeacher={this._handleEditTeacher.bind(this)}
-				  teacher={this.state.teacher} //passing in teacher to form
+				  teacher={this.props.teacher} //passing in teacher to form
 				/>
 			</View>
 		);
 	}
 }
 
-export default TeacherProfileEditScreen;
+const updateTeacher = (params, navigation) => {
+	return (dispatch) => {
+		dispatch(actions.requestTeacher(params));
+		return putRequest(
+			APIRoutes.getTeacherPath(params.id),
+			(responseData) => {
+				dispatch(actions.receiveTeacherSuccess(responseData));
+				navigation.goBack();
+			},
+			(error) => {
+				dispatch(actions.receiveStandardError(error));
+				standardError(error);
+			},
+			params
+		);
+	}
+}
+
+const mapStateToProps = (state) => {
+  return {
+    teacher: state.teacher,
+  };
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    updateTeacher: (params, navigation) => dispatch(updateTeacher(params, navigation)),
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(TeacherProfileEditScreen);
