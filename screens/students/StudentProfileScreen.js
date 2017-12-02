@@ -38,6 +38,7 @@ class StudentProfileScreen extends React.Component {
   _deleteStudent(studentId) {
     const successFunc = (responseData) => {
       this.props.navigation.navigate('Courses');
+
     }
     deleteRequest(APIRoutes.getStudentPath(studentId), successFunc, standardError);
   }
