@@ -6,7 +6,7 @@ const buttonStyles = StyleSheet.create({
   primaryButtonLarge: {
     backgroundColor: colors.primaryYellow,
     borderColor: colors.primaryYellow,
-    marginRight: 16, 
+    marginRight: 16,
     marginLeft: 16,
     marginTop: 16,
     marginBottom: 8,
@@ -19,6 +19,11 @@ const buttonStyles = StyleSheet.create({
     height: 40,
     marginTop: 24,
     marginLeft: 8,
+    marginBottom: 8,
+  },
+
+  clearButtonSmall: {
+    borderColor:'rgba(255, 255, 255, 0)',
     marginBottom: 8,
   },
 

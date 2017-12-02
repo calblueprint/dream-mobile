@@ -9,7 +9,9 @@ import StyledButton from '../../components/Button/Button';
 import StudentCard from '../../components/StudentCard/StudentCard';
 import { formViewStyles } from '../../styles/formViewStyles';
 import { textStyles } from '../../styles/textStyles';
-import FontAwesome, { Icons } from 'react-native-fontawesome';
+import { FontAwesome,Entypo } from '@expo/vector-icons';
+import colors from '../../styles/colors';
+
 
 
 class ViewCourseScreen extends React.Component {
@@ -40,7 +42,7 @@ class ViewCourseScreen extends React.Component {
         // headerRight: <Button title="Enroll Student" onPress={() => params.handleCreate()} />
         headerRight: (
           <TouchableOpacity onPress={() => params.handleCreate()}>
-            <Text><FontAwesome>{Icons.userPlus}</FontAwesome></Text>
+            <View style={{marginRight: 8}}><Entypo name="add-user" size={28} color={colors.iconDark} /></View>
           </TouchableOpacity>
         )
     };

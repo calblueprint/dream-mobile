@@ -28,13 +28,13 @@ class CourseCard extends React.Component {
       3: colors.coursePink,
       4: colors.courseBrown
     }
-    const colorKey = this.props.index
-    
+    const colorKey = this.props.index % 5
+
     return (
       <TouchableHighlight onPress={() => this.props.onSelectCourse(this.props.course_id)}>
         <View style={[cardStyles.outerContainer, {backgroundColor: colorList[colorKey]}]}>
           <View style={cardStyles.topContainer}>
-            <Text style={[cardStyles.title, textStyles.titleMediumLight]}>{this.props.course_id} {this.props.title}</Text>
+            <Text style={[cardStyles.title, textStyles.titleMediumLight]}>{this.props.title}</Text>
             <Text style={[cardStyles.count, textStyles.titleSmallLight]}>6 Students</Text>
           </View>
           <View style={cardStyles.bottomContainer}>

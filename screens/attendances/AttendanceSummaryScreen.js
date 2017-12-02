@@ -120,7 +120,7 @@ class AttendanceSummaryScreen extends React.Component {
       <View style={styles.collapseHeader}>
         <View style={styles.containerInner}>
           {this._renderIcon(isCollapsed)}
-          <Text style={textStyles.body}>{typeTitle}</Text>
+          <Text style={textStyles.bodyBold}>{typeTitle}</Text>
         </View>
         <Text style={[textStyles.bodyBold, {color: numberColor}]}>{length}</Text>
       </View>

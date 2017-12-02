@@ -10,7 +10,7 @@ export default class StyledButton extends React.Component {
 			return (
 				<Button
 				  onPress={this.props.onPress}
-				  style={ buttonStyles.primaryButtonLarge } 
+				  style={ buttonStyles.primaryButtonLarge }
 				  textStyle={ textStyles.buttonText }
 			  	>{this.props.text}</Button>
 			);
@@ -19,7 +19,7 @@ export default class StyledButton extends React.Component {
 			return (
 				<Button
 				  onPress={this.props.onPress}
-				  style={ buttonStyles.primaryButtonSmall } 
+				  style={ buttonStyles.primaryButtonSmall }
 				  textStyle={ textStyles.buttonTextSmall }
 			  	>{this.props.text}</Button>
 			);
@@ -28,7 +28,7 @@ export default class StyledButton extends React.Component {
 			return (
 				<Button
 				  onPress={this.props.onPress}
-				  style={ buttonStyles.clearButtonSmall } 
+				  style={ buttonStyles.clearButtonSmall }
 				  textStyle={ textStyles.buttonTextSmall }
 			  	>{this.props.text}</Button>
 			);
@@ -37,7 +37,7 @@ export default class StyledButton extends React.Component {
 			return (
 				<Button
 				  onPress={this.props.onPress}
-				  style={ buttonStyles.secondaryButtonSmall } 
+				  style={ buttonStyles.secondaryButtonSmall }
 				  textStyle={ textStyles.buttonTextSecondarySmall }
 			  	>{this.props.text}</Button>
 			);

@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
 import { StackNavigator } from 'react-navigation';
-import { Button, TouchableOpacity, Text } from 'react-native';
+import { Button, TouchableOpacity, Text, View } from 'react-native';
 import HomeScreen from '../screens/HomeScreen';
 import LoginScreen from '../screens/login/LoginScreen';
 import SignUpScreen from '../screens/login/SignUpScreen';
@@ -14,7 +14,8 @@ import CreateStudentScreen from '../screens/students/CreateStudentScreen';
 import StudentProfileScreen from '../screens/students/StudentProfileScreen';
 import AttendanceScreen from '../screens/attendances/AttendanceScreen';
 import AttendanceSummaryScreen from '../screens/attendances/AttendanceSummaryScreen';
-import FontAwesome, { Icons } from 'react-native-fontawesome';
+import { FontAwesome } from '@expo/vector-icons';
+import colors from '../styles/colors';
 
 /**
  * HomeStack is the main navigation stack starting from the HomeScreen
@@ -52,7 +53,7 @@ export const HomeStack = StackNavigator({
       headerTitle: 'Courses',
       headerLeft: (
           <TouchableOpacity onPress={() => { navigation.navigate('TeacherProfile') }}>
-            <Text><FontAwesome>{Icons.userCircleO}</FontAwesome></Text>
+            <View style={{marginLeft: 8}}><FontAwesome name="user-circle-o" size={32} color={colors.iconDark} /></View>
           </TouchableOpacity>
         )
     }),
