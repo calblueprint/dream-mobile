@@ -83,8 +83,8 @@ const textStyles = StyleSheet.create({
   },
 
   sessionHeaderText: {
-    color: colors.textDark,
-    fontSize: 20,
+    color: colors.textDark_70,
+    fontSize: 16,
     fontWeight: '700',
   }
 

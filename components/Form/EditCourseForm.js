@@ -232,7 +232,7 @@ class EditCourseForm extends React.Component {
     if (values) {
       this.props.onSaveCourse({ course: values, sessions: this.state.sessionList })
     } else {
-      frontendError("Validation failed. Course not saved.")
+      frontendError("Validation failed.")
     }
   }
 

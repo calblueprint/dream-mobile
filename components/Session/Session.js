@@ -33,6 +33,8 @@ class Session extends React.Component {
     this._handleSessionChange = this._handleSessionChange.bind(this);
     this._renderDeleteSessionButton = this._renderDeleteSessionButton.bind(this);
 
+    this.template = this.template.bind(this);
+
     this.state = {
       formValues: this._getInitialFormValues(this.props),
       errors: [],
@@ -78,27 +80,56 @@ class Session extends React.Component {
     });
   }
 
+  template(locals) {
+    // All the rendered fields in locals.inputs
+    return (
+      <View>
+        <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
+          <View style={{flex: 0.2}}>
+            {locals.inputs.weekday}
+          </View>
+          <View style={{flexDirection: 'row', alignItems: 'center', flex: 0.8}}>
+            <View style={{flex: 1}}>
+              {locals.inputs.start_time}
+            </View>
+            <View style={{flex: 1}}>
+              {locals.inputs.end_time}
+            </View>
+          </View>
+        </View>
+      </View>
+    );
+  }
+
   /*
    * Specify options for form fields.
    */
   _getFormOptions() {
     return {
+      auto: 'none',
+      template: this.template,
       error: this.state.errors,
       fields: {
         weekday: {
-          label: 'Day',
+          itemStyle: {
+            fontSize: 16,
+          },
         },
         start_time: {
           mode:'time',
           config: {
-            format:timeFormat,
-          }
+            format: timeFormat,
+          },
+          normal: {
+            paddingLeft: 40,
+            fontSize: 100,
+          },
         },
         end_time: {
           mode:'time',
           config: {
-            format:timeFormat,
-          }
+            format: timeFormat,
+          },
         },
       },
     };
@@ -121,7 +152,7 @@ class Session extends React.Component {
       this.setState({ formValues: values });
       this.props.onSessionChange(values, this.props.number);
     } else {
-      frontendError("Validation failed. Session not updated.")
+      frontendError("Validation failed.")
     }
   }
 

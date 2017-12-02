@@ -37,45 +37,69 @@ class Form extends React.Component {
   overrideStyles() {
     let stylesheet = t.form.Form.stylesheet;
 
-    const FONT_SIZE = 15;
     const HEIGHT = 24;
-    const INPUT_COLOR = colors.textDark;
     const PADDING_HORIZONTAL = 15;
+    const MARGIN_BOTTOM = 4;
     const BACKGROUND_COLOR = colors.backgroundWhite;
 
+    const INPUT_FONT_SIZE = 16;
+    const INPUT_COLOR = colors.textDark;
+
     const LABEL_FONT_SIZE = 16;
-    const LABEL_COLOR = colors.textDark;
+    const LABEL_COLOR = colors.textDark_70;
     const LABEL_FONT_WEIGHT = '700';
+
+    const ERROR_COLOR = colors.errorRed;
+    const UNDERLINE_COLOR = colors.dividerGrey;
+    const UNDERLINE_WIDTH = 1;
+    const UNDERLINE_LENGTH = 0.5;
 
     const HELPBLOCK_FONT_SIZE = 13;
 
     // Textbox styles
     let textbox = stylesheet.textbox;
     textbox.normal = {
-      flex: 1,
       color: INPUT_COLOR,
-      fontSize: FONT_SIZE,
+      fontSize: INPUT_FONT_SIZE,
       backgroundColor: BACKGROUND_COLOR,
-      borderBottomColor: colors.dividerGrey,
-      borderBottomWidth: 1,
+      borderBottomColor: UNDERLINE_COLOR,
+      borderBottomWidth: UNDERLINE_WIDTH,
       height: HEIGHT,
     };
 
     textbox.error = {
-      flex: 1,
       color: INPUT_COLOR,
+      fontSize: INPUT_FONT_SIZE,
       backgroundColor: BACKGROUND_COLOR,
-      borderBottomColor: colors.errorRed,
-      borderBottomWidth: 1,
+      borderBottomColor: ERROR_COLOR,
+      borderBottomWidth: UNDERLINE_WIDTH,
       borderWidth: 0,
     };
 
     // Picker container styles
-    let picker = stylesheet.pickerContainer
+    let picker = stylesheet.pickerContainer;
     picker.normal = {
-      marginBottom: 4,
-      borderRadius: 4,
+      marginBottom: MARGIN_BOTTOM,
       borderColor: 'transparent',
+    };
+
+    let pickerValue = stylesheet.pickerValue;
+    pickerValue.normal = {
+      fontSize: INPUT_FONT_SIZE,
+      color: INPUT_COLOR,
+    };
+
+    // Datepicker styles
+    let datepicker = stylesheet.datepicker;
+    datepicker.normal = {
+      marginBottom: MARGIN_BOTTOM,
+      borderColor: 'transparent',
+    };
+
+    let dateValue = stylesheet.dateValue;
+    dateValue.normal = {
+      fontSize: INPUT_FONT_SIZE,
+      color: INPUT_COLOR,
     };
 
     // Label styles
@@ -83,15 +107,15 @@ class Form extends React.Component {
     label.normal = {
       color: LABEL_COLOR,
       fontSize: LABEL_FONT_SIZE,
-      marginBottom: 4,
+      marginBottom: MARGIN_BOTTOM,
       paddingTop: 8,
       fontWeight: LABEL_FONT_WEIGHT,
     };
 
     label.error = {
-      color: colors.errorRed,
+      color: ERROR_COLOR,
       fontSize: LABEL_FONT_SIZE,
-      marginBottom: 4,
+      marginBottom: MARGIN_BOTTOM,
       paddingTop: 8,
       fontWeight: LABEL_FONT_WEIGHT,
     };
@@ -99,17 +123,17 @@ class Form extends React.Component {
     // Helpblock styles (help and error messages)
     let helpBlock = stylesheet.helpBlock;
     helpBlock.normal = {
-      color: colors.dividerGrey,
+      color: UNDERLINE_COLOR,
       fontSize: HELPBLOCK_FONT_SIZE,
       marginBottom: 2,
     };
     helpBlock.error = {
-      color: colors.errorRed,
+      color: ERROR_COLOR,
       fontSize: HELPBLOCK_FONT_SIZE,
       marginBottom: 2,
     };
     stylesheet.errorBlock = {
-      color: colors.errorRed,
+      color: ERROR_COLOR,
       fontSize: HELPBLOCK_FONT_SIZE,
       marginBottom: 2,
     };
