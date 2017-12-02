@@ -30,7 +30,7 @@ class CreateStudentScreen extends React.Component {
   _handleUpdateStudent(params) {
     const successFunc = (responseData) => {
       // this.props.navigation.state.params.refreshStudent();
-      this.props.navigation.goBack('Courses');
+      this.props.navigation.navigate('Courses');
     }
     putRequest(APIRoutes.getStudentPath(this.state.student.id), successFunc, standardError, params=params);
   }
