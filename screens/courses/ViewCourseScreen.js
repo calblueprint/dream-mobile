@@ -42,7 +42,7 @@ class ViewCourseScreen extends React.Component {
 
     const _enrollStudent = () => {
        this.props.navigation.navigate('CreateStudent',
-        { refreshStudents: this._fetchStudents, courseId: this.state.course_id })
+        { refreshStudents: this._fetchStudents, courseId: this.state.course_id, newStudent: true })
      }
 
     this.props.navigation.setParams({ handleCreate: _enrollStudent });
