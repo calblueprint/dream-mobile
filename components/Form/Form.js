@@ -39,10 +39,11 @@ class Form extends React.Component {
 
     const HEIGHT = 24;
     const PADDING_HORIZONTAL = 15;
+    const LABEL_PADDING_TOP = 15;
     const MARGIN_BOTTOM = 4;
     const BACKGROUND_COLOR = colors.backgroundWhite;
 
-    const INPUT_FONT_SIZE = 16;
+    const INPUT_FONT_SIZE = 20;
     const INPUT_COLOR = colors.textDark;
 
     const LABEL_FONT_SIZE = 16;
@@ -79,8 +80,8 @@ class Form extends React.Component {
     // Picker container styles
     let picker = stylesheet.pickerContainer;
     picker.normal = {
-      marginBottom: MARGIN_BOTTOM,
       borderColor: 'transparent',
+      height: HEIGHT,
     };
 
     let pickerValue = stylesheet.pickerValue;
@@ -108,16 +109,16 @@ class Form extends React.Component {
       color: LABEL_COLOR,
       fontSize: LABEL_FONT_SIZE,
       marginBottom: MARGIN_BOTTOM,
-      paddingTop: 8,
       fontWeight: LABEL_FONT_WEIGHT,
+      paddingTop: LABEL_PADDING_TOP,
     };
 
     label.error = {
       color: ERROR_COLOR,
       fontSize: LABEL_FONT_SIZE,
       marginBottom: MARGIN_BOTTOM,
-      paddingTop: 8,
       fontWeight: LABEL_FONT_WEIGHT,
+      paddingTop: LABEL_PADDING_TOP,
     };
 
     // Helpblock styles (help and error messages)

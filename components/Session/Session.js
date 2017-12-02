@@ -84,17 +84,13 @@ class Session extends React.Component {
     // All the rendered fields in locals.inputs
     return (
       <View>
-        <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
-          <View style={{flex: 0.2}}>
-            {locals.inputs.weekday}
+        {locals.inputs.weekday}
+        <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', flex: 1}}>
+          <View style={{flex: 1}}>
+            {locals.inputs.start_time}
           </View>
-          <View style={{flexDirection: 'row', alignItems: 'center', flex: 0.8}}>
-            <View style={{flex: 1}}>
-              {locals.inputs.start_time}
-            </View>
-            <View style={{flex: 1}}>
-              {locals.inputs.end_time}
-            </View>
+          <View style={{flex: 1}}>
+            {locals.inputs.end_time}
           </View>
         </View>
       </View>
@@ -110,26 +106,19 @@ class Session extends React.Component {
       template: this.template,
       error: this.state.errors,
       fields: {
-        weekday: {
-          itemStyle: {
-            fontSize: 16,
-          },
-        },
         start_time: {
           mode:'time',
           config: {
             format: timeFormat,
           },
-          normal: {
-            paddingLeft: 40,
-            fontSize: 100,
-          },
+          label: 'Start',
         },
         end_time: {
           mode:'time',
           config: {
             format: timeFormat,
           },
+          label: 'End',
         },
       },
     };
@@ -171,7 +160,7 @@ class Session extends React.Component {
 
   render() {
     return (
-      <View style={{paddingTop: 8}}>
+      <View style={{paddingTop: 16}}>
         <View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
           <Text style={textStyles.sessionHeaderText}>
             Session #{ this.props.number + 1 }
