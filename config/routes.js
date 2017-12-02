@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
 import { StackNavigator } from 'react-navigation';
-import { Button } from 'react-native';
+import { Button, TouchableOpacity, Text } from 'react-native';
 import HomeScreen from '../screens/HomeScreen';
 import LoginScreen from '../screens/login/LoginScreen';
 import SignUpScreen from '../screens/login/SignUpScreen';
@@ -14,6 +14,7 @@ import CreateStudentScreen from '../screens/students/CreateStudentScreen';
 import StudentProfileScreen from '../screens/students/StudentProfileScreen';
 import AttendanceScreen from '../screens/attendances/AttendanceScreen';
 import AttendanceSummaryScreen from '../screens/attendances/AttendanceSummaryScreen';
+import FontAwesome, { Icons } from 'react-native-fontawesome';
 
 /**
  * HomeStack is the main navigation stack starting from the HomeScreen
@@ -49,7 +50,11 @@ export const HomeStack = StackNavigator({
     screen: CoursesScreen,
     navigationOptions: ({navigation}) => ({
       headerTitle: 'Courses',
-      headerLeft: (<Button title='Profile' onPress={() => { navigation.navigate('TeacherProfile') }}/>),
+      headerLeft: (
+          <TouchableOpacity onPress={() => { navigation.navigate('TeacherProfile') }}>
+            <Text><FontAwesome>{Icons.userCircleO}</FontAwesome></Text>
+          </TouchableOpacity>
+        )
     }),
   },
   TeacherProfile : {

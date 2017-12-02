@@ -12,6 +12,7 @@ import { getRequest } from '../../lib/requests';
 import { APIRoutes } from '../../config/routes';
 import { standardError } from '../../lib/alerts';
 import PropTypes from 'prop-types';
+import StyledButton from '../../components/Button/Button';
 
 class TeacherProfileScreen extends React.Component {
 
@@ -57,7 +58,7 @@ class TeacherProfileScreen extends React.Component {
             </Text>
           </View>
 
-          <View style={formViewStyles.div_2}>
+          <View style={[formViewStyles.div_2, {marginBottom: 24}]}>
             <Text style={textStyles.titleSmall}>
             Phone Number
             </Text>
@@ -66,9 +67,10 @@ class TeacherProfileScreen extends React.Component {
             </Text>
           </View>
 
-          <Button
+          <StyledButton
           onPress={this._attemptSignOut.bind(this)}
-          title='Sign Out'
+          text='Sign Out'
+          linkButton
           />
 
         </View>

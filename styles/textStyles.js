@@ -84,7 +84,7 @@ const textStyles = StyleSheet.create({
   linkText: {
     color: colors.primaryYellow,
     fontSize: 18,
-    fontWeight: '500'
+    fontWeight: '500',
   },
 
   hintText: {

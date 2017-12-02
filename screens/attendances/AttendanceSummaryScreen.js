@@ -140,7 +140,7 @@ class AttendanceSummaryScreen extends React.Component {
         <FlatList
           style={styles.studentList}
           data={students}
-          renderItem={({item}) => <Text style={textStyles.bodySmall}>{item.key}</Text>}
+          renderItem={({item}) => <Text style={[textStyles.body, {marginBottom: 4}]}>{item.key}</Text>}
           removeClippedSubviews={true}
           ListEmptyComponent={<Text style={textStyles.bodySmall}>None</Text>}
         />
