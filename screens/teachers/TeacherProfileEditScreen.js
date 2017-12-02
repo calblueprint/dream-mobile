@@ -16,6 +16,13 @@ class TeacherProfileEditScreen extends React.Component {
 	  super(props);
 	}
 
+	componentDidMount() {
+		if (!this.props.isConnected) {
+			standardError({ error: 'You cannot edit your profile offline.'});
+			this.props.navigation.goBack();
+		}
+	}
+
 	_handleEditTeacher(params) {
 	  params.is_active = true;
 	  params.id = this.props.teacher.id;
@@ -56,6 +63,7 @@ const updateTeacher = (params, navigation) => {
 const mapStateToProps = (state) => {
   return {
     teacher: state.teacher,
+    isConnected: state.network.isConnected,
   };
 }
 

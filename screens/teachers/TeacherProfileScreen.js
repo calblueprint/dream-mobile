@@ -100,7 +100,7 @@ class TeacherProfileScreen extends React.Component {
 }
 
 const fetchTeacher = (teacher) => {
-  return (dispatch) => {
+  function thunk(dispatch) {
     dispatch(actions.requestTeacher(teacher));
     return getRequest(
       APIRoutes.getTeacherPath(teacher.id),
@@ -113,6 +113,10 @@ const fetchTeacher = (teacher) => {
       }
     );
   }
+
+  // Intercept action if offline
+  thunk.interceptInOffline = true;
+  return thunk;
 }
 
 const mapStateToProps = (state) => {

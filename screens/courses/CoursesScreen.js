@@ -122,6 +122,7 @@ const fetchCourses = (teacherId) => {
     );
   }
 
+  // Intercept action if offline
   thunk.interceptInOffline = true;
   return thunk;
 }
