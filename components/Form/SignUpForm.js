@@ -1,9 +1,15 @@
 import React from 'react';
 import LocalStorage from '../../helpers/LocalStorage'
-import { Button, ScrollView, Text, TextInput, View } from 'react-native';
-import { styles } from '../../styles/styles';
+import { ScrollView, Text, TextInput, View } from 'react-native';
+import { commonStyles } from '../../styles/styles';
 import { postRequest } from '../../lib/requests';
 import { APIRoutes } from '../../config/routes';
+import { Form, t } from '../../components/Form/Form';
+import StyledButton from '../../components/Button/Button';
+import colors from '../../styles/colors';
+import { textStyles } from '../../styles/textStyles';
+import { frontendError } from '../../lib/alerts';
+import { formStyles } from '../Form/styles.js';
 
 /**
  * @prop onSignUp - callback function when signup form is submitted
@@ -11,55 +17,123 @@ import { APIRoutes } from '../../config/routes';
 class SignUpForm extends React.Component {
   constructor(props) {
     super(props);
-    this._onSignUp = this._onSignUp.bind(this);
+    this._getFormType = this._getFormType.bind(this);
+    this._getFormOptions = this._getFormOptions.bind(this);
+    this._clearFormErrors = this._clearFormErrors.bind(this);
+    this._onFormChange = this._onFormChange.bind(this);
+
+    this._handleSignUp = this._handleSignUp.bind(this);
+    this._renderSignUpButton = this._renderSignUpButton.bind(this);
 
     this.state = {
-      first_name: '',
-      last_name: '',
-      email: '',
-      password: '',
-      password_confimation: '',
-      dream_id: '',
-      phone: '',
+      formValues: {},
+      errors: [],
     }
   }
 
-  _onSignUp() {
-    this.props.onSignUp(this.state);
+  /*
+   * Define fields in form.
+   */
+  _getFormType() {
+    return t.struct({
+      first_name: t.String,
+      last_name: t.String,
+      email: t.String,
+      password: t.String,
+      password_confimation: t.String,
+      dream_id: t.Number,
+      phone: t.Number,
+    });
+  }
+
+  /*
+   * Specify options for form fields.
+   */
+  _getFormOptions() {
+    return {
+      error: this.state.errors,
+      fields: {
+        first_name: {
+          label: 'First Name',
+        },
+        last_name: {
+          label: 'Last Name',
+        },
+        dream_id: {
+          label: 'Dream ID',
+        },
+        email: {
+          autoCapitalize: 'none',
+        },
+        password: {
+          label: 'Password',
+          password: true,
+          secureTextEntry: true
+        },
+        password_confimation: {
+          label: 'Password Confirmation',
+          password: true,
+          secureTextEntry: true
+        },
+      },
+    };
+  }
+
+  /*
+   * Clear the error state at the beginning of each validation (login)
+   */
+  _clearFormErrors() {
+    this.setState({ errors: [] });
+  }
+
+  /*
+   * Update component state each time a form field changes.
+   */
+  _onFormChange(values) {
+    this.setState({ formValues: values });
+  }
+
+  /*
+   * Extract values from form and call onLogin callback.
+   */
+  _handleSignUp() {
+    this._clearFormErrors();
+    const values = this.form.getValue();
+    if (values) {
+      this.props.onSignUp(values);
+    } else {
+      frontendError("Validation failed. Profile not updated.")
+    }
+  }
+
+  /*
+   * Render button to login
+   */
+  _renderSignUpButton() {
+    return (
+      <StyledButton
+        onPress={this._handleSignUp}
+        text='Sign Up'
+        primaryButtonLarge>
+      </StyledButton>
+    );
   }
 
   render() {
     return (
-      <View>
-        <TextInput
-          placeholder='First Name'
-          onChangeText={(text) => this.setState({first_name: text})}/>
-        <TextInput
-          placeholder='Last Name'
-          onChangeText={(text) => this.setState({last_name: text})}/>
-        <TextInput
-          placeholder='Email'
-          autoCapitalize='none'
-          onChangeText={(text) => this.setState({email: text})}/>
-        <TextInput
-          placeholder='Password'
-          onChangeText={(text) => this.setState({password: text})}
-          secureTextEntry/>
-        <TextInput
-          placeholder='Password Confirmation'
-          onChangeText={(text) => this.setState({password: text})}
-          secureTextEntry/>
-        <TextInput
-          placeholder='Dream ID'
-          onChangeText={(text) => this.setState({dream_id: text})}/>
-        <TextInput
-          placeholder='Phone Number'
-          onChangeText={(text) => this.setState({phone: text})}/>
-        <Button
-          onPress={this._onSignUp}
-          title='Sign Up'
-        />
-
+      <View style={commonStyles.containerStatic}>
+        <ScrollView>
+          <View style={formStyles.container}>
+            <Form
+              refCallback={(ref) => this.form = ref}
+              type={this._getFormType()}
+              options={this._getFormOptions()}
+              value={this.state.formValues}
+              onChange={this._onFormChange}
+            />
+          </View>
+        </ScrollView>
+        { this._renderSignUpButton() }
       </View>
     );
   }
