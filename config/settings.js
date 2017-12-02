@@ -7,12 +7,11 @@ import { Platform } from 'react-native'
 if (process.env.NODE_ENV === 'production') {
   URL = 'https://dream-rails-production.herokuapp.com';
 } else {
-  URL = "http://10.142.151.8:3000"
-  // URL = Platform.select({
-  //   ios: "http://localhost:3000",
-  //   // For Android Emulator
-  //   android: "http://10.0.2.2:3000"
-  // });
+  URL = Platform.select({
+    ios: "http://localhost:3000",
+    // For Android Emulator
+    android: "http://10.0.2.2:3000"
+  });
 }
 
 export const settings = {

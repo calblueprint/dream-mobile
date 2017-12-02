@@ -4,6 +4,7 @@ import StyledButton from '../../components/Button/Button';
 import { APIRoutes } from '../../config/routes';
 import PropTypes from 'prop-types';
 import { cardStyles } from './styles';
+import { textStyles } from '../../styles/textStyles';
 
 /**
  * @prop course_id - course ID
@@ -22,18 +23,17 @@ class CourseCard extends React.Component {
   render() {
     return (
       <TouchableHighlight onPress={() => this.props.onSelectCourse(this.props.course_id)}>
-        <View style={cardStyles.container}>
-          <Text style={cardStyles.title}>{this.props.course_id} {this.props.title}</Text>
-          <StyledButton
-            onPress={() => this.props.onTakeAttendance(this.props.course_id, this.props.title)}
-            text='Take Attendance'
-            clearButtonSmall>
-          </StyledButton>
-          <StyledButton
-            onPress={() => this.props.onViewStudents(this.props.course_id)}
-            text='View Student'
-            clearButtonSmall>
-          </StyledButton>
+        <View style={cardStyles.outerContainer}>
+          <View style={cardStyles.topContainer}>
+            <Text style={[cardStyles.title, textStyles.titleMediumLight]}>{this.props.course_id} {this.props.title}</Text>
+          </View>
+          <View style={cardStyles.bottomContainer}>
+            <StyledButton
+              onPress={() => this.props.onTakeAttendance(this.props.course_id, this.props.title)}
+              text='Take Attendance'
+              clearButtonSmall>
+            </StyledButton>
+          </View>
         </View>
       </TouchableHighlight>
     );

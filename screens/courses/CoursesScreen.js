@@ -9,6 +9,7 @@ import { getRequest } from '../../lib/requests';
 import { APIRoutes } from '../../config/routes';
 import { standardError } from '../../lib/alerts';
 import CourseCard from '../../components/CourseCard/CourseCard';
+import StyledButton from '../../components/Button/Button';
 
 class CoursesScreen extends React.Component {
   constructor(props) {
@@ -81,12 +82,14 @@ class CoursesScreen extends React.Component {
     }
     return (
       <ScrollView>
-        <View>
-          <Button
-            onPress={() => navigate('EditCourse', {refreshCourses: this.props.fetchCourses, newCourse: true, sessions: []})}
-            title="Create Course"
-          />
+        <View style={{backgroundColor: '#f5f5f6'}}>
           { courses }
+          
+          <StyledButton
+            onPress={() => navigate('EditCourse', {refreshCourses: this.props.fetchCourses, newCourse: true, sessions: []})}
+            text='Create Course'
+            primaryButtonLarge>
+          </StyledButton>
         </View>
       </ScrollView>
     );

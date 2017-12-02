@@ -4,29 +4,34 @@ import colors from './colors';
 const textStyles = StyleSheet.create({
   body: {
     color: colors.textDark,
-    fontSize: 20
+    fontSize: 18
   },
 
   bodyBold: {
     color: colors.textDark,
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: '500'
   },
 
   bodySmall: {
     color: colors.textDark,
-    fontSize: 16
+    fontSize: 14
   },
 
   bodySmallBold: {
     color: colors.textDark,
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: '500'
   },
 
   titleSmall: {
     color: colors.textDark_70,
-    fontSize: 16
+    fontSize: 14
+  },
+
+  titleSmallLight: {
+    color: colors.textLight,
+    fontSize: 14
   },
 
   titleMedium: {
@@ -41,9 +46,21 @@ const textStyles = StyleSheet.create({
     fontWeight: '700'
   },
 
-  buttonText: {
+  titleMediumLight: {
     color: colors.textLight,
     fontSize: 20,
+    fontWeight: '700'
+  },
+
+  buttonText: {
+    color: colors.textLight,
+    fontSize: 18,
+    fontWeight: '500'
+  },
+
+  buttonTextYellow: {
+    color: colors.primaryYellow,
+    fontSize: 18,
     fontWeight: '500'
   },
 
@@ -55,18 +72,18 @@ const textStyles = StyleSheet.create({
 
   buttonTextSecondarySmall: {
     color: colors.textDark_30,
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: '500'
   },
 
   toastText: {
     color: colors.textLight,
-    fontSize: 20
+    fontSize: 18
   },
 
   linkText: {
     color: colors.primaryYellow,
-    fontSize: 20
+    fontSize: 18
   },
 
   hintText: {
