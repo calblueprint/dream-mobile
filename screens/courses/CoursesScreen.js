@@ -62,7 +62,13 @@ class CoursesScreen extends React.Component {
 
   _renderCourses() {
     const { navigate } = this.props.navigation;
-    const courses = this.props.courses.map((course, i) => (
+
+    var courses_arr = new Array();
+    for (const key in this.props.courses) {
+      courses_arr.push(this.props.courses[key]);
+    }
+
+    const courses = courses_arr.map((course, i) => (
       <CourseCard key={i}
         index={i}
         course_id={course.id}
