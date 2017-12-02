@@ -31,7 +31,22 @@ class LoginScreen extends React.Component {
 
   render() {
     return (
-      <LoginForm />
+      <TextInput
+        placeholder='Email'
+        autoCapitalize='none'
+        onChangeText={(text) => this.setState({email: text})}/>
+      <TextInput
+        placeholder='Password'
+        onChangeText={(text) => this.setState({password: text})}
+        secureTextEntry/>
+      <Button
+        onPress={this._attemptLogin.bind(this)}
+        title='Login'
+      />
+      <Button
+        onPress={() => this.props.navigation.navigate('SignUp')}
+        title='Sign Up'
+      />
     );
   }
 }
