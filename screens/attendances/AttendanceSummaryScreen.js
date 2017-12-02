@@ -9,7 +9,7 @@ import { textStyles } from '../../styles/textStyles';
 import StyledButton from '../../components/Button/Button';
 import { APIRoutes } from '../../config/routes';
 import settings from '../../config/settings';
-import { putRequestNoCatch } from '../../lib/requests';
+import { postRequestNoCatch, putRequestNoCatch } from '../../lib/requests';
 import Collapse from '../../components/Collapse';
 import SimpleModal from '../../components/SimpleModal';
 import colors from '../../styles/colors';
@@ -215,6 +215,13 @@ class AttendanceSummaryScreen extends React.Component {
     * Renders date, course title, attendance summary, sync button, and modal
     */
   _renderLoadedView() {
+    const pressSync = () => {
+      this.props.syncAttendances(this.props.attendances, this.props.courseId, this.props.date);
+      if (!this.props.isConnected) {
+        this.props.saveAttendancesOffline(this.props.attendances, this.props.courseId, this.props.date);
+        this.props.openModal();
+      }
+    }
     return(
       <View style={commonStyles.containerStatic}>
         <ScrollView>
@@ -227,8 +234,7 @@ class AttendanceSummaryScreen extends React.Component {
           </View>
         </ScrollView>
         <StyledButton
-          onPress={() => this.props.syncAttendances(
-            this.props.attendances, this.props.courseId, this.props.date)}
+          onPress={pressSync.bind(this)}
           text='Sync'
           primaryButtonLarge
         >
@@ -293,7 +299,7 @@ const styles = StyleSheet.create({
   * to store regardless of success/failiure.
   */
 syncAttendances = (attendances, courseId, date) => {
-  return (dispatch) => {
+  function thunk(dispatch) {
     dispatch(actions.requestUpdateAttendances(courseId, date));
     const attendancePromises = attendances.map((attendance, i) => {
       return updateAttendance(attendance, i);
@@ -307,6 +313,12 @@ syncAttendances = (attendances, courseId, date) => {
       dispatch(actions.openModal());
     });
   }
+
+  // Intercept action if offline
+  thunk.interceptInOffline = true;
+  thunk.meta = { retry: true };
+  console.log(thunk)
+  return thunk;
 }
 
 /**
@@ -322,8 +334,10 @@ updateAttendance = (attendance, index) => {
   }
   const params = attendance
 
-  if (attendance.isChanged) {
-    return putRequestNoCatch(APIRoutes.attendancePath(), successFunc, errorFunc, params);
+  if (!attendance.id) {
+    postRequestNoCatch(APIRoutes.attendancePath(), successFunc, errorFunc, params);
+  } else if (attendance.isChanged) {
+    putRequestNoCatch(APIRoutes.attendancePath(), successFunc, errorFunc, params);
   } else {
     return attendance;
   }
@@ -338,13 +352,17 @@ const mapStateToProps = (state, props) => {
     isLoading: state.isLoading.value,
     isSynced: course.attendances[date].isSynced,
     isModalOpen: state.modal.isOpen,
+    isConnected: state.network.isConnected,
   };
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
     syncAttendances: (attendances, courseId, date) => dispatch(syncAttendances(attendances, courseId, date)),
+    openModal: () => dispatch(actions.openModal()),
     closeModal: () => dispatch(actions.closeModal()),
+    saveAttendancesOffline: (attendances, courseId, date) => dispatch(actions.receiveUpdateAttendancesError(
+      attendances, courseId, date)),
   }
 }
 

@@ -3,6 +3,7 @@ import { students } from './students';
 import { attendances } from './attendances';
 import _ from 'lodash';
 import { mergeDeep } from '../lib/helpers';
+import { offlineActionTypes } from 'react-native-offline';
 
 /**
   * Handles all courses state
@@ -16,6 +17,9 @@ import { mergeDeep } from '../lib/helpers';
   */
 export const courses = (state = {}, action) => {
   switch (action.type) {
+    case offlineActionTypes.FETCH_OFFLINE_MODE:
+      console.log(action)
+      return state;
     case types.RECEIVE_COURSES_SUCCESS:
       return mergeDeep({}, state, action.courses);
     case types.RECEIVE_STUDENTS_SUCCESS:
