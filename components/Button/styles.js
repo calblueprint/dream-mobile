@@ -8,7 +8,7 @@ const buttonStyles = StyleSheet.create({
     borderColor: colors.primaryYellow,
     marginRight: 16, 
     marginLeft: 16,
-    marginTop: 24,
+    marginTop: 16,
     marginBottom: 8,
   },
 
@@ -48,6 +48,11 @@ const buttonStyles = StyleSheet.create({
     height: 40,
     marginRight: 8, 
     marginBottom: 8,
+  },
+
+  linkButton: {
+    backgroundColor: 'transparent',
+    borderColor: 'transparent',
   },
 
   secondaryButtonLarge: {

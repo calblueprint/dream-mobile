@@ -69,5 +69,14 @@ export default class StyledButton extends React.Component {
 			  	>{this.props.text}</Button>
 			);
 		}
+		if (this.props.linkButton) {
+			return (
+				<Button
+				  onPress={this.props.onPress}
+				  style={ buttonStyles.linkButton } 
+				  textStyle={ textStyles.linkText }
+			  	>{this.props.text}</Button>
+			);
+		}
 	}
 };

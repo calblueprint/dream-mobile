@@ -47,6 +47,7 @@ class CoursesScreen extends React.Component {
     />
     return this.props.courses.map((course, i) => (
       <CourseCard key={i}
+        index={i}
         course_id={course.id}
         title={course.title}
         onSelectCourse={this._handleSelectCourse}

@@ -23,6 +23,10 @@ const commonStyles = StyleSheet.create({
     marginTop: '65%',
     marginBottom: '65%',
     alignSelf: 'center',
+  },
+  divider: {
+    borderBottomWidth: 1, 
+    borderBottomColor: '#E6E6E6'
   }
 });
 
