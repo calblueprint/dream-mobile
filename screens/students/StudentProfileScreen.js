@@ -5,6 +5,7 @@ import { commonStyles } from '../../styles/styles';
 import { colors } from '../../styles/colors';
 import { getRequest, deleteRequest } from '../../lib/requests';
 import { APIRoutes } from '../../config/routes';
+import { formViewStyles } from '../../styles/formViewStyles';
 import { standardError } from '../../lib/alerts';
 
 class StudentProfileScreen extends React.Component {
@@ -41,75 +42,96 @@ class StudentProfileScreen extends React.Component {
     const { navigate } = this.props.navigation;
     return(
       <View>
-        <Text style={textStyles.titleLarge}>
-        {this.state.student.first_name} {this.state.student.last_name}
-        </Text>
+        <View style={formViewStyles.div_1}>
+          <View style={formViewStyles.div_2}>
+            <Text style={textStyles.titleLarge}>
+            {this.state.student.first_name} {this.state.student.last_name}
+            </Text>
+          </View>
 
-        <Text style={textStyles.titleSmall}>
-        DREAM ID
-        </Text>
-        <Text style={textStyles.body}>
-        {this.state.student.dream_id}
-        </Text>
+          <View style={formViewStyles.div_2}>
+            <Text style={textStyles.titleSmall}>
+            Dream ID
+            </Text>
+            <Text style={textStyles.body}>
+            {this.state.student.dream_id}
+            </Text>
+          </View>
 
-        <Text style={textStyles.titleSmall}>
-        Birthday
-        </Text>
-        <Text style={textStyles.body}>
-        {this.state.student.birthday}
-        </Text>
+          <View style={formViewStyles.div_2}>
+            <Text style={textStyles.titleSmall}>
+            Birthday
+            </Text>
+            <Text style={textStyles.body}>
+            {this.state.student.birthday}
+            </Text>
+          </View>
 
-        <Text style={textStyles.titleSmall}>
-        Year
-        </Text>
-        <Text style={textStyles.body}>
-        {this.state.student.year}
-        </Text>
+          <View style={formViewStyles.div_2}>  
+            <Text style={textStyles.titleSmall}>
+            Year
+            </Text>
+            <Text style={textStyles.body}>
+            {this.state.student.year}
+            </Text>
+          </View>
 
-        <Text style={textStyles.titleSmall}>
-        Address
-        </Text>
-        <Text style={textStyles.body}>
-        {this.state.student.address}
-        </Text>
+          <View style={formViewStyles.div_2}>
+            <Text style={textStyles.titleSmall}>
+            Address
+            </Text>
+            <Text style={textStyles.body}>
+            {this.state.student.address}
+            </Text>
+          </View>
 
-        <Text style={textStyles.titleSmall}>
-        Nickname
-        </Text>
-        <Text style={textStyles.body}>
-        {this.state.student.nickname}
-        </Text>
+          <View style={formViewStyles.div_2}>
+            <Text style={textStyles.titleSmall}>
+            Nickname
+            </Text>
+            <Text style={textStyles.body}>
+            {this.state.student.nickname}
+            </Text>
+          </View>
 
-        <Text style={textStyles.titleSmall}>
-        Primary Contact
-        </Text>
-        <Text style={textStyles.body}>
-        {this.state.student.primary_contact}
-        </Text>
+          <View style={formViewStyles.div_2}>
+            <Text style={textStyles.titleSmall}>
+            Primary Contact
+            </Text>
+            <Text style={textStyles.body}>
+            {this.state.student.primary_contact}
+            </Text>
+          </View>
 
-        <Text style={textStyles.titleSmall}>
-        Primary Contact Relationship
-        </Text>
-        <Text style={textStyles.body}>
-        {this.state.student.primary_contact_relationship}
-        </Text>
+          <View style={formViewStyles.div_2}>
+            <Text style={textStyles.titleSmall}>
+            Primary Contact Relationship
+            </Text>
+            <Text style={textStyles.body}>
+            {this.state.student.primary_contact_relationship}
+            </Text>
+          </View>
 
-        <Text style={textStyles.titleSmall}>
-        Primary Contact Phone
-        </Text>
-        <Text style={textStyles.body}>
-        {this.state.student.primary_contact_phone}
-        </Text>
+          <View style={formViewStyles.div_2}>
+            <Text style={textStyles.titleSmall}>
+            Primary Contact Phone
+            </Text>
+            <Text style={textStyles.body}>
+            {this.state.student.primary_contact_phone}
+            </Text>
+          </View>
 
-        <Text style={textStyles.titleSmall}>
-        Primary Contact Phone 2
-        </Text>
-        <Text style={textStyles.body}>
-        {this.state.student.primary_contact_phone2}
-        </Text>
-
+          <View style={formViewStyles.div_2}>
+            <Text style={textStyles.titleSmall}>
+            Primary Contact Phone 2
+            </Text>
+            <Text style={textStyles.body}>
+            {this.state.student.primary_contact_phone2}
+            </Text>
+          </View>
+        </View>
       </View>
-    )
+    );
   }
 
   render() {
@@ -126,10 +148,8 @@ class StudentProfileScreen extends React.Component {
       student = this._renderStudent()
     }
     return (
-      <ScrollView>
-        <View>
-          { student }
-        </View>
+      <ScrollView style={formViewStyles.base}>
+        { student }
       </ScrollView>
     );
 

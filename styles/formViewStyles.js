@@ -9,6 +9,7 @@ const formViewStyles = StyleSheet.create({
 	}, 
   div_1: {
 		marginLeft: 24,
+		marginRight: 24,
 		marginTop: 24,
 	},
   div_2: {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, Button, ScrollView, Text, View } from 'react-native';
+import { Image, Button, ScrollView, Text, View, TouchableOpacity } from 'react-native';
 
 import { connect } from 'react-redux';
 import actions from '../../actions';
@@ -10,8 +10,24 @@ import { APIRoutes } from '../../config/routes';
 import { standardError } from '../../lib/alerts';
 import { attendanceDate } from '../../lib/date';
 import CourseCard from '../../components/CourseCard/CourseCard';
+import StyledButton from '../../components/Button/Button';
+import { FontAwesome, MaterialCommunityIcons } from '@expo/vector-icons';
+import colors from '../../styles/colors';
 
 class CoursesScreen extends React.Component {
+
+  static navigationOptions = ({ navigation }) => {
+    const { params = {} } = navigation.state;
+    return {
+        // headerRight: <Button title="Enroll Student" onPress={() => params.handleCreate()} />
+        headerRight: (
+          <TouchableOpacity onPress={() => params.handleCreate()}>
+            <View style={{marginRight: 8}}><MaterialCommunityIcons name="book-plus" size={30} color={colors.iconDark} /></View>
+          </TouchableOpacity>
+        )
+    };
+  };
+
   constructor(props) {
     super(props);
     this._handleSelectCourse = this._handleSelectCourse.bind(this);
@@ -21,6 +37,12 @@ class CoursesScreen extends React.Component {
 
   componentDidMount() {
     this.props.fetchCourses(this.props.teacher.id);
+
+    const _createCourse = () => {
+       this.props.navigation.navigate('EditCourse', {refreshCourses: this.props.fetchCourses, newCourse: true, sessions: []})}
+          
+
+    this.props.navigation.setParams({ handleCreate: _createCourse });
   }
 
   _handleSelectCourse(course_id) {
@@ -43,6 +65,7 @@ class CoursesScreen extends React.Component {
     const { navigate } = this.props.navigation;
     const courses = this.props.courses.map((course, i) => (
       <CourseCard key={i}
+        index={i}
         course_id={course.id}
         title={course.title}
         onSelectCourse={this._handleSelectCourse}
@@ -50,12 +73,13 @@ class CoursesScreen extends React.Component {
       )
     );
     return (
-      <View>
-        <Button
-          onPress={() => navigate('EditCourse', {refreshCourses: this.props.fetchCourses, newCourse: true, sessions: []})}
-          title="Create Course"
-        />
+      <View style={{marginBottom: 24}}>
         { courses }
+        <StyledButton
+          onPress={() => navigate('EditCourse', {refreshCourses: this.props.fetchCourses, newCourse: true, sessions: []})}
+          text='Create Course'
+          primaryButtonLarge>
+        </StyledButton>
       </View>
     );
   }
@@ -74,7 +98,7 @@ class CoursesScreen extends React.Component {
     }
     return (
       <ScrollView>
-        <View>
+        <View style={{backgroundColor: '#f5f5f6'}}>
           { courses }
         </View>
       </ScrollView>

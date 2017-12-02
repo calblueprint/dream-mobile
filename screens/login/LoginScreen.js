@@ -2,15 +2,23 @@ import React from 'react';
 
 import { connect } from 'react-redux';
 import actions from '../../actions';
-
-import { Button, ScrollView, Text, TextInput, View } from 'react-native';
-import { styles } from '../../styles/styles';
+import StyledButton from '../../components/Button/Button';
+import { Button, ScrollView, Text, TextInput, View, Image, StyleSheet } from 'react-native';
+// import { styles } from '../../styles/styles';
 import { postRequest } from '../../lib/requests';
 import { APIRoutes } from '../../config/routes';
 import { standardError } from '../../lib/alerts';
+import { textStyles } from '../../styles/textStyles';
+// import { Form, t } from '../../components/Form/Form';
+// import { formStyles } from '../Form/styles.js';
 
 
 class LoginScreen extends React.Component {
+
+  static navigationOptions = {
+    header: null,
+  };
+
   constructor(props) {
     super(props);
     this.state = {
@@ -31,25 +39,34 @@ class LoginScreen extends React.Component {
 
   render() {
     return (
-      <View>
-        <TextInput
-          placeholder='Email'
-          autoCapitalize='none'
-          onChangeText={(text) => this.setState({email: text})}/>
-        <TextInput
-          placeholder='Password'
-          onChangeText={(text) => this.setState({password: text})}
-          secureTextEntry/>
-        <Button
-          onPress={this._attemptLogin.bind(this)}
-          title='Login'
-        />
-        <Button
-          onPress={() => this.props.navigation.navigate('SignUp')}
-          title='Sign Up'
-        />
+      <View style={{flex: 1, alignItems: 'center'}}>
+        <Image 
+        style={styles.bg}
+        source={require('../../img/log_in.png')}>
+          <View style={styles.container}>
+            <Text style={textStyles.titleSmallLight}>Email</Text>
+            <TextInput style={styles.textInput}
+              autoCapitalize='none'
+              onChangeText={(text) => this.setState({email: text})}/>
+            <Text style={textStyles.titleSmallLight}>Password</Text>
+            <TextInput style={styles.textInput}
+              onChangeText={(text) => this.setState({password: text})}
+              secureTextEntry/>
+          </View>
+          <StyledButton
+            onPress={this._attemptLogin.bind(this)}
+            text='Login'
+            whiteButtonLarge>
+          </StyledButton>
 
+          <StyledButton
+            onPress={() => this.props.navigation.navigate('SignUp')}
+            text='Sign Up'
+            secondaryButtonLarge>
+          </StyledButton>
+        </Image>
       </View>
+
     );
   }
 }
@@ -77,5 +94,28 @@ const mapDispatchToProps = (dispatch) => {
     fetchTeacher: (params, navigation) => dispatch(fetchTeacher(params, navigation)),
   }
 }
+
+const styles = StyleSheet.create({
+  bg: {
+    backgroundColor:'transparent',
+    resizeMode: 'cover',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  textInput: {
+    height: 40,
+    marginBottom: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: '#fff',
+    color: '#fff'
+
+  }, 
+  container: {
+    marginRight: 40, 
+    marginLeft: 40, 
+    marginTop: 180,
+    alignSelf: 'stretch'
+  }
+});
 
 export default connect(null, mapDispatchToProps)(LoginScreen);
