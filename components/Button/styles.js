@@ -8,7 +8,7 @@ const buttonStyles = StyleSheet.create({
     borderColor: colors.primaryYellow,
     marginRight: 16,
     marginLeft: 16,
-    marginTop: 24,
+    marginTop: 16,
     marginBottom: 8,
   },
 
@@ -36,6 +36,36 @@ const buttonStyles = StyleSheet.create({
     marginLeft: 8,
     marginBottom: 8,
   },
+
+  whiteButtonLarge: {
+    backgroundColor: 'rgba(255, 255, 255, 0.9)',
+    borderColor: 'rgba(255, 255, 255, 0.9)',
+    marginRight: 32, 
+    marginLeft: 32,
+    marginTop: 32,
+    marginBottom: 24,
+  },
+
+  clearButtonSmall: {
+    backgroundColor: 'transparent',
+    borderColor: '#fff',
+    width: 160,
+    height: 40,
+    marginRight: 8, 
+    marginBottom: 8,
+  },
+
+  linkButton: {
+    backgroundColor: 'transparent',
+    borderColor: 'transparent',
+  },
+
+  secondaryButtonLarge: {
+    backgroundColor: 'rgba(255, 255, 255, 0)',
+    borderColor: '#fff',
+    marginRight: 32, 
+    marginLeft: 32,
+  }
 });
 
 export { buttonStyles };

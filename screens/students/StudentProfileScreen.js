@@ -5,6 +5,7 @@ import { commonStyles } from '../../styles/styles';
 import { colors } from '../../styles/colors';
 import { getRequest, deleteRequest } from '../../lib/requests';
 import { APIRoutes } from '../../config/routes';
+import { formViewStyles } from '../../styles/formViewStyles';
 import { standardError } from '../../lib/alerts';
 
 class StudentProfileScreen extends React.Component {
@@ -123,9 +124,8 @@ class StudentProfileScreen extends React.Component {
           onPress={() => this._deleteStudent(this.state.studentId)}
           title='Delete'
         />
-
       </View>
-    )
+    );
   }
 
   render() {
@@ -142,10 +142,8 @@ class StudentProfileScreen extends React.Component {
       student = this._renderStudent()
     }
     return (
-      <ScrollView>
-        <View>
-          { student }
-        </View>
+      <ScrollView style={formViewStyles.base}>
+        { student }
       </ScrollView>
     );
 
