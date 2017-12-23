@@ -14,6 +14,7 @@ class StudentProfileScreen extends React.Component {
     super(props);
     this._renderStudent = this._renderStudent.bind(this);
     this._fetchStudent = this._fetchStudent.bind(this);
+    this._deleteStudent = this._deleteStudent.bind(this);
 
     this.state = {
       student : { },
@@ -31,105 +32,98 @@ class StudentProfileScreen extends React.Component {
     const successFunc = (responseData) => {
       this.setState({ student: responseData, isLoading: false });
     }
-    const errorFunc = (error) => {
-      // TODO: Display correct toastr error msg
-      console.error(error);
-    }
+
     getRequest(APIRoutes.getStudentPath(studentId), successFunc, standardError);
+  }
+
+  _deleteStudent(studentId) {
+    const successFunc = (responseData) => {
+      this.props.navigation.navigate('Courses');
+
+    }
+    deleteRequest(APIRoutes.getStudentPath(studentId), successFunc, standardError);
   }
 
   _renderStudent() {
     const { navigate } = this.props.navigation;
     return(
       <View>
-        <View style={formViewStyles.div_1}>
-          <View style={formViewStyles.div_2}>
-            <Text style={textStyles.titleLarge}>
-            {this.state.student.first_name} {this.state.student.last_name}
-            </Text>
-          </View>
+        <Text style={textStyles.titleLarge}>
+        {this.state.student.first_name} {this.state.student.last_name}
+        </Text>
 
-          <View style={formViewStyles.div_2}>
-            <Text style={textStyles.titleSmall}>
-            Dream ID
-            </Text>
-            <Text style={textStyles.body}>
-            {this.state.student.dream_id}
-            </Text>
-          </View>
+        <Text style={textStyles.titleSmall}>
+        DREAM ID
+        </Text>
+        <Text style={textStyles.body}>
+        {this.state.student.dream_id}
+        </Text>
 
-          <View style={formViewStyles.div_2}>
-            <Text style={textStyles.titleSmall}>
-            Birthday
-            </Text>
-            <Text style={textStyles.body}>
-            {this.state.student.birthday}
-            </Text>
-          </View>
+        <Text style={textStyles.titleSmall}>
+        Birthday
+        </Text>
+        <Text style={textStyles.body}>
+        {this.state.student.birthday}
+        </Text>
 
-          <View style={formViewStyles.div_2}>  
-            <Text style={textStyles.titleSmall}>
-            Year
-            </Text>
-            <Text style={textStyles.body}>
-            {this.state.student.year}
-            </Text>
-          </View>
+        <Text style={textStyles.titleSmall}>
+        Year
+        </Text>
+        <Text style={textStyles.body}>
+        {this.state.student.year}
+        </Text>
 
-          <View style={formViewStyles.div_2}>
-            <Text style={textStyles.titleSmall}>
-            Address
-            </Text>
-            <Text style={textStyles.body}>
-            {this.state.student.address}
-            </Text>
-          </View>
+        <Text style={textStyles.titleSmall}>
+        Address
+        </Text>
+        <Text style={textStyles.body}>
+        {this.state.student.address}
+        </Text>
 
-          <View style={formViewStyles.div_2}>
-            <Text style={textStyles.titleSmall}>
-            Nickname
-            </Text>
-            <Text style={textStyles.body}>
-            {this.state.student.nickname}
-            </Text>
-          </View>
+        <Text style={textStyles.titleSmall}>
+        Nickname
+        </Text>
+        <Text style={textStyles.body}>
+        {this.state.student.nickname}
+        </Text>
 
-          <View style={formViewStyles.div_2}>
-            <Text style={textStyles.titleSmall}>
-            Primary Contact
-            </Text>
-            <Text style={textStyles.body}>
-            {this.state.student.primary_contact}
-            </Text>
-          </View>
+        <Text style={textStyles.titleSmall}>
+        Primary Contact
+        </Text>
+        <Text style={textStyles.body}>
+        {this.state.student.primary_contact}
+        </Text>
 
-          <View style={formViewStyles.div_2}>
-            <Text style={textStyles.titleSmall}>
-            Primary Contact Relationship
-            </Text>
-            <Text style={textStyles.body}>
-            {this.state.student.primary_contact_relationship}
-            </Text>
-          </View>
+        <Text style={textStyles.titleSmall}>
+        Primary Contact Relationship
+        </Text>
+        <Text style={textStyles.body}>
+        {this.state.student.primary_contact_relationship}
+        </Text>
 
-          <View style={formViewStyles.div_2}>
-            <Text style={textStyles.titleSmall}>
-            Primary Contact Phone
-            </Text>
-            <Text style={textStyles.body}>
-            {this.state.student.primary_contact_phone}
-            </Text>
-          </View>
+        <Text style={textStyles.titleSmall}>
+        Primary Contact Phone
+        </Text>
+        <Text style={textStyles.body}>
+        {this.state.student.primary_contact_phone}
+        </Text>
 
-          <View style={formViewStyles.div_2}>
-            <Text style={textStyles.titleSmall}>
-            Primary Contact Phone 2
-            </Text>
-            <Text style={textStyles.body}>
-            {this.state.student.primary_contact_phone2}
-            </Text>
-          </View>
-        </View>
+        <Text style={textStyles.titleSmall}>
+        Primary Contact Phone 2
+        </Text>
+        <Text style={textStyles.body}>
+        {this.state.student.primary_contact_phone2}
+        </Text>
+
+        <Button
+          onPress={() => navigate('CreateStudent', {refreshStudent: this._fetchStudent(this.state.studentId), newStudent: false, student: this.state.student})}
+          title='Edit'
+        />
+
+        <Button
+          onPress={() => this._deleteStudent(this.state.studentId)}
+          title='Delete'
+        />
       </View>
     );
   }
