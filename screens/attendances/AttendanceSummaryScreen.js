@@ -309,6 +309,7 @@ syncAttendances = (attendances, courseId, date) => {
       dispatch(actions.receiveUpdateAttendancesSuccess(responseData, courseId, date));
       dispatch(actions.openModal());
     }).catch((error) => {
+      console.log(error);
       dispatch(actions.receiveUpdateAttendancesError(attendances, courseId, date));
       dispatch(actions.openModal());
     });
@@ -316,7 +317,7 @@ syncAttendances = (attendances, courseId, date) => {
 
   // Intercept action if offline
   thunk.interceptInOffline = true;
-  thunk.meta = { retry: true };
+  // thunk.meta = { retry: true };
   console.log(thunk)
   return thunk;
 }

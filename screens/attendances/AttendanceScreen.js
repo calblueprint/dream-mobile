@@ -51,7 +51,7 @@ class AttendanceScreen extends React.Component {
     * Update attendances after dispatching a network call for them
     */
   componentWillReceiveProps(nextProps) {
-    if (nextProps.attendances !== this.props.attendances) {
+    if (nextProps.attendances !== this.props.attendances || this.state.attendances == []) {
       this.setState({ attendances: nextProps.attendances });
     }
   }

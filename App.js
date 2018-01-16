@@ -14,7 +14,7 @@ export default class App extends React.Component {
   render() {
     const Home = withNetworkConnectivity({
       withRedux: true,
-      // pingServerUrl: 'woodedoo.com'
+      pingServerUrl: 'woodedoo.com'
     })(HomeStack);
 
     return (
