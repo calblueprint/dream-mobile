@@ -24,6 +24,7 @@
     "@types/react-native-modalbox": "^1.4.3",
     "apsl-react-native-button": "^3.1.0",
     "expo": "^21.0.0",
+    "lodash": "^4.17.4",
     "moment": "^2.19.1",
     "prop-types": "^15.6.0",
     "query-string": "^5.0.0",
@@ -38,11 +39,13 @@
     "react-native-modal-datetime-picker": "^4.13.0",
     "react-native-modal-picker": "0.0.16",
     "react-native-modalbox": "^1.4.2",
+    "react-native-offline": "^3.4.1",
     "react-native-picker-dropdown": "0.0.1",
     "react-native-vector-icons": "^4.4.2",
     "react-navigation": "^1.0.0-beta.13",
     "react-redux": "^5.0.6",
     "redux-persist": "^5.4.0",
+    "redux-persist-transform-immutable": "^4.3.0",
     "redux-thunk": "^2.2.0",
     "tcomb-form-native": "^0.6.11"
   }

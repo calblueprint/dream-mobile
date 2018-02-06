@@ -1,4 +1,5 @@
-import types from '../lib/actionTypes'
+import types from '../lib/actionTypes';
+import { offlineActionTypes } from 'react-native-offline';
 
 export const isLoading = (state = {}, action) => {
   switch (action.type) {
@@ -8,6 +9,7 @@ export const isLoading = (state = {}, action) => {
     case types.REQUEST_ATTENDANCES:
     case types.REQUEST_UPDATE_ATTENDANCES:
       return { value: true }
+    case offlineActionTypes.FETCH_OFFLINE_MODE:
     case types.RECEIVE_TEACHER_SUCCESS:
     case types.RECEIVE_COURSES_SUCCESS:
     case types.RECEIVE_ATTENDANCES_SUCCESS:

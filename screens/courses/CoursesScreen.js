@@ -1,5 +1,7 @@
 import React from 'react';
 import { Image, Button, ScrollView, Text, View, TouchableOpacity } from 'react-native';
+import _ from 'lodash';
+
 
 import { connect } from 'react-redux';
 import actions from '../../actions';
@@ -63,12 +65,7 @@ class CoursesScreen extends React.Component {
   _renderCourses() {
     const { navigate } = this.props.navigation;
 
-    var courses_arr = new Array();
-    for (const key in this.props.courses) {
-      courses_arr.push(this.props.courses[key]);
-    }
-
-    const courses = courses_arr.map((course, i) => (
+    const courses = _.map(this.props.courses, (course, i) => (
       <CourseCard key={i}
         index={i}
         course_id={course.id}
@@ -113,7 +110,7 @@ class CoursesScreen extends React.Component {
 }
 
 const fetchCourses = (teacherId) => {
-  return (dispatch) => {
+  function thunk(dispatch) {
     dispatch(actions.requestCourses());
     return getRequest(
       APIRoutes.getTeacherCoursesPath(teacherId),
@@ -124,6 +121,10 @@ const fetchCourses = (teacherId) => {
       }
     );
   }
+
+  // Intercept action if offline
+  thunk.interceptInOffline = true;
+  return thunk;
 }
 
 const mapStateToProps = (state) => {
