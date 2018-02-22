@@ -147,7 +147,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    fetchCourses: (teacherId) => dispatch(fetchCourses(teacherId)),
+    fetchCourses: (teacher) => dispatch(fetchCourses(teacher)),
   }
 }
 
