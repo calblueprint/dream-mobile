@@ -38,7 +38,8 @@ class CoursesScreen extends React.Component {
     this.props.fetchCourses(this.props.teacher);
 
     const _createCourse = () => {
-       this.props.navigation.navigate('EditCourse', {refreshCourses: this.props.fetchCourses, newCourse: true, sessions: []})}
+       this.props.navigation.navigate('EditCourse', {refreshCourses: this.props.fetchCourses, newCourse: true, 
+        sessions: [], teacher: this.props.teacher})}
 
 
     this.props.navigation.setParams({ handleCreate: _createCourse });
@@ -81,7 +82,8 @@ class CoursesScreen extends React.Component {
       <View style={{marginBottom: 24}}>
         { courses }
         <StyledButton
-          onPress={() => navigate('EditCourse', {refreshCourses: this.props.fetchCourses, newCourse: true, sessions: []})}
+          onPress={() => navigate('EditCourse', {refreshCourses: this.props.fetchCourses, newCourse: true, 
+            sessions: [], teacher: this.props.teacher})}
           text='Create Course'
           primaryButtonLarge>
         </StyledButton>
