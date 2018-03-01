@@ -17,9 +17,12 @@ class SignUpScreen extends React.Component {
 
   _attemptSignUp(params) {
     const successFunc = (responseData) => {
+      console.log(responseData)
+      console.log(this.state)
+      console.log(teacher_params)
       this.setState({teacher: responseData});
       LocalStorage.storeUser(responseData);
-      this.props.navigation.navigate('Courses');
+      this.props.navigation.navigate('Courses', teacher_params);
     }
     const errorFunc = (error) => {
       console.error(error)
@@ -28,6 +31,8 @@ class SignUpScreen extends React.Component {
     const teacher_params = {
       teacher: params
     }
+    console.log(params)
+    console.log(teacher_params)
     postRequest(APIRoutes.signupPath(), successFunc, errorFunc, teacher_params);
   }
 
