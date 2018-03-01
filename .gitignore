@@ -16,6 +16,7 @@ DerivedData
 *.xccheckout
 *.xcscmblueprint
 package-lock.json
+.eslintrc.json
 
 # Android Studio
 **/.idea/libraries
