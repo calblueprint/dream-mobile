@@ -12,6 +12,7 @@ import { attendanceDate } from '../../lib/date';
 import CourseCard from '../../components/CourseCard/CourseCard';
 import StyledButton from '../../components/Button/Button';
 import { FontAwesome, MaterialCommunityIcons } from '@expo/vector-icons';
+import Toaster, { ToastStyles } from 'react-native-toaster'
 import colors from '../../styles/colors';
 
 class CoursesScreen extends React.Component {
@@ -32,6 +33,20 @@ class CoursesScreen extends React.Component {
     this._handleSelectCourse = this._handleSelectCourse.bind(this);
     this._handleTakeAttendance = this._handleTakeAttendance.bind(this);
     this._renderCourses = this._renderCourses.bind(this);
+
+    this.state = { message: null }
+
+    const messages = [
+      { text: 'FYI' },
+      { text: 'Hooray!', styles: ToastStyles.success },
+      { text: 'Eek', styles: ToastStyles.warning },
+      { text: 'Oh noe!', styles: ToastStyles.error }
+    ]
+
+    // Send each message 1 second apart
+    messages.forEach((message, i) => {
+      setTimeout(() => this.setState({ message }), i * 1000)
+    })
   }
 
   componentDidMount() {
@@ -104,6 +119,7 @@ class CoursesScreen extends React.Component {
     return (
       <ScrollView>
         <View style={{backgroundColor: '#f5f5f6'}}>
+          <Toaster message={this.state.message} />
           { courses }
         </View>
       </ScrollView>
@@ -128,6 +144,7 @@ const fetchCourses = (teacherId) => {
 
 const mapStateToProps = (state) => {
   return {
+    online: state.offline.online,
     teacher: state.teacher,
     courses: state.courses,
     isLoading: state.isLoading.value,
