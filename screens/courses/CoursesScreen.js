@@ -104,13 +104,18 @@ class CoursesScreen extends React.Component {
     } else {
       courses = this._renderCourses();
     }
-    var message = null;
-    if(this.props.online) {
-      message = {text: "You are connected!", styles: ToastStyles.success, height: 80};
-    }else {
-      message = {text: "You are currently offline. Certain features won't be accessible", styles: ToastStyles.warning, height: 80};
+    console.log("Re-rendered");
+    if (this.props != null) {
+      console.log("prop:");
+      console.log(this.props.online);
     }
 
+    let message = null;
+    if (this.props.online) {
+      message = {text: "You are connected", styles: ToastStyles.success, height: 80};
+    } else {
+      message = {text: "You are offline", styles: ToastStyles.error, height: 80};
+    }
     return (
       <ScrollView>
         <View style={{backgroundColor: '#f5f5f6'}}>

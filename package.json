@@ -43,6 +43,7 @@
     "react-native-modal-picker": "0.0.16",
     "react-native-modalbox": "^1.4.2",
     "react-native-picker-dropdown": "0.0.1",
+    "react-native-toaster": "^1.2.0",
     "react-native-vector-icons": "^4.4.2",
     "react-navigation": "^1.0.0-beta.13",
     "react-redux": "^5.0.6",
