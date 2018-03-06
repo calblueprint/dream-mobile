@@ -20,7 +20,7 @@ class AttendanceScreen extends React.Component {
     this.state = {
       // Keep state for attendances since they shouldn't be updated to store
       // until user has reviewed the AttendanceSummaryScreen and submitted
-      attendances: this.props.attendances ? this.props.attendances : [],
+      attendances: this.props.attendances ? JSON.parse(JSON.stringify(this.props.attendances)) : [],
       modalIndex: -1,
       modalComment: null,
     }

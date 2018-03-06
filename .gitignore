@@ -40,6 +40,9 @@ package-lock.json
 ReactAndroid-temp.aar
 *.apk
 
+
+/config/settings.js
+
 # Tools
 jarjar-rules.txt
 

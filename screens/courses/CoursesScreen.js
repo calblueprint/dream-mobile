@@ -34,19 +34,7 @@ class CoursesScreen extends React.Component {
     this._handleTakeAttendance = this._handleTakeAttendance.bind(this);
     this._renderCourses = this._renderCourses.bind(this);
 
-    this.state = { message: null }
 
-    const messages = [
-      { text: 'FYI' },
-      { text: 'Hooray!', styles: ToastStyles.success },
-      { text: 'Eek', styles: ToastStyles.warning },
-      { text: 'Oh noe!', styles: ToastStyles.error }
-    ]
-
-    // Send each message 1 second apart
-    messages.forEach((message, i) => {
-      setTimeout(() => this.setState({ message }), i * 1000)
-    })
   }
 
   componentDidMount() {
@@ -116,10 +104,17 @@ class CoursesScreen extends React.Component {
     } else {
       courses = this._renderCourses();
     }
+    var message = null;
+    if(this.props.online) {
+      message = {text: "You are connected!", styles: ToastStyles.success, height: 80};
+    }else {
+      message = {text: "You are currently offline. Certain features won't be accessible", styles: ToastStyles.warning, height: 80};
+    }
+
     return (
       <ScrollView>
         <View style={{backgroundColor: '#f5f5f6'}}>
-          <Toaster message={this.state.message} />
+          <Toaster message={message} />
           { courses }
         </View>
       </ScrollView>
