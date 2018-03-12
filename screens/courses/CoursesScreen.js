@@ -11,6 +11,7 @@ import { standardError } from '../../lib/alerts';
 import { attendanceDate } from '../../lib/date';
 import CourseCard from '../../components/CourseCard/CourseCard';
 import StyledButton from '../../components/Button/Button';
+import { putRequestNoCatch } from '../../lib/requests';
 import { FontAwesome, MaterialCommunityIcons } from '@expo/vector-icons';
 import Toaster, { ToastStyles } from 'react-native-toaster'
 import colors from '../../styles/colors';
@@ -33,16 +34,16 @@ class CoursesScreen extends React.Component {
     this._handleSelectCourse = this._handleSelectCourse.bind(this);
     this._handleTakeAttendance = this._handleTakeAttendance.bind(this);
     this._renderCourses = this._renderCourses.bind(this);
-
-
   }
 
   componentDidMount() {
+    // Attempt to Sync Unsynced attendances
+    for (var courseIndex in this.props.courses) {
+      this.syncAllAttendances(this.props.courses[courseIndex]);
+    }
     this.props.fetchCourses(this.props.teacher.id);
-
     const _createCourse = () => {
        this.props.navigation.navigate('EditCourse', {refreshCourses: this.props.fetchCourses, newCourse: true, sessions: []})}
-
 
     this.props.navigation.setParams({ handleCreate: _createCourse });
   }
@@ -61,6 +62,14 @@ class CoursesScreen extends React.Component {
       courseTitle: title,
       date: date,
     });
+  }
+
+  syncAllAttendances(course) {
+    for(var date in course.attendances) {
+      if(!course.attendances[date]["isSynced"]) {
+        this.props.syncAttendances(course.attendances[date].list, course.id, date);
+      }
+    }
   }
 
   _renderCourses() {
@@ -104,12 +113,7 @@ class CoursesScreen extends React.Component {
     } else {
       courses = this._renderCourses();
     }
-    console.log("Re-rendered");
-    if (this.props != null) {
-      console.log("prop:");
-      console.log(this.props.online);
-    }
-
+    console.log("Rendering, isLoading:" + this.props.isLoading)
     let message = null;
     if (this.props.online) {
       message = {text: "You are connected", styles: ToastStyles.success, height: 80};
@@ -142,6 +146,45 @@ const fetchCourses = (teacherId) => {
   }
 }
 
+
+/**
+  * Attempts to update each changed attendance and waits for each request to succeed
+  * and shows different modal based on whether sync succeeded or failed. Saves attendances
+  * to store regardless of success/failiure.
+  */
+const syncAttendances = (attendances, courseId, date) => {
+  return (dispatch) => {
+    dispatch(actions.requestUpdateAttendances(courseId, date));
+    const attendancePromises = attendances.map((attendance, i) => {
+      return updateAttendance(attendance, i);
+    });
+
+    Promise.all(attendancePromises).then((responseData) => {
+      dispatch(actions.receiveUpdateAttendancesSuccess(responseData, courseId, date));
+      dispatch(actions.openModal());
+    }).catch((error) => {
+      dispatch(actions.receiveUpdateAttendancesError(attendances, courseId, date));
+      dispatch(actions.openModal());
+    });
+  }
+}
+
+/**
+  * Makes put request to update given attendance if it has been changed
+  * (Uses putRequestNoCatch so any errors get caught in Promise.all)
+  */
+const updateAttendance = (attendance, index) => {
+  const successFunc = (responseData) => {
+    return responseData;
+  }
+  const errorFunc = (error) => {
+    console.log(error);
+  }
+  const params = attendance
+  return putRequestNoCatch(APIRoutes.attendancePath(), successFunc, errorFunc, params);
+
+}
+
 const mapStateToProps = (state) => {
   return {
     online: state.offline.online,
@@ -153,6 +196,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    syncAttendances: (attendances, courseId, date) => dispatch(syncAttendances(attendances, courseId, date)),
     fetchCourses: (teacherId) => dispatch(fetchCourses(teacherId)),
   }
 }

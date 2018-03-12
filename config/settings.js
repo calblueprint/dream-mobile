@@ -8,7 +8,7 @@ if (process.env.NODE_ENV === 'production') {
   URL = 'https://dream-rails-production.herokuapp.com';
 } else {
   URL = Platform.select({
-    ios: "http://10.142.186.144:3000",
+    ios: "http://10.142.186.13:3000",
     // For Android Emulator
     android: "http://10.0.2.2:3000"
   });

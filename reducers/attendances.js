@@ -34,4 +34,3 @@ export const attendances = (state = {}, action) => {
       return state;
   }
 }
-

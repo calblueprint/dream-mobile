@@ -294,21 +294,18 @@ const styles = StyleSheet.create({
   */
 syncAttendances = (attendances, courseId, date) => {
   return (dispatch) => {
-    attendances.foreach((attendance, i) => {
-      dispatch(actions.updateAttendance(attendance, courseId, date))
+    dispatch(actions.requestUpdateAttendances(courseId, date));
+    const attendancePromises = attendances.map((attendance, i) => {
+      return updateAttendance(attendance, i);
     });
-    // dispatch(actions.requestUpdateAttendances(courseId, date));
-    // const attendancePromises = attendances.map((attendance, i) => {
-    //   return updateAttendance(attendance, i);
-    // });
-    //
-    // Promise.all(attendancePromises).then((responseData) => {
-    //   dispatch(actions.receiveUpdateAttendancesSuccess(responseData, courseId, date));
-    //   dispatch(actions.openModal());
-    // }).catch((error) => {
-    //   dispatch(actions.receiveUpdateAttendancesError(attendances, courseId, date));
-    //   dispatch(actions.openModal());
-    // });
+
+    Promise.all(attendancePromises).then((responseData) => {
+      dispatch(actions.receiveUpdateAttendancesSuccess(responseData, courseId, date));
+      dispatch(actions.openModal());
+    }).catch((error) => {
+      dispatch(actions.receiveUpdateAttendancesError(attendances, courseId, date));
+      dispatch(actions.openModal());
+    });
   }
 }
 
