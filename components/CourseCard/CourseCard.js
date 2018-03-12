@@ -10,6 +10,7 @@ import colors from '../../styles/colors';
 /**
  * @prop course_id - course ID
  * @prop title - course title
+ * @prop synced - whether attendances are synced
  * @prop onSelectCourse - callback function to show course information
  * @prop onTakeAttendance - callback function to take attendance for today
  */
@@ -29,13 +30,14 @@ class CourseCard extends React.Component {
       4: colors.courseBrown
     }
     const colorKey = this.props.index % 5
-
+    let statusText = this.props.synced ? "Synced" : "Not Synced"
     return (
       <TouchableHighlight onPress={() => this.props.onSelectCourse(this.props.course_id)}>
         <View style={[cardStyles.outerContainer, {backgroundColor: colorList[colorKey]}]}>
           <View style={cardStyles.topContainer}>
             <Text style={[cardStyles.title, textStyles.titleMediumLight]}>{this.props.title}</Text>
             <Text style={[cardStyles.count, textStyles.titleSmallLight]}>5 Students</Text>
+            <Text style={[cardStyles.status, textStyles.titleSmallLight]}>{statusText}</Text>
           </View>
           <View style={cardStyles.bottomContainer}>
             <StyledButton

@@ -13,7 +13,6 @@ import CourseCard from '../../components/CourseCard/CourseCard';
 import StyledButton from '../../components/Button/Button';
 import { putRequestNoCatch } from '../../lib/requests';
 import { FontAwesome, MaterialCommunityIcons } from '@expo/vector-icons';
-import Toaster, { ToastStyles } from 'react-native-toaster'
 import colors from '../../styles/colors';
 
 class CoursesScreen extends React.Component {
@@ -80,11 +79,18 @@ class CoursesScreen extends React.Component {
       courses_arr.push(this.props.courses[key]);
     }
 
+    let isCourseSynced = (course) => {
+      if(!("attendances" in course)) { return true }
+      syncedArray = Object.keys(course.attendances).map((key) => ("isSynced" in course.attendances[key] && course.attendances[key]["isSynced"]));
+      return syncedArray.every(x => x==true);
+    }
+
     const courses = courses_arr.map((course, i) => (
       <CourseCard key={i}
         index={i}
         course_id={course.id}
         title={course.title}
+        synced={isCourseSynced(course)}
         onSelectCourse={this._handleSelectCourse}
         onTakeAttendance={this._handleTakeAttendance}/>
       )
@@ -113,17 +119,9 @@ class CoursesScreen extends React.Component {
     } else {
       courses = this._renderCourses();
     }
-    console.log("Rendering, isLoading:" + this.props.isLoading)
-    let message = null;
-    if (this.props.online) {
-      message = {text: "You are connected", styles: ToastStyles.success, height: 80};
-    } else {
-      message = {text: "You are offline", styles: ToastStyles.error, height: 80};
-    }
     return (
       <ScrollView>
         <View style={{backgroundColor: '#f5f5f6'}}>
-          <Toaster message={message} />
           { courses }
         </View>
       </ScrollView>
@@ -161,10 +159,8 @@ const syncAttendances = (attendances, courseId, date) => {
 
     Promise.all(attendancePromises).then((responseData) => {
       dispatch(actions.receiveUpdateAttendancesSuccess(responseData, courseId, date));
-      dispatch(actions.openModal());
     }).catch((error) => {
       dispatch(actions.receiveUpdateAttendancesError(attendances, courseId, date));
-      dispatch(actions.openModal());
     });
   }
 }
