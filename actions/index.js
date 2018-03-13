@@ -9,6 +9,12 @@ let actions = {
       error
     }
   },
+  receiveUnableToSyncError: (error) => {
+    return {
+      type: types.RECEIVE_UNABLE_TO_SYNC_ERROR,
+      error
+    }
+  },
   logout: () => {
     return {
       type: types.LOGOUT
@@ -39,6 +45,7 @@ let actions = {
   },
 
   // TEACHERS
+  // TODO: dispatches to requestTeacher not handled anywhere?
   requestTeacher: () => {
     return {
       type: types.REQUEST_TEACHER,
