@@ -16,7 +16,7 @@ import { attendances } from './attendances';
 export const courses = (state = {}, action) => {
   switch (action.type) {
     case types.RECEIVE_COURSES_SUCCESS:
-      return action.courses
+      return checkUnsyncedAttendances(state, action.courses);
     case types.RECEIVE_STUDENTS_SUCCESS:
     case types.RECEIVE_ATTENDANCES_SUCCESS:
     case types.RECEIVE_UPDATE_ATTENDANCES_SUCCESS:
@@ -31,7 +31,7 @@ export const courses = (state = {}, action) => {
 }
 
 
-// Merges old courses and new courses. 
+// Merges old courses and new courses.
 const checkUnsyncedAttendances = (oldCourses, newCourses) => {
   var courseUpdates = {};
   for(let courseId in oldCourses) {

@@ -3,7 +3,7 @@ import { Image, Button, ScrollView, Text, View, TouchableOpacity } from 'react-n
 
 import { connect } from 'react-redux';
 import actions from '../../actions';
-
+import Toaster, { ToastStyles } from 'react-native-toaster'
 import { commonStyles } from '../../styles/styles';
 import { getRequest } from '../../lib/requests';
 import { APIRoutes } from '../../config/routes';
@@ -28,19 +28,39 @@ class CoursesScreen extends React.Component {
     };
   };
 
+
   constructor(props) {
     super(props);
+    this.state = { toasterMessage: null }
     this._handleSelectCourse = this._handleSelectCourse.bind(this);
     this._handleTakeAttendance = this._handleTakeAttendance.bind(this);
     this._renderCourses = this._renderCourses.bind(this);
+
+    this.syncMessages = {
+        syncing : { text: 'Syncing Attendances...', styles: ToastStyles.warning },
+        success : { text: 'Successfully Synced Attendances!', styles: ToastStyles.success },
+        failed :  { text: 'Syncing Attendances Failed. Try again later!', styles: ToastStyles.error }
+    };
   }
 
   componentDidMount() {
-    // Attempt to Sync Unsynced attendances
-    for (var courseIndex in this.props.courses) {
-      this.syncAllAttendances(this.props.courses[courseIndex]);
-    }
-    this.props.fetchCourses(this.props.teacher.id);
+    this.props.fetchCourses(this.props.teacher.id).then((response) => {
+      console.log("Finished Fetching Courses!");
+      this.setState({ toasterMessage: this.syncMessages.syncing });
+      return this.syncAllAttendances(this.props.courses);
+    }).then((response) => {
+      if (response == null) {
+        return response;
+      }
+      console.log("Finished Syncing Attendances");
+      this.setState({ toasterMessage: this.syncMessages.success });
+      setTimeout(() => { this.setState({toasterMessage: null})}, 2000);
+    }).catch((error) => { //TODO: See if this actually gets called
+      this.setState( { toasterMessage: this.syncMessages.failed });
+      setTimeout(() => { this.setState({toasterMessage: null})}, 2000);
+      console.log("Error: " + error.message);
+    });
+
     const _createCourse = () => {
        this.props.navigation.navigate('EditCourse', {refreshCourses: this.props.fetchCourses, newCourse: true, sessions: []})}
 
@@ -63,12 +83,22 @@ class CoursesScreen extends React.Component {
     });
   }
 
-  syncAllAttendances(course) {
-    for(var date in course.attendances) {
-      if(!course.attendances[date]["isSynced"]) {
-        this.props.syncAttendances(course.attendances[date].list, course.id, date);
+  syncAllAttendances(courses) {
+    console.log("Courses: ");
+    console.log(courses);
+    var promises = [];
+    for(courseIndex in courses){
+      let course = courses[courseIndex];
+      for(var date in course.attendances) {
+        if(!course.attendances[date]["isSynced"]) {
+          promises.push(this.props.syncAttendances(course.attendances[date].list, course.id, date));
+        }
       }
     }
+    if(promises.length == 0) {
+      return null;
+    }
+    return Promise.all(promises);
   }
 
   _renderCourses() {
@@ -81,7 +111,7 @@ class CoursesScreen extends React.Component {
 
     let isCourseSynced = (course) => {
       if(!("attendances" in course)) { return true }
-      syncedArray = Object.keys(course.attendances).map((key) => ("isSynced" in course.attendances[key] && course.attendances[key]["isSynced"]));
+      syncedArray = Object.keys(course.attendances).map((key) => (!("isSynced" in course.attendances[key]) || course.attendances[key]["isSynced"]));
       return syncedArray.every(x => x==true);
     }
 
@@ -122,6 +152,7 @@ class CoursesScreen extends React.Component {
     return (
       <ScrollView>
         <View style={{backgroundColor: '#f5f5f6'}}>
+          <Toaster message={this.state.toasterMessage} />
           { courses }
         </View>
       </ScrollView>
@@ -135,7 +166,9 @@ const fetchCourses = (teacherId) => {
     dispatch(actions.requestCourses());
     return getRequest(
       APIRoutes.getTeacherCoursesPath(teacherId),
-      (responseData) => dispatch(actions.receiveCoursesSuccess(responseData)),
+      (responseData) => {
+        dispatch(actions.receiveCoursesSuccess(responseData))
+      },
       (error) => {
         dispatch(actions.receiveStandardError(error));
         standardError(error);
@@ -152,6 +185,7 @@ const fetchCourses = (teacherId) => {
   */
 const syncAttendances = (attendances, courseId, date) => {
   return (dispatch) => {
+    console.log("Syncing Attendance for Course with ID: " + courseId + " for date: " + date);
     dispatch(actions.requestUpdateAttendances(courseId, date));
     const attendancePromises = attendances.map((attendance, i) => {
       return updateAttendance(attendance, i);
