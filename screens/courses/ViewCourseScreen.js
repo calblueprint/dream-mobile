@@ -114,9 +114,10 @@ class ViewCourseScreen extends React.Component {
    */
   _deleteCourse() {
     const successFunc = (responseData) => {
-      this.props.navigation.state.params.refreshCourses();
-      this.props.navigation.goBack(null);
+      // this.props.navigation.state.params.refreshCourses();
+      this.props.navigation.navigate('Courses');
     }
+
     deleteRequest(APIRoutes.getCoursePath(this.state.course_id), successFunc, standardError);
   }
 
@@ -242,6 +243,8 @@ class ViewCourseScreen extends React.Component {
             text="Edit Course"
             linkButton
           />
+
+          <View>{ this._renderDeleteCourseButton() }</View>
 
           <StyledButton
             text="View Past Attendance"
