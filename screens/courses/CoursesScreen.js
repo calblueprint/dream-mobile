@@ -38,7 +38,7 @@ class CoursesScreen extends React.Component {
     this.props.fetchCourses(this.props.teacher);
 
     const _createCourse = () => {
-       this.props.navigation.navigate('EditCourse', {refreshCourses: this.props.fetchCourses, newCourse: true, 
+       this.props.navigation.navigate('EditCourse', {refreshCourses: this.props.fetchCourses, newCourse: true,
         sessions: [], teacher: this.props.teacher})}
 
 
@@ -82,7 +82,7 @@ class CoursesScreen extends React.Component {
       <View style={{marginBottom: 24}}>
         { courses }
         <StyledButton
-          onPress={() => navigate('EditCourse', {refreshCourses: this.props.fetchCourses, newCourse: true, 
+          onPress={() => navigate('EditCourse', {refreshCourses: this.props.fetchCourses, newCourse: true,
             sessions: [], teacher: this.props.teacher})}
           text='Create Course'
           primaryButtonLarge>
@@ -120,7 +120,13 @@ const fetchCourses = (teacher) => {
     if (teacher.admin) {
       return getRequest(
         APIRoutes.getCoursesPath(),
-        (responseData) => dispatch(actions.receiveCoursesSuccess(responseData)),
+        (responseData) =>  {
+          dispatch(actions.receiveCoursesSuccess(responseData))
+          for (const key in responseData) { // Once you have the courses, fetch student and attendance data
+            dispatch(fetchStudents(responseData[key].id));
+            dispatch(fetchRecentCourseAttendances(responseData[key].id));
+          }
+        },
         (error) => {
           dispatch(actions.receiveStandardError(error));
           standardError(error);
@@ -129,7 +135,13 @@ const fetchCourses = (teacher) => {
     } else {
       return getRequest(
         APIRoutes.getTeacherCoursesPath(teacher.id),
-        (responseData) => dispatch(actions.receiveCoursesSuccess(responseData)),
+        (responseData) => {
+          dispatch(actions.receiveCoursesSuccess(responseData))
+          for (const key in responseData) {
+            dispatch(fetchStudents(responseData[key].id));
+            dispatch(fetchRecentCourseAttendances(responseData[key].id));
+          }
+        },
         (error) => {
           dispatch(actions.receiveStandardError(error));
           standardError(error);
@@ -137,6 +149,85 @@ const fetchCourses = (teacher) => {
       );
     }
   }
+}
+
+/**
+  * Fetches all students with the given course id and on success
+  * gets attendances for each student
+  */
+const fetchStudents = (courseId) => {
+  return (dispatch) => {
+    dispatch(actions.requestStudents(courseId));
+    return getRequest(
+      APIRoutes.getStudentsPath(courseId),
+      (responseData) => {
+        console.log("students: ");
+        console.log(responseData);
+        dispatch(actions.receiveStudentsSuccess(responseData, courseId));
+      },
+      (error) => {
+        dispatch(actions.receiveStandardError(error));
+        standardError(error);
+      }
+    );
+  }
+}
+
+/**
+  * Attempts to get attendance for each students and waits for each request to succeed
+  * before updating state for attendances
+  */
+const fetchRecentCourseAttendances = (courseId) => {
+  return (dispatch) => {
+    dispatch(actions.requestCourseAttendances(courseId));
+
+    return getRequest(
+      APIRoutes.getCoursesPath(),
+      (responseData) =>  {
+        dispatch(actions.receiveCoursesSuccess(responseData))
+        for (const key in responseData) { // Once you have the courses, fetch student and attendance data
+          dispatch(fetchStudents(responseData[key].id));
+          dispatch(fetchRecentCourseAttendances(responseData[key].id));
+        }
+      },
+      (error) => {
+        dispatch(actions.receiveStandardError(error));
+        standardError(error);
+      }
+    );
+    const attendances = students.map((student) => {
+      return fetchAttendance(student.id, courseId, date);
+    });
+
+    Promise.all(attendances).then((attendances) => {
+      dispatch(actions.receiveAttendancesSuccess(attendances, courseId, date));
+    }).catch((error) => {
+      dispatch(actions.receiveStandardError(error));
+      standardError(error);
+    });
+  }
+}
+
+/**
+  * Makes a request to get attendance for the specified student.
+  * (Uses postRequestNoCatch so any errors get caught in Promise.all)
+  */
+const fetchAttendance = (studentId, courseId, date) => {
+  const successFunc = (responseData) => {
+    return responseData;
+  }
+  const errorFunc = (error) => {
+    // TODO (Kelsey): address what happens when attendance for student on given date doesn't exist
+    console.log(error)
+  }
+  const params = {
+    attendance: {
+      student_id: studentId,
+      date: date,
+      course_id: courseId
+    }
+  }
+  return postRequestNoCatch(APIRoutes.attendanceItemPath(), successFunc, errorFunc, params);
 }
 
 const mapStateToProps = (state) => {
@@ -150,6 +241,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     fetchCourses: (teacher) => dispatch(fetchCourses(teacher)),
+    fetchStudents: (courseId, date) => dispatch(fetchStudents(courseId, date)),
+    fetchRecentCourseAttendances: (students, courseId, date) => dispatch(fetchRecentCourseAttendances(students, courseId, date)),
   }
 }
 

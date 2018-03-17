@@ -218,6 +218,7 @@ const fetchStudents = (courseId, date) => {
     return getRequest(
       APIRoutes.getStudentsPath(courseId),
       (responseData) => {
+
         dispatch(actions.receiveStudentsSuccess(responseData, courseId));
         dispatch(fetchAttendances(responseData, courseId, date));
       },
