@@ -13,6 +13,8 @@ import EditCourseScreen from '../screens/courses/EditCourseScreen';
 import CreateStudentScreen from '../screens/students/CreateStudentScreen';
 import StudentProfileScreen from '../screens/students/StudentProfileScreen';
 import AttendanceScreen from '../screens/attendances/AttendanceScreen';
+import RecentAttendancesScreen from '../screens/attendances/RecentAttendancesScreen';
+import PastAttendancesScreen from '../screens/attendances/PastAttendancesScreen';
 import AttendanceSummaryScreen from '../screens/attendances/AttendanceSummaryScreen';
 import { FontAwesome } from '@expo/vector-icons';
 import colors from '../styles/colors';
@@ -100,6 +102,18 @@ export const HomeStack = StackNavigator({
     navigationOptions: ({navigation}) => ({
       headerTitle: 'Attendance Summary',
       headerRight: (<Button title='Edit' onPress={() => { navigation.goBack() }}/>),
+    }),
+  },
+  RecentAttendances: {
+    screen: RecentAttendancesScreen,
+    navigationOptions: ({navigation}) => ({
+      headerTitle: 'Recent Attendances',
+    }),
+  },
+  PastAttendances: {
+    screen: PastAttendancesScreen,
+    navigationOptions: ({navigation}) => ({
+      headerTitle: 'Past Attendances',
     }),
   },
 });
