@@ -111,17 +111,18 @@ const fetchStudents = (courseId, date) => {
   */
 const fetchAttendances = (students, courseId, date) => {
   return (dispatch) => {
-    dispatch(actions.requestAttendances(courseId, date));
-    const attendances = students.map((student) => {
-      return fetchAttendance(student.id, courseId, date);
-    });
-
-    Promise.all(attendances).then((attendances) => {
-      dispatch(actions.receiveAttendancesSuccess(attendances, courseId, date));
-    }).catch((error) => {
-      dispatch(actions.receiveStandardError(error));
-      standardError(error);
-    });
+    dispatch(actions.requestStudents(courseId));
+    return getRequest(
+      APIRoutes.getRecentAttendancesPath(courseId),
+      (responseData) => {
+        dispatch(actions.receiveStudentsSuccess(responseData, courseId));
+        dispatch(fetchAttendances(responseData, courseId, date));
+      },
+      (error) => {
+        dispatch(actions.receiveStandardError(error));
+        standardError(error);
+      }
+    );
   }
 }
 
