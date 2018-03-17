@@ -9,12 +9,12 @@ import { textStyles } from '../../styles/textStyles';
 import { APIRoutes } from '../../config/routes';
 import settings from '../../config/settings';
 import { getRequest, postRequestNoCatch } from '../../lib/requests';
-import AttendanceCard from '../../components/AttendanceCard';
+import AttendanceDateCard from '../../components/AttendanceDateCard/AttendanceDateCard';
 import SimpleModal from '../../components/SimpleModal';
 import { standardError } from '../../lib/alerts';
 import StyledButton from '../../components/Button/Button';
 
-class RecentAttendancesScreen extends React.Component {
+class PastAttendancesScreen extends React.Component {
   constructor(props) {
     super(props);
   }
@@ -46,30 +46,17 @@ class RecentAttendancesScreen extends React.Component {
     const { navigate } = this.props.navigation;
 
     return(
-      <View style={commonStyles.containerStatic}>
-        <ScrollView>
-          <View style={styles.attendancesContainer}>
-            <View style={commonStyles.header}>
-              <Text style={textStyles.titleSmall}>{this.props.date}</Text>
-              <Text style={textStyles.titleLarge}>{this.props.courseTitle}</Text>
-            </View>
-            {this._renderAttendances()}
-          </View>
-        </ScrollView>
+      <View>
         <StyledButton
-          onPress={() => navigate('AttendanceSummary', {
-            attendances: this.props.attendances,
-            students: this.props.students,
-            courseTitle: this.props.courseTitle,
-            date: this.props.date,
-            parentKey: this.props.navigation.state.key,
-            courseId: this.props.courseId,
-          })}
-          text='Submit'
+          onPress={() => navigate('RecentAttendances',
+            { courseId: this.props.courseId,
+            })}
+          text="View Recent Attendances"
           primaryButtonLarge
-        >
-        </StyledButton>
-      </View>
+        />
+      <Text style={textStyles.titleLarge}>"Hello World1"</Text>
+    </View>
+
     )
   }
 
@@ -179,4 +166,4 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(RecentAttendancesScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(PastAttendancesScreen);

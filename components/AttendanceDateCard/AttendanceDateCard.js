@@ -14,7 +14,7 @@ class AttendanceDateCard extends React.Component {
 
   render() {
     return (
-      <TouchableHighlight onPress={() => this.props.onSelectAttendance(this.props.attendance.)}>
+      <TouchableHighlight onPress={() => this.props.onSelectAttendance()}>
         <View style={{borderBottomWidth: 1, borderBottomColor: '#E6E6E6'}}>
           <View style={{marginBottom: 16, marginTop: 16}}>
             <Text style={textStyles.body}>{this.props.student.first_name} {this.props.student.last_name}</Text>
@@ -25,4 +25,4 @@ class AttendanceDateCard extends React.Component {
   }
 }
 
-export default StudentCard;
+export default AttendanceDateCard;
