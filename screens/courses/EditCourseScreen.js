@@ -53,7 +53,7 @@ class EditCourseScreen extends React.Component {
       return (
         <EditCourseForm
           is_active={navProps.is_active}
-          title={navProps.title}
+          title={navProps.course_name}
           teacher1={navProps.teacher1}
           teacher2={navProps.teacher2}
           start_date={navProps.start_date}

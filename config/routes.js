@@ -124,8 +124,8 @@ export class APIRoutes {
   static getTeacherCoursesPath(id)    { return APIRoutes.createRoute(`teachers/${id}/courses`) }
 
   // Students
-  static getStudentsPath(courseId)    { return APIRoutes.createRoute(`courses/${courseId}/students`) }
-  static getStudentPath(studentId)    { return APIRoutes.createRoute(`students/${studentId}`)}
+  static getStudentsPath()    { return APIRoutes.createRoute(`students`) }
+  static getStudentPath(id)    { return APIRoutes.createRoute(`students/${id}`)}
 
   // Attendances
   static attendanceItemPath()         { return APIRoutes.createRoute(`attendances/attendance_item`) }
@@ -135,4 +135,6 @@ export class APIRoutes {
   static signupPath()                 { return `/sign_up` }
   static loginPath()                  { return APIRoutes.deviseRoute(`sign_in`) }
 
+  // Students associated with particular courses
+  static getCourseStudentsPath(courseId)    { return APIRoutes.createRoute(`courses_students/${courseId}`) }
 }

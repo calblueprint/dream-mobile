@@ -99,7 +99,7 @@ class ViewCourseScreen extends React.Component {
       this.setState({ students: responseData, isLoading: false });
     }
 
-    getRequest(APIRoutes.getStudentsPath(this.state.course_id), successFunc, standardError);
+    getRequest(APIRoutes.getCourseStudentsPath(this.state.course_id), successFunc, standardError);
   }
 
   _handleSelectStudent(id) {
