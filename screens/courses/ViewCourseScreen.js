@@ -114,7 +114,6 @@ class ViewCourseScreen extends React.Component {
    */
   _deleteCourse() {
     const successFunc = (responseData) => {
-      // this.props.navigation.state.params.refreshCourses();
       this.props.navigation.navigate('Courses');
     }
 
@@ -125,7 +124,7 @@ class ViewCourseScreen extends React.Component {
     return (
       <StyledButton
         onPress={() => confirmDelete("Are you sure you want to delete this course?", this._deleteCourse)}
-        text='Delete'
+        text='Delete Course'
         secondaryButtonSmall>
       </StyledButton>
     );
