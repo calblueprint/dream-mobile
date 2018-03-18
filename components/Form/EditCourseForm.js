@@ -15,7 +15,7 @@ import Session from '../Session';
  * @prop newCourse - true if creating new course, false if editing a course
  * @prop course_id - id of course
  * @prop is_active - true if course is ative (within the start and end date)
- * @prop course_name - course title
+ * @prop title - course title
  * @prop teacher1 - dream_id of teacher 1
  * @prop teacher2 - dream_id of teacher 2
  * @prop start_date - start date of course
@@ -78,7 +78,7 @@ class EditCourseForm extends React.Component {
   _getInitialFormValues() {
     let values = {
       is_active: this.props.is_active,
-      course_name: this.props.course_name,
+      title: this.props.title,
       teacher_id1: this.props.teacher1,
       teacher_id2: this.props.teacher2,
     };
@@ -96,7 +96,7 @@ class EditCourseForm extends React.Component {
    */
   _getFormType() {
     return t.struct({
-      course_name: t.String,
+      title: t.String,
       teacher_id1: t.Number,
       teacher_id2: t.maybe(t.Number),
       start_date: t.Date,

@@ -73,7 +73,7 @@ class CoursesScreen extends React.Component {
       <CourseCard key={i}
         index={i}
         course_id={course.id}
-        title={course.course_name}
+        title={course.title}
         onSelectCourse={this._handleSelectCourse}
         onTakeAttendance={this._handleTakeAttendance}/>
       )

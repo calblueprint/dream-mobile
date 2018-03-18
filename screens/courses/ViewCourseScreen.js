@@ -88,6 +88,7 @@ class ViewCourseScreen extends React.Component {
       this.setState({ teachers: responseData.teachers});
       this._fetchStudents();
     }
+    console.log(this.state.course_id);
     getRequest(APIRoutes.getTeachersPath(this.state.course_id), successFunc, standardError);
   }
 
