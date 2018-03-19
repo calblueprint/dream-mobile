@@ -135,6 +135,6 @@ export class APIRoutes {
   static signupPath()                 { return `/sign_up` }
   static loginPath()                  { return APIRoutes.deviseRoute(`sign_in`) }
 
-  // Students associated with particular courses
+  // Students enrolled in a particular course
   static getCourseStudentsPath(id)    { return APIRoutes.createRoute(`courses/${id}/students`) }
 }
