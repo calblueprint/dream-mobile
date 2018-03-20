@@ -23,7 +23,7 @@ class EditCourseScreen extends React.Component {
    * Displays success toaster and navigates back to previous screen.
    */
   _onSuccess(response) {
-    this.props.navigation.state.params.refreshCourses();
+    this.props.navigation.state.params.refreshCourses(this.props.navigation.state.params.teacher);
     this.props.navigation.goBack(null);
   }
 

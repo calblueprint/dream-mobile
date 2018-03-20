@@ -48,10 +48,11 @@ class CoursesScreen extends React.Component {
   }
 
   componentDidMount() {
-    this.props.fetchCourses(this.props.teacher.id);
+    this.props.fetchCourses(this.props.teacher);
 
     const _createCourse = () => {
-       this.props.navigation.navigate('EditCourse', {refreshCourses: this.props.fetchCourses, newCourse: true, sessions: []})}
+       this.props.navigation.navigate('EditCourse', {refreshCourses: this.props.fetchCourses, newCourse: true, 
+        sessions: [], teacher: this.props.teacher})}
 
 
     this.props.navigation.setParams({ handleCreate: _createCourse });
@@ -94,7 +95,8 @@ class CoursesScreen extends React.Component {
       <View style={{marginBottom: 24}}>
         { courses }
         <StyledButton
-          onPress={() => navigate('EditCourse', {refreshCourses: this.props.fetchCourses, newCourse: true, sessions: []})}
+          onPress={() => navigate('EditCourse', {refreshCourses: this.props.fetchCourses, newCourse: true, 
+            sessions: [], teacher: this.props.teacher})}
           text='Create Course'
           primaryButtonLarge>
         </StyledButton>
@@ -129,17 +131,28 @@ class CoursesScreen extends React.Component {
   }
 }
 
-const fetchCourses = (teacherId) => {
+const fetchCourses = (teacher) => {
   return (dispatch) => {
     dispatch(actions.requestCourses());
-    return getRequest(
-      APIRoutes.getTeacherCoursesPath(teacherId),
-      (responseData) => dispatch(actions.receiveCoursesSuccess(responseData)),
-      (error) => {
-        dispatch(actions.receiveStandardError(error));
-        standardError(error);
-      }
-    );
+    if (teacher.admin) {
+      return getRequest(
+        APIRoutes.getCoursesPath(),
+        (responseData) => dispatch(actions.receiveCoursesSuccess(responseData)),
+        (error) => {
+          dispatch(actions.receiveStandardError(error));
+          standardError(error);
+        }
+      );
+    } else {
+      return getRequest(
+        APIRoutes.getTeacherCoursesPath(teacher.id),
+        (responseData) => dispatch(actions.receiveCoursesSuccess(responseData)),
+        (error) => {
+          dispatch(actions.receiveStandardError(error));
+          standardError(error);
+        }
+      );
+    }
   }
 }
 
@@ -154,7 +167,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    fetchCourses: (teacherId) => dispatch(fetchCourses(teacherId)),
+    fetchCourses: (teacher) => dispatch(fetchCourses(teacher)),
   }
 }
 
