@@ -11,8 +11,8 @@ import { standardError } from '../../lib/alerts';
 import { attendanceDate } from '../../lib/date';
 import CourseCard from '../../components/CourseCard/CourseCard';
 import StyledButton from '../../components/Button/Button';
+import Toaster, { ToastStyles } from '../../components/Toaster'
 import { FontAwesome, MaterialCommunityIcons } from '@expo/vector-icons';
-import Toaster, { ToastStyles } from 'react-native-toaster'
 import colors from '../../styles/colors';
 
 class CoursesScreen extends React.Component {
@@ -33,20 +33,18 @@ class CoursesScreen extends React.Component {
     this._handleSelectCourse = this._handleSelectCourse.bind(this);
     this._handleTakeAttendance = this._handleTakeAttendance.bind(this);
     this._renderCourses = this._renderCourses.bind(this);
+  }
 
-    // this.state = { message: null }
-    //
-    // const messages = [
-    //   { text: 'Online: ' + String(this.props.online) },
-    //   // { text: 'Hooray!', styles: ToastStyles.success },
-    //   // { text: 'Eek', styles: ToastStyles.warning },
-    //   // { text: 'Oh noe!', styles: ToastStyles.error }
-    // ];
-    //
-    // // Send each message 1 second apart
-    // messages.forEach((message, i) => {
-    //   setTimeout(() => this.setState({ message }), i * 10000)
-    // })
+  componentWillReceiveProps(nextProps) {
+    if (this.props.online !== nextProps.online) {
+      if (nextProps.online) {
+        this.message = {text: "You are connected", styles: ToastStyles.success, height: 80};
+      } else {
+        this.message = {text: "You are offline", styles: ToastStyles.error, height: 80};
+      }
+    } else {
+      this.message = null;
+    }
   }
 
   componentDidMount() {
@@ -116,22 +114,13 @@ class CoursesScreen extends React.Component {
     } else {
       courses = this._renderCourses();
     }
-    console.log("Re-rendered");
-    if (this.props != null) {
-      console.log("prop:");
-      console.log(this.props.online);
-    }
 
-    let message = null;
-    if (this.props.online) {
-      message = {text: "You are connected", styles: ToastStyles.success, height: 80};
-    } else {
-      message = {text: "You are offline", styles: ToastStyles.error, height: 80};
-    }
+    let toaster = this.message ? <Toaster message={this.message} /> : null;
+
     return (
       <ScrollView>
         <View style={{backgroundColor: '#f5f5f6'}}>
-          <Toaster message={message} />
+          { toaster }
           { courses }
         </View>
       </ScrollView>
