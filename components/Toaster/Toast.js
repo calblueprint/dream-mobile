@@ -24,7 +24,7 @@ class Toast extends Component {
 
   static defaultProps = {
     styles: ToastStyles.info,
-    duration: 3000,
+    duration: noop,
     height: 100,
     onShow: noop,
     onHide: noop,
