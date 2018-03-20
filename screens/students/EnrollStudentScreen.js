@@ -6,7 +6,7 @@ import { standardError } from '../../lib/alerts';
 import PropTypes from 'prop-types';
 import CreateStudentForm from '../../components/Form/CreateStudentForm'
 
-class CreateStudentScreen extends React.Component {
+class EnrollStudentScreen extends React.Component {
   constructor(props) {
     super(props);
     this._handleCreateStudent = this._handleCreateStudent.bind(this);
@@ -64,4 +64,4 @@ class CreateStudentScreen extends React.Component {
   }
 }
 
-export default CreateStudentScreen;
+export default EnrollStudentScreen;

@@ -139,6 +139,7 @@ class StudentProfileScreen extends React.Component {
         />
       )
     } else {
+      console.log('render student');
       student = this._renderStudent()
     }
     return (
