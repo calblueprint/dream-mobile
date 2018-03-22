@@ -286,7 +286,7 @@ const styles = StyleSheet.create({
   }
 });
 // TODO (Kelsey): Add PropTypes from navigation
-
+ 
 /**
   * Attempts to update each changed attendance and waits for each request to succeed
   * and shows different modal based on whether sync succeeded or failed. Saves attendances
@@ -303,6 +303,8 @@ syncAttendances = (attendances, courseId, date) => {
       dispatch(actions.receiveUpdateAttendancesSuccess(responseData, courseId, date));
       dispatch(actions.openModal());
     }).catch((error) => {
+      console.log("Error fetching attendances: ");
+      console.log(error);
       dispatch(actions.receiveUpdateAttendancesError(attendances, courseId, date));
       dispatch(actions.openModal());
     });
@@ -315,6 +317,8 @@ syncAttendances = (attendances, courseId, date) => {
   */
 updateAttendance = (attendance, index) => {
   const successFunc = (responseData) => {
+    console.log("Updated Attendance:");
+    console.log(responseData);
     return responseData;
   }
   const errorFunc = (error) => {
@@ -323,7 +327,7 @@ updateAttendance = (attendance, index) => {
   const params = attendance
 
   if (attendance.isChanged) {
-    return putRequestNoCatch(APIRoutes.attendancePath(), successFunc, errorFunc, params);
+    return putRequestNoCatch(APIRoutes.attendancePath(), successFunc, errorFunc, params, shouldUseAltRoute=true);
   } else {
     return attendance;
   }

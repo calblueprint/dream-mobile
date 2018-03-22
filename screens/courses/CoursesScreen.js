@@ -44,10 +44,13 @@ class CoursesScreen extends React.Component {
   }
 
   componentDidMount() {
-    this.props.fetchCourses(this.props.teacher.id).then((response) => {
+    this.props.fetchCourses(this.props.teacher).then((response) => {
       console.log("Finished Fetching Courses!");
-      this.setState({ toasterMessage: this.syncMessages.syncing });
-      return this.syncAllAttendances(this.props.courses);
+      let result = this.syncAllAttendances(this.props.courses);
+      if (result != null) {
+        this.setState({ toasterMessage: this.syncMessages.syncing });
+      }
+      return result
     }).then((response) => {
       if (response == null) {
         return response;
@@ -55,7 +58,7 @@ class CoursesScreen extends React.Component {
       console.log("Finished Syncing Attendances");
       this.setState({ toasterMessage: this.syncMessages.success });
       setTimeout(() => { this.setState({toasterMessage: null})}, 2000);
-    }).catch((error) => { //TODO: See if this actually gets called
+    }).catch((error) => { //TODO: See if this actually gets called when request failed.
       this.setState( { toasterMessage: this.syncMessages.failed });
       setTimeout(() => { this.setState({toasterMessage: null})}, 2000);
       console.log("Error: " + error.message);
@@ -84,9 +87,10 @@ class CoursesScreen extends React.Component {
     });
   }
 
+  /*
+    Takes list of courses and syncs each attendance fore ach course that is marked as unsycn
+  */
   syncAllAttendances(courses) {
-    console.log("Courses: ");
-    console.log(courses);
     var promises = [];
     for(courseIndex in courses){
       let course = courses[courseIndex];
@@ -166,25 +170,17 @@ class CoursesScreen extends React.Component {
 const fetchCourses = (teacher) => {
   return (dispatch) => {
     dispatch(actions.requestCourses());
-    if (teacher.admin) {
-      return getRequest(
-        APIRoutes.getCoursesPath(),
-        (responseData) => dispatch(actions.receiveCoursesSuccess(responseData)),
-        (error) => {
-          dispatch(actions.receiveStandardError(error));
-          standardError(error);
-        }
-      );
-    } else {
-      return getRequest(
-        APIRoutes.getTeacherCoursesPath(teacher.id),
-        (responseData) => dispatch(actions.receiveCoursesSuccess(responseData)),
-        (error) => {
-          dispatch(actions.receiveStandardError(error));
-          standardError(error);
-        }
-      );
-    }
+    let path = teacher.admin ? APIRoutes.getCoursesPath() : APIRoutes.getTeacherCoursesPath(teacher.id);
+    return getRequest(
+      path,
+      (responseData) => dispatch(actions.receiveCoursesSuccess(responseData)),
+      (error) => {
+        dispatch(actions.receiveStandardError(error));
+        console.log("Fetch Courses Error: " + error);
+        standardError(error);
+      }
+    );
+
   }
 }
 
@@ -205,6 +201,7 @@ const syncAttendances = (attendances, courseId, date) => {
     Promise.all(attendancePromises).then((responseData) => {
       dispatch(actions.receiveUpdateAttendancesSuccess(responseData, courseId, date));
     }).catch((error) => {
+      console.log("Update Attendances Error: " + error);
       dispatch(actions.receiveUpdateAttendancesError(attendances, courseId, date));
     });
   }
