@@ -5,8 +5,12 @@ import { Platform } from 'react-native'
  */
  // TODO (Kelsey): test whether if check actually works
 if (process.env.NODE_ENV === 'production') {
-  URL = 'https://dream-rails-production.herokuapp.com';
+  console.log('production');
+  URL = 'https://dream-rails-staging.herokuapp.com';
+  // URL = 'https://dream-rails-production.herokuapp.com';
+
 } else {
+  console.log('staging');
   URL = Platform.select({
     ios: "http://10.142.186.13:3000",
     // For Android Emulator
