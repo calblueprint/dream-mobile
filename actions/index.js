@@ -94,23 +94,8 @@ let actions = {
   updateAttendance:(attendance, courseId, date) => {
     return {
       type: types.UPDATE_ATTENDANCE,
-      meta: {
-        offline: {
-          effect: {
-              url: APIRoutes.attendancePath(),
-              headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-              },
-              method: 'PUT',
-              body: attendance,
-          }
-          commit: openModal()
-          rollback: openModal()
-        }
-      }
     }
-  }
+  },
   requestUpdateAttendances: (courseId, date) => {
     return {
       type: types.REQUEST_UPDATE_ATTENDANCES,

@@ -121,12 +121,14 @@ class CoursesScreen extends React.Component {
     let toaster = this.message ? <Toaster message={this.message} /> : null;
 
     return (
-      <ScrollView>
-        <View style={{backgroundColor: '#f5f5f6'}}>
-          { toaster }
-          { courses }
-        </View>
-      </ScrollView>
+      <View>
+        { toaster }
+        <ScrollView>
+          <View style={{backgroundColor: '#f5f5f6'}}>
+            { courses }
+          </View>
+        </ScrollView>
+      </View>
     );
 
   }
