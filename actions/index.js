@@ -87,6 +87,13 @@ let actions = {
       courseId,
     }
   },
+  receiveCourseAttendancesSuccess: (attendances, courseId) => {
+    return {
+      type: types.RECEIVE_COURSE_ATTENDANCES_SUCCESS,
+      attendances,
+      courseId
+    }
+  },
   receiveAttendancesSuccess: (attendances, courseId, date) => {
     return {
       type: types.RECEIVE_ATTENDANCES_SUCCESS,

@@ -24,6 +24,12 @@ export const attendances = (state = {}, action) => {
           list: action.attendances,
           isSynced: true,
       })});
+    case types.RECEIVE_COURSE_ATTENDANCES_SUCCESS:
+      return Object.assign({}, state, {
+        [action.date]: Object.assign({}, state[action.date], {
+          list: action.attendances
+      })});
+
     case types.RECEIVE_UPDATE_ATTENDANCES_ERROR:
       return Object.assign({}, state, {
         [action.date]: Object.assign({}, state[action.date], {
@@ -34,4 +40,3 @@ export const attendances = (state = {}, action) => {
       return state;
   }
 }
-

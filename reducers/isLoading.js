@@ -11,6 +11,7 @@ export const isLoading = (state = {}, action) => {
       return { value: true }
     case types.RECEIVE_TEACHER_SUCCESS:
     case types.RECEIVE_COURSES_SUCCESS:
+    case types.RECEIVE_COURSE_ATTENDANCES_SUCCESS:
     case types.RECEIVE_ATTENDANCES_SUCCESS:
     case types.RECEIVE_UPDATE_ATTENDANCES_SUCCESS:
     case types.RECEIVE_UPDATE_ATTENDANCES_ERROR:

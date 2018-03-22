@@ -18,6 +18,7 @@ export const courses = (state = {}, action) => {
       return action.courses;
     case types.RECEIVE_STUDENTS_SUCCESS:
     case types.RECEIVE_ATTENDANCES_SUCCESS:
+    case types.RECEIVE_COURSE_ATTENDANCES_SUCCESS:
     case types.RECEIVE_UPDATE_ATTENDANCES_SUCCESS:
     case types.RECEIVE_UPDATE_ATTENDANCES_ERROR:
       // For specific course
@@ -47,6 +48,7 @@ const course = (state = {}, action) => {
         students: students(state.students, action)
       });
     case types.RECEIVE_ATTENDANCES_SUCCESS:
+    case types.RECEIVE_COURSE_ATTENDANCES_SUCCESS:
     case types.RECEIVE_UPDATE_ATTENDANCES_SUCCESS:
     case types.RECEIVE_UPDATE_ATTENDANCES_ERROR:
       // For course's attendances
@@ -57,4 +59,3 @@ const course = (state = {}, action) => {
       return state;
   }
 }
-
