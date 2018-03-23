@@ -36,17 +36,6 @@ class ViewCourseScreen extends React.Component {
     }
   }
 
-  static navigationOptions = ({ navigation }) => {
-    const { params = {} } = navigation.state;
-    return {
-        headerRight: (
-          <TouchableOpacity onPress={() => params.handleCreate()}>
-            <View style={{marginRight: 8}}><Entypo name="add-user" size={28} color={colors.iconDark} /></View>
-          </TouchableOpacity>
-        )
-    };
-  };
-
   componentDidMount() {
     this._fetchCourse();
 
@@ -88,6 +77,7 @@ class ViewCourseScreen extends React.Component {
       this.setState({ teachers: responseData.teachers});
       this._fetchStudents();
     }
+    console.log(this.state.course_id);
     getRequest(APIRoutes.getTeachersPath(this.state.course_id), successFunc, standardError);
   }
 
@@ -99,7 +89,7 @@ class ViewCourseScreen extends React.Component {
       this.setState({ students: responseData, isLoading: false });
     }
 
-    getRequest(APIRoutes.getStudentsPath(this.state.course_id), successFunc, standardError);
+    getRequest(APIRoutes.getCourseStudentsPath(this.state.course_id), successFunc, standardError);
   }
 
   _handleSelectStudent(id) {
@@ -258,8 +248,8 @@ class ViewCourseScreen extends React.Component {
           </View>
 
           <StyledButton
-            onPress={() => this.props.navigation.navigate('CreateStudent',
-        { refreshStudents: this._fetchStudents, courseId: this.state.course_id, newStudent: true })}
+            // onPress={() => this.props.navigation.navigate('CreateStudent',
+        // { refreshStudents: this._fetchStudents, courseId: this.state.course_id, newStudent: true })}
             text="+ Enroll Student"
             linkButton
           />
