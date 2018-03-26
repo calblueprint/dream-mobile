@@ -88,8 +88,6 @@ class Toaster extends Component {
   render () {
     const { messages } = this.state
     if (!messages.length) return null
-    console.log(messages);
-    console.log(messages[0]);
     return <Toast {...messages[0]} onShow={this.onShow} onHide={this.onHide} onPress={this.onPress} />
   }
 }
