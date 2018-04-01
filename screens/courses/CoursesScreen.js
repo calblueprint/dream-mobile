@@ -35,11 +35,11 @@ class CoursesScreen extends React.Component {
   }
 
   componentDidMount() {
-    this.props.fetchCourses(this.props.teacher);
+    this.props.fetchCourses(this.props.teacher.data);
 
     const _createCourse = () => {
        this.props.navigation.navigate('EditCourse', {refreshCourses: this.props.fetchCourses, newCourse: true, 
-        sessions: [], teacher: this.props.teacher})}
+        sessions: [], teacher: this.props.teacher.data})}
 
 
     this.props.navigation.setParams({ handleCreate: _createCourse });

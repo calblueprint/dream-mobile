@@ -5,7 +5,7 @@ import actions from '../../actions';
 import LocalStorage from '../../helpers/LocalStorage'
 import { Button, ScrollView, Text, TextInput, View } from 'react-native';
 import { commonStyles } from '../../styles/styles';
-import { postRequest } from '../../lib/requests';
+import { getRequest, postRequest } from '../../lib/requests';
 import { APIRoutes } from '../../config/routes';
 import { standardError } from '../../lib/alerts';
 import SignUpForm from '../../components/Form/SignUpForm'
@@ -49,7 +49,7 @@ class SignUpScreen extends React.Component {
 const fetchTeacher = (params, navigation) => {
   return (dispatch) => {
     dispatch(actions.requestTeacher(params));
-    return postRequest(
+    return getRequest(
       APIRoutes.signupPath(),
       (responseData) => {
         dispatch(actions.receiveTeacherSuccess(responseData));

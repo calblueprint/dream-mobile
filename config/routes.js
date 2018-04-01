@@ -132,8 +132,9 @@ export class APIRoutes {
   static attendancePath(id)           { return APIRoutes.createRoute(`attendances/${id}`) }
 
   // Login
-  static signupPath()                 { return `/sign_up` }
+  static signupPath()                 { return APIRoutes.deviseRoute(`sign_up`) }
   static loginPath()                  { return APIRoutes.deviseRoute(`sign_in`) }
+  static signoutPath()                { return APIRoutes.deviseRoute(`sign_out`) }
 
   // Students enrolled in a particular course
   static getCourseStudentsPath(id)    { return APIRoutes.createRoute(`courses/${id}/students`) }

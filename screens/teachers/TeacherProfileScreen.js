@@ -22,10 +22,14 @@ class TeacherProfileScreen extends React.Component {
   }
 
   componentDidMount() {
-    this.props.fetchTeacher(this.props.teacher);
+    console.log('profile - teacher object');
+    console.log(this.props.teacher.data);
+    this.props.fetchTeacher(this.props.teacher.data);
   }
 
   _attemptSignOut() {
+    console.log('profile - this.props');
+    console.log(this.props);
     this.props.logout();
     this.props.navigation.navigate('Login');
   }
