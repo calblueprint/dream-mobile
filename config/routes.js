@@ -80,7 +80,7 @@ export const HomeStack = StackNavigator({
   CreateStudent : {
     screen: CreateStudentScreen,
     navigationOptions: {
-      headerTitle: 'Enroll Student',
+      headerTitle: 'Create Student',
     },
   },
   StudentProfile : {
