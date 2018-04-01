@@ -26,11 +26,15 @@ class LoginScreen extends React.Component {
   }
 
   _attemptLogin() {
+    // const params = {
+    //   teacher: {
+    //     email: this.state.email,
+    //     password: this.state.password,
+    //   }
+    // }
     const params = {
-      teacher: {
-        email: this.state.email,
-        password: this.state.password,
-      }
+      email: this.state.email,
+      password: this.state.password,
     }
     this.props.fetchTeacher(params, this.props.navigation);
   }

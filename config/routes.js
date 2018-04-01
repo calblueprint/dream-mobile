@@ -111,7 +111,7 @@ export const HomeStack = StackNavigator({
 export class APIRoutes {
   // Use to build api routes
   static createRoute(route)           { return `/api/${route}` }
-  static deviseRoute(route)           { return `/teachers/${route}` }
+  static deviseRoute(route)           { return `/auth/${route}` }
 
   // Courses
   static getCoursesPath()             { return APIRoutes.createRoute(`courses`) }
