@@ -6,7 +6,22 @@ import reducers from '../reducers';
 import thunk from 'redux-thunk';
 
 const reducer = combineReducers(reducers);
-const initialState = { isLoading: {value: true} };
+const initialState = { 
+	isLoading: {value: true},
+	reduxTokenAuthReducer: {
+	    currentUser: {
+	      isLoading: false,
+	      isSignedIn: false,
+	      attributes: {
+	        firstName: 'first_name',
+	        lastName: 'last_name',
+	        dreamId: 'dream_id',
+	        email: 'email',
+	        phone: 'phone',
+	      },
+	    },
+	  },
+	};
 
 // TODO: fix all references to `configureStore`
 // TODO: figure out if we still need `redux-thunk`
