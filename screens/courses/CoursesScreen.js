@@ -35,7 +35,7 @@ class CoursesScreen extends React.Component {
   }
 
   componentDidMount() {
-    this.props.fetchCourses(this.props.teacher.data);
+    this.props.fetchCourses(this.props.teacher);
 
     const _createCourse = () => {
        this.props.navigation.navigate('EditCourse', {refreshCourses: this.props.fetchCourses, newCourse: true, 
@@ -83,7 +83,7 @@ class CoursesScreen extends React.Component {
         { courses }
         <StyledButton
           onPress={() => navigate('EditCourse', {refreshCourses: this.props.fetchCourses, newCourse: true, 
-            sessions: [], teacher: this.props.teacher})}
+            sessions: [], teacher: this.props.teacher.data})}
           text='Create Course'
           primaryButtonLarge>
         </StyledButton>
@@ -115,6 +115,8 @@ class CoursesScreen extends React.Component {
 }
 
 const fetchCourses = (teacher) => {
+  console.log('fetchCourses teacher');
+  console.log(teacher);
   return (dispatch) => {
     dispatch(actions.requestCourses());
     if (teacher.admin) {
@@ -140,8 +142,10 @@ const fetchCourses = (teacher) => {
 }
 
 const mapStateToProps = (state) => {
+  console.log('state.teacher');
+  console.log(state.teacher.data);
   return {
-    teacher: state.teacher,
+    teacher: state.teacher.data,
     courses: state.courses,
     isLoading: state.isLoading.value,
   };
