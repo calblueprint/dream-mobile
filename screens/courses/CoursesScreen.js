@@ -79,6 +79,7 @@ class CoursesScreen extends React.Component {
       // Attempt to Sync any unsynced Attendances
       let result = this.syncAllAttendances(this.props.courses);
       if (result != null) { // if there are synced attendances, update the toaster
+        this.showToasterMessageOnce = true;
         this.setState({ toasterMessage: this.syncMessages.syncing });
       }
       return result // result should contain a promise for when the syncing attendances finish

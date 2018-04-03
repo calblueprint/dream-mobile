@@ -13,11 +13,11 @@ if (process.env.NODE_ENV === 'production') {
 } else {
   console.log('staging');
   URL = Platform.select({
-    ios: "http://localhost:3000",
+    ios: "http://192.168.128.42:3000",
     // For Android Emulator
     android: "http://10.0.2.2:3000"
   });
-  ALT_URL = URL += "1";
+  ALT_URL = URL + "1";
 }
 
 export const settings = {

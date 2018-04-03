@@ -30,7 +30,7 @@ class LoginScreen extends React.Component {
       teacher: {
         // email: this.state.email,
         // password: this.state.password,
-        // TEMPORARY AUTOFILL
+        // TODO: TEMPORARY AUTOFILL Pls remove
         email: "user1@gmail.com",
         password: "password"
       }
