@@ -12,6 +12,7 @@ import TeacherProfileEditScreen from '../screens/teachers/TeacherProfileEditScre
 import EditCourseScreen from '../screens/courses/EditCourseScreen';
 import CreateStudentScreen from '../screens/students/CreateStudentScreen';
 import StudentProfileScreen from '../screens/students/StudentProfileScreen';
+import SearchStudentScreen from '../screens/students/SearchStudentScreen';
 import AttendanceScreen from '../screens/attendances/AttendanceScreen';
 import AttendanceSummaryScreen from '../screens/attendances/AttendanceSummaryScreen';
 import { FontAwesome } from '@expo/vector-icons';
@@ -99,6 +100,15 @@ export const HomeStack = StackNavigator({
     screen: AttendanceSummaryScreen,
     navigationOptions: ({navigation}) => ({
       headerTitle: 'Attendance Summary',
+      headerRight: (<Button title='Edit' onPress={() => { navigation.goBack() }}/>),
+    }),
+  },
+
+  // temp to make search students proof-of-concept work; refactor once Flo merges her enroll student PR
+  SearchStudent: {
+    screen: SearchStudentScreen,
+    navigationOptions: ({navigation}) => ({
+      headerTitle: 'Search Student',
       headerRight: (<Button title='Edit' onPress={() => { navigation.goBack() }}/>),
     }),
   },
