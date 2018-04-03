@@ -29,7 +29,7 @@ class LoginScreen extends React.Component {
     const params = {
       teacher: {
         email: this.state.email,
-        password: this.state.password,
+        password: this.state.password
       }
     }
     this.props.fetchTeacher(params, this.props.navigation);
