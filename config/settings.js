@@ -17,6 +17,8 @@ if (process.env.NODE_ENV === 'production') {
     // For Android Emulator
     android: "http://10.0.2.2:3000"
   });
+  
+  // Intended to be an alternate URL that should make requests fail.
   ALT_URL = URL + "1";
 }
 

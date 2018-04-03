@@ -32,6 +32,7 @@ export const courses = (state = {}, action) => {
 
 
 // Merges old courses and new courses.
+// TODO: Use JS tricks to make this much shorter
 const checkUnsyncedAttendances = (oldCourses, newCourses) => {
   var courseUpdates = {};
   for(let courseId in oldCourses) {

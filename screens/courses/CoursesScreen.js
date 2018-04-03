@@ -73,29 +73,33 @@ class CoursesScreen extends React.Component {
     });
   }
 
+  updateToasterMessage(message) {
+    this.setState({ toasterMessage: message });
+    this.showToasterMessageOnce = true;
+  }
+
   getLatestCourses() {
     this.props.fetchCourses(this.props.teacher).then((response) => {
       console.log("Finished Fetching Courses!");
-      // Attempt to Sync any unsynced Attendances
+      // Attempt to Sync any unsynced Attendances. returns null if no unsynced attendances
       let result = this.syncAllAttendances(this.props.courses);
-      if (result != null) { // if there are synced attendances, update the toaster
-        this.showToasterMessageOnce = true;
-        this.setState({ toasterMessage: this.syncMessages.syncing });
+
+      // if there are synced attendances, update the toaster
+      if (result != null) {
+        this.updateToasterMessage(this.syncMessages.syncing);
       }
-      return result // result should contain a promise for when the syncing attendances finish
+      // result should contain a promise for when the syncing attendances finish unless null
+      return result
     }).then((response) => {
-      if (response == null) { // if the result is just null, there were never any unsynced attendances.
+      // if the result is just null, there were never any unsynced attendances.
+      if (response == null) {
         return response;
       }
       // else, update the toaster message
       console.log("Finished Syncing Attendances");
-      this.showToasterMessageOnce = true;
-      this.setState({ toasterMessage: this.syncMessages.success });
-      setTimeout(() => { this.setState({toasterMessage: null})}, 100);
+      this.updateToasterMessage(this.syncMessages.success);
     }).catch((error) => { //TODO: See if this actually gets called when request failed.
-      this.showToasterMessageOnce = true;
-      this.setState( { toasterMessage: this.syncMessages.failed });
-      setTimeout(() => { this.setState({toasterMessage: null})}, 100);
+      this.updateToasterMessage(this.syncMessages.failed);
       console.log("Error: " + error.message);
     });
   }
