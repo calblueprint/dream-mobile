@@ -286,7 +286,7 @@ const styles = StyleSheet.create({
   }
 });
 // TODO (Kelsey): Add PropTypes from navigation
- 
+
 /**
   * Attempts to update each changed attendance and waits for each request to succeed
   * and shows different modal based on whether sync succeeded or failed. Saves attendances
@@ -327,7 +327,7 @@ updateAttendance = (attendance, index) => {
   const params = attendance
 
   if (attendance.isChanged) {
-    return putRequestNoCatch(APIRoutes.attendancePath(), successFunc, errorFunc, params, shouldUseAltRoute=true);
+    return putRequestNoCatch(APIRoutes.attendancePath(), successFunc, errorFunc, params);
   } else {
     return attendance;
   }

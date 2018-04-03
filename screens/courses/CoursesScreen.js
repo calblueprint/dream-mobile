@@ -44,26 +44,12 @@ class CoursesScreen extends React.Component {
   }
 
   componentDidMount() {
-    this.props.fetchCourses(this.props.teacher).then((response) => {
-      console.log("Finished Fetching Courses!");
-      let result = this.syncAllAttendances(this.props.courses);
-      if (result != null) {
-        this.setState({ toasterMessage: this.syncMessages.syncing });
-      }
-      return result
-    }).then((response) => {
-      if (response == null) {
-        return response;
-      }
-      console.log("Finished Syncing Attendances");
-      this.setState({ toasterMessage: this.syncMessages.success });
-      setTimeout(() => { this.setState({toasterMessage: null})}, 2000);
-    }).catch((error) => { //TODO: See if this actually gets called when request failed.
-      this.setState( { toasterMessage: this.syncMessages.failed });
-      setTimeout(() => { this.setState({toasterMessage: null})}, 2000);
-      console.log("Error: " + error.message);
-    });
-
+    if(this.props.online) {
+      this.getLatestCourses();
+    } else {
+      console.log("Currently offline. Not fetching courses.")
+      //TODO: Show toaster to update user
+    }
     const _createCourse = () => {
        this.props.navigation.navigate('EditCourse', {refreshCourses: this.props.fetchCourses, newCourse: true,
         sessions: [], teacher: this.props.teacher})}
@@ -84,6 +70,32 @@ class CoursesScreen extends React.Component {
       courseId: course_id,
       courseTitle: title,
       date: date,
+    });
+  }
+
+  getLatestCourses() {
+    this.props.fetchCourses(this.props.teacher).then((response) => {
+      console.log("Finished Fetching Courses!");
+      // Attempt to Sync any unsynced Attendances
+      let result = this.syncAllAttendances(this.props.courses);
+      if (result != null) { // if there are synced attendances, update the toaster
+        this.setState({ toasterMessage: this.syncMessages.syncing });
+      }
+      return result // result should contain a promise for when the syncing attendances finish
+    }).then((response) => {
+      if (response == null) { // if the result is just null, there were never any unsynced attendances.
+        return response;
+      }
+      // else, update the toaster message
+      console.log("Finished Syncing Attendances");
+      this.showToasterMessageOnce = true;
+      this.setState({ toasterMessage: this.syncMessages.success });
+      setTimeout(() => { this.setState({toasterMessage: null})}, 100);
+    }).catch((error) => { //TODO: See if this actually gets called when request failed.
+      this.showToasterMessageOnce = true;
+      this.setState( { toasterMessage: this.syncMessages.failed });
+      setTimeout(() => { this.setState({toasterMessage: null})}, 100);
+      console.log("Error: " + error.message);
     });
   }
 
@@ -145,6 +157,12 @@ class CoursesScreen extends React.Component {
 
   render() {
     let courses;
+    var toasterMessage = this.state.toasterMessage;
+    if(this.showToasterMessageOnce) {
+      this.showToasterMessageOnce = false;
+    } else {
+      toasterMessage = null;
+    }
     if (this.props.isLoading) {
       courses = (
         <Image
@@ -158,7 +176,7 @@ class CoursesScreen extends React.Component {
     return (
       <ScrollView>
         <View style={{backgroundColor: '#f5f5f6'}}>
-          <Toaster message={this.state.toasterMessage} />
+          <Toaster message={toasterMessage} />
           { courses }
         </View>
       </ScrollView>
