@@ -12,11 +12,9 @@ import { frontendError } from '../../lib/alerts';
 class CreateStudentForm extends React.Component {
   constructor(props) {
     super(props);
-
     this._getInitialFormValues = this._getInitialFormValues.bind(this);
     this._handleFormChange = this._handleFormChange.bind(this);
     this._handleSaveStudent = this._handleSaveStudent.bind(this);
-
 
     this.state = {
       formValues: this._getInitialFormValues(),
@@ -222,7 +220,6 @@ class CreateStudentForm extends React.Component {
         />
       </ScrollView>
     );
-
   }
 }
 
