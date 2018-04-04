@@ -19,15 +19,14 @@ export const attendances = (state = {}, action) => {
           list: action.attendances
       })});
     case types.RECEIVE_UPDATE_ATTENDANCES_SUCCESS:
+    //TODO: Make sure this merges fine
       return Object.assign({}, state, {
         [action.date]: Object.assign({}, state[action.date], {
           list: action.attendances,
       })});
     case types.RECEIVE_COURSE_ATTENDANCES_SUCCESS:
-      return Object.assign({}, state, {
-        [action.date]: Object.assign({}, state[action.date], {
-          list: action.attendances
-      })});
+    //TODO: Assure that rails returns a list of attendances for the course.
+      return action.attendances;
 
     case types.RECEIVE_UPDATE_ATTENDANCES_ERROR:
       return Object.assign({}, state, {

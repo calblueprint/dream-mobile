@@ -133,6 +133,11 @@ let actions = {
       date
     }
   },
+  clearLocalChanges: () => {
+    return {
+      type: types.CLEAR_LOCAL_CHANGES,
+    }
+  }
 };
 
 export default actions;

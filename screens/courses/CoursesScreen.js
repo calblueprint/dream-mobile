@@ -35,14 +35,10 @@ class CoursesScreen extends React.Component {
   }
 
   componentDidMount() {
-
-    //TODO: Make sure that after you fetch courses, you merge any existing local changes with courses.
-    this.props.syncLocalChanges(this.props.localAttendances).then((result) => {
-      return this.props.fetchCourses(this.props.teacher);
-    }).then((result) => {
-      console.log("Finished fetch courses call");
+    // This prioritizes local changes over on-server changes but it makes the code very clean
+    this.props.fetchCourses(this.props.teacher).then((result) => {
+      this.props.syncLocalChanges(this.props.localAttendances, this.getCourseIds());
     });
-
 
     const _createCourse = () => {
        this.props.navigation.navigate('EditCourse', {refreshCourses: this.props.fetchCourses, newCourse: true,
@@ -50,6 +46,16 @@ class CoursesScreen extends React.Component {
 
 
     this.props.navigation.setParams({ handleCreate: _createCourse });
+  }
+
+  getCourseIds() {
+    let courseKeys = Object.keys(this.props.courses).filter((courseKey) => {
+      return this.props.courses.hasOwnProperty(courseKey);
+    });
+    return courseKeys.map((courseKey, i) => {
+      let course = this.props.courses[courseKey];
+      return course.id;
+    });
   }
 
   _handleSelectCourse(course_id) {
@@ -121,11 +127,17 @@ class CoursesScreen extends React.Component {
   }
 }
 
-//TODO: Need to convert to promise
-const syncLocalChanges = (attendances) => {
+/**
+  * Loops through provided and attempts to sync each with server
+  * Takes in array of courseIds to know which one to update in the store.
+  */
+const syncLocalChanges = (attendances, courseIds) => {
   return (dispatch) => {
+    // Clear changes and retry for each thing. Each failed sync will re-add the attendance to local
+    dispatch(actions.clearLocalChanges());
     const attendancePromises = attendances.map((attendance, i) => {
-      return dispatch(syncAttendances(attendance.attendances, attendance.courseId, attendance.date));
+      let saveToStore = attendance.courseId in courseIds;
+      return dispatch(syncAttendances(attendance.attendances, attendance.courseId, attendance.date, saveToStore));
     });
     return Promise.all(attendancePromises);
   }
@@ -199,10 +211,10 @@ const fetchRecentCourseAttendances = (courseId) => {
 
 /**
   * Attempts to update each changed attendance and waits for each request to succeed
-  * and shows different modal based on whether sync succeeded or failed. Saves attendances
-  * to store regardless of success/failiure.
+  * and shows different modal based on whether sync succeeded or failed. Only saves attendance to
+  * store if directed to
   */
-syncAttendances = (attendances, courseId, date) => {
+const syncAttendances = (attendances, courseId, date, saveToStore) => {
   return (dispatch) => {
     dispatch(actions.requestUpdateAttendances(courseId, date));
     const attendancePromises = attendances.map((attendance, i) => {
@@ -210,10 +222,13 @@ syncAttendances = (attendances, courseId, date) => {
     });
 
     return Promise.all(attendancePromises).then((responseData) => {
-      dispatch(actions.receiveUpdateAttendancesSuccess(responseData, courseId, date));
+      if (saveToStore) {
+        dispatch(actions.receiveUpdateAttendancesSuccess(responseData, courseId, date));
+      }
     }).catch((error) => {
-      // marks course as unsynced
-      dispatch(actions.receiveUpdateAttendancesError(attendances, courseId, date));
+      if (saveToStore) {
+        dispatch(actions.receiveUpdateAttendancesError(attendances, courseId, date));
+      }
     });
   }
 }
@@ -222,7 +237,7 @@ syncAttendances = (attendances, courseId, date) => {
   * Makes put request to update given attendance if it has been changed
   * (Uses putRequestNoCatch so any errors get caught in Promise.all)
   */
-updateAttendance = (attendance, index) => {
+const updateAttendance = (attendance, index) => {
   const successFunc = (responseData) => {
     return responseData;
   }
@@ -250,7 +265,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    syncLocalChanges: (attendances) => dispatch(syncLocalChanges(attendances)),
+    syncLocalChanges: (attendances, courseIds) => dispatch(syncLocalChanges(attendances, courseIds)),
     fetchCourses: (teacher) => dispatch(fetchCourses(teacher)),
     fetchStudents: (courseId, date) => dispatch(fetchStudents(courseId, date)),
     fetchRecentCourseAttendances: (students, courseId, date) => dispatch(fetchRecentCourseAttendances(students, courseId, date)),

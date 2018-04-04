@@ -11,6 +11,8 @@ export const localChanges = (state = { attendances: [] }, action) => {
       return Object.assign({}, state, {
         attendances: [ ...attendances, newAttendance ]
       });
+    case types.CLEAR_LOCAL_CHANGES:
+      return {attendances: []};
     default:
       return state
   }
