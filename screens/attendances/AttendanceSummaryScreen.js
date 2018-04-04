@@ -303,7 +303,9 @@ syncAttendances = (attendances, courseId, date) => {
       dispatch(actions.receiveUpdateAttendancesSuccess(responseData, courseId, date));
       dispatch(actions.openModal());
     }).catch((error) => {
+      // Optimistically updates and marks course as unsynced
       dispatch(actions.receiveUpdateAttendancesError(attendances, courseId, date));
+      dispatch(actions.saveLocalChanges(attendances, courseId, date));
       dispatch(actions.openModal());
     });
   }

@@ -79,6 +79,7 @@ const fetchTeacher = (params, navigation) => {
         navigation.navigate('Courses');
       },
       (error) => {
+        //TODO: We shouldn't dispatch actions in case of error here since if the fetch request fails, this error function doesn't get called
         dispatch(actions.receiveStandardError(error));
         standardError(error);
       },

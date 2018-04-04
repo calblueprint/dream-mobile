@@ -125,6 +125,14 @@ let actions = {
       date
     }
   },
+  saveLocalChanges: (attendances, courseId, date) => {
+    return {
+      type: types.SAVE_LOCAL_CHANGES,
+      attendances,
+      courseId,
+      date
+    }
+  },
 };
 
 export default actions;

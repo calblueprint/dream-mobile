@@ -114,40 +114,33 @@ class CoursesScreen extends React.Component {
   }
 }
 
+//TODO: Need to convert to promise
+const attemptUpdateLocalChanges = (attendances) => {
+  return (dispatch) => {
+    for (var attendance in attendances) {
+      dispatch(syncAttendances(attendance.attendances, attendance.courseId, attendance.date));
+    }
+  }
+}
+
 const fetchCourses = (teacher) => {
   return (dispatch) => {
     dispatch(actions.requestCourses());
-    if (teacher.admin) {
-      return getRequest(
-        APIRoutes.getCoursesPath(),
-        (responseData) =>  {
-          dispatch(actions.receiveCoursesSuccess(responseData))
-          for (const key in responseData) { // Once you have the courses, fetch student and attendance data
-            dispatch(fetchStudents(responseData[key].id));
-            dispatch(fetchRecentCourseAttendances(responseData[key].id));
-          }
-        },
-        (error) => {
-          dispatch(actions.receiveStandardError(error));
-          standardError(error);
+    let path = teacher.admin ? APIRoutes.getCoursesPath : APIRoutes.getTeacherCoursesPath;
+    return getRequest(
+      path,
+      (responseData) =>  {
+        dispatch(actions.receiveCoursesSuccess(responseData))
+        for (const key in responseData) { // Once you have the courses, fetch student and attendance data
+          dispatch(fetchStudents(responseData[key].id));
+          //dispatch(fetchRecentCourseAttendances(responseData[key].id));
         }
-      );
-    } else {
-      return getRequest(
-        APIRoutes.getTeacherCoursesPath(teacher.id),
-        (responseData) => {
-          dispatch(actions.receiveCoursesSuccess(responseData))
-          for (let key in responseData) {
-            dispatch(fetchStudents(responseData[key].id));
-            dispatch(fetchRecentCourseAttendances(responseData[key].id));
-          }
-        },
-        (error) => {
-          dispatch(actions.receiveStandardError(error));
-          standardError(error);
-        }
-      );
-    }
+      },
+      (error) => {
+        dispatch(actions.receiveStandardError(error));
+        standardError(error);
+      }
+    );
   }
 }
 
@@ -196,8 +189,53 @@ const fetchRecentCourseAttendances = (courseId) => {
   }
 }
 
+/**
+  * Attempts to update each changed attendance and waits for each request to succeed
+  * and shows different modal based on whether sync succeeded or failed. Saves attendances
+  * to store regardless of success/failiure.
+  */
+syncAttendances = (attendances, courseId, date) => {
+  return (dispatch) => {
+    dispatch(actions.requestUpdateAttendances(courseId, date));
+    const attendancePromises = attendances.map((attendance, i) => {
+      return updateAttendance(attendance, i);
+    });
+
+    Promise.all(attendancePromises).then((responseData) => {
+      dispatch(actions.receiveUpdateAttendancesSuccess(responseData, courseId, date));
+      dispatch(actions.openModal());
+    }).catch((error) => {
+      // Optimistically updates and marks course as unsynced
+      dispatch(actions.receiveUpdateAttendancesError(attendances, courseId, date));
+      dispatch(actions.saveLocalChanges(attendances, courseId, date));
+      dispatch(actions.openModal());
+    });
+  }
+}
+
+/**
+  * Makes put request to update given attendance if it has been changed
+  * (Uses putRequestNoCatch so any errors get caught in Promise.all)
+  */
+updateAttendance = (attendance, index) => {
+  const successFunc = (responseData) => {
+    return responseData;
+  }
+  const errorFunc = (error) => {
+    console.log(error);
+  }
+  const params = attendance
+
+  if (attendance.isChanged) {
+    return putRequestNoCatch(APIRoutes.attendancePath(), successFunc, errorFunc, params);
+  } else {
+    return attendance;
+  }
+}
+
 const mapStateToProps = (state) => {
   return {
+    localAttendances: state.localChanges.attendances,
     teacher: state.teacher,
     courses: state.courses,
     isLoading: state.isLoading.value,
@@ -206,6 +244,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    attemptUpdateLocalChanges: () => dispatch(attemptUpdateLocalChanges()),
     fetchCourses: (teacher) => dispatch(fetchCourses(teacher)),
     fetchStudents: (courseId, date) => dispatch(fetchStudents(courseId, date)),
     fetchRecentCourseAttendances: (students, courseId, date) => dispatch(fetchRecentCourseAttendances(students, courseId, date)),

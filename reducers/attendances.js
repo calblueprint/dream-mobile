@@ -22,7 +22,6 @@ export const attendances = (state = {}, action) => {
       return Object.assign({}, state, {
         [action.date]: Object.assign({}, state[action.date], {
           list: action.attendances,
-          isSynced: true,
       })});
     case types.RECEIVE_COURSE_ATTENDANCES_SUCCESS:
       return Object.assign({}, state, {
@@ -34,7 +33,6 @@ export const attendances = (state = {}, action) => {
       return Object.assign({}, state, {
         [action.date]: Object.assign({}, state[action.date], {
           list: action.attendances,
-          isSynced: false,
       })});
     default:
       return state;
