@@ -28,8 +28,10 @@ class LoginScreen extends React.Component {
   _attemptLogin() {
     const params = {
       teacher: {
-        email: this.state.email,
-        password: this.state.password,
+        // email: this.state.email,
+        // password: this.state.password,
+        email: "user2@gmail.com",
+        password: "password"
       }
     }
     this.props.fetchTeacher(params, this.props.navigation);
@@ -79,7 +81,7 @@ const fetchTeacher = (params, navigation) => {
         navigation.navigate('Courses');
       },
       (error) => {
-        //TODO: We shouldn't dispatch actions in case of error here since if the fetch request fails, this error function doesn't get called
+        //TODO: (Aivant) We shouldn't dispatch actions in case of error here since if the fetch request fails, this error function doesn't get called
         dispatch(actions.receiveStandardError(error));
         standardError(error);
       },

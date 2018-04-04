@@ -9,7 +9,7 @@ export const localChanges = (state = { attendances: [] }, action) => {
         date: action.date,
       }
       return Object.assign({}, state, {
-        attendances: [ ...attendances, newAttendance ]
+        attendances: [ ...state.attendances, newAttendance ]
       });
     case types.CLEAR_LOCAL_CHANGES:
       return {attendances: []};

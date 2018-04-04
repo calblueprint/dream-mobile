@@ -304,6 +304,8 @@ syncAttendances = (attendances, courseId, date) => {
       dispatch(actions.openModal());
     }).catch((error) => {
       // Optimistically updates and marks course as unsynced
+      console.log("Attendance Sync Failed: " );
+      console.log(attendances);
       dispatch(actions.receiveUpdateAttendancesError(attendances, courseId, date));
       dispatch(actions.saveLocalChanges(attendances, courseId, date));
       dispatch(actions.openModal());
@@ -325,7 +327,7 @@ updateAttendance = (attendance, index) => {
   const params = attendance
 
   if (attendance.isChanged) {
-    return putRequestNoCatch(APIRoutes.attendancePath(), successFunc, errorFunc, params);
+    return putRequestNoCatch(APIRoutes.attendancePath(), successFunc, errorFunc, params, true);
   } else {
     return attendance;
   }

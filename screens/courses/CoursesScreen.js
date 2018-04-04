@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import actions from '../../actions';
 
 import { commonStyles } from '../../styles/styles';
-import { getRequest } from '../../lib/requests';
+import { getRequest, putRequestNoCatch } from '../../lib/requests';
 import { APIRoutes } from '../../config/routes';
 import { standardError } from '../../lib/alerts';
 import { attendanceDate } from '../../lib/date';
@@ -37,7 +37,7 @@ class CoursesScreen extends React.Component {
   componentDidMount() {
     // This prioritizes local changes over on-server changes but it makes the code very clean
     this.props.fetchCourses(this.props.teacher).then((result) => {
-      this.props.syncLocalChanges(this.props.localAttendances, this.getCourseIds());
+      this.props.syncLocalChanges(this.props.localAttendances);
     });
 
     const _createCourse = () => {
@@ -46,16 +46,6 @@ class CoursesScreen extends React.Component {
 
 
     this.props.navigation.setParams({ handleCreate: _createCourse });
-  }
-
-  getCourseIds() {
-    let courseKeys = Object.keys(this.props.courses).filter((courseKey) => {
-      return this.props.courses.hasOwnProperty(courseKey);
-    });
-    return courseKeys.map((courseKey, i) => {
-      let course = this.props.courses[courseKey];
-      return course.id;
-    });
   }
 
   _handleSelectCourse(course_id) {
@@ -88,7 +78,9 @@ class CoursesScreen extends React.Component {
         course_id={course.id}
         title={course.title}
         onSelectCourse={this._handleSelectCourse}
-        onTakeAttendance={this._handleTakeAttendance}/>
+        onTakeAttendance={this._handleTakeAttendance}
+        numStudents={course.students ? course.students.length : 0}
+        synced={"synced" in course ? course.synced : true}/>
       )
     );
     return (
@@ -131,13 +123,12 @@ class CoursesScreen extends React.Component {
   * Loops through provided and attempts to sync each with server
   * Takes in array of courseIds to know which one to update in the store.
   */
-const syncLocalChanges = (attendances, courseIds) => {
+const syncLocalChanges = (attendances) => {
   return (dispatch) => {
     // Clear changes and retry for each thing. Each failed sync will re-add the attendance to local
     dispatch(actions.clearLocalChanges());
     const attendancePromises = attendances.map((attendance, i) => {
-      let saveToStore = attendance.courseId in courseIds;
-      return dispatch(syncAttendances(attendance.attendances, attendance.courseId, attendance.date, saveToStore));
+      return dispatch(syncAttendances(attendance.attendances, attendance.courseId, attendance.date));
     });
     return Promise.all(attendancePromises);
   }
@@ -146,10 +137,11 @@ const syncLocalChanges = (attendances, courseIds) => {
 const fetchCourses = (teacher) => {
   return (dispatch) => {
     dispatch(actions.requestCourses());
-    let path = teacher.admin ? APIRoutes.getCoursesPath : APIRoutes.getTeacherCoursesPath;
+    let path = teacher.admin ? APIRoutes.getCoursesPath() : APIRoutes.getTeacherCoursesPath(teacher.id);
     return getRequest(
       path,
       (responseData) =>  {
+        console.log("Fetched courses");
         dispatch(actions.receiveCoursesSuccess(responseData))
         for (const key in responseData) { // Once you have the courses, fetch student and attendance data
           dispatch(fetchStudents(responseData[key].id));
@@ -157,6 +149,8 @@ const fetchCourses = (teacher) => {
         }
       },
       (error) => {
+        console.log("Error in fetching courses: ");
+        console.log(error);
         dispatch(actions.receiveStandardError(error));
         standardError(error);
       }
@@ -172,11 +166,15 @@ const fetchStudents = (courseId) => {
   return (dispatch) => {
     dispatch(actions.requestStudents(courseId));
     return getRequest(
-      APIRoutes.getStudentsPath(courseId),
+      APIRoutes.getCourseStudentsPath(courseId),
       (responseData) => {
+        console.log("Fetched students for course: " + courseId);
+        console.log(responseData);
         dispatch(actions.receiveStudentsSuccess(responseData, courseId));
       },
       (error) => {
+        console.log("Error in fetching students for course: " + courseId);
+        console.log(error);
         dispatch(actions.receiveStandardError(error));
         standardError(error);
       }
@@ -195,13 +193,13 @@ const fetchRecentCourseAttendances = (courseId) => {
     return getRequest(
       APIRoutes.getRecentAttendancesPath(courseId),
       (responseData) =>  {
-        console.log("Course: " + courseId);
+        console.log("Fetched attendances for course: " + courseId);
         console.log(responseData);
         dispatch(actions.receiveCourseAttendancesSuccess(responseData))
       },
       (error) => {
-        console.log("Error :(")
-        console.log(error)
+        console.log("Error in fetching attendances for course: " + courseId);
+        console.log(error);
         dispatch(actions.receiveStandardError(error));
         standardError(error);
       }
@@ -221,14 +219,14 @@ const syncAttendances = (attendances, courseId, date, saveToStore) => {
       return updateAttendance(attendance, i);
     });
 
+    // Those dispatches will only update the store if courseId exists in the current store
     return Promise.all(attendancePromises).then((responseData) => {
-      if (saveToStore) {
-        dispatch(actions.receiveUpdateAttendancesSuccess(responseData, courseId, date));
-      }
+      dispatch(actions.receiveUpdateAttendancesSuccess(responseData, courseId, date));
     }).catch((error) => {
-      if (saveToStore) {
-        dispatch(actions.receiveUpdateAttendancesError(attendances, courseId, date));
-      }
+      // earlier we cleared local changes so if the sync fails, we need to re-add it.
+      dispatch(actions.receiveUpdateAttendancesError(attendances, courseId, date));
+      dispatch(actions.saveLocalChanges(attendances, courseId, date));
+
     });
   }
 }
@@ -265,7 +263,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    syncLocalChanges: (attendances, courseIds) => dispatch(syncLocalChanges(attendances, courseIds)),
+    syncLocalChanges: (attendances) => dispatch(syncLocalChanges(attendances)),
     fetchCourses: (teacher) => dispatch(fetchCourses(teacher)),
     fetchStudents: (courseId, date) => dispatch(fetchStudents(courseId, date)),
     fetchRecentCourseAttendances: (students, courseId, date) => dispatch(fetchRecentCourseAttendances(students, courseId, date)),

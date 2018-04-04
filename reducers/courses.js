@@ -56,7 +56,7 @@ const course = (state = {}, action) => {
     case types.RECEIVE_UPDATE_ATTENDANCES_ERROR:
       // For course's attendances
       return Object.assign({}, state, {
-        synced: action.type == types.RECEIVE_UPDATE_ATTENDANCES_SUCCESS
+        synced: action.type == types.RECEIVE_UPDATE_ATTENDANCES_SUCCESS,
         attendances: attendances(state.attendances, action)
       });
     default:

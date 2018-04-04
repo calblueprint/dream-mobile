@@ -45,7 +45,6 @@ let actions = {
   },
 
   // TEACHERS
-  // TODO: dispatches to requestTeacher not handled anywhere?
   requestTeacher: () => {
     return {
       type: types.REQUEST_TEACHER,
