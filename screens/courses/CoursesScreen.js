@@ -35,7 +35,14 @@ class CoursesScreen extends React.Component {
   }
 
   componentDidMount() {
-    this.props.fetchCourses(this.props.teacher);
+
+    //TODO: Make sure that after you fetch courses, you merge any existing local changes with courses.
+    this.props.syncLocalChanges(this.props.localAttendances).then((result) => {
+      return this.props.fetchCourses(this.props.teacher);
+    }).then((result) => {
+      console.log("Finished fetch courses call");
+    });
+
 
     const _createCourse = () => {
        this.props.navigation.navigate('EditCourse', {refreshCourses: this.props.fetchCourses, newCourse: true,
@@ -115,11 +122,12 @@ class CoursesScreen extends React.Component {
 }
 
 //TODO: Need to convert to promise
-const attemptUpdateLocalChanges = (attendances) => {
+const syncLocalChanges = (attendances) => {
   return (dispatch) => {
-    for (var attendance in attendances) {
-      dispatch(syncAttendances(attendance.attendances, attendance.courseId, attendance.date));
-    }
+    const attendancePromises = attendances.map((attendance, i) => {
+      return dispatch(syncAttendances(attendance.attendances, attendance.courseId, attendance.date));
+    });
+    return Promise.all(attendancePromises);
   }
 }
 
@@ -201,14 +209,11 @@ syncAttendances = (attendances, courseId, date) => {
       return updateAttendance(attendance, i);
     });
 
-    Promise.all(attendancePromises).then((responseData) => {
+    return Promise.all(attendancePromises).then((responseData) => {
       dispatch(actions.receiveUpdateAttendancesSuccess(responseData, courseId, date));
-      dispatch(actions.openModal());
     }).catch((error) => {
-      // Optimistically updates and marks course as unsynced
+      // marks course as unsynced
       dispatch(actions.receiveUpdateAttendancesError(attendances, courseId, date));
-      dispatch(actions.saveLocalChanges(attendances, courseId, date));
-      dispatch(actions.openModal());
     });
   }
 }
@@ -239,12 +244,13 @@ const mapStateToProps = (state) => {
     teacher: state.teacher,
     courses: state.courses,
     isLoading: state.isLoading.value,
+    online: state.offline.online,
   };
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    attemptUpdateLocalChanges: () => dispatch(attemptUpdateLocalChanges()),
+    syncLocalChanges: (attendances) => dispatch(syncLocalChanges(attendances)),
     fetchCourses: (teacher) => dispatch(fetchCourses(teacher)),
     fetchStudents: (courseId, date) => dispatch(fetchStudents(courseId, date)),
     fetchRecentCourseAttendances: (students, courseId, date) => dispatch(fetchRecentCourseAttendances(students, courseId, date)),
