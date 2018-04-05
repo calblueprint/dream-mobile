@@ -18,7 +18,6 @@ class CreateStudentScreen extends React.Component {
   }
 
   _handleCreateStudent(params) {
-    params.student.course_id = this.state.courseId;
       const successFunc = (responseData) => {
         this.setState({ student: responseData});
         this.props.navigation.state.params.refreshStudents();
@@ -51,12 +50,20 @@ class CreateStudentScreen extends React.Component {
             birthday={navProps.birthday}
             address={navProps.address}
             dream_id={navProps.dream_id}
-            year={navProps.year}
             nickname={navProps.nickname}
             primary_contact={navProps.primary_contact}
-            primary_contact_relationship={navProps.primary_contact_relationship}
             primary_contact_phone={navProps.primary_contact_phone}
-            primary_contact_phone2={navProps.primary_contact_phone2}
+            is_active={navProps.is_active}
+            sex={navProps.sex}
+            facebook_name={navProps.facebook_name}
+            notes={navProps.notes}
+            document_type={navProps.document_type}
+            level={navProps.level}
+            phone={navProps.phone}
+            phone_2={navProps.phone_2}
+            email={navProps.email}
+            primary_language={navProps.primary_language}
+            past_dream_participant={navProps.past_dream_participant}
             onSaveStudent={this._handleUpdateStudent} />
          </View>
       )

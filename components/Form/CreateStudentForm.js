@@ -12,11 +12,9 @@ import { frontendError } from '../../lib/alerts';
 class CreateStudentForm extends React.Component {
   constructor(props) {
     super(props);
-
     this._getInitialFormValues = this._getInitialFormValues.bind(this);
     this._handleFormChange = this._handleFormChange.bind(this);
     this._handleSaveStudent = this._handleSaveStudent.bind(this);
-
 
     this.state = {
       formValues: this._getInitialFormValues(),
@@ -35,12 +33,20 @@ class CreateStudentForm extends React.Component {
       birthday: this.props.birthday,
       address: this.props.address,
       dream_id: this.props.dream_id,
-      year: this.props.year,
       nickname: this.props.nickname,
       primary_contact: this.props.primary_contact,
-      primary_contact_relationship: this.props.primary_contact_relationship,
       primary_contact_phone: this.props.primary_contact_phone,
-      primary_contact_phone2: this.props.primary_contact_phone2,
+      is_active: this.props.is_active,
+      sex: this.props.sex,
+      facebook_name: this.props.facebook_name,
+      notes: this.props.notes,
+      document_type: this.props.document_type,
+      level: this.props.level,
+      phone: this.props.phone,
+      phone_2: this.props.phone_2,
+      email: this.props.email,
+      primary_language: this.props.primary_language,
+      past_dream_participant: this.props.past_dream_participant
     }
     return values
   }
@@ -61,6 +67,7 @@ class CreateStudentForm extends React.Component {
           value={this.state.formValues}
           >
 
+          <Text> Personal Details </Text>
           <InputField
             ref='first_name'
             label='First Name'
@@ -73,6 +80,7 @@ class CreateStudentForm extends React.Component {
                 return true;
               }]}
             />
+
             <InputField
               ref='last_name'
               label='Last Name'
@@ -87,44 +95,37 @@ class CreateStudentForm extends React.Component {
               />
 
           <InputField
-            ref='dream_id'
-            label='DREAM ID'
-            value={this.props.dream_id}
-            validationFunction=
-                {[(value)=>{
-                  if(value == '') return "DREAM ID required";
-                  //Initial state is null/undefined
-                  if(!value) return "DREAM ID entered is invalid";
-                  return true;
-                }]}
-          />
+            ref='nickname'
+            label='Nickname'
+            value={this.props.nickname}
+            />
+
+          <PickerField
+            ref='is_active'
+            label='Active Participant?'
+            options={{
+              true: "Yes",
+              false: "No",
+            }}
+            value={this.props.is_active}/>
 
           <InputField
             ref='birthday'
             label='Birthday'
             value={this.props.birthday}
             type={'date'}
-            placeholder='1997-10-16'/>
+            placeholder='21 March 1998'/>
 
           <PickerField
-            ref='year'
-            label='Year'
+            ref='sex'
+            label='Sex'
             options={{
-              'one': '1',
-              'two': '2',
-              'three': '3',
-              'four': '4',
-              'five': '5',
-              'six': '6',
-              'seven': '7',
-              'eight': '8',
-              'nine': '9',
-              'ten': '10',
-              'eleven': '11',
-              'twelve': '12',
+              Female: 'Female',
+              Male: 'Male'
             }}
-            value={this.props.year}/>
+            value={this.props.sex}/>
 
+          <Text> Contact Information </Text>
           <InputField
             ref='address'
             label='Address'
@@ -133,43 +134,92 @@ class CreateStudentForm extends React.Component {
             />
 
           <InputField
-            ref='nickname'
-            label='Nickname'
-            value={this.props.nickname}
+            ref='phone'
+            label='Phone Number'
+            value={this.props.phone}
+            />
+
+          <InputField
+            ref='phone_2'
+            label='Alternate Phone Number'
+            value={this.props.phone_2}
+            />
+
+          <InputField
+            ref='facebook_name'
+            label='Name on Facebook'
+            value={this.props.facebook_name}
+            />
+
+          <InputField
+            ref='email'
+            label='Email Address'
+            value={this.props.email}
             />
 
           <InputField
             ref='primary_contact'
-            label='Primary Contact'
+            label='Primary Contact Name'
             value={this.props.primary_contact}
             />
 
           <InputField
-            ref='primary_contact_relationship'
-            label='Primary Contact Relationship'
-            value={this.props.primary_contact_relationship}
-            />
-
-          <InputField
             ref='primary_contact_phone'
-            label='Primary Contact Phone'
+            label='Primary Contact Phone Number'
             value={this.props.primary_contact_phone}
             />
 
+          <Text> Extra Information </Text>
           <InputField
-            ref='primary_contact_phone2'
-            label='Primary Contact Phone 2'
-            value={this.props.primary_contact_phone2}
+            ref='notes'
+            label='Notes (Optional)'
+            value={this.props.notes}
             />
+
+          <PickerField
+            ref='level'
+            label='Level (Montessori Only)'
+            options={{Maternal: 'Maternal', 
+            Kinder: 'Kinder', 
+            'Pre-Primaria': 'Pre-Primaria', 
+            Primero: 'Primero', 
+            Segundo: 'Segundo'}}
+            value={this.props.level}/>
+
+          <PickerField
+            ref='primary_language'
+            label='Primary Language (Optional)'
+            options={{Spanish: 'Spanish', 
+            Creole: 'Creole', 
+            Other: 'Other'}}
+            value={this.props.primary_language}/>
+
+          <PickerField
+            ref='document_type'
+            label='Document Type'
+            options={{None: 'None', 
+            'Govt. ID card': 'Govt. ID card', 
+            'Passport or foreign birth certificate': 'Passport or foreign birth certificate', 
+            'Regularization card': 'Regularization card', 
+            'Dominican birth certificate': 'Dominican birth certificate', 
+            'Dominican birth cetificate that says foreigner': 'Dominican birth cetificate that says foreigner'}}
+            value={this.props.document_type}/>
+
+          <PickerField
+            ref='past_dream_participant'
+            label='Participated in DREAM before? (Optional)'
+            options={{true : "Yes",
+            false : "No"
+            }}
+            value={this.props.past_dream_participant}/>
 
         </Form>
         <Button
           onPress={this._handleSaveStudent}
-          title='Save'
+          title='Enroll Student'
         />
       </ScrollView>
     );
-
   }
 }
 
