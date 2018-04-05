@@ -34,7 +34,6 @@ class SearchStudentForm extends React.Component {
   }
 
   _handleSearchStudent() {
-    console.log(this.state.formValues)
     if (this.state.formValues) {
       this.props.onSearchStudent({student: this.state.formValues})
     } else {

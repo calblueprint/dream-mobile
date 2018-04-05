@@ -136,6 +136,7 @@ export class APIRoutes {
   // Students
   static getStudentsPath()            { return APIRoutes.createRoute(`students`) }
   static getStudentPath(id)           { return APIRoutes.createRoute(`students/${id}`)}
+  static searchStudentPath()          { return APIRoutes.createRoute('students/search') }
 
   // Attendances
   static attendanceItemPath()         { return APIRoutes.createRoute(`attendances/attendance_item`) }

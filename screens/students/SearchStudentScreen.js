@@ -1,7 +1,7 @@
 import React from 'react';
 import { View } from 'react-native';
 import { APIRoutes } from '../../config/routes';
-import { postRequest, putRequest } from '../../lib/requests';
+import { getRequest } from '../../lib/requests';
 import { standardError } from '../../lib/alerts';
 import PropTypes from 'prop-types';
 import SearchStudentForm from '../../components/Form/SearchStudentForm'
@@ -13,12 +13,15 @@ class SearchStudentScreen extends React.Component {
   }
 
   _handleSearchStudent(params) {
+    params.first_name = params.student.first_name;
+    params.last_name = params.student.last_name;
     console.log(params.student)
+    console.log(params)
     const successFunc = (responseData) => {
       this.setState({ student: responseData});
       this.props.navigation.goBack(null);
     }
-    postRequest(APIRoutes.getStudentsPath(), successFunc, standardError, params=params);
+    getRequest(APIRoutes.searchStudentPath(), successFunc, standardError, params=params);
   }
 
   render() {
