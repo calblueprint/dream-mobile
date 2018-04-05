@@ -14,9 +14,27 @@ class SearchStudentForm extends React.Component {
     super(props);
 
     this._handleSearchStudent = this._handleSearchStudent.bind(this);
+
+    this.state = {
+      formValues: this._getInitialFormValues(),
+    }
+  }
+
+  _handleFormChange(values){
+    //formData will be a json object that will contain refs of every field
+    this.setState({ formValues : values });
+  }
+
+  _getInitialFormValues() {
+    let values = {
+      first_name: this.props.first_name,
+      last_name: this.props.last_name,
+    }
+    return values
   }
 
   _handleSearchStudent() {
+    console.log(this.state.formValues)
     if (this.state.formValues) {
       this.props.onSearchStudent({student: this.state.formValues})
     } else {
@@ -27,7 +45,10 @@ class SearchStudentForm extends React.Component {
   render() {
     return (
       <ScrollView>
-        <Form>
+        <Form
+          onChange={this._handleFormChange.bind(this)}
+          value={this.state.formValues}
+        >
           <InputField
             ref='first_name'
             label='First Name'

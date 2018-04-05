@@ -13,6 +13,7 @@ class SearchStudentScreen extends React.Component {
   }
 
   _handleSearchStudent(params) {
+    console.log(params.student)
     const successFunc = (responseData) => {
       this.setState({ student: responseData});
       this.props.navigation.goBack(null);

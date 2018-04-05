@@ -52,6 +52,7 @@ class CreateStudentForm extends React.Component {
   }
 
   _handleSaveStudent() {
+    console.log(this.state.formValues)
     if (this.state.formValues) {
       this.props.onSaveStudent({student: this.state.formValues})
     } else {
