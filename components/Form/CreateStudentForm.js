@@ -69,7 +69,7 @@ class CreateStudentForm extends React.Component {
           value={this.state.formValues}
           >
 
-          <Text> Personal Details </Text>
+          <Text> Personal Information </Text>
           <InputField
             ref='first_name'
             label='First Name'
