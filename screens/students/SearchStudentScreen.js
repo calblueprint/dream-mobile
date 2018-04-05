@@ -9,31 +9,21 @@ import SearchStudentForm from '../../components/Form/SearchStudentForm'
 class SearchStudentScreen extends React.Component {
   constructor(props) {
     super(props);
-    this._handleCreateStudent = this._handleCreateStudent.bind(this);
-    this._handleUpdateStudent = this._handleUpdateStudent.bind(this);
+    this._handleSearchStudent = this._handleSearchStudent.bind(this);
   }
 
-  _handleCreateStudent(params) {
-    params.student.course_id = this.state.courseId;
-      const successFunc = (responseData) => {
-        this.setState({ student: responseData});
-        this.props.navigation.goBack(null);
-      }
-    postRequest(APIRoutes.getStudentsPath(this.state.courseId), successFunc, standardError, params=params);
-  }
-
-  _handleUpdateStudent(params) {
+  _handleSearchStudent(params) {
     const successFunc = (responseData) => {
-      // this.props.navigation.state.params.refreshStudent();
-      this.props.navigation.navigate('Courses');
+      this.setState({ student: responseData});
+      this.props.navigation.goBack(null);
     }
-    putRequest(APIRoutes.getStudentPath(this.state.student.id), successFunc, standardError, params=params);
+    postRequest(APIRoutes.getStudentsPath(), successFunc, standardError, params=params);
   }
 
   render() {
     return (
        <View>
-       <SearchStudentForm />
+        <SearchStudentForm onSearchStudent={this._handleSearchStudent}/>
        </View>
     )
   }

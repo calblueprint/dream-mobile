@@ -7,18 +7,27 @@ import PropTypes from 'prop-types';
 import { frontendError } from '../../lib/alerts';
 
 /**
- * @prop onCreateStudent - callback function when student create form is submitted
+ * @prop onSearchStudent - callback function when student search form is submitted
  */
 class SearchStudentForm extends React.Component {
   constructor(props) {
     super(props);
+
+    this._handleSearchStudent = this._handleSearchStudent.bind(this);
+  }
+
+  _handleSearchStudent() {
+    if (this.state.formValues) {
+      this.props.onSearchStudent({student: this.state.formValues})
+    } else {
+      frontendError("Error: cannot parse form values. Please try again")
+    }
   }
 
   render() {
     return (
       <ScrollView>
         <Form>
-
           <InputField
             ref='first_name'
             label='First Name'
@@ -43,8 +52,8 @@ class SearchStudentForm extends React.Component {
           />
         </Form>
         <Button
-          onPress={this._handleSaveStudent}
-          title='Save'
+          onPress={this._handleSearchStudent}
+          title='Search'
         />
       </ScrollView>
     );
