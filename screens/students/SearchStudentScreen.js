@@ -18,8 +18,10 @@ class SearchStudentScreen extends React.Component {
     console.log(params.student)
     console.log(params)
     const successFunc = (responseData) => {
-      this.setState({ student: responseData});
-      this.props.navigation.goBack(null);
+      console.log(this.state)
+      this.setState({student: responseData});
+      console.log(responseData)
+      this.props.navigation.navigate('SearchStudentResults');
     }
     getRequest(APIRoutes.searchStudentPath(), successFunc, standardError, params=params);
   }

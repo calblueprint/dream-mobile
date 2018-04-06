@@ -13,6 +13,7 @@ import EditCourseScreen from '../screens/courses/EditCourseScreen';
 import CreateStudentScreen from '../screens/students/CreateStudentScreen';
 import StudentProfileScreen from '../screens/students/StudentProfileScreen';
 import SearchStudentScreen from '../screens/students/SearchStudentScreen';
+import SearchStudentResultScreen from '../screens/students/SearchStudentResultScreen';
 import AttendanceScreen from '../screens/attendances/AttendanceScreen';
 import AttendanceSummaryScreen from '../screens/attendances/AttendanceSummaryScreen';
 import { FontAwesome } from '@expo/vector-icons';
@@ -109,7 +110,12 @@ export const HomeStack = StackNavigator({
     screen: SearchStudentScreen,
     navigationOptions: ({navigation}) => ({
       headerTitle: 'Search Student',
-      headerRight: (<Button title='Edit' onPress={() => { navigation.goBack() }}/>),
+    }),
+  },
+  SearchStudentResults: {
+    screen: SearchStudentResultScreen,
+    navigationOptions: ({navigation}) => ({
+      headerTitle: 'Search Student',
     }),
   },
 });
