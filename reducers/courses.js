@@ -15,6 +15,7 @@ import { attendances } from './attendances';
 export const courses = (state = {}, action) => {
   switch (action.type) {
     case types.RECEIVE_COURSES_SUCCESS:
+      //TODO: Intelligently merge (if still relevant);
       return action.courses;
     case types.RECEIVE_STUDENTS_SUCCESS:
     case types.RECEIVE_ATTENDANCES_SUCCESS:

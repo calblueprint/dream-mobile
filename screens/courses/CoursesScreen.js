@@ -145,7 +145,7 @@ const fetchCourses = (teacher) => {
         dispatch(actions.receiveCoursesSuccess(responseData))
         for (const key in responseData) { // Once you have the courses, fetch student and attendance data
           dispatch(fetchStudents(responseData[key].id));
-          //dispatch(fetchRecentCourseAttendances(responseData[key].id));
+          dispatch(fetchRecentCourseAttendances(responseData[key].id));
         }
       },
       (error) => {
