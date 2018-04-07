@@ -53,8 +53,6 @@ class ViewCourseScreen extends React.Component {
   _fetchCourse() {
     const successFunc = (responseData) => {
       this.setState({ course: responseData });
-      console.log("Response Data: ");
-      console.log(responseData);
       this._fetchSessions();
     }
     getRequest(APIRoutes.getCoursePath(this.state.course_id), successFunc, standardError);
@@ -79,7 +77,6 @@ class ViewCourseScreen extends React.Component {
       this.setState({ teachers: responseData.teachers});
       this._fetchStudents();
     }
-    console.log(this.state.course_id);
     getRequest(APIRoutes.getTeachersPath(this.state.course_id), successFunc, standardError);
   }
 
