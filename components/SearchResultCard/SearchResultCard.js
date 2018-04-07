@@ -7,12 +7,14 @@ import { textStyles } from '../../styles/textStyles';
  * @prop student - student information
  * @prop onSelectStudent - callback function to show student information
  */
-class StudentCard extends React.Component {
+class SearchResultCard extends React.Component {
   constructor(props) {
     super(props);
   }
 
   render() {
+    console.log("in SearchResultCard");
+    console.log(this.props.student.first_name);
     return (
       <TouchableHighlight>
         <View style={{borderBottomWidth: 1, borderBottomColor: '#E6E6E6'}}>
@@ -25,4 +27,4 @@ class StudentCard extends React.Component {
   }
 }
 
-export default StudentCard;
+export default SearchResultCard;

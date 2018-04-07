@@ -20,6 +20,10 @@ class SearchStudentResultScreen extends React.Component {
     this._handleSelectStudent = this._handleSelectStudent.bind(this);
     this._handleTakeAttendance = this._handleTakeAttendance.bind(this);
     this._renderSearchResults = this._renderSearchResults.bind(this);
+
+    this.state = {
+      students: this.props.navigation.state.params.students,
+    }
   }
 
   componentDidMount() {
@@ -53,24 +57,21 @@ class SearchStudentResultScreen extends React.Component {
     console.log("_renderSearchResults")
     const { navigate } = this.props.navigation;
 
-    console.log(this.props)
-
     var students_arr = new Array();
-    for (const key in this.props.students) {
-      students_arr.push(this.props.students[key]);
+    for (const key in this.state.students) {
+      students_arr.push(this.state.students[key]);
     }
 
-    const courses = students_arr.map((student, i) => (
+    const students = students_arr.map((student, i) => (
         <SearchResultCard key={i}
                           id={student.id}
-                          first_name={student.first_name}
-                          last_name={student.last_name}
+                          student={student}
                           onSelectStudent={this._handleSelectStudent}/>
       )
     );
     return (
       <View style={{marginBottom: 24}}>
-        { courses }
+        { students }
         <StyledButton
           onPress={() => navigate('EditCourse', {refreshCourses: this.props.fetchCourses, newCourse: true,
             sessions: [], teacher: this.props.teacher})}

@@ -12,7 +12,7 @@ class SearchStudentScreen extends React.Component {
     this._handleSearchStudent = this._handleSearchStudent.bind(this);
 
     this.state = {
-      student: this._getInitialFormValues(),
+      students: [],
     }
   }
 
@@ -32,9 +32,11 @@ class SearchStudentScreen extends React.Component {
     const successFunc = (responseData) => {
       console.log("State:")
       console.log(this.state)
-      this.setState({student: responseData});
+      this.setState({students: responseData});
       console.log(this.state)
-      this.props.navigation.navigate('SearchStudentResults');
+      this.props.navigation.navigate('SearchStudentResults', {
+        students: responseData,
+      })
     }
     getRequest(APIRoutes.searchStudentPath(), successFunc, standardError, params=params);
   }
