@@ -247,20 +247,12 @@ class ViewCourseScreen extends React.Component {
           </View>
 
           <StyledButton
-            onPress={() => this.props.navigation.navigate('CreateStudent',
-              { refreshStudents: this._fetchStudents,
-                course_id: this.state.course_id,
-                newStudent: true })}
-            text="+ Create Student"
-            linkButton
-          />
-          <StyledButton
             onPress={() => this.props.navigation.navigate('SearchStudent',
               {
                 refreshStudents: this._fetchStudents,
                 course_id: this.state.course_id,
               })}
-            text="+ Search Student"
+            text="+ Enroll Student"
             linkButton
           />
         </ScrollView>

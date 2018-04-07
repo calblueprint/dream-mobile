@@ -73,7 +73,7 @@ class SearchStudentForm extends React.Component {
         </Form>
         <Button
           onPress={this._handleSearchStudent}
-          title='Search'
+          title='Search Existing Student'
         />
       </ScrollView>
     );
