@@ -18,6 +18,8 @@ import Session from '../Session';
  * @prop title - course title
  * @prop teacher1 - dream_id of teacher 1
  * @prop teacher2 - dream_id of teacher 2
+ * @prop site - course site
+ * @prop program - course program
  * @prop start_date - start date of course
  * @prop end_date - end date of course
  * @prop sessionList - list of session records
@@ -81,6 +83,8 @@ class EditCourseForm extends React.Component {
       title: this.props.title,
       teacher_id1: this.props.teacher1,
       teacher_id2: this.props.teacher2,
+      site: this.props.site,
+      program: this.props.program
     };
     if (this.props.start_date) {
       values.start_date = new Date(this.props.start_date)
@@ -101,6 +105,15 @@ class EditCourseForm extends React.Component {
       teacher_id2: t.maybe(t.Number),
       start_date: t.Date,
       end_date: t.Date,
+      site: t.String,
+      program: t.enums({
+        'Young Stars': 'Young Stars', 
+        'Montessori': 'Montessori', 
+        'Summer Camp': 'Summer Camp', 
+        'A Ganar': 'A Ganar', 
+        'Music': 'Music', 
+        'Other': 'Other',
+      }),
     });
   }
 
@@ -128,6 +141,12 @@ class EditCourseForm extends React.Component {
           config: {
             format:dateFormat,
           }
+        },
+        site: {
+          label: 'Site',
+        },
+        program: {
+          label: 'Program',
         },
       },
     };

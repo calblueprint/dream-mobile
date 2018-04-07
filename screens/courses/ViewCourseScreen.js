@@ -53,6 +53,8 @@ class ViewCourseScreen extends React.Component {
   _fetchCourse() {
     const successFunc = (responseData) => {
       this.setState({ course: responseData });
+      console.log("Response Data: ");
+      console.log(responseData);
       this._fetchSessions();
     }
     getRequest(APIRoutes.getCoursePath(this.state.course_id), successFunc, standardError);
@@ -194,7 +196,17 @@ class ViewCourseScreen extends React.Component {
           <View style={formViewStyles.div_1}>
             <View style={formViewStyles.div_2}>
               <Text style={textStyles.titleLarge}>{ this.state.course.title }</Text>
+              
+              <View style={formViewStyles.div_2}>
+                <Text style={textStyles.titleSmall}>Program</Text>
+                <Text style={textStyles.body}>{ this.state.course.program }</Text>
+              </View>
 
+              <View style={formViewStyles.div_2}>
+                <Text style={textStyles.titleSmall}>Site</Text>
+                <Text style={textStyles.body}>{ this.state.course.site }</Text>
+              </View>
+              
               <View style={formViewStyles.div_2}>
                 <Text style={textStyles.titleSmall}>Sessions</Text>
                 <View style={{marginLeft: -4}}>
@@ -211,6 +223,9 @@ class ViewCourseScreen extends React.Component {
                 <Text style={textStyles.titleSmall}>In Session</Text>
                 { this._renderCourseDate() }
               </View>
+
+
+
             </View>
           </View>
 
@@ -228,6 +243,8 @@ class ViewCourseScreen extends React.Component {
                 start_date: this.state.course.start_date,
                 end_date: this.state.course.end_date,
                 sessions: this.state.sessions,
+                program: this.state.course.program,
+                site: this.state.course.site
               })}
             text="Edit Course"
             linkButton
