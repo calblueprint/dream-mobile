@@ -10,6 +10,18 @@ class SearchStudentScreen extends React.Component {
   constructor(props) {
     super(props);
     this._handleSearchStudent = this._handleSearchStudent.bind(this);
+
+    this.state = {
+      student: this._getInitialFormValues(),
+    }
+  }
+
+  _getInitialFormValues() {
+    let student = {
+      first_name: this.props.first_name,
+      last_name: this.props.last_name,
+    }
+    return student
   }
 
   _handleSearchStudent(params) {
@@ -18,9 +30,10 @@ class SearchStudentScreen extends React.Component {
     console.log(params.student)
     console.log(params)
     const successFunc = (responseData) => {
+      console.log("State:")
       console.log(this.state)
       this.setState({student: responseData});
-      console.log(responseData)
+      console.log(this.state)
       this.props.navigation.navigate('SearchStudentResults');
     }
     getRequest(APIRoutes.searchStudentPath(), successFunc, standardError, params=params);
