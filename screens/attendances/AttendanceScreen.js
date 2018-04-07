@@ -215,8 +215,9 @@ const styles = StyleSheet.create({
 const fetchStudents = (courseId, date) => {
   return (dispatch) => {
     dispatch(actions.requestStudents(courseId));
+    console.log('starting fetch students');
     return getRequest(
-      APIRoutes.getStudentsPath(courseId),
+      APIRoutes.getCourseStudentsPath(courseId),
       (responseData) => {
         dispatch(actions.receiveStudentsSuccess(responseData, courseId));
         dispatch(fetchAttendances(responseData, courseId, date));
@@ -226,6 +227,8 @@ const fetchStudents = (courseId, date) => {
         standardError(error);
       }
     );
+
+    console.log('finished fetch students');
   }
 }
 
