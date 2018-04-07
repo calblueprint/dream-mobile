@@ -23,6 +23,7 @@ class SearchStudentResultScreen extends React.Component {
 
     this.state = {
       students: this.props.navigation.state.params.students,
+      course_id: this.props.navigation.state.params.course_id,
     }
   }
 
@@ -37,24 +38,24 @@ class SearchStudentResultScreen extends React.Component {
     this.props.navigation.setParams({ handleCreate: _createCourse });
   }
 
-  _handleSelectStudent(course_id) {
-    this.props.navigation.navigate('ViewCourse', {
-      refreshCourses: this.props.fetchCourses,
-      course_id: course_id
+  _handleSelectStudent(id) {
+    this.props.navigation.navigate('StudentProfilePreview', {
+      refreshStudents: this.props.navigation.state.params.refreshStudents,
+      course_id: this.state.course_id,
+      studentId: id
     });
   }
 
   _handleTakeAttendance(course_id, title) {
     const date = attendanceDate(new Date());
     this.props.navigation.navigate('Attendances', {
-      courseId: course_id,
+      course_id: course_id,
       courseTitle: title,
       date: date,
     });
   }
 
   _renderSearchResults() {
-    console.log("_renderSearchResults")
     const { navigate } = this.props.navigation;
 
     var students_arr = new Array();

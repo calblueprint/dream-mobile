@@ -14,6 +14,7 @@ import CreateStudentScreen from '../screens/students/CreateStudentScreen';
 import StudentProfileScreen from '../screens/students/StudentProfileScreen';
 import SearchStudentScreen from '../screens/students/SearchStudentScreen';
 import SearchStudentResultScreen from '../screens/students/SearchStudentResultScreen';
+import StudentProfilePreviewScreen from '../screens/students/StudentProfilePreviewScreen';
 import AttendanceScreen from '../screens/attendances/AttendanceScreen';
 import AttendanceSummaryScreen from '../screens/attendances/AttendanceSummaryScreen';
 import { FontAwesome } from '@expo/vector-icons';
@@ -118,6 +119,12 @@ export const HomeStack = StackNavigator({
       headerTitle: 'Search Student',
     }),
   },
+  StudentProfilePreview : {
+    screen: StudentProfilePreviewScreen,
+    navigationOptions: {
+      headerTitle: 'Student Profile Preview',
+    },
+  },
 });
 
 
@@ -153,5 +160,9 @@ export class APIRoutes {
   static loginPath()                  { return APIRoutes.deviseRoute(`sign_in`) }
 
   // Students enrolled in a particular course
-  static getCourseStudentsPath(id)    { return APIRoutes.createRoute(`courses/${id}/students`) }
+  static getStudentsInCoursePath(id) { return APIRoutes.createRoute(`courses/${id}/students`) }
+
+  // Create new student enrollment
+  static getCoursesStudentsPath()    { return APIRoutes.createRoute(`courses_students`) }
+  static getCoursesStudentPath(id)    { return APIRoutes.createRoute(`courses_students/${id}`)}
 }

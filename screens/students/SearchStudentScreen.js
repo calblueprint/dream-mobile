@@ -16,26 +16,15 @@ class SearchStudentScreen extends React.Component {
     }
   }
 
-  _getInitialFormValues() {
-    let student = {
-      first_name: this.props.first_name,
-      last_name: this.props.last_name,
-    }
-    return student
-  }
-
   _handleSearchStudent(params) {
     params.first_name = params.student.first_name;
     params.last_name = params.student.last_name;
-    console.log(params.student)
-    console.log(params)
     const successFunc = (responseData) => {
-      console.log("State:")
-      console.log(this.state)
       this.setState({students: responseData});
-      console.log(this.state)
       this.props.navigation.navigate('SearchStudentResults', {
         students: responseData,
+        refreshStudents: this.props.navigation.state.params.refreshStudents,
+        course_id: this.props.navigation.state.params.course_id
       })
     }
     getRequest(APIRoutes.searchStudentPath(), successFunc, standardError, params=params);
