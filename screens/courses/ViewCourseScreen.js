@@ -251,7 +251,7 @@ class ViewCourseScreen extends React.Component {
               { refreshStudents: this._fetchStudents,
                 course_id: this.state.course_id,
                 newStudent: true })}
-            text="+ Enroll Student"
+            text="+ Create Student"
             linkButton
           />
           <StyledButton
