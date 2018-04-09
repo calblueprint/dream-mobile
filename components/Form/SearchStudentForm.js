@@ -12,9 +12,7 @@ import { frontendError } from '../../lib/alerts';
 class SearchStudentForm extends React.Component {
   constructor(props) {
     super(props);
-
     this._handleSearchStudent = this._handleSearchStudent.bind(this);
-
     this.state = {
       formValues: this._getInitialFormValues(),
     }
@@ -77,7 +75,6 @@ class SearchStudentForm extends React.Component {
         />
       </ScrollView>
     );
-
   }
 }
 
