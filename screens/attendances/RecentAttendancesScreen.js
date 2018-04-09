@@ -36,7 +36,7 @@ class RecentAttendancesScreen extends React.Component {
     * Renders AttendanceCard for each attendance object
     */
   _renderAttendances() {
-    //TODO: (Aivant) ensure that this only renders 5
+    //TODO: (Aivant) ensure that this only renders latest 5 (poses question of what the best structure is...)
     return Object.keys(this.props.attendances).map((date, i) => {
       return(
         <AttendanceDateCard key={i}
@@ -52,13 +52,12 @@ class RecentAttendancesScreen extends React.Component {
     */
   _renderLoadedView() {
     const { navigate } = this.props.navigation;
-
+    //TODO: make sure you can only go to past_attendances when you're online
     return(
       <View>
         <StyledButton
           onPress={() => navigate('PastAttendances',
-            { courseId: this.props.courseId,
-            })}
+            { course: this.props.course})}
           text="View By Month"
           primaryButtonLarge
         />
@@ -98,6 +97,7 @@ const mapStateToProps = (state, props) => {
   return {
     ...props.navigation.state.params,
     attendances: course.attendances ? course.attendances : {},
+    //online: offline.online, //TODO: add and implement 
   };
 }
 
