@@ -12,6 +12,9 @@ import TeacherProfileEditScreen from '../screens/teachers/TeacherProfileEditScre
 import EditCourseScreen from '../screens/courses/EditCourseScreen';
 import CreateStudentScreen from '../screens/students/CreateStudentScreen';
 import StudentProfileScreen from '../screens/students/StudentProfileScreen';
+import SearchStudentScreen from '../screens/students/SearchStudentScreen';
+import SearchStudentResultScreen from '../screens/students/SearchStudentResultScreen';
+import StudentProfilePreviewScreen from '../screens/students/StudentProfilePreviewScreen';
 import AttendanceScreen from '../screens/attendances/AttendanceScreen';
 import AttendanceSummaryScreen from '../screens/attendances/AttendanceSummaryScreen';
 import { FontAwesome } from '@expo/vector-icons';
@@ -102,6 +105,24 @@ export const HomeStack = StackNavigator({
       headerRight: (<Button title='Edit' onPress={() => { navigation.goBack() }}/>),
     }),
   },
+  SearchStudent: {
+    screen: SearchStudentScreen,
+    navigationOptions: ({navigation}) => ({
+      headerTitle: 'Search Student',
+    }),
+  },
+  SearchStudentResults: {
+    screen: SearchStudentResultScreen,
+    navigationOptions: ({navigation}) => ({
+      headerTitle: 'Search Student',
+    }),
+  },
+  StudentProfilePreview : {
+    screen: StudentProfilePreviewScreen,
+    navigationOptions: {
+      headerTitle: 'Student Profile Preview',
+    },
+  },
 });
 
 
@@ -126,6 +147,7 @@ export class APIRoutes {
   // Students
   static getStudentsPath()            { return APIRoutes.createRoute(`students`) }
   static getStudentPath(id)           { return APIRoutes.createRoute(`students/${id}`)}
+  static searchStudentPath()          { return APIRoutes.createRoute('students/search') }
 
   // Attendances
   static attendanceItemPath()         { return APIRoutes.createRoute(`attendances/attendance_item`) }
@@ -136,5 +158,9 @@ export class APIRoutes {
   static loginPath()                  { return APIRoutes.deviseRoute(`sign_in`) }
 
   // Students enrolled in a particular course
-  static getCourseStudentsPath(id)    { return APIRoutes.createRoute(`courses/${id}/students`) }
+  static getStudentsInCoursePath(id) { return APIRoutes.createRoute(`courses/${id}/students`) }
+
+  // Create new student enrollment
+  static getCoursesStudentsPath()    { return APIRoutes.createRoute(`courses_students`) }
+  static getCoursesStudentPath(id)    { return APIRoutes.createRoute(`courses_students/${id}`)}
 }
