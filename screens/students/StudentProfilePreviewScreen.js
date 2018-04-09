@@ -114,7 +114,6 @@ class StudentProfilePreviewScreen extends React.Component {
         { student }
       </ScrollView>
     );
-
   }
 }
 
