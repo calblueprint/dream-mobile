@@ -27,7 +27,7 @@ class AttendanceScreen extends React.Component {
 
     this._saveComment = this._saveComment.bind(this);
   }
-  
+
   /**
     * Gets students full name at the given index
     */
