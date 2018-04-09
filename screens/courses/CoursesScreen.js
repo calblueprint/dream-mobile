@@ -35,6 +35,8 @@ class CoursesScreen extends React.Component {
   }
 
   componentDidMount() {
+    //TODO: (Aivant) Fix Helen's comment about how we shouldn't clean out current local changes
+    //TODO: (Aivant) ensure that a user can't update another teacher's attendances
     // This prioritizes local changes over on-server changes but it makes the code very clean
     this.props.fetchCourses(this.props.teacher).then((result) => {
       this.props.syncLocalChanges(this.props.localAttendances);
@@ -134,6 +136,7 @@ const syncLocalChanges = (attendances) => {
   }
 }
 
+//TODO: Decide whether fetch courses should be consolidated on the backend to just return all this information..
 const fetchCourses = (teacher) => {
   return (dispatch) => {
     dispatch(actions.requestCourses());
@@ -218,7 +221,6 @@ const syncAttendances = (attendances, courseId, date, saveToStore) => {
     const attendancePromises = attendances.map((attendance, i) => {
       return updateAttendance(attendance, i);
     });
-
     // Those dispatches will only update the store if courseId exists in the current store
     return Promise.all(attendancePromises).then((responseData) => {
       dispatch(actions.receiveUpdateAttendancesSuccess(responseData, courseId, date));
@@ -226,7 +228,6 @@ const syncAttendances = (attendances, courseId, date, saveToStore) => {
       // earlier we cleared local changes so if the sync fails, we need to re-add it.
       dispatch(actions.receiveUpdateAttendancesError(attendances, courseId, date));
       dispatch(actions.saveLocalChanges(attendances, courseId, date));
-
     });
   }
 }

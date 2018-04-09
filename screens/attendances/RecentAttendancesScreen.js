@@ -17,24 +17,32 @@ import StyledButton from '../../components/Button/Button';
 class RecentAttendancesScreen extends React.Component {
   constructor(props) {
     super(props);
+    this._handleSelectDate = this._handleSelectDate.bind(this);
   }
 
-  componentDidMount() {
-    this.props.fetchStudents(this.props.courseId, this.props.date);
-  }
+  /**
+    * Method passed to DateCard to open attendance screen for attendance with given date.
+    */
+    _handleSelectDate(date) {
+      var course = this.props.navigation.state.params.course
+      this.props.navigation.navigate('Attendances', {
+        courseId: course.id,
+        courseTitle: course.title,
+        date: date,
+      });
+    }
 
   /**
     * Renders AttendanceCard for each attendance object
     */
   _renderAttendances() {
-    return this.props.attendances.map((attendance, i) => {
+    //TODO: (Aivant) ensure that this only renders 5
+    return Object.keys(this.props.attendances).map((date, i) => {
       return(
-        <AttendanceCard key={i}
-          attendance={attendance}
-          index={i}
-          name={this._getStudentName(i)}
-          setModal={this._setModal.bind(this)}
-          setType={this._setType.bind(this)} />
+        <AttendanceDateCard key={i}
+          date={date}
+          onSelectDate={(date) => {this._handleSelectDate(date)}}
+          />
       );
     });
   }
@@ -64,8 +72,7 @@ class RecentAttendancesScreen extends React.Component {
     * Renders loading state if data is still loading or uses _renderLoadedView
     */
   render() {
-    const attendances = this.props.isLoading ? (<Image style={commonStyles.icon}
-                        source={require('../../icons/spinner.gif')}/>) : this._renderLoadedView();
+    const attendances = this._renderLoadedView();
     return (
       <View style={commonStyles.containerStatic}>
         { attendances }
@@ -84,87 +91,18 @@ const styles = StyleSheet.create({
 // TODO (Kelsey): Add PropTypes from navigation
 
 
-/**
-  * Fetches all students with the given course id and on success
-  * gets attendances for each student
-  */
-const fetchStudents = (courseId, date) => {
-  return (dispatch) => {
-    dispatch(actions.requestStudents(courseId));
-    return getRequest(
-      APIRoutes.getStudentsPath(courseId),
-      (responseData) => {
-        dispatch(actions.receiveStudentsSuccess(responseData, courseId));
-        dispatch(fetchAttendances(responseData, courseId, date));
-      },
-      (error) => {
-        dispatch(actions.receiveStandardError(error));
-        standardError(error);
-      }
-    );
-  }
-}
-
-/**
-  * Attempts to get attendance for each students and waits for each request to succeed
-  * before updating state for attendances
-  */
-const fetchAttendances = (students, courseId, date) => {
-  return (dispatch) => {
-    dispatch(actions.requestStudents(courseId));
-    return getRequest(
-      APIRoutes.getRecentAttendancesPath(courseId),
-      (responseData) => {
-        dispatch(actions.receiveStudentsSuccess(responseData, courseId));
-        dispatch(fetchAttendances(responseData, courseId, date));
-      },
-      (error) => {
-        dispatch(actions.receiveStandardError(error));
-        standardError(error);
-      }
-    );
-  }
-}
-
-/**
-  * Makes a request to get attendance for the specified student.
-  * (Uses postRequestNoCatch so any errors get caught in Promise.all)
-  */
-const fetchAttendance = (studentId, courseId, date) => {
-  const successFunc = (responseData) => {
-    return responseData;
-  }
-  const errorFunc = (error) => {
-    // TODO (Kelsey): address what happens when attendance for student on given date doesn't exist
-    console.log(error)
-  }
-  const params = {
-    attendance: {
-      student_id: studentId,
-      date: date,
-      course_id: courseId
-    }
-  }
-  return postRequestNoCatch(APIRoutes.attendanceItemPath(), successFunc, errorFunc, params);
-}
-
 const mapStateToProps = (state, props) => {
   // Get course and date associated with this attendance screen
-  const course = state.courses.find((course) => course.id === props.navigation.state.params.courseId);
-  const date = props.navigation.state.params.date;
+  //TODO: (Aivant) This is honestly atrocious please fix when we make ViewCourseScreen offline!
+  const course = state.courses.find((course) => course.id === props.navigation.state.params.course.id);
   return {
     ...props.navigation.state.params,
-    students: course.students ? course.students : {},
-    attendances: course.attendances && course.attendances[date] ? course.attendances[date].list : [],
-    isLoading: state.isLoading.value,
+    attendances: course.attendances ? course.attendances : {},
   };
 }
 
 const mapDispatchToProps = (dispatch) => {
-  return {
-    fetchStudents: (courseId, date) => dispatch(fetchStudents(courseId, date)),
-    fetchAttendances: (students, courseId, date) => dispatch(fetchAttendances(students, courseId, date)),
-  }
+  return {}
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(RecentAttendancesScreen);
