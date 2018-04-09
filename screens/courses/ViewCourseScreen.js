@@ -12,8 +12,6 @@ import { textStyles } from '../../styles/textStyles';
 import { FontAwesome,Entypo } from '@expo/vector-icons';
 import colors from '../../styles/colors';
 
-
-
 class ViewCourseScreen extends React.Component {
   constructor(props) {
     super(props);
@@ -248,10 +246,8 @@ class ViewCourseScreen extends React.Component {
 
           <StyledButton
             onPress={() => this.props.navigation.navigate('SearchStudent',
-              {
-                refreshStudents: this._fetchStudents,
-                course_id: this.state.course_id,
-              })}
+            { refreshStudents: this._fetchStudents,
+              course_id: this.state.course_id, })}
             text="+ Enroll Student"
             linkButton
           />

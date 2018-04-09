@@ -1,9 +1,7 @@
 import React from 'react';
 import { Image, Button, ScrollView, Text, View, TouchableOpacity } from 'react-native';
-
 import { connect } from 'react-redux';
 import actions from '../../actions';
-
 import { commonStyles } from '../../styles/styles';
 import { getRequest } from '../../lib/requests';
 import { APIRoutes } from '../../config/routes';
@@ -18,7 +16,6 @@ class SearchStudentResultScreen extends React.Component {
   constructor(props) {
     super(props);
     this._handleSelectStudent = this._handleSelectStudent.bind(this);
-    this._handleTakeAttendance = this._handleTakeAttendance.bind(this);
     this._renderSearchResults = this._renderSearchResults.bind(this);
 
     this.state = {
@@ -27,31 +24,11 @@ class SearchStudentResultScreen extends React.Component {
     }
   }
 
-  componentDidMount() {
-    this.props.fetchCourses(this.props.teacher);
-
-    const _createCourse = () => {
-      this.props.navigation.navigate('EditCourse', {refreshCourses: this.props.fetchCourses, newCourse: true,
-        sessions: [], teacher: this.props.teacher})}
-
-
-    this.props.navigation.setParams({ handleCreate: _createCourse });
-  }
-
   _handleSelectStudent(id) {
     this.props.navigation.navigate('StudentProfilePreview', {
       refreshStudents: this.props.navigation.state.params.refreshStudents,
       course_id: this.state.course_id,
       studentId: id
-    });
-  }
-
-  _handleTakeAttendance(course_id, title) {
-    const date = attendanceDate(new Date());
-    this.props.navigation.navigate('Attendances', {
-      course_id: course_id,
-      courseTitle: title,
-      date: date,
     });
   }
 
@@ -106,43 +83,4 @@ class SearchStudentResultScreen extends React.Component {
   }
 }
 
-const fetchCourses = (teacher) => {
-  return (dispatch) => {
-    dispatch(actions.requestCourses());
-    if (teacher.admin) {
-      return getRequest(
-        APIRoutes.getCoursesPath(),
-        (responseData) => dispatch(actions.receiveCoursesSuccess(responseData)),
-        (error) => {
-          dispatch(actions.receiveStandardError(error));
-          standardError(error);
-        }
-      );
-    } else {
-      return getRequest(
-        APIRoutes.getTeacherCoursesPath(teacher.id),
-        (responseData) => dispatch(actions.receiveCoursesSuccess(responseData)),
-        (error) => {
-          dispatch(actions.receiveStandardError(error));
-          standardError(error);
-        }
-      );
-    }
-  }
-}
-
-const mapStateToProps = (state) => {
-  return {
-    teacher: state.teacher,
-    student: state.student,
-    isLoading: state.isLoading.value,
-  };
-}
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    fetchCourses: (teacher) => dispatch(fetchCourses(teacher)),
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(SearchStudentResultScreen);
+export default SearchStudentResultScreen;

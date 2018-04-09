@@ -105,8 +105,6 @@ export const HomeStack = StackNavigator({
       headerRight: (<Button title='Edit' onPress={() => { navigation.goBack() }}/>),
     }),
   },
-
-  // temp to make search students proof-of-concept work; refactor once Flo merges her enroll student PR
   SearchStudent: {
     screen: SearchStudentScreen,
     navigationOptions: ({navigation}) => ({
