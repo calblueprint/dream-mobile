@@ -32,8 +32,6 @@ class AttendanceScreen extends React.Component {
     * Update attendances after dispatching a network call for them
     */
   componentWillReceiveProps(nextProps) {
-    if (nextProps.attendances)
-    console.log("Updating state: " +nextProps.attendances);
     if (nextProps !== this.props) {
       this.setState({ attendances: nextProps.attendances });
     }
@@ -204,7 +202,6 @@ const createNewAttendance = (studentId, courseId, date) => {
 
 
 const mapStateToProps = (state, props) => {
-  console.log("Mapping State to props for attendance screen");
   // Get course and date associated with this attendance screen
   const course = state.courses.find((course) => course.id === props.navigation.state.params.courseId);
   const date = props.navigation.state.params.date;

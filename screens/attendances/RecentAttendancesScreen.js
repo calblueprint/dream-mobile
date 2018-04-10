@@ -35,7 +35,6 @@ class RecentAttendancesScreen extends React.Component {
     * Renders AttendanceCard for each attendance object
     */
   _renderAttendances() {
-    //TODO: (Aivant) ensure that this only renders latest 5 (poses question of what the best structure is...)
     return Object.keys(this.props.attendances).map((date, i) => {
       return(
         <AttendanceDateCard key={i}
@@ -81,7 +80,6 @@ const styles = StyleSheet.create({
 
 
 const mapStateToProps = (state, props) => {
-  console.log("Mapping state to props for recent attendances screen");
   // Get course and date associated with this attendance screen
   const course = state.courses.find((course) => course.id === props.navigation.state.params.courseId);
   // Take the last 5 attendances only

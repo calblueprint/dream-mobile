@@ -48,9 +48,7 @@ class PastAttendancesScreen extends React.Component {
     */
   _handleSelectDate(date) {
     //Assure that selected attendance is in the store.
-    console.log("About to save attendance");
     this.props.saveAttendance(this.state.attendances[date], this.state.courseId, date);
-    console.log("Selecting date!");
     this.props.navigation.navigate('Attendances', {
       courseId: this.state.courseId,
       attendances: this.state.attendances[date],
@@ -113,11 +111,8 @@ const styles = StyleSheet.create({
 // TODO (Kelsey): Add PropTypes from navigation
 
 const saveAttendance = (attendances, courseId, date) => {
-  console.log("Saving attendance");
   return (dispatch) => {
-    console.log("Dispatching");
     dispatch(actions.receiveAttendancesSuccess(attendances, courseId, date));
-    console.log("Finished dispatching");
   }
 }
 

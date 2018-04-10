@@ -306,7 +306,7 @@ syncAttendances = (attendances, courseId, date) => {
     }).catch((error) => {
       // Optimistically updates and marks course as unsynced
       console.log("Attendance Sync Failed: " );
-      console.log(attendances);
+      console.log(error);
       dispatch(actions.receiveUpdateAttendancesError(attendances, courseId, date));
       dispatch(actions.saveLocalChanges(attendances, courseId, date));
       dispatch(actions.openModal());
@@ -335,14 +335,13 @@ updateAttendance = (attendance, index) => {
 }
 
 const mapStateToProps = (state, props) => {
-  console.log("Mapping state to props for attendance summary screen");
   // Get course and date associated with this attendance screen
   const course = state.courses.find((course) => course.id === props.navigation.state.params.courseId);
   const date = props.navigation.state.params.date;
   return {
     ...props.navigation.state.params,
     isLoading: state.isLoading.value,
-    isSynced: course.isSynced,
+    isSynced: course.synced,
     isModalOpen: state.modal.isOpen,
   };
 }

@@ -148,7 +148,6 @@ const fetchCourses = (teacher) => {
     return getRequest(
       path,
       (responseData) =>  {
-        console.log("Fetched courses");
         dispatch(actions.receiveCoursesSuccess(responseData))
         for (const key in responseData) { // Once you have the courses, fetch student and attendance data
           dispatch(fetchStudents(responseData[key].id));
@@ -175,8 +174,6 @@ const fetchStudents = (courseId) => {
     return getRequest(
       APIRoutes.getCourseStudentsPath(courseId),
       (responseData) => {
-        console.log("Fetched students for course: " + courseId);
-        console.log(responseData);
         dispatch(actions.receiveStudentsSuccess(responseData, courseId));
       },
       (error) => {
@@ -200,8 +197,6 @@ const fetchRecentCourseAttendances = (courseId) => {
     return getRequest(
       APIRoutes.getRecentAttendancesPath(courseId),
       (responseData) =>  {
-        console.log("Fetched attendances for course: " + courseId);
-        console.log(responseData);
         dispatch(actions.receiveCourseAttendancesSuccess(responseData, courseId))
       },
       (error) => {
@@ -258,7 +253,6 @@ const updateAttendance = (attendance, index) => {
 }
 
 const mapStateToProps = (state) => {
-  console.log("Mapping state to props for courses screen");
   return {
     localAttendances: state.localChanges.attendances,
     teacher: state.teacher,
