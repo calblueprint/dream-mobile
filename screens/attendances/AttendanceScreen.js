@@ -29,10 +29,21 @@ class AttendanceScreen extends React.Component {
   }
 
   /**
+    * Update attendances after dispatching a network call for them
+    */
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.attendances)
+    console.log("Updating state: " +nextProps.attendances);
+    if (nextProps !== this.props) {
+      this.setState({ attendances: nextProps.attendances });
+    }
+  }
+
+  /**
     * Gets students full name at the given index
     */
   _getStudentName(id) {
-    const student = this.props.students.find((student) => {student.id === id})
+    const student = this.props.students.find((student) => {return student.id === id})
     if (student) {
       return `${student.first_name} ${student.last_name}`
     }
@@ -88,12 +99,13 @@ class AttendanceScreen extends React.Component {
     * Renders AttendanceCard for each attendance object
     */
   _renderAttendances() {
+
     return this.state.attendances.map((attendance, i) => {
       return(
         <AttendanceCard key={i}
           attendance={attendance}
           index={i}
-          name={this._getStudentName(i)}
+          name={this._getStudentName(attendance.student_id)}
           setModal={this._setModal.bind(this)}
           setType={this._setType.bind(this)} />
       );
@@ -139,9 +151,9 @@ class AttendanceScreen extends React.Component {
   /**
     * Renders date, course title, attendance cards, and submit button
     */
-  _renderLoadedView() {
-    const { navigate } = this.props.navigation;
 
+  render() {
+    const { navigate } = this.props.navigation;
     return(
       <View style={commonStyles.containerStatic}>
         <ScrollView>
@@ -170,19 +182,6 @@ class AttendanceScreen extends React.Component {
       </View>
     )
   }
-
-  /**
-    * Renders loading state if data is still loading or uses _renderLoadedView
-    */
-  render() {
-    const attendances = this.props.isLoading ? (<Image style={commonStyles.icon}
-                        source={require('../../icons/spinner.gif')}/>) : this._renderLoadedView();
-    return (
-      <View style={commonStyles.containerStatic}>
-        { attendances }
-      </View>
-    );
-  }
 }
 
 const styles = StyleSheet.create({
@@ -194,15 +193,32 @@ const styles = StyleSheet.create({
 });
 // TODO (Kelsey): Add PropTypes from navigation
 
+const createNewAttendance = (studentId, courseId, date) => {
+  return {
+    date: date,
+    attendance_type: 0,
+    student_id: studentId,
+    course_id: courseId,
+  }
+}
+
 
 const mapStateToProps = (state, props) => {
+  console.log("Mapping State to props for attendance screen");
   // Get course and date associated with this attendance screen
   const course = state.courses.find((course) => course.id === props.navigation.state.params.courseId);
   const date = props.navigation.state.params.date;
+  //TODO: (Aivant) deal with the situation when there's no attendances for today
+  const students = course.students ? course.students : []
+  var attendances = course.attendances && course.attendances[date] ? course.attendances[date] : [];
+  if (attendances.length == 0) {
+    attendances = students.map((s) => {return createNewAttendance(s.id, course.id, date)});
+  }
   return {
     ...props.navigation.state.params,
-    students: course.students ? course.students : {},
-    attendances: course.attendances && course.attendances[date] ? course.attendances[date].list : [],
+    courseTitle: course.title,
+    students: students,
+    attendances: attendances,
     isLoading: state.isLoading.value,
   };
 }

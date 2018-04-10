@@ -24,10 +24,9 @@ class RecentAttendancesScreen extends React.Component {
     * Method passed to DateCard to open attendance screen for attendance with given date.
     */
     _handleSelectDate(date) {
-      var course = this.props.navigation.state.params.course
+      var courseId = this.props.navigation.state.params.courseId
       this.props.navigation.navigate('Attendances', {
-        courseId: course.id,
-        courseTitle: course.title,
+        courseId: courseId,
         date: date,
       });
     }
@@ -53,16 +52,18 @@ class RecentAttendancesScreen extends React.Component {
   _renderLoadedView() {
     const { navigate } = this.props.navigation;
     //TODO: make sure you can only go to past_attendances when you're online
+    const attendances = this._renderAttendances();
     return(
       <View>
+        <Text style={textStyles.titleLarge}>Recent</Text>
+        { attendances }
         <StyledButton
           onPress={() => navigate('PastAttendances',
             { course: this.props.course})}
           text="View By Month"
           primaryButtonLarge
         />
-      <Text style={textStyles.titleLarge}>"Hello World!"</Text>
-    </View>
+      </View>
 
     )
   }
@@ -91,18 +92,19 @@ const styles = StyleSheet.create({
 
 
 const mapStateToProps = (state, props) => {
+  console.log("Mapping state to props for recent attendances screen");
   // Get course and date associated with this attendance screen
-  //TODO: (Aivant) This is honestly atrocious please fix when we make ViewCourseScreen offline!
-  const course = state.courses.find((course) => course.id === props.navigation.state.params.course.id);
+  const course = state.courses.find((course) => course.id === props.navigation.state.params.courseId);
+  // Take the last 5 attendances only
+  var attendances = course.attendances ? course.attendances : {},
+  lastKeys = Object.keys(attendances).sort((a, b) => {return ( a > b ) - ( a < b );}).slice(-5).reverse();
+  var latestAttendances = {};
+  lastKeys.forEach((key) => {latestAttendances[key] = attendances[key]});
   return {
-    ...props.navigation.state.params,
-    attendances: course.attendances ? course.attendances : {},
-    //online: offline.online, //TODO: add and implement 
+    attendances: latestAttendances,
+    //online: offline.online, //TODO: add and implement
   };
 }
 
-const mapDispatchToProps = (dispatch) => {
-  return {}
-}
 
-export default connect(mapStateToProps, mapDispatchToProps)(RecentAttendancesScreen);
+export default connect(mapStateToProps, null)(RecentAttendancesScreen);

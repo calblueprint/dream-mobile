@@ -13,6 +13,7 @@ class AttendanceDateCard extends React.Component {
   }
 
   render() {
+    console.log("Rendering Attendance Date Card")
     return (
       <TouchableHighlight onPress={() => this.props.onSelectDate(this.props.date)}>
         <View style={{borderBottomWidth: 1, borderBottomColor: '#E6E6E6'}}>

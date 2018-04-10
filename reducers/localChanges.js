@@ -12,7 +12,8 @@ export const localChanges = (state = { attendances: [] }, action) => {
         attendances: [ ...state.attendances, newAttendance ]
       });
     case types.CLEAR_LOCAL_CHANGES:
-      return {attendances: []};
+      // Remove all attendances with dates corresponding to the passed in array
+      return {attendances: state.attendances.filter((a) => { return !action.dates.includes(a.date) })};
     default:
       return state
   }

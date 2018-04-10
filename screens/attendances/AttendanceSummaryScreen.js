@@ -300,6 +300,7 @@ syncAttendances = (attendances, courseId, date) => {
     });
 
     Promise.all(attendancePromises).then((responseData) => {
+      console.log("Synced Attendances successfully");
       dispatch(actions.receiveUpdateAttendancesSuccess(responseData, courseId, date));
       dispatch(actions.openModal());
     }).catch((error) => {
@@ -334,6 +335,7 @@ updateAttendance = (attendance, index) => {
 }
 
 const mapStateToProps = (state, props) => {
+  console.log("Mapping state to props for attendance summary screen");
   // Get course and date associated with this attendance screen
   const course = state.courses.find((course) => course.id === props.navigation.state.params.courseId);
   const date = props.navigation.state.params.date;

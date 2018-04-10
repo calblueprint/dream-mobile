@@ -132,9 +132,10 @@ let actions = {
       date
     }
   },
-  clearLocalChanges: () => {
+  clearLocalChanges: (dates) => {
     return {
       type: types.CLEAR_LOCAL_CHANGES,
+      dates,
     }
   }
 };

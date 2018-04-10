@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, Button, ScrollView, Text, View, TouchableOpacity } from 'react-native';
+import { Image, Button, ScrollView, Text, View, TouchableOpacity, RefreshControl } from 'react-native';
 
 import { connect } from 'react-redux';
 import actions from '../../actions';
@@ -32,6 +32,9 @@ class CoursesScreen extends React.Component {
     this._handleSelectCourse = this._handleSelectCourse.bind(this);
     this._handleTakeAttendance = this._handleTakeAttendance.bind(this);
     this._renderCourses = this._renderCourses.bind(this);
+    this.state = {
+      refreshing: true,
+    };
   }
 
   componentDidMount() {
@@ -50,20 +53,26 @@ class CoursesScreen extends React.Component {
     this.props.navigation.setParams({ handleCreate: _createCourse });
   }
 
-  _handleSelectCourse(course_id) {
+  _handleSelectCourse(courseId) {
     this.props.navigation.navigate('ViewCourse', {
       refreshCourses: this.props.fetchCourses,
-      course_id: course_id
+      course_id: courseId
     });
   }
 
-  _handleTakeAttendance(course_id, title) {
+  _handleTakeAttendance(courseId, title) {
     const date = attendanceDate(new Date());
     this.props.navigation.navigate('Attendances', {
-      courseId: course_id,
-      courseTitle: title,
+      courseId: courseId,
       date: date,
     });
+  }
+
+  _onRefresh() {
+    //TODO: (Aivant) take into account possible offline mode
+    this.props.fetchCourses(this.props.teacher).then((result) => {
+      return this.props.syncLocalChanges(this.props.localAttendances);
+    })
   }
 
   _renderCourses() {
@@ -100,18 +109,14 @@ class CoursesScreen extends React.Component {
 
   render() {
     let courses;
-    if (this.props.isLoading) {
-      courses = (
-        <Image
-          style={commonStyles.icon}
-          source={require('../../icons/spinner.gif')}
-        />
-      )
-    } else {
-      courses = this._renderCourses();
-    }
+    courses = this._renderCourses();
     return (
-      <ScrollView>
+      <ScrollView refreshControl={
+        <RefreshControl
+          refreshing={this.props.isLoading}
+          onRefresh={this._onRefresh.bind(this)}
+        />}
+      >
         <View style={{backgroundColor: '#f5f5f6'}}>
           { courses }
         </View>
@@ -128,7 +133,6 @@ class CoursesScreen extends React.Component {
 const syncLocalChanges = (attendances) => {
   return (dispatch) => {
     // Clear changes and retry for each thing. Each failed sync will re-add the attendance to local
-    dispatch(actions.clearLocalChanges());
     const attendancePromises = attendances.map((attendance, i) => {
       return dispatch(syncAttendances(attendance.attendances, attendance.courseId, attendance.date));
     });
@@ -198,7 +202,7 @@ const fetchRecentCourseAttendances = (courseId) => {
       (responseData) =>  {
         console.log("Fetched attendances for course: " + courseId);
         console.log(responseData);
-        dispatch(actions.receiveCourseAttendancesSuccess(responseData))
+        dispatch(actions.receiveCourseAttendancesSuccess(responseData, courseId))
       },
       (error) => {
         console.log("Error in fetching attendances for course: " + courseId);
@@ -223,11 +227,12 @@ const syncAttendances = (attendances, courseId, date, saveToStore) => {
     });
     // Those dispatches will only update the store if courseId exists in the current store
     return Promise.all(attendancePromises).then((responseData) => {
+      // clear localStorage of the attendances we successfully synced
+      const datesToClear = responseData.map((a) => {return a.date});
+      dispatch(actions.clearLocalChanges(datesToClear));
       dispatch(actions.receiveUpdateAttendancesSuccess(responseData, courseId, date));
     }).catch((error) => {
-      // earlier we cleared local changes so if the sync fails, we need to re-add it.
       dispatch(actions.receiveUpdateAttendancesError(attendances, courseId, date));
-      dispatch(actions.saveLocalChanges(attendances, courseId, date));
     });
   }
 }
@@ -253,6 +258,7 @@ const updateAttendance = (attendance, index) => {
 }
 
 const mapStateToProps = (state) => {
+  console.log("Mapping state to props for courses screen");
   return {
     localAttendances: state.localChanges.attendances,
     teacher: state.teacher,
