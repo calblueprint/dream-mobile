@@ -31,6 +31,7 @@ class StudentProfileScreen extends React.Component {
     const { navigate } = this.props.navigation;
     const successFunc = (responseData) => {
       this.setState({ student: responseData, isLoading: false });
+      console.log(this.state.student);
     }
 
     getRequest(APIRoutes.getStudentPath(studentId), successFunc, standardError);
@@ -96,28 +97,28 @@ class StudentProfileScreen extends React.Component {
         Name on Facebook
         </Text>
         <Text style={textStyles.body}>
-        {this.state.facebook_name}
+        {this.state.student.facebook_name}
         </Text>
 
         <Text style={textStyles.titleSmall}>
         Email Address
         </Text>
         <Text style={textStyles.body}>
-        {this.state.email}
+        {this.state.student.email}
         </Text>
 
         <Text style={textStyles.titleSmall}>
         Primary Contact Name
         </Text>
         <Text style={textStyles.body}>
-        {this.state.primary_contact}
+        {this.state.student.primary_contact}
         </Text>
 
         <Text style={textStyles.titleSmall}>
         Primary Contact Phone Number
         </Text>
         <Text style={textStyles.body}>
-        {this.state.primary_contact_phone}
+        {this.state.student.primary_contact_phone}
         </Text>
 
         <Text style={{fontWeight: 'bold'}}> Extra Information </Text>
@@ -126,35 +127,35 @@ class StudentProfileScreen extends React.Component {
         Notes
         </Text>
         <Text style={textStyles.body}>
-        {this.state.notes}
+        {this.state.student.notes}
         </Text>
 
         <Text style={textStyles.titleSmall}>
         Level (Montessori Only)
         </Text>
         <Text style={textStyles.body}>
-        {this.state.level}
+        {this.state.student.level}
         </Text>
 
         <Text style={textStyles.titleSmall}>
         Primary Language 
         </Text>
         <Text style={textStyles.body}>
-        {this.state.primary_language}
+        {this.state.student.primary_language}
         </Text>
 
         <Text style={textStyles.titleSmall}>
         Document Type
         </Text>
         <Text style={textStyles.body}>
-        {this.state.document_type}
+        {this.state.student.document_type}
         </Text>
 
         <Text style={textStyles.titleSmall}>
         Participated in DREAM before?
         </Text>
         <Text style={textStyles.body}>
-        {this.state.past_dream_participant}
+        {this.state.student.past_dream_participant}
         </Text>
 
 
