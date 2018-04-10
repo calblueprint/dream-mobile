@@ -210,9 +210,12 @@ const mapStateToProps = (state, props) => {
   const date = props.navigation.state.params.date;
   //TODO: (Aivant) deal with the situation when there's no attendances for today
   const students = course.students ? course.students : []
-  var attendances = course.attendances && course.attendances[date] ? course.attendances[date] : [];
-  if (attendances.length == 0) {
-    attendances = students.map((s) => {return createNewAttendance(s.id, course.id, date)});
+  var attendances = props.navigation.state.params.attendances
+  if (!attendances) {
+    attendances = course.attendances && course.attendances[date] ? course.attendances[date] : [];
+    if (attendances.length == 0) {
+      attendances = students.map((s) => {return createNewAttendance(s.id, course.id, date)});
+    }
   }
   return {
     ...props.navigation.state.params,
@@ -223,8 +226,4 @@ const mapStateToProps = (state, props) => {
   };
 }
 
-const mapDispatchToProps = (dispatch) => {
-  return {}
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(AttendanceScreen);
+export default connect(mapStateToProps, null)(AttendanceScreen);

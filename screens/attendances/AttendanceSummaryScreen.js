@@ -342,7 +342,7 @@ const mapStateToProps = (state, props) => {
   return {
     ...props.navigation.state.params,
     isLoading: state.isLoading.value,
-    isSynced: course.attendances[date].isSynced,
+    isSynced: course.isSynced,
     isModalOpen: state.modal.isOpen,
   };
 }

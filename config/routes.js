@@ -144,6 +144,7 @@ export class APIRoutes {
   // Attendances
   static attendanceItemPath()         { return APIRoutes.createRoute(`attendances/attendance_item`) }
   static getRecentAttendancesPath(courseId)   { return APIRoutes.createRoute(`courses/${courseId}/attendances`) }
+  static getMonthAttendancesPath(courseId) { return APIRoutes.createRoute(`courses/${courseId}/monthAttendances`)}
   static attendancePath(id)           { return APIRoutes.createRoute(`attendances/${id}`) }
 
   // Login

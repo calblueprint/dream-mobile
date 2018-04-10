@@ -47,37 +47,26 @@ class RecentAttendancesScreen extends React.Component {
   }
 
   /**
-    * Renders date, course title, attendance cards, and submit button
+    * Renders loading state if data is still loading or uses _renderLoadedView
     */
-  _renderLoadedView() {
+  render() {
     const { navigate } = this.props.navigation;
     //TODO: make sure you can only go to past_attendances when you're online
     const attendances = this._renderAttendances();
+    const courseId = this.props.navigation.state.params.courseId
     return(
       <View>
         <Text style={textStyles.titleLarge}>Recent</Text>
         { attendances }
         <StyledButton
           onPress={() => navigate('PastAttendances',
-            { course: this.props.course})}
+            { courseId: courseId})}
           text="View By Month"
           primaryButtonLarge
         />
       </View>
 
     )
-  }
-
-  /**
-    * Renders loading state if data is still loading or uses _renderLoadedView
-    */
-  render() {
-    const attendances = this._renderLoadedView();
-    return (
-      <View style={commonStyles.containerStatic}>
-        { attendances }
-      </View>
-    );
   }
 }
 
