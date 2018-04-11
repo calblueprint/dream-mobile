@@ -44,6 +44,7 @@ class LoginScreen extends React.Component {
       }
     }
     this.props.fetchTeacher(params, this.props.navigation);
+    //TODO: Logging in should not push onto the stack. it should replace current
   }
 
   render() {
