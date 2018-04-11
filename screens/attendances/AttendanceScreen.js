@@ -193,10 +193,13 @@ const styles = StyleSheet.create({
 
 const createNewAttendance = (studentId, courseId, date) => {
   return {
+    id: -1,
+    comment: null,
     date: date,
     attendance_type: 0,
     student_id: studentId,
     course_id: courseId,
+    isChanged: true,
   }
 }
 

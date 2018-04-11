@@ -9,7 +9,7 @@ import { textStyles } from '../../styles/textStyles';
 import StyledButton from '../../components/Button/Button';
 import { APIRoutes } from '../../config/routes';
 import settings from '../../config/settings';
-import { putRequestNoCatch } from '../../lib/requests';
+import { postRequestNoCatch } from '../../lib/requests';
 import Collapse from '../../components/Collapse';
 import SimpleModal from '../../components/SimpleModal';
 import colors from '../../styles/colors';
@@ -295,9 +295,11 @@ const styles = StyleSheet.create({
 syncAttendances = (attendances, courseId, date) => {
   return (dispatch) => {
     dispatch(actions.requestUpdateAttendances(courseId, date));
+    console.log("Syncing attendaances")
     const attendancePromises = attendances.map((attendance, i) => {
       return updateAttendance(attendance, i);
     });
+    console.log(attendancePromises)
 
     Promise.all(attendancePromises).then((responseData) => {
       console.log("Synced Attendances successfully");
@@ -325,10 +327,11 @@ updateAttendance = (attendance, index) => {
   const errorFunc = (error) => {
     console.log(error);
   }
-  const params = attendance
+  const params = {attendance: attendance}
 
   if (attendance.isChanged) {
-    return putRequestNoCatch(APIRoutes.attendancePath(), successFunc, errorFunc, params, true);
+    // append true to the list of parameters to make this request fail
+    return postRequestNoCatch(APIRoutes.attendanceItemPath(), successFunc, errorFunc, params);
   } else {
     return attendance;
   }

@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import actions from '../../actions';
 
 import { commonStyles } from '../../styles/styles';
-import { getRequest, putRequestNoCatch } from '../../lib/requests';
+import { getRequest, postRequestNoCatch } from '../../lib/requests';
 import { APIRoutes } from '../../config/routes';
 import { standardError } from '../../lib/alerts';
 import { attendanceDate } from '../../lib/date';
@@ -243,10 +243,10 @@ const updateAttendance = (attendance, index) => {
   const errorFunc = (error) => {
     console.log(error);
   }
-  const params = attendance
+  const params = {attendance: attendance}
 
   if (attendance.isChanged) {
-    return putRequestNoCatch(APIRoutes.attendancePath(), successFunc, errorFunc, params);
+    return postRequestNoCatch(APIRoutes.attendanceItemPath(), successFunc, errorFunc, params);
   } else {
     return attendance;
   }
