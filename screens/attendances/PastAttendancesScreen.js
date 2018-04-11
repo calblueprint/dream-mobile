@@ -1,6 +1,6 @@
 import React from 'react';
 import { Image, Button, Text, View, ScrollView, TextInput, TouchableHighlight, StyleSheet } from 'react-native';
-
+import moment from 'moment';
 import { connect } from 'react-redux';
 import actions from '../../actions';
 
@@ -20,26 +20,42 @@ import { monthYearDate } from '../../lib/date';
 class PastAttendancesScreen extends React.Component {
   constructor(props) {
     super(props);
+    today = new Date();
     this.state = {
       courseId : this.props.navigation.state.params.courseId,
-      //date: monthYearDate(new Date()), // Later, use this to start at current month
-      date: "October 2017", // To hard-code in date, use this line.
+      date: new Date(today.getFullYear(), today.getMonth(), 1),
       isLoading: true,
       attendances: [],
     };
 
     this._fetchAttendances = this._fetchAttendances.bind(this);
+    this.decrementMonth = this.decrementMonth.bind(this);
+    this.incrementMonth = this.incrementMonth.bind(this);
   }
 
   componentDidMount() {
     this._fetchAttendances();
   }
 
+  decrementMonth() {
+    newDate = moment(this.state.date).subtract(1, "months").valueOf();
+    this.setState({ date: newDate }, () => {
+      this._fetchAttendances();
+    });
+  }
+
+  incrementMonth() {
+    newDate = moment(this.state.date).add(1, "months").valueOf();
+    this.setState({ date: newDate }, () => {
+      this._fetchAttendances();
+    });
+  }
+
   _fetchAttendances() {
     const successFunc = (responseData) => {
       this.setState({ attendances: responseData, isLoading: false });
     }
-    params = { date: this.state.date }
+    params = { date: monthYearDate(this.state.date)}
     getRequest(APIRoutes.getMonthAttendancesPath(this.state.courseId), successFunc, standardError, params);
   }
 
@@ -81,7 +97,17 @@ class PastAttendancesScreen extends React.Component {
     const attendances = this._renderAttendances();
     return(
       <View>
-        <Text style={textStyles.titleLarge}>{this.state.date}</Text>
+        <Text style={textStyles.titleLarge}>{monthYearDate(this.state.date)}</Text>
+        <StyledButton
+          onPress={this.incrementMonth}
+          text="Next Month"
+          primaryButtonLarge
+        />
+        <StyledButton
+          onPress={this.decrementMonth}
+          text="Prev Month"
+          primaryButtonLarge
+        />
         { attendances }
       </View>
 
