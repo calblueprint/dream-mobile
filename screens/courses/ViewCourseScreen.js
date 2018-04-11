@@ -41,7 +41,7 @@ class ViewCourseScreen extends React.Component {
 
     const _enrollStudent = () => {
        this.props.navigation.navigate('CreateStudent',
-        { refreshStudents: this._fetchStudents, courseId: this.state.course_id, newStudent: true })
+        { refreshStudents: this._fetchStudents, course_id: this.state.course_id, newStudent: true })
      }
 
     this.props.navigation.setParams({ handleCreate: _enrollStudent });
@@ -77,7 +77,6 @@ class ViewCourseScreen extends React.Component {
       this.setState({ teachers: responseData.teachers});
       this._fetchStudents();
     }
-    console.log(this.state.course_id);
     getRequest(APIRoutes.getTeachersPath(this.state.course_id), successFunc, standardError);
   }
 
@@ -89,7 +88,7 @@ class ViewCourseScreen extends React.Component {
       this.setState({ students: responseData, isLoading: false });
     }
 
-    getRequest(APIRoutes.getCourseStudentsPath(this.state.course_id), successFunc, standardError);
+    getRequest(APIRoutes.getStudentsInCoursePath(this.state.course_id), successFunc, standardError);
   }
 
   _handleSelectStudent(id) {
@@ -250,9 +249,10 @@ class ViewCourseScreen extends React.Component {
           </View>
 
           <StyledButton
-            onPress={() => this.props.navigation.navigate('CreateStudent',
-        { refreshStudents: this._fetchStudents, courseId: this.state.course_id, newStudent: true })}
-            text="+ Create New Student"
+            onPress={() => this.props.navigation.navigate('SearchStudent',
+            { refreshStudents: this._fetchStudents,
+              course_id: this.state.course_id, })}
+            text="+ Enroll Student"
             linkButton
           />
         </ScrollView>

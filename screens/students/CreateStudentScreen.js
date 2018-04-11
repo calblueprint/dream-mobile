@@ -12,7 +12,7 @@ class CreateStudentScreen extends React.Component {
     this._handleCreateStudent = this._handleCreateStudent.bind(this);
     this._handleUpdateStudent = this._handleUpdateStudent.bind(this);
     this.state = {
-      courseId: this.props.navigation.state.params.courseId,
+      course_id: this.props.navigation.state.params.course_id,
       student: this.props.navigation.state.params.student,
     }
   }
@@ -21,9 +21,11 @@ class CreateStudentScreen extends React.Component {
       const successFunc = (responseData) => {
         this.setState({ student: responseData});
         this.props.navigation.state.params.refreshStudents();
-        this.props.navigation.goBack(null);
+        this.props.navigation.navigate('ViewCourse', {
+          course_id: this.state.course_id
+        });
       }
-    postRequest(APIRoutes.getStudentsPath(this.state.courseId), successFunc, standardError, params=params);
+    postRequest(APIRoutes.getStudentsPath(), successFunc, standardError, params=params);
   }
 
   _handleUpdateStudent(params) {
