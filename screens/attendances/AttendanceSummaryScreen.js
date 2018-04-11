@@ -303,6 +303,8 @@ syncAttendances = (attendances, courseId, date) => {
       dispatch(actions.receiveUpdateAttendancesSuccess(responseData, courseId, date));
       dispatch(actions.openModal());
     }).catch((error) => {
+      console.log("Error fetching attendances: ");
+      console.log(error);
       dispatch(actions.receiveUpdateAttendancesError(attendances, courseId, date));
       dispatch(actions.openModal());
     });
@@ -315,6 +317,8 @@ syncAttendances = (attendances, courseId, date) => {
   */
 updateAttendance = (attendance, index) => {
   const successFunc = (responseData) => {
+    console.log("Updated Attendance:");
+    console.log(responseData);
     return responseData;
   }
   const errorFunc = (error) => {

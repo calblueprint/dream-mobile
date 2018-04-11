@@ -7,6 +7,7 @@ import { Platform } from 'react-native'
 if (process.env.NODE_ENV === 'production') {
   console.log('production');
   URL = 'https://dream-rails-staging.herokuapp.com';
+  ALT_URL = URL;
   // URL = 'https://dream-rails-production.herokuapp.com';
 
 } else {
@@ -16,11 +17,15 @@ if (process.env.NODE_ENV === 'production') {
     // For Android Emulator
     android: "http://10.0.2.2:3000"
   });
+
+  // Intended to be an alternate URL that should make requests fail.
+  ALT_URL = URL + "1";
 }
 
 export const settings = {
   env: process.env.NODE_ENV,
   URL,
+  ALT_URL,
 };
 
 export default settings;

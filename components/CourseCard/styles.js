@@ -1,4 +1,6 @@
 import { StyleSheet } from 'react-native';
+import colors from '../../styles/colors';
+
 
 const cardStyles = StyleSheet.create({
   outerContainer: {
@@ -13,7 +15,7 @@ const cardStyles = StyleSheet.create({
     backgroundColor: 'transparent'
   },
   bottomContainer: {
-  	alignSelf: 'flex-end',  
+  	alignSelf: 'flex-end',
   	height: 48,
   },
   title: {
@@ -24,6 +26,11 @@ const cardStyles = StyleSheet.create({
   count: {
   	paddingLeft: 16,
     paddingTop: 8
+  },
+  status: {
+  	paddingLeft: 16,
+    paddingTop: 8,
+    color: colors.errorRed
   }
 });
 

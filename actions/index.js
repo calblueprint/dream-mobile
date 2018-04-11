@@ -1,5 +1,6 @@
 // Courses
 import types from '../lib/actionTypes'
+import { APIRoutes } from '../config/routes';
 
 let actions = {
   // GENERAL
