@@ -60,7 +60,7 @@ const course = (state = {}, action) => {
     case types.RECEIVE_COURSE_TEACHERS_SUCCESS:
       // For course's courseTeachers
       return Object.assign({}, state, {
-        courseTeachers: course_teachers(state.courseTeachers, action)
+        teachers: course_teachers(state.teachers, action)
       });
     case types.RECEIVE_ATTENDANCES_SUCCESS:
     case types.RECEIVE_COURSE_ATTENDANCES_SUCCESS:
