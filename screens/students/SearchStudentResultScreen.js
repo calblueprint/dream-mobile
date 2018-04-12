@@ -50,12 +50,6 @@ class SearchStudentResultScreen extends React.Component {
     return (
       <View style={{marginBottom: 24}}>
         { students }
-        <StyledButton
-          onPress={() => navigate('EditCourse', {refreshCourses: this.props.fetchCourses, newCourse: true,
-            sessions: [], teacher: this.props.teacher})}
-          text='Next'
-          primaryButtonLarge>
-        </StyledButton>
       </View>
     );
   }
