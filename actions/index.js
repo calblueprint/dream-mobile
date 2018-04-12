@@ -72,6 +72,36 @@ let actions = {
     }
   },
 
+  // Sessions
+  requestSessions: (courseId) => {
+    return {
+      type: types.REQUEST_SESSIONS,
+      courseId
+    }
+  },
+  receiveSessionsSuccess: (sessions, courseId) => {
+    return {
+      type: types.RECEIVE_SESSIONS_SUCCESS,
+      sessions,
+      courseId
+    }
+  },
+
+  // Course Teachers
+  requestCourseTeachers: (courseId) => {
+    return {
+      type: types.REQUEST_COURSE_TEACHERS,
+      courseId
+    }
+  },
+  receiveCourseTeachersSuccess: (courseTeachers, courseId) => {
+    return {
+      type: types.RECEIVE_COURSE_TEACHERS_SUCCESS,
+      courseTeachers,
+      courseId
+    }
+  },
+
   // ATTENDANCES
   requestAttendances: (courseId, date) => {
     return {

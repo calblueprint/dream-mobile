@@ -17,10 +17,6 @@ import colors from '../../styles/colors';
 class ViewCourseScreen extends React.Component {
   constructor(props) {
     super(props);
-    this._fetchCourse = this._fetchCourse.bind(this);
-    this._fetchSessions = this._fetchSessions.bind(this);
-    this._fetchStudents = this._fetchStudents.bind(this);
-    this._fetchTeachers = this._fetchTeachers.bind(this);
     this._handleSelectStudent = this._handleSelectStudent.bind(this);
     this._deleteCourse = this._deleteCourse.bind(this);
     this._renderDeleteCourseButton = this._renderDeleteCourseButton.bind(this);
@@ -37,58 +33,12 @@ class ViewCourseScreen extends React.Component {
   }
 
   componentDidMount() {
-    this._fetchCourse();
-
     const _enrollStudent = () => {
        this.props.navigation.navigate('CreateStudent',
         { refreshStudents: this._fetchStudents, course_id: this.state.course_id, newStudent: true })
      }
 
     this.props.navigation.setParams({ handleCreate: _enrollStudent });
-  }
-
-  /*
-   * Fetch record for single course.
-   */
-  _fetchCourse() {
-    const successFunc = (responseData) => {
-      this.setState({ course: responseData });
-      this._fetchSessions();
-    }
-    getRequest(APIRoutes.getCoursePath(this.state.course_id), successFunc, standardError);
-  }
-
-  /*
-   * Fetch record for single course.
-   */
-  _fetchSessions() {
-    const successFunc = (responseData) => {
-      this.setState({ sessions: responseData.sessions });
-      this._fetchTeachers();
-    }
-    getRequest(APIRoutes.getSessionsPath(this.state.course_id), successFunc, standardError);
-  }
-
-  /*
-   * Fetch record for the course.
-   */
-  _fetchTeachers() {
-    const successFunc = (responseData) => {
-      this.setState({ teachers: responseData.teachers});
-      this._fetchStudents();
-    }
-    getRequest(APIRoutes.getTeachersPath(this.state.course_id), successFunc, standardError);
-  }
-
-  /*
-   * Fetch students for the course.
-   */
-  _fetchStudents() {
-    const successFunc = (responseData) => {
-      this.setState({ students: responseData, isLoading: false });
-    }
-
-    getRequest(APIRoutes.getStudentsInCoursePath(this.state.course_id), successFunc, standardError);
   }
 
   _handleSelectStudent(id) {
