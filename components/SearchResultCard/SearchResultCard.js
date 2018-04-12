@@ -2,6 +2,9 @@ import React from 'react';
 import { Text, TouchableHighlight, View } from 'react-native';
 import PropTypes from 'prop-types';
 import { textStyles } from '../../styles/textStyles';
+import {cardStyles} from "../CourseCard/styles";
+import StyledButton from '../../components/Button/Button';
+import colors from "../../styles/colors";
 
 /**
  * @prop student - student information
@@ -15,9 +18,14 @@ class SearchResultCard extends React.Component {
   render() {
     return (
       <TouchableHighlight onPress={() => this.props.onSelectStudent(this.props.student.id)}>
-        <View style={{borderBottomWidth: 1, borderBottomColor: '#E6E6E6'}}>
-          <View style={{marginBottom: 16, marginTop: 16}}>
-            <Text style={textStyles.body}>{this.props.student.first_name} {this.props.student.last_name}</Text>
+        <View style={[cardStyles.outerContainer, {backgroundColor: colors.courseGreen}]}>
+          <View style={cardStyles.topContainer}>
+            <Text style={[cardStyles.title, textStyles.titleMediumLight]}>
+              {this.props.student.first_name} {this.props.student.last_name}
+            </Text>
+            <Text style={[cardStyles.count, textStyles.titleSmallLight]}>
+              Birthday
+            </Text>
           </View>
         </View>
       </TouchableHighlight>
