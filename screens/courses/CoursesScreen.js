@@ -172,8 +172,10 @@ const fetchStudents = (courseId) => {
   return (dispatch) => {
     dispatch(actions.requestStudents(courseId));
     return getRequest(
-      APIRoutes.getCourseStudentsPath(courseId),
+      APIRoutes.getStudentsInCoursePath(courseId),
       (responseData) => {
+        console.log("Received students for courseId: " + courseId);
+        console.log(responseData)
         dispatch(actions.receiveStudentsSuccess(responseData, courseId));
       },
       (error) => {
