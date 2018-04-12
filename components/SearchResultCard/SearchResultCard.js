@@ -29,13 +29,15 @@ class SearchResultCard extends React.Component {
             padding: 10
           }]}>
           <View style={{flex: 0.9}}>
-            <Text style={[cardStyles.title, textStyles.titleMedium]}>
-              {this.props.student.first_name} {this.props.student.last_name}
-            </Text>
-            <Text style={[cardStyles.count, textStyles.titleSmall]}>
+            <View style={{paddingBottom: 10}}>
+              <Text style={[textStyles.titleMedium]}>
+                {this.props.student.first_name} {this.props.student.last_name}
+              </Text>
+            </View>
+            <Text style={[textStyles.titleSmall]}>
               Birthday: {this.props.student.birthday}
             </Text>
-            <Text style={[cardStyles.count, textStyles.titleSmall]}>
+            <Text style={[textStyles.titleSmall]}>
               Address: {this.props.student.address}
             </Text>
           </View>

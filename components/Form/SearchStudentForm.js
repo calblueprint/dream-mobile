@@ -57,7 +57,7 @@ class SearchStudentForm extends React.Component {
   render() {
     return (
       <ScrollView>
-        <View>
+        <View style={formStyles.background}>
           <View style={formStyles.container}>
             <Form
               ref="form"
