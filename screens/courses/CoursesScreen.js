@@ -149,9 +149,13 @@ const fetchCourses = (teacher) => {
       path,
       (responseData) =>  {
         dispatch(actions.receiveCoursesSuccess(responseData))
-        for (const key in responseData) { // Once you have the courses, fetch student and attendance data
-          dispatch(fetchStudents(responseData[key].id));
-          dispatch(fetchRecentCourseAttendances(responseData[key].id));
+        for (const key in responseData) {
+          // Once you have the courses, fetch student and attendance data
+          const courseId = responseData[key].id;
+          dispatch(fetchStudents(courseId));
+          dispatch(fetchCourseTeachers(courseId));
+          dispatch(fetchSessions(courseId));
+          dispatch(fetchRecentCourseAttendances(courseId));
         }
       },
       (error) => {
@@ -165,19 +169,60 @@ const fetchCourses = (teacher) => {
 }
 
 /**
-  * Fetches all students with the given course id and on success
-  * gets attendances for each student
+  * Fetches all students with the given course id
   */
 const fetchStudents = (courseId) => {
   return (dispatch) => {
     dispatch(actions.requestStudents(courseId));
     return getRequest(
-      APIRoutes.getCourseStudentsPath(courseId),
+      APIRoutes.getStudentsInCoursePath(courseId),
       (responseData) => {
         dispatch(actions.receiveStudentsSuccess(responseData, courseId));
       },
       (error) => {
         console.log("Error in fetching students for course: " + courseId);
+        console.log(error);
+        dispatch(actions.receiveStandardError(error));
+        standardError(error);
+      }
+    );
+  }
+}
+
+/**
+  * Fetches all teachers with the given course id
+  */
+const fetchCourseTeachers = (courseId) => {
+  return (dispatch) => {
+    dispatch(actions.requestCourseTeachers(courseId));
+    return getRequest(
+      APIRoutes.getTeachersPath(courseId),
+      (responseData) => {
+        dispatch(actions.receiveCourseTeachersSuccess(responseData.teachers, courseId));
+      },
+      (error) => {
+        console.log("Error in fetching course teachers for course: " + courseId);
+        console.log(error);
+        dispatch(actions.receiveStandardError(error));
+        standardError(error);
+      }
+    );
+  }
+}
+
+/**
+  * Fetches all sessions with the given course id
+  */
+const fetchSessions = (courseId) => {
+  return (dispatch) => {
+    dispatch(actions.requestSessions(courseId));
+    return getRequest(
+      APIRoutes.getSessionsPath(courseId),
+      (responseData) => {
+        dispatch(actions.receiveSessionsSuccess(responseData.sessions, courseId));
+      },
+      (error) => {
+        console.log("Error in fetching sessions for course: " + courseId);
         console.log(error);
         dispatch(actions.receiveStandardError(error));
         standardError(error);
@@ -266,7 +311,9 @@ const mapDispatchToProps = (dispatch) => {
   return {
     syncLocalChanges: (attendances) => dispatch(syncLocalChanges(attendances)),
     fetchCourses: (teacher) => dispatch(fetchCourses(teacher)),
-    fetchStudents: (courseId, date) => dispatch(fetchStudents(courseId, date)),
+    fetchStudents: (courseId) => dispatch(fetchStudents(courseId)),
+    fetchCourseTeachers: (courseId) => dispatch(fetchCourseTeachers(courseId)),
+    fetchSessions: (courseId) => dispatch(fetchSessions(courseId)),
     fetchRecentCourseAttendances: (students, courseId, date) => dispatch(fetchRecentCourseAttendances(students, courseId, date)),
   }
 }

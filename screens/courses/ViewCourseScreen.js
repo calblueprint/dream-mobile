@@ -18,10 +18,6 @@ import colors from '../../styles/colors';
 class ViewCourseScreen extends React.Component {
   constructor(props) {
     super(props);
-    this._fetchCourse = this._fetchCourse.bind(this);
-    this._fetchSessions = this._fetchSessions.bind(this);
-    this._fetchStudents = this._fetchStudents.bind(this);
-    this._fetchTeachers = this._fetchTeachers.bind(this);
     this._handleSelectStudent = this._handleSelectStudent.bind(this);
     this._deleteCourse = this._deleteCourse.bind(this);
     this._renderDeleteCourseButton = this._renderDeleteCourseButton.bind(this);
@@ -38,8 +34,6 @@ class ViewCourseScreen extends React.Component {
   }
 
   componentDidMount() {
-    this._fetchCourse();
-
     const _enrollStudent = () => {
        this.props.navigation.navigate('CreateStudent',
         {course_id: this.props.course.id, newStudent: true })

@@ -1,5 +1,7 @@
 import types from '../lib/actionTypes'
 import { students } from './students';
+import { sessions } from './sessions';
+import { course_teachers } from './course_teachers';
 import { attendances } from './attendances';
 
 /**
@@ -18,6 +20,8 @@ export const courses = (state = {}, action) => {
       //TODO: Intelligently merge (if still relevant);
       return action.courses;
     case types.RECEIVE_STUDENTS_SUCCESS:
+    case types.RECEIVE_SESSIONS_SUCCESS:
+    case types.RECEIVE_COURSE_TEACHERS_SUCCESS:
     case types.RECEIVE_ATTENDANCES_SUCCESS:
     case types.RECEIVE_COURSE_ATTENDANCES_SUCCESS:
     case types.RECEIVE_UPDATE_ATTENDANCES_SUCCESS:
@@ -47,6 +51,16 @@ const course = (state = {}, action) => {
       // For course's students
       return Object.assign({}, state, {
         students: students(state.students, action)
+      });
+    case types.RECEIVE_SESSIONS_SUCCESS:
+      // For course's sessions
+      return Object.assign({}, state, {
+        sessions: sessions(state.sessions, action)
+      });
+    case types.RECEIVE_COURSE_TEACHERS_SUCCESS:
+      // For course's courseTeachers
+      return Object.assign({}, state, {
+        courseTeachers: course_teachers(state.courseTeachers, action)
       });
     case types.RECEIVE_ATTENDANCES_SUCCESS:
     case types.RECEIVE_COURSE_ATTENDANCES_SUCCESS:
