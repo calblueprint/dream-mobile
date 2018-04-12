@@ -56,7 +56,7 @@ class CoursesScreen extends React.Component {
   _handleSelectCourse(courseId) {
     this.props.navigation.navigate('ViewCourse', {
       refreshCourses: this.props.fetchCourses,
-      course_id: courseId
+      courseId: courseId
     });
   }
 
