@@ -18,13 +18,16 @@ class SearchResultCard extends React.Component {
   render() {
     return (
       <TouchableHighlight onPress={() => this.props.onSelectStudent(this.props.student.id)}>
-        <View style={[cardStyles.outerContainer, {backgroundColor: colors.courseGreen}]}>
+        <View style={[cardStyles.outerContainer, {backgroundColor: colors.courseWhite, borderWidth: 1, borderColor: colors.courseBlue}]}>
           <View style={cardStyles.topContainer}>
-            <Text style={[cardStyles.title, textStyles.titleMediumLight]}>
+            <Text style={[cardStyles.title, textStyles.titleMedium]}>
               {this.props.student.first_name} {this.props.student.last_name}
             </Text>
-            <Text style={[cardStyles.count, textStyles.titleSmallLight]}>
-              Birthday
+            <Text style={[cardStyles.count, textStyles.titleSmall]}>
+              Birthday: {this.props.student.birthday}
+            </Text>
+            <Text style={[cardStyles.count, textStyles.titleSmall]}>
+              Address: {this.props.student.address}
             </Text>
           </View>
         </View>
