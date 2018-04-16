@@ -6,7 +6,7 @@ import { colors } from '../../styles/colors';
 import { getRequest, deleteRequest } from '../../lib/requests';
 import { APIRoutes } from '../../config/routes';
 import { formViewStyles } from '../../styles/formViewStyles';
-import { standardError } from '../../lib/alerts';
+import { standardError, confirmDelete } from '../../lib/alerts';
 
 class StudentProfileScreen extends React.Component {
 
@@ -14,12 +14,13 @@ class StudentProfileScreen extends React.Component {
     super(props);
     this._renderStudent = this._renderStudent.bind(this);
     this._fetchStudent = this._fetchStudent.bind(this);
-    this._deleteStudent = this._deleteStudent.bind(this);
+    this._deleteEnrollment = this._deleteEnrollment.bind(this);
 
     this.state = {
       student : { },
       isLoading : true,
       studentId: this.props.navigation.state.params.studentId,
+      courseId: this.props.navigation.state.params.courseId,
     }
   }
 
@@ -36,12 +37,15 @@ class StudentProfileScreen extends React.Component {
     getRequest(APIRoutes.getStudentPath(studentId), successFunc, standardError);
   }
 
-  _deleteStudent(studentId) {
+  _deleteEnrollment() {
+    var params = {
+        student_id: this.state.studentId,
+        course_id: this.state.courseId
+    }
     const successFunc = (responseData) => {
       this.props.navigation.navigate('Courses');
-
     }
-    deleteRequest(APIRoutes.getStudentPath(studentId), successFunc, standardError);
+    deleteRequest(APIRoutes.getCoursesStudentsPath(), successFunc, standardError, params=params);
   }
 
   _renderStudent() {
@@ -163,7 +167,7 @@ class StudentProfileScreen extends React.Component {
         />
 
         <Button
-          onPress={() => this._deleteStudent(this.state.studentId)}
+          onPress={() => confirmDelete("Are you sure you want to remove this student from the course?", this._deleteEnrollment)}
           title='Delete'
         />
       </View>

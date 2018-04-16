@@ -93,6 +93,7 @@ class ViewCourseScreen extends React.Component {
     this.props.navigation.navigate('StudentProfile', {
       refreshStudents: this._fetchStudents(),
       studentId: id,
+      courseId: this.state.course_id,
     });
   }
 
