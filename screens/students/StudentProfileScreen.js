@@ -43,7 +43,10 @@ class StudentProfileScreen extends React.Component {
         course_id: this.state.courseId
     }
     const successFunc = (responseData) => {
-      this.props.navigation.navigate('Courses');
+      // this.props.navigation.state.params.refreshStudents();
+      this.props.navigation.navigate('ViewCourse', {
+        course_id: this.state.courseId
+      });
     }
     deleteRequest(APIRoutes.getCoursesStudentsPath(), successFunc, standardError, params=params);
   }
