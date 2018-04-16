@@ -125,7 +125,7 @@ class ViewCourseScreen extends React.Component {
       <StyledButton
         onPress={() => confirmDelete("Are you sure you want to delete this course?", this._deleteCourse)}
         text='Delete Course'
-        secondaryButtonSmall>
+        linkButton>
       </StyledButton>
     );
   }
