@@ -16,7 +16,6 @@ if (process.env.NODE_ENV === 'production') {
     // For Android Emulator
     android: "http://10.0.2.2:3000"
   });
-  // URL = 'http://192.168.128.26:3000';
 }
 
 export const settings = {
