@@ -101,9 +101,9 @@ class ViewCourseScreen extends React.Component {
    */
   _deleteCourse() {
     const successFunc = (responseData) => {
-      this.props.navigation.state.params.refreshCourses();
-      this.props.navigation.goBack(null);
+      this.props.navigation.navigate('Courses');
     }
+
     deleteRequest(APIRoutes.getCoursePath(this.state.course_id), successFunc, standardError);
   }
 
@@ -111,8 +111,8 @@ class ViewCourseScreen extends React.Component {
     return (
       <StyledButton
         onPress={() => confirmDelete("Are you sure you want to delete this course?", this._deleteCourse)}
-        text='Delete'
-        secondaryButtonSmall>
+        text='Delete Course'
+        linkButton>
       </StyledButton>
     );
   }
@@ -229,6 +229,8 @@ class ViewCourseScreen extends React.Component {
             text="Edit Course"
             linkButton
           />
+
+          <View>{ this._renderDeleteCourseButton() }</View>
 
           <StyledButton
             text="View Past Attendance"
