@@ -75,7 +75,9 @@ class AttendanceScreen extends React.Component {
     return (value, label) => {
       const attendances = this.state.attendances;
       const attendance = this.state.attendances[index];
-      attendance.attendance_type = value;
+      attendance.attendance_type = parseInt(value);
+      console.log("Set value");
+      console.log(attendance)
       attendance.isChanged = true;
       attendances[index] = attendance;
       this.setState({ attendances: attendances });
@@ -208,7 +210,6 @@ const mapStateToProps = (state, props) => {
   // Get course and date associated with this attendance screen
   const course = state.courses.find((course) => course.id === props.navigation.state.params.courseId);
   const date = props.navigation.state.params.date;
-  //TODO: (Aivant) deal with the situation when there's no attendances for today
   const students = course.students ? course.students : []
   var attendances = props.navigation.state.params.attendances
   if (!attendances) {
@@ -217,11 +218,12 @@ const mapStateToProps = (state, props) => {
       attendances = students.map((s) => {return createNewAttendance(s.id, course.id, date)});
     }
   }
+  //BE CAREFUL! Earlier, this directly edited the store!!
   return {
     ...props.navigation.state.params,
     courseTitle: course.title,
     students: students,
-    attendances: attendances,
+    attendances: JSON.parse(JSON.stringify(attendances)),
     isLoading: state.isLoading.value,
   };
 }

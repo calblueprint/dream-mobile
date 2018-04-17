@@ -16,7 +16,6 @@ import { FontAwesome,Entypo } from '@expo/vector-icons';
 import colors from '../../styles/colors';
 
 
-//TODO: (Aivant) Convert this to offline!
 class ViewCourseScreen extends React.Component {
   constructor(props) {
     super(props);
@@ -42,9 +41,8 @@ class ViewCourseScreen extends React.Component {
 
   _handleSelectStudent(id) {
     this.props.navigation.navigate('StudentProfile', {
-      refreshStudents: this._fetchStudents(),
       studentId: id,
-      courseId: this.state.course_id,
+      courseId: this.props.course.id
     });
   }
 
@@ -61,7 +59,14 @@ class ViewCourseScreen extends React.Component {
   _renderDeleteCourseButton() {
     return (
       <StyledButton
-        onPress={() => confirmDelete("Are you sure you want to delete this course?", this._deleteCourse)}
+        onPress={() => { 
+            if (this.props.online) { 
+              confirmDelete("Are you sure you want to delete this course?", this._deleteCourse)
+            } else {
+              this.setState({showModal: true})
+            } 
+          }
+        }
         text='Delete Course'
         linkButton>
       </StyledButton>
@@ -124,6 +129,9 @@ class ViewCourseScreen extends React.Component {
    * Display course sessions.
    */
   _renderSessions() {
+    if(this.props.course.sessions == []) { 
+      return [];
+    }
     return this.props.course.sessions.map((session, index) => {
       const start = timeFormat(new Date(session.start_time))
       const end = timeFormat(new Date(session.end_time))

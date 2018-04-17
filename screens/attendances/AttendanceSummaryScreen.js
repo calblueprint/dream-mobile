@@ -218,6 +218,8 @@ class AttendanceSummaryScreen extends React.Component {
     * Renders date, course title, attendance summary, sync button, and modal
     */
   _renderLoadedView() {
+    console.log("Rendering:");
+    console.log(this.props);
     return(
       <View style={commonStyles.containerStatic}>
         <ScrollView>
@@ -231,7 +233,7 @@ class AttendanceSummaryScreen extends React.Component {
         </ScrollView>
         <StyledButton
           onPress={() => this.props.syncAttendances(
-            this.props.attendances, this.props.courseId, this.props.date, () => {this.setState({showModal: true})})}
+            this.props.attendances, this.props.curAttendances, this.props.courseId, this.props.date, () => {this.setState({showModal: true})})}
           text='Sync'
           primaryButtonLarge
         >
@@ -295,7 +297,7 @@ const styles = StyleSheet.create({
   * and shows different modal based on whether sync succeeded or failed. Saves attendances
   * to store regardless of success/failiure.
   */
-syncAttendances = (attendances, courseId, date, openModal) => {
+syncAttendances = (attendances, curAttendances, courseId, date, openModal) => {
   return (dispatch) => {
     dispatch(actions.requestUpdateAttendances(courseId, date));
     const attendancePromises = attendances.map((attendance, i) => {
@@ -303,12 +305,14 @@ syncAttendances = (attendances, courseId, date, openModal) => {
     });
 
     Promise.all(attendancePromises).then((responseData) => {
+      dispatch(actions.updateStudentAttendanceStats(responseData, curAttendances, courseId));
       dispatch(actions.receiveUpdateAttendancesSuccess(responseData, courseId, date));
       openModal();
     }).catch((error) => {
       // Optimistically updates and marks course as unsynced
       console.log("Attendance Sync Failed: " );
       console.log(error);
+      dispatch(actions.updateStudentAttendanceStats(attendances, curAttendances, courseId));
       dispatch(actions.receiveUpdateAttendancesError(attendances, courseId, date));
       dispatch(actions.saveLocalChanges(attendances, courseId, date));
       openModal();
@@ -346,12 +350,13 @@ const mapStateToProps = (state, props) => {
     isLoading: state.isLoading.value,
     isSynced: course.synced,
     isModalOpen: state.modal.isOpen,
+    curAttendances: course.attendances[date] ? course.attendances[date] : []
   };
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    syncAttendances: (attendances, courseId, date, openModal) => dispatch(syncAttendances(attendances, courseId, date, openModal)),
+    syncAttendances: (attendances, curAttendances, courseId, date, openModal) => dispatch(syncAttendances(attendances, curAttendances, courseId, date, openModal)),
   }
 }
 

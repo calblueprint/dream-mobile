@@ -71,6 +71,14 @@ let actions = {
       courseId
     }
   },
+  updateStudentAttendanceStats: (attendances, curAttendances, courseId) => {
+    return {
+      type: types.UPDATE_STUDENT_ATTENDANCE_STATS,
+      attendances,
+      curAttendances,
+      courseId
+    }
+  },
 
   // Sessions
   requestSessions: (courseId) => {

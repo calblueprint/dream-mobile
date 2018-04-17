@@ -26,6 +26,7 @@ export const courses = (state = {}, action) => {
     case types.RECEIVE_COURSE_ATTENDANCES_SUCCESS:
     case types.RECEIVE_UPDATE_ATTENDANCES_SUCCESS:
     case types.RECEIVE_UPDATE_ATTENDANCES_ERROR:
+    case types.UPDATE_STUDENT_ATTENDANCE_STATS:
       // For specific course
       return state.map((item) => {
         return item.id == action.courseId ? course(item, action) : item;
@@ -48,6 +49,7 @@ export const courses = (state = {}, action) => {
 const course = (state = {}, action) => {
   switch (action.type) {
     case types.RECEIVE_STUDENTS_SUCCESS:
+    case types.UPDATE_STUDENT_ATTENDANCE_STATS:
       // For course's students
       return Object.assign({}, state, {
         students: students(state.students, action)

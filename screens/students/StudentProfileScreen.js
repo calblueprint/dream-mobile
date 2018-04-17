@@ -36,6 +36,14 @@ class StudentProfileScreen extends React.Component {
 
     getRequest(APIRoutes.getStudentPath(studentId), successFunc, standardError);
   }
+  
+  calculatePercentages(attendance_stats) { 
+    const total = attendance_stats.num_present + attendance_stats.num_late + attendance_stats.num_absent;
+    var present = (attendance_stats.num_present / total) * 100;
+    var late = (attendance_stats.num_late / total) * 100;
+    var absent = (attendance_stats.num_absent / total) * 100;
+    return {present: present.toFixed(1), late: late.toFixed(1), absent: absent.toFixed(1)};
+  }
 
   _deleteEnrollment() {
     var params = {
@@ -53,11 +61,23 @@ class StudentProfileScreen extends React.Component {
 
   _renderStudent() {
     const { navigate } = this.props.navigation;
+    const attendanceStats = this.calculatePercentages(this.state.student.attendance_stats)
     return(
        <View>
         <Text style={textStyles.titleLarge}>
         {this.state.student.first_name} {this.state.student.last_name} - {this.state.student.dream_id}
         </Text>
+        <Text style={{fontWeight: 'bold'}}> Attendance Stats </Text>
+        <Text style={textStyles.body}>
+        Percent Present: {attendanceStats.present}%
+        </Text>
+        <Text style={textStyles.body}>
+        Percent Absent: {attendanceStats.absent}%
+        </Text>
+        <Text style={textStyles.body}>
+        Percent Late: {attendanceStats.late}%
+        </Text>
+
 
         <Text style={{fontWeight: 'bold'}}> Personal Information </Text>
 
