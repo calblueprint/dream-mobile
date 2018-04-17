@@ -11,6 +11,7 @@ import SearchResultCard from '../../components/SearchResultCard/SearchResultCard
 import StyledButton from '../../components/Button/Button';
 import { FontAwesome, MaterialCommunityIcons } from '@expo/vector-icons';
 import colors from '../../styles/colors';
+import {textStyles} from "../../styles/textStyles";
 
 class SearchStudentResultScreen extends React.Component {
   constructor(props) {
@@ -50,9 +51,15 @@ class SearchStudentResultScreen extends React.Component {
 
     if (students.length === 0) {
       return (
-        <View style={{marginBottom: 24}}>
-          <Text>
-            empty screen placeholder
+        <View style={{
+          justifyContent: 'center',
+          alignItems: 'center'
+        }}>
+          <Text style={[textStyles.titleLarge, {
+            marginTop: 64,
+            textAlign: 'center'
+          }]}>
+            No Search Results Found. Please Go Back.
           </Text>
         </View>
       );
@@ -80,9 +87,7 @@ class SearchStudentResultScreen extends React.Component {
 
     return (
       <ScrollView style={{backgroundColor: '#f5f5f6'}}>
-        <View>
-          { results }
-        </View>
+        { results }
       </ScrollView>
     );
   }
