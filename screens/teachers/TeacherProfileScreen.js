@@ -36,7 +36,7 @@ class TeacherProfileScreen extends React.Component {
         <View style={formViewStyles.div_1}>
           <View style={formViewStyles.div_2}>
             <Text style={textStyles.titleLarge}>
-            {this.props.teacher.first_name} {this.props.teacher.last_name}
+            {this.props.teacher.first_name__c} {this.props.teacher.last_name__c}
             </Text>
           </View>
 
@@ -54,7 +54,7 @@ class TeacherProfileScreen extends React.Component {
             Email
             </Text>
             <Text style={textStyles.body}>
-            {this.props.teacher.email}
+            {this.props.teacher.email__c}
             </Text>
           </View>
 
@@ -63,7 +63,7 @@ class TeacherProfileScreen extends React.Component {
             Phone Number
             </Text>
             <Text style={textStyles.body}>
-            {this.props.teacher.phone}
+            {this.props.teacher.phone_number_1__c}
             </Text>
           </View>
 
