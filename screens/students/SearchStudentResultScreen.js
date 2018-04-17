@@ -47,11 +47,22 @@ class SearchStudentResultScreen extends React.Component {
                           onSelectStudent={this._handleSelectStudent}/>
       )
     );
-    return (
-      <View style={{marginBottom: 24}}>
-        { students }
-      </View>
-    );
+
+    if (students.length === 0) {
+      return (
+        <View style={{marginBottom: 24}}>
+          <Text>
+            empty screen placeholder
+          </Text>
+        </View>
+      );
+    } else {
+      return (
+        <View style={{marginBottom: 24}}>
+          { students }
+        </View>
+      );
+    }
   }
 
   render() {
@@ -66,14 +77,14 @@ class SearchStudentResultScreen extends React.Component {
     } else {
       results = this._renderSearchResults();
     }
+
     return (
-      <ScrollView>
-        <View style={{backgroundColor: '#f5f5f6'}}>
+      <ScrollView style={{backgroundColor: '#f5f5f6'}}>
+        <View>
           { results }
         </View>
       </ScrollView>
     );
-
   }
 }
 
