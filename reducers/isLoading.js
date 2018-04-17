@@ -7,6 +7,7 @@ export const isLoading = (state = {}, action) => {
     case types.REQUEST_STUDENTS:
     case types.REQUEST_ATTENDANCES:
     case types.REQUEST_UPDATE_ATTENDANCES:
+    case types.UPDATE_ATTENDANCE:
       return { value: true }
     case types.RECEIVE_TEACHER_SUCCESS:
     case types.RECEIVE_COURSES_SUCCESS:
@@ -19,4 +20,3 @@ export const isLoading = (state = {}, action) => {
       return state
   }
 }
-

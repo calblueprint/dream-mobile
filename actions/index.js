@@ -1,5 +1,6 @@
 // Courses
 import types from '../lib/actionTypes'
+import { APIRoutes } from '../config/routes';
 
 let actions = {
   // GENERAL
@@ -87,6 +88,12 @@ let actions = {
       attendances,
       courseId,
       date
+    }
+  },
+
+  updateAttendance:(attendance, courseId, date) => {
+    return {
+      type: types.UPDATE_ATTENDANCE,
     }
   },
   requestUpdateAttendances: (courseId, date) => {

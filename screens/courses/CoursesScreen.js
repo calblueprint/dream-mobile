@@ -11,6 +11,7 @@ import { standardError } from '../../lib/alerts';
 import { attendanceDate } from '../../lib/date';
 import CourseCard from '../../components/CourseCard/CourseCard';
 import StyledButton from '../../components/Button/Button';
+import Toaster, { ToastStyles } from '../../components/Toaster'
 import { FontAwesome, MaterialCommunityIcons } from '@expo/vector-icons';
 import colors from '../../styles/colors';
 
@@ -34,11 +35,24 @@ class CoursesScreen extends React.Component {
     this._renderCourses = this._renderCourses.bind(this);
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (this.props.online !== nextProps.online) {
+      if (nextProps.online) {
+        this.message = {text: "You are connected", styles: ToastStyles.success, height: 80};
+      } else {
+        this.message = {text: "You are offline", styles: ToastStyles.error, height: 80};
+      }
+    } else {
+      this.message = null;
+    }
+
+  }
+
   componentDidMount() {
     this.props.fetchCourses(this.props.teacher);
 
     const _createCourse = () => {
-       this.props.navigation.navigate('EditCourse', {refreshCourses: this.props.fetchCourses, newCourse: true, 
+       this.props.navigation.navigate('EditCourse', {refreshCourses: this.props.fetchCourses, newCourse: true,
         sessions: [], teacher: this.props.teacher})}
 
 
@@ -82,7 +96,7 @@ class CoursesScreen extends React.Component {
       <View style={{marginBottom: 24}}>
         { courses }
         <StyledButton
-          onPress={() => navigate('EditCourse', {refreshCourses: this.props.fetchCourses, newCourse: true, 
+          onPress={() => navigate('EditCourse', {refreshCourses: this.props.fetchCourses, newCourse: true,
             sessions: [], teacher: this.props.teacher})}
           text='Create Course'
           primaryButtonLarge>
@@ -103,12 +117,18 @@ class CoursesScreen extends React.Component {
     } else {
       courses = this._renderCourses();
     }
+
+    let toaster = this.message ? <Toaster message={this.message} /> : null;
+
     return (
-      <ScrollView>
-        <View style={{backgroundColor: '#f5f5f6'}}>
-          { courses }
-        </View>
-      </ScrollView>
+      <View>
+        { toaster }
+        <ScrollView>
+          <View style={{backgroundColor: '#f5f5f6'}}>
+            { courses }
+          </View>
+        </ScrollView>
+      </View>
     );
 
   }
@@ -141,6 +161,7 @@ const fetchCourses = (teacher) => {
 
 const mapStateToProps = (state) => {
   return {
+    online: state.offline.online,
     teacher: state.teacher,
     courses: state.courses,
     isLoading: state.isLoading.value,
