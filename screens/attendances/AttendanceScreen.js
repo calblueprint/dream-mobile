@@ -191,7 +191,6 @@ const styles = StyleSheet.create({
 });
 // TODO (Kelsey): Add PropTypes from navigation
 
-<<<<<<< HEAD
 const createNewAttendance = (studentId, courseId, date) => {
   return {
     id: -1,

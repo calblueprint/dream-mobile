@@ -295,14 +295,11 @@ const styles = StyleSheet.create({
 syncAttendances = (attendances, courseId, date) => {
   return (dispatch) => {
     dispatch(actions.requestUpdateAttendances(courseId, date));
-    console.log("Syncing attendaances")
     const attendancePromises = attendances.map((attendance, i) => {
       return updateAttendance(attendance, i);
     });
-    console.log(attendancePromises)
 
     Promise.all(attendancePromises).then((responseData) => {
-      console.log("Synced Attendances successfully");
       dispatch(actions.receiveUpdateAttendancesSuccess(responseData, courseId, date));
       dispatch(actions.openModal());
     }).catch((error) => {
