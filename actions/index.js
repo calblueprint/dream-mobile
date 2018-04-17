@@ -45,7 +45,6 @@ let actions = {
   },
 
   // TEACHERS
-  // TODO: dispatches to requestTeacher not handled anywhere?
   requestTeacher: () => {
     return {
       type: types.REQUEST_TEACHER,
@@ -81,6 +80,19 @@ let actions = {
       date
     }
   },
+  requestCourseAttendances: (courseId) => {
+    return {
+      type: types.REQUEST_COURSE_ATTENDANCES,
+      courseId,
+    }
+  },
+  receiveCourseAttendancesSuccess: (attendances, courseId) => {
+    return {
+      type: types.RECEIVE_COURSE_ATTENDANCES_SUCCESS,
+      attendances,
+      courseId
+    }
+  },
   receiveAttendancesSuccess: (attendances, courseId, date) => {
     return {
       type: types.RECEIVE_ATTENDANCES_SUCCESS,
@@ -112,6 +124,20 @@ let actions = {
       date
     }
   },
+  saveLocalChanges: (attendances, courseId, date) => {
+    return {
+      type: types.SAVE_LOCAL_CHANGES,
+      attendances,
+      courseId,
+      date
+    }
+  },
+  clearLocalChanges: (dates) => {
+    return {
+      type: types.CLEAR_LOCAL_CHANGES,
+      dates,
+    }
+  }
 };
 
 export default actions;

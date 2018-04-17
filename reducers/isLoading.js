@@ -6,10 +6,13 @@ export const isLoading = (state = {}, action) => {
     case types.REQUEST_TEACHER:
     case types.REQUEST_STUDENTS:
     case types.REQUEST_ATTENDANCES:
+    case types.REQUEST_COURSE_ATTENDANCES:
     case types.REQUEST_UPDATE_ATTENDANCES:
       return { value: true }
     case types.RECEIVE_TEACHER_SUCCESS:
     case types.RECEIVE_COURSES_SUCCESS:
+    case types.RECEIVE_COURSE_ATTENDANCES_SUCCESS:
+    case types.RECEIVE_STUDENTS_SUCCESS:
     case types.RECEIVE_ATTENDANCES_SUCCESS:
     case types.RECEIVE_UPDATE_ATTENDANCES_SUCCESS:
     case types.RECEIVE_UPDATE_ATTENDANCES_ERROR:
@@ -19,4 +22,3 @@ export const isLoading = (state = {}, action) => {
       return state
   }
 }
-

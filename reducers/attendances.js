@@ -15,23 +15,19 @@ export const attendances = (state = {}, action) => {
   switch (action.type) {
     case types.RECEIVE_ATTENDANCES_SUCCESS:
       return Object.assign({}, state, {
-        [action.date]: Object.assign({}, state[action.date], {
-          list: action.attendances
-      })});
+        [action.date]: action.attendances});
     case types.RECEIVE_UPDATE_ATTENDANCES_SUCCESS:
       return Object.assign({}, state, {
-        [action.date]: Object.assign({}, state[action.date], {
-          list: action.attendances,
-          isSynced: true,
-      })});
+        [action.date]: action.attendances
+      });
+    case types.RECEIVE_COURSE_ATTENDANCES_SUCCESS:
+      // Here we are recieving a full attendance list so just replace the current
+      return action.attendances;
+
     case types.RECEIVE_UPDATE_ATTENDANCES_ERROR:
       return Object.assign({}, state, {
-        [action.date]: Object.assign({}, state[action.date], {
-          list: action.attendances,
-          isSynced: false,
-      })});
+        [action.date]: action.attendances});
     default:
       return state;
   }
 }
-

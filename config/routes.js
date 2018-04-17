@@ -16,6 +16,8 @@ import SearchStudentScreen from '../screens/students/SearchStudentScreen';
 import SearchStudentResultScreen from '../screens/students/SearchStudentResultScreen';
 import StudentProfilePreviewScreen from '../screens/students/StudentProfilePreviewScreen';
 import AttendanceScreen from '../screens/attendances/AttendanceScreen';
+import RecentAttendancesScreen from '../screens/attendances/RecentAttendancesScreen';
+import PastAttendancesScreen from '../screens/attendances/PastAttendancesScreen';
 import AttendanceSummaryScreen from '../screens/attendances/AttendanceSummaryScreen';
 import { FontAwesome } from '@expo/vector-icons';
 import colors from '../styles/colors';
@@ -105,6 +107,18 @@ export const HomeStack = StackNavigator({
       headerRight: (<Button title='Edit' onPress={() => { navigation.goBack() }}/>),
     }),
   },
+  RecentAttendances: {
+    screen: RecentAttendancesScreen,
+    navigationOptions: ({navigation}) => ({
+      headerTitle: 'Recent Attendances',
+    }),
+  },
+  PastAttendances: {
+    screen: PastAttendancesScreen,
+    navigationOptions: ({navigation}) => ({
+      headerTitle: 'Past Attendances',
+    }),
+  },
   SearchStudent: {
     screen: SearchStudentScreen,
     navigationOptions: ({navigation}) => ({
@@ -151,6 +165,8 @@ export class APIRoutes {
 
   // Attendances
   static attendanceItemPath()         { return APIRoutes.createRoute(`attendances/attendance_item`) }
+  static getRecentAttendancesPath(courseId)   { return APIRoutes.createRoute(`courses/${courseId}/attendances`) }
+  static getMonthAttendancesPath(courseId) { return APIRoutes.createRoute(`courses/${courseId}/monthAttendances`)}
   static attendancePath(id)           { return APIRoutes.createRoute(`attendances/${id}`) }
 
   // Login

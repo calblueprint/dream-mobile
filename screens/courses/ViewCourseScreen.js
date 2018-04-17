@@ -12,6 +12,8 @@ import { textStyles } from '../../styles/textStyles';
 import { FontAwesome,Entypo } from '@expo/vector-icons';
 import colors from '../../styles/colors';
 
+
+//TODO: (Aivant) Convert this to offline!
 class ViewCourseScreen extends React.Component {
   constructor(props) {
     super(props);
@@ -234,6 +236,8 @@ class ViewCourseScreen extends React.Component {
           <View>{ this._renderDeleteCourseButton() }</View>
 
           <StyledButton
+            onPress={() => navigate('RecentAttendances',
+              { courseId: this.state.course.id})}
             text="View Past Attendance"
             primaryButtonLarge
           />
