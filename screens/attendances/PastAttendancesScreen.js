@@ -96,7 +96,7 @@ class PastAttendancesScreen extends React.Component {
     const { navigate } = this.props.navigation;
     const attendances = this._renderAttendances();
     return(
-      <View>
+      <View style={commonStyles.containerStatic}>
         <Text style={textStyles.titleLarge}>{monthYearDate(this.state.date)}</Text>
         <StyledButton
           onPress={this.incrementMonth}

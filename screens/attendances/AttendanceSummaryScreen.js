@@ -21,10 +21,12 @@ class AttendanceSummaryScreen extends React.Component {
     super(props);
     this.state = {
       isCollapsedList: [true, true, true, true, true],
+      showModal: false
     }
 
     this._toggleCollapsed = this._toggleCollapsed.bind(this)
   }
+
 
   /**
     * Filters for attendances that match the given attendance type and return a list
@@ -171,8 +173,9 @@ class AttendanceSummaryScreen extends React.Component {
     */
   _renderModal() {
     const callback = () => {
-      this.props.closeModal();
-      this.props.navigation.goBack(this.props.navigation.state.params.parentKey || null);
+      this.props.setState({showModal: false}, () =>
+                            {this.props.navigation.goBack(this.props.navigation.state.params.parentKey || null)}
+                         )
     }
     const buttons = [{ title: 'Okay', callback: callback, type: 'primary' }];
     // Indicates wheter saved to phone text should be visible
@@ -228,7 +231,7 @@ class AttendanceSummaryScreen extends React.Component {
         </ScrollView>
         <StyledButton
           onPress={() => this.props.syncAttendances(
-            this.props.attendances, this.props.courseId, this.props.date)}
+            this.props.attendances, this.props.courseId, this.props.date, () => {this.setState({showModal: true})})}
           text='Sync'
           primaryButtonLarge
         >
@@ -292,7 +295,7 @@ const styles = StyleSheet.create({
   * and shows different modal based on whether sync succeeded or failed. Saves attendances
   * to store regardless of success/failiure.
   */
-syncAttendances = (attendances, courseId, date) => {
+syncAttendances = (attendances, courseId, date, openModal) => {
   return (dispatch) => {
     dispatch(actions.requestUpdateAttendances(courseId, date));
     console.log("Syncing attendaances")
@@ -304,14 +307,14 @@ syncAttendances = (attendances, courseId, date) => {
     Promise.all(attendancePromises).then((responseData) => {
       console.log("Synced Attendances successfully");
       dispatch(actions.receiveUpdateAttendancesSuccess(responseData, courseId, date));
-      dispatch(actions.openModal());
+      openModal();
     }).catch((error) => {
       // Optimistically updates and marks course as unsynced
       console.log("Attendance Sync Failed: " );
       console.log(error);
       dispatch(actions.receiveUpdateAttendancesError(attendances, courseId, date));
       dispatch(actions.saveLocalChanges(attendances, courseId, date));
-      dispatch(actions.openModal());
+      openModal();
     });
   }
 }
@@ -351,8 +354,7 @@ const mapStateToProps = (state, props) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    syncAttendances: (attendances, courseId, date) => dispatch(syncAttendances(attendances, courseId, date)),
-    closeModal: () => dispatch(actions.closeModal()),
+    syncAttendances: (attendances, courseId, date, openModal) => dispatch(syncAttendances(attendances, courseId, date, openModal)),
   }
 }
 

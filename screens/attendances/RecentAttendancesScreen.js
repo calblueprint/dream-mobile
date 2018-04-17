@@ -18,18 +18,45 @@ class RecentAttendancesScreen extends React.Component {
   constructor(props) {
     super(props);
     this._handleSelectDate = this._handleSelectDate.bind(this);
+    this.state = {
+      showModal: false
+    }
   }
 
   /**
     * Method passed to DateCard to open attendance screen for attendance with given date.
     */
-    _handleSelectDate(date) {
-      var courseId = this.props.navigation.state.params.courseId
-      this.props.navigation.navigate('Attendances', {
-        courseId: courseId,
-        date: date,
-      });
+  _handleSelectDate(date) {
+    var courseId = this.props.navigation.state.params.courseId
+    this.props.navigation.navigate('Attendances', {
+      courseId: courseId,
+      date: date,
+    });
+  }
+
+  /**
+    * Renders basic offline modal
+    */
+  _renderModal() {
+    const callback = () => {
+      this.setState({showModal: false})
     }
+
+    const buttons = [{ title: 'Okay', callback: callback, type: 'primary' }];
+
+    return (
+      <SimpleModal
+        onClosed={callback}
+        title='Unavailable Offline'
+        buttons={buttons}
+        visible={this.state.showModal}>
+        <View style={styles.modalContent}>
+          <Text style={textStyles.bodyBold}>This feature is unavailable while offline. Try again later!</Text>
+        </View>
+      </SimpleModal>
+    )
+  }
+
 
   /**
     * Renders AttendanceCard for each attendance object
@@ -54,15 +81,22 @@ class RecentAttendancesScreen extends React.Component {
     const attendances = this._renderAttendances();
     const courseId = this.props.navigation.state.params.courseId
     return(
-      <View>
+      <View style={commonStyles.containerStatic}>
         <Text style={textStyles.titleLarge}>Recent</Text>
         { attendances }
         <StyledButton
-          onPress={() => navigate('PastAttendances',
-            { courseId: courseId})}
+          onPress={() => {
+              if(this.props.online) {
+                navigate('PastAttendances', { courseId: courseId})
+              } else {
+                this.setState({showModal: true})
+              }
+            }
+          }
           text="View By Month"
           primaryButtonLarge
         />
+        { this._renderModal() }
       </View>
 
     )
@@ -75,6 +109,9 @@ const styles = StyleSheet.create({
     marginRight: 16,
     marginLeft: 24,
   },
+  modalContent: {
+    marginTop: 16
+  }
 });
 // TODO (Kelsey): Add PropTypes from navigation
 
@@ -89,9 +126,10 @@ const mapStateToProps = (state, props) => {
   lastKeys.forEach((key) => {latestAttendances[key] = attendances[key]});
   return {
     attendances: latestAttendances,
-    //online: offline.online, //TODO: add and implement
+    online: !state.offline.online,
   };
 }
+
 
 
 export default connect(mapStateToProps, null)(RecentAttendancesScreen);

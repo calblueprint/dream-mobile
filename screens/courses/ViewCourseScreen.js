@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import actions from '../../actions';
 import { Image, Button, ScrollView, StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import { commonStyles } from '../../styles/styles';
 import { getRequest, deleteRequest } from '../../lib/requests';
@@ -8,6 +9,7 @@ import { timeFormat } from '../../lib/datetime_formats';
 import { standardError, confirmDelete } from '../../lib/alerts';
 import StyledButton from '../../components/Button/Button';
 import StudentCard from '../../components/StudentCard/StudentCard';
+import SimpleModal from '../../components/SimpleModal';
 import { formViewStyles } from '../../styles/formViewStyles';
 import { textStyles } from '../../styles/textStyles';
 import { FontAwesome,Entypo } from '@expo/vector-icons';
@@ -25,11 +27,7 @@ class ViewCourseScreen extends React.Component {
     this._renderSessions = this._renderSessions.bind(this);
     this._renderTeachers = this._renderTeachers.bind(this);
     this.state = {
-      course_id : this.props.navigation.state.params.course_id,
-      sessions: [],
-      course : { },
-      isLoading : true,
-      students: [],
+      showModal: false
     }
   }
 
@@ -68,6 +66,30 @@ class ViewCourseScreen extends React.Component {
         secondaryButtonSmall>
       </StyledButton>
     );
+  }
+
+  /**
+    * Renders basic offline modal
+    */
+
+  //TODO: rendering modal is kind of dumb....it shouldn't be like this.
+  _renderModal() {
+    const callback = () => {
+      this.setState({showModal: false})
+    }
+    const buttons = [{ title: 'Okay', callback: callback, type: 'primary' }];
+
+    return (
+      <SimpleModal
+        onClosed={callback}
+        title='Unavailable Offline'
+        buttons={buttons}
+        visible={this.state.showModal}>
+        <View style={viewStyles.modalContent}>
+          <Text style={textStyles.bodyBold}>This feature is unavailable while offline. Try again later!</Text>
+        </View>
+      </SimpleModal>
+    )
   }
 
   /*
@@ -130,72 +152,89 @@ class ViewCourseScreen extends React.Component {
   render() {
     const { navigate } = this.props.navigation;
     return (
-      <ScrollView style={formViewStyles.base}>
-        <View style={formViewStyles.div_1}>
-          <View style={formViewStyles.div_2}>
-            <Text style={textStyles.titleLarge}>{ this.props.course.title }</Text>
-
+      <View>
+        <ScrollView style={formViewStyles.base}>
+          <View style={formViewStyles.div_1}>
             <View style={formViewStyles.div_2}>
-              <Text style={textStyles.titleSmall}>Sessions</Text>
-              <View style={{marginLeft: -4}}>
-                { this._renderSessions() }
+              <Text style={textStyles.titleLarge}>{ this.props.course.title }</Text>
+
+              <View style={formViewStyles.div_2}>
+                <Text style={textStyles.titleSmall}>Sessions</Text>
+                <View style={{marginLeft: -4}}>
+                  { this._renderSessions() }
+                </View>
+              </View>
+
+              <View style={formViewStyles.div_2}>
+                <Text style={textStyles.titleSmall}>Teachers</Text>
+                { this._renderTeachers() }
+              </View>
+
+              <View style={formViewStyles.div_2}>
+                <Text style={textStyles.titleSmall}>In Session</Text>
+                { this._renderCourseDate() }
               </View>
             </View>
+          </View>
 
-            <View style={formViewStyles.div_2}>
-              <Text style={textStyles.titleSmall}>Teachers</Text>
-              { this._renderTeachers() }
-            </View>
+          <View style={{marginTop: 16}}/>
+          <StyledButton
+            onPress={() => {
+                if(this.props.online) {
+                  navigate('EditCourse',
+                  {
+                    newCourse: false,
+                    course_id: this.props.course.id,
+                    is_active: this.props.course.is_active,
+                    title: this.props.course.title,
+                    teacher1: this.props.course.teacher_id1,
+                    teacher2: this.props.course.teacher_id2,
+                    start_date: this.props.course.start_date,
+                    end_date: this.props.course.end_date,
+                    sessions: this.props.course.sessions,
+                  })
+                } else {
+                  this.setState({showModal: true})
+                }
+              }
+            }
+            text="Edit Course"
+            linkButton
+          />
 
-            <View style={formViewStyles.div_2}>
-              <Text style={textStyles.titleSmall}>In Session</Text>
-              { this._renderCourseDate() }
+          <StyledButton
+            onPress={() => navigate('RecentAttendances',
+              { courseId: this.props.course.id})}
+            text="View Past Attendance"
+            primaryButtonLarge
+          />
+          <View style={[commonStyles.divider, {marginTop: 16}]}/>
+
+
+          <View style={[formViewStyles.div_1, {marginBottom: 16}]}>
+              <Text style={textStyles.titleMedium}>Students</Text>
+              <View style={{marginTop: 8}}>
+              { this._renderStudents() }
             </View>
           </View>
-        </View>
 
-        <View style={{marginTop: 16}}/>
-        <StyledButton
-          onPress={() => navigate('EditCourse',
-            {
-              newCourse: false,
-              course_id: this.props.course.id,
-              is_active: this.props.course.is_active,
-              title: this.props.course.title,
-              teacher1: this.props.course.teacher_id1,
-              teacher2: this.props.course.teacher_id2,
-              start_date: this.props.course.start_date,
-              end_date: this.props.course.end_date,
-              sessions: this.props.course.sessions,
-            })}
-          text="Edit Course"
-          linkButton
-        />
-
-        <StyledButton
-          onPress={() => navigate('RecentAttendances',
-            { courseId: this.props.course.id})}
-          text="View Past Attendance"
-          primaryButtonLarge
-        />
-        <View style={[commonStyles.divider, {marginTop: 16}]}/>
-
-
-        <View style={[formViewStyles.div_1, {marginBottom: 16}]}>
-            <Text style={textStyles.titleMedium}>Students</Text>
-            <View style={{marginTop: 8}}>
-            { this._renderStudents() }
-          </View>
-        </View>
-
-        <StyledButton
-          onPress={() => this.props.navigation.navigate('SearchStudent',
-          { refreshStudents: this._fetchStudents,
-            course_id: this.props.course.id, })}
-          text="+ Enroll Student"
-          linkButton
-        />
-      </ScrollView>
+          <StyledButton
+            onPress={() => {
+                if(this.props.online) {
+                  navigate('SearchStudent',
+                          { refreshStudents: this._fetchStudents,
+                            course_id: this.props.course.id, });
+                } else {
+                  this.setState({showModal: true})
+                }
+              }
+            }
+            text="+ Enroll Student"
+            linkButton
+          />
+        </ScrollView>
+      { this._renderModal() }
+      </View>
     );
 
   }
@@ -207,6 +246,9 @@ const viewStyles = StyleSheet.create({
     paddingTop: 16,
     paddingLeft: 16,
   },
+  modalContent: {
+    marginTop: 16
+  },
 });
 
 const mapStateToProps = (state, props) => {
@@ -214,7 +256,7 @@ const mapStateToProps = (state, props) => {
   return {
     course: course,
     isLoading: state.isLoading.value,
-    online: state.offline.online,
+    online: !state.offline.online,
   };
 }
 
