@@ -26,17 +26,6 @@ class LoginScreen extends React.Component {
   }
 
   _attemptLogin() {
-    if (this.state.email == "") {
-      this.state.email == "1";
-    }
-    if (this.state.email == "1") {
-      this.state.email = "user1@gmail.com";
-      this.state.password = "password";
-    } else if (this.state.email == "2") {
-      this.state.email = "user2@gmail.com";
-      this.state.password = "password";
-    }
-
     const params = {
       teacher: {
         email: this.state.email,
