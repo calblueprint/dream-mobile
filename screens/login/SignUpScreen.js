@@ -23,7 +23,6 @@ class SignUpScreen extends React.Component {
     const successFunc = (responseData) => {
       this.setState({teacher: responseData});
       LocalStorage.storeUser(responseData);
-      console.log({teacher: responseData})
       this.props.navigation.navigate('Courses', {teacher: responseData});
     }
     const errorFunc = (error) => {

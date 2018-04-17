@@ -176,7 +176,7 @@ export class APIRoutes {
   // Students enrolled in a particular course
   static getStudentsInCoursePath(id) { return APIRoutes.createRoute(`courses/${id}/students`) }
 
-  // Create new student enrollment
+  // Enrollment
   static getCoursesStudentsPath()    { return APIRoutes.createRoute(`courses_students`) }
   static getCoursesStudentPath(id)    { return APIRoutes.createRoute(`courses_students/${id}`)}
 }

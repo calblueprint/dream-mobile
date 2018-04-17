@@ -6,7 +6,7 @@ import { colors } from '../../styles/colors';
 import { getRequest, deleteRequest } from '../../lib/requests';
 import { APIRoutes } from '../../config/routes';
 import { formViewStyles } from '../../styles/formViewStyles';
-import { standardError } from '../../lib/alerts';
+import { standardError, confirmDelete } from '../../lib/alerts';
 
 class StudentProfileScreen extends React.Component {
 
@@ -14,12 +14,13 @@ class StudentProfileScreen extends React.Component {
     super(props);
     this._renderStudent = this._renderStudent.bind(this);
     this._fetchStudent = this._fetchStudent.bind(this);
-    this._deleteStudent = this._deleteStudent.bind(this);
+    this._deleteEnrollment = this._deleteEnrollment.bind(this);
 
     this.state = {
       student : { },
       isLoading : true,
       studentId: this.props.navigation.state.params.studentId,
+      courseId: this.props.navigation.state.params.courseId,
     }
   }
 
@@ -36,27 +37,35 @@ class StudentProfileScreen extends React.Component {
     getRequest(APIRoutes.getStudentPath(studentId), successFunc, standardError);
   }
 
-  _deleteStudent(studentId) {
-    const successFunc = (responseData) => {
-      this.props.navigation.navigate('Courses');
-
+  _deleteEnrollment() {
+    var params = {
+        student_id: this.state.studentId,
+        course_id: this.state.courseId
     }
-    deleteRequest(APIRoutes.getStudentPath(studentId), successFunc, standardError);
+    const successFunc = (responseData) => {
+      // this.props.navigation.state.params.refreshStudents();
+      this.props.navigation.navigate('ViewCourse', {
+        course_id: this.state.courseId
+      });
+    }
+    deleteRequest(APIRoutes.getCoursesStudentsPath(), successFunc, standardError, params=params);
   }
 
   _renderStudent() {
     const { navigate } = this.props.navigation;
     return(
-      <View>
+       <View>
         <Text style={textStyles.titleLarge}>
-        {this.state.student.first_name} {this.state.student.last_name}
+        {this.state.student.first_name} {this.state.student.last_name} - {this.state.student.dream_id}
         </Text>
 
+        <Text style={{fontWeight: 'bold'}}> Personal Information </Text>
+
         <Text style={textStyles.titleSmall}>
-        DREAM ID
+        Nickname
         </Text>
         <Text style={textStyles.body}>
-        {this.state.student.dream_id}
+        {this.state.student.nickname}
         </Text>
 
         <Text style={textStyles.titleSmall}>
@@ -67,11 +76,13 @@ class StudentProfileScreen extends React.Component {
         </Text>
 
         <Text style={textStyles.titleSmall}>
-        Year
+        Sex
         </Text>
         <Text style={textStyles.body}>
-        {this.state.student.year}
+        {this.state.student.sex}
         </Text>
+
+        <Text style={{fontWeight: 'bold'}}> Contact Information </Text>
 
         <Text style={textStyles.titleSmall}>
         Address
@@ -81,38 +92,76 @@ class StudentProfileScreen extends React.Component {
         </Text>
 
         <Text style={textStyles.titleSmall}>
-        Nickname
+        Phone Numbers
         </Text>
         <Text style={textStyles.body}>
-        {this.state.student.nickname}
+        {this.state.student.phone} {"\n"}
+        {this.state.student.phone_2}
         </Text>
 
         <Text style={textStyles.titleSmall}>
-        Primary Contact
+        Name on Facebook
+        </Text>
+        <Text style={textStyles.body}>
+        {this.state.student.facebook_name}
+        </Text>
+
+        <Text style={textStyles.titleSmall}>
+        Email Address
+        </Text>
+        <Text style={textStyles.body}>
+        {this.state.student.email}
+        </Text>
+
+        <Text style={textStyles.titleSmall}>
+        Primary Contact Name
         </Text>
         <Text style={textStyles.body}>
         {this.state.student.primary_contact}
         </Text>
 
         <Text style={textStyles.titleSmall}>
-        Primary Contact Relationship
-        </Text>
-        <Text style={textStyles.body}>
-        {this.state.student.primary_contact_relationship}
-        </Text>
-
-        <Text style={textStyles.titleSmall}>
-        Primary Contact Phone
+        Primary Contact Phone Number
         </Text>
         <Text style={textStyles.body}>
         {this.state.student.primary_contact_phone}
         </Text>
 
+        <Text style={{fontWeight: 'bold'}}> Extra Information </Text>
+
         <Text style={textStyles.titleSmall}>
-        Primary Contact Phone 2
+        Notes
         </Text>
         <Text style={textStyles.body}>
-        {this.state.student.primary_contact_phone2}
+        {this.state.student.notes}
+        </Text>
+
+        <Text style={textStyles.titleSmall}>
+        Level (Montessori Only)
+        </Text>
+        <Text style={textStyles.body}>
+        {this.state.student.level}
+        </Text>
+
+        <Text style={textStyles.titleSmall}>
+        Primary Language 
+        </Text>
+        <Text style={textStyles.body}>
+        {this.state.student.primary_language}
+        </Text>
+
+        <Text style={textStyles.titleSmall}>
+        Document Type
+        </Text>
+        <Text style={textStyles.body}>
+        {this.state.student.document_type}
+        </Text>
+
+        <Text style={textStyles.titleSmall}>
+        Participated in DREAM before?
+        </Text>
+        <Text style={textStyles.body}>
+        {this.state.student.past_dream_participant}
         </Text>
 
         <Button
@@ -121,7 +170,7 @@ class StudentProfileScreen extends React.Component {
         />
 
         <Button
-          onPress={() => this._deleteStudent(this.state.studentId)}
+          onPress={() => confirmDelete("Are you sure you want to remove this student from the course?", this._deleteEnrollment)}
           title='Delete'
         />
       </View>
@@ -139,7 +188,6 @@ class StudentProfileScreen extends React.Component {
         />
       )
     } else {
-      console.log('render student');
       student = this._renderStudent()
     }
     return (
@@ -147,7 +195,6 @@ class StudentProfileScreen extends React.Component {
         { student }
       </ScrollView>
     );
-
   }
 }
 
