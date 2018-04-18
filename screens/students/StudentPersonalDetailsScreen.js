@@ -18,14 +18,16 @@ class StudentPersonalDetailsScreen extends React.Component {
   }
 
   _handleUpdateStudent(params) {
-      const successFunc = (responseData) => {
-        this.setState({ student: responseData});
-        this.props.navigation.state.params.refreshStudents();
-        this.props.navigation.navigate('ViewCourse', {
-          course_id: this.state.course_id
-        });
-      }
-    postRequest(APIRoutes.getStudentsPath(), successFunc, standardError, params=params);
+    const studentId = this.props.navigation.state.params.student.id;
+    const successFunc = (responseData) => {
+      this.props.navigation.navigate('StudentProfile', {
+        refreshStudents: this.props.navigation.state.params.refreshStudents,
+        studentId: studentId,
+        courseId: this.state.course_id,
+      });
+    }
+    putRequest(APIRoutes.getStudentPath(studentId), 
+      successFunc, standardError, params=params);
   }
 
   _handleCreateStudent(params) {

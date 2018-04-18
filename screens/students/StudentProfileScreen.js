@@ -14,7 +14,6 @@ class StudentProfileScreen extends React.Component {
     super(props);
     this._renderStudent = this._renderStudent.bind(this);
     this._fetchStudent = this._fetchStudent.bind(this);
-    this._deleteStudent = this._deleteStudent.bind(this);
     this._handleUpdateStudent = this._handleUpdateStudent.bind(this);
     this._deleteEnrollment = this._deleteEnrollment.bind(this);
 
@@ -211,16 +210,7 @@ class StudentProfileScreen extends React.Component {
         </Text>
 
         <Button
-<<<<<<< HEAD
-          onPress={() => this._deleteStudent(this.state.studentId)}
-=======
-          onPress={() => navigate('CreateStudent', {refreshStudent: this._fetchStudent(this.state.studentId), newStudent: false, student: this.state.student})}
-          title='Edit'
-        />
-
-        <Button
           onPress={() => confirmDelete("Are you sure you want to remove this student from the course?", this._deleteEnrollment)}
->>>>>>> c81f0040de7acba88a392274435b5b56adfd26ab
           title='Delete'
         />
       </View>

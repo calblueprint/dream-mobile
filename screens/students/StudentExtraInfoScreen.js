@@ -16,7 +16,19 @@ class StudentExtraInfoScreen extends React.Component {
       newStudent: this.props.navigation.state.params.newStudent,
       savedFields: this.props.navigation.state.params.savedFields
     }
-    console.log(this.state.savedFields);
+  }
+
+  _handleUpdateStudent(params) {
+    const studentId = this.props.navigation.state.params.student.id;
+    const successFunc = (responseData) => {
+      this.props.navigation.navigate('StudentProfile', {
+        refreshStudents: this.props.navigation.state.params.refreshStudents,
+        studentId: studentId,
+        courseId: this.state.course_id,
+      });
+    }
+    putRequest(APIRoutes.getStudentPath(studentId), 
+      successFunc, standardError, params=params);
   }
 
   _handleCreateStudent(params) {
@@ -32,14 +44,6 @@ class StudentExtraInfoScreen extends React.Component {
     postRequest(APIRoutes.getStudentsPath(), successFunc, standardError, params=joined);
   }
 
-  _handleUpdateStudent(params) {
-    const successFunc = (responseData) => {
-      // this.props.navigation.state.params.refreshStudent();
-      this.props.navigation.navigate('Courses');
-    }
-    putRequest(APIRoutes.getStudentPath(this.state.student.id), successFunc, standardError, params=params);
-  }
-
   render() {
     if (this.state.newStudent) {
       return (
@@ -50,7 +54,7 @@ class StudentExtraInfoScreen extends React.Component {
         </View>
       );
     } else {
-      const navProps = this.state.student;
+      const navProps = this.props.navigation.state.params.student;
       return (
          <View>
          <StudentExtraInfoForm

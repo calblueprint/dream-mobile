@@ -11,9 +11,7 @@ import { Form, t } from '../../components/Form/Form';
 import { formStyles } from '../../components/Form/styles.js';
 import StyledButton from '../../components/Button/Button';
 
-/**
- * @prop onCreateStudent - callback function when student create form is submitted
- */
+
 class StudentPersonalDetailsForm extends React.Component {
   constructor(props) {
     super(props);
@@ -30,20 +28,20 @@ class StudentPersonalDetailsForm extends React.Component {
   }
 
   _handleFormChange(values){
-    //formData will be a json object that will contain refs of every field
     this.setState({ formValues : values });
   }
 
   _getInitialFormValues() {
-    let values = this.props.newStudent? ({ }) : ({
-      first_name: this.props.first_name,
-      last_name: this.props.last_name,
-      birthday: this.props.birthday,
-      nickname: this.props.nickname,
-      is_active: this.props.is_active,
-      sex: this.props.sex
+    if (!this.props.newStudent) {
+      return ({
+        first_name: this.props.first_name,
+        last_name: this.props.last_name,
+        birthday: this.props.birthday,
+        nickname: this.props.nickname,
+        is_active: this.props.is_active,
+        sex: this.props.sex
       });
-    return values;
+    }
   }
 
   /*
@@ -107,7 +105,7 @@ class StudentPersonalDetailsForm extends React.Component {
       </StyledButton>
     ) : (
       <StyledButton
-        onPress={this.props.onSaveStudent}
+        onPress={() => this.props.onSaveStudent(this.state.formValues)}
         text='Save Changes'
         primaryButtonLarge>
       </StyledButton>
