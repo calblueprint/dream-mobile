@@ -8,20 +8,19 @@ import { commonStyles } from '../../styles/styles';
 
 
 import { Form, t } from '../../components/Form/Form';
-import { formStyles } from '../Form/styles.js';
-import StyledButton from '../Button/Button';
+import { formStyles } from '../../components/Form/styles.js';
+import StyledButton from '../../components/Button/Button';
 
 /**
  * @prop onCreateStudent - callback function when student create form is submitted
  */
-class CreateStudentForm extends React.Component {
+class StudentExtraInfoForm extends React.Component {
   constructor(props) {
     super(props);
     this._getInitialFormValues = this._getInitialFormValues.bind(this);
     this._getFormType = this._getFormType.bind(this);
     this._handleFormChange = this._handleFormChange.bind(this);
     this._onFormChange = this._onFormChange.bind(this);
-    this._handleSaveStudent = this._handleSaveStudent.bind(this);
     this._getFormOptions = this._getFormOptions.bind(this);
     this._renderSaveButton = this._renderSaveButton.bind(this);
 
@@ -36,35 +35,14 @@ class CreateStudentForm extends React.Component {
   }
 
   _getInitialFormValues() {
-    let values = {
-      first_name: this.props.first_name,
-      last_name: this.props.last_name,
-      birthday: this.props.birthday,
-      address: this.props.address,
-      dream_id: this.props.dream_id,
-      nickname: this.props.nickname,
-      primary_contact: this.props.primary_contact,
-      primary_contact_phone: this.props.primary_contact_phone,
-      is_active: this.props.is_active,
-      sex: this.props.sex,
-      facebook_name: this.props.facebook_name,
-      notes: this.props.notes,
-      document_type: this.props.document_type,
-      level: this.props.level,
-      phone: this.props.phone,
-      phone_2: this.props.phone_2,
-      email: this.props.email,
-      primary_language: this.props.primary_language,
-      past_dream_participant: this.props.past_dream_participant
-    }
-    return values
-  }
-
-  _handleSaveStudent() {
-    if (this.state.formValues) {
-      this.props.onSaveStudent({student: this.state.formValues})
-    } else {
-      frontendError("Student cannot be saved")
+    if (!this.props.newStudent) {
+      return ({
+        notes: student.notes,
+        document_type: student.document_type,
+        level: student.level,
+        primary_language: student.primary_language,
+        past_dream_participant: student.past_dream_participant
+      });
     }
   }
 
@@ -73,23 +51,6 @@ class CreateStudentForm extends React.Component {
    */
   _getFormType() {
     return t.struct({
-      first_name: t.String,
-      last_name: t.String,
-      birthday: t.String,
-      address: t.String,
-      // dream_id: t.String,
-      nickname: t.String,
-      primary_contact: t.String,
-      primary_contact_phone: t.String,
-      is_active: t.enums({
-        true: "Yes",
-        false: "No",
-      }),
-      sex: t.enums({
-        Female: 'Female',
-        Male: 'Male'
-      }),
-      facebook_name: t.maybe(t.String),
       notes: t.maybe(t.String),
       document_type: t.enums({
         None: 'None', 
@@ -106,9 +67,6 @@ class CreateStudentForm extends React.Component {
         Primero: 'Primero', 
         Segundo: 'Segundo'
       })),
-      phone: t.String,
-      phone_2: t.String,
-      email: t.String,
       primary_language: t.maybe(t.enums({
         Spanish: 'Spanish', 
         Creole: 'Creole', 
@@ -128,45 +86,6 @@ class CreateStudentForm extends React.Component {
     return {
       error: this.state.errors,
       fields: {
-        first_name: {
-          label: 'First Name'
-        },
-        last_name: {
-          label: 'Last Name'
-        },
-        nickname: {
-          label: 'Nickname'
-        },
-        is_active: {
-          label: 'Active Participant?'
-        },
-        birthday: {
-          label: 'Birthday'
-        },
-        sex: {
-          label: 'Sex'
-        },
-        address: {
-          label: 'Address'
-        },
-        phone: {
-          label: 'Phone Number'
-        }, 
-        phone_2: {
-          label: 'Alternate Phone Number'
-        },
-        facebook_name: {
-          label: 'Name on Facebook'
-        },
-        email: {
-          label: 'Email'
-        },
-        primary_contact: {
-          label: 'Primary Contact Name'
-        },
-        primary_contact_phone: {
-          label: 'Primary Contact Phone Number'
-        },
         document_type: {
           label: 'Document Type'
         },
@@ -190,12 +109,22 @@ class CreateStudentForm extends React.Component {
    * Return the save button component.
    */
   _renderSaveButton() {
-    return (
+    let button = this.props.newStudent? (
       <StyledButton
-        onPress={this._handleSaveStudent}
-        text='Save'
+        onPress={this.props.onSaveStudent}
+        text='Create Student'
         primaryButtonLarge>
       </StyledButton>
+    ) : (
+      <StyledButton
+        onPress={this.props.onSaveStudent}
+        text='Save Changes'
+        primaryButtonLarge>
+      </StyledButton>
+    )
+
+    return (
+      {button}
     );
   }
 
@@ -226,4 +155,4 @@ class CreateStudentForm extends React.Component {
   }
 }
 
-export default CreateStudentForm;
+export default StudentExtraInfoForm;

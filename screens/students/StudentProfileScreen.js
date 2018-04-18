@@ -3,7 +3,7 @@ import { Image, Button, Text, View, ScrollView } from 'react-native';
 import { textStyles } from '../../styles/textStyles';
 import { commonStyles } from '../../styles/styles';
 import { colors } from '../../styles/colors';
-import { getRequest, deleteRequest } from '../../lib/requests';
+import { getRequest, deleteRequest, putRequest } from '../../lib/requests';
 import { APIRoutes } from '../../config/routes';
 import { formViewStyles } from '../../styles/formViewStyles';
 import { standardError } from '../../lib/alerts';
@@ -15,6 +15,7 @@ class StudentProfileScreen extends React.Component {
     this._renderStudent = this._renderStudent.bind(this);
     this._fetchStudent = this._fetchStudent.bind(this);
     this._deleteStudent = this._deleteStudent.bind(this);
+    this._handleUpdateStudent = this._handleUpdateStudent.bind(this);
 
     this.state = {
       student : { },
@@ -44,15 +45,36 @@ class StudentProfileScreen extends React.Component {
     deleteRequest(APIRoutes.getStudentPath(studentId), successFunc, standardError);
   }
 
+  _handleUpdateStudent(params) {
+    const successFunc = (responseData) => {
+      // this.props.navigation.state.params.refreshStudent();
+      this.props.navigation.navigate('Courses');
+    }
+    putRequest(APIRoutes.getStudentPath(this.state.studentId), successFunc, standardError, params=params);
+  }
+
   _renderStudent() {
     const { navigate } = this.props.navigation;
     return(
        <View>
-        <Text style={textStyles.titleLarge}>
-        {this.state.student.first_name} {this.state.student.last_name} - {this.state.student.dream_id}
-        </Text>
+        <View style={{marginTop: 10, marginBottom: 20}}>
+            <Text style={textStyles.titleLarge}>
+            {this.state.student.first_name} {this.state.student.last_name} - {this.state.student.dream_id}
+            </Text>
+        </View>
 
-        <Text style={{fontWeight: 'bold'}}> Personal Information </Text>
+        <View style={{flex: 1, flexDirection: 'row'}}>
+            <View style={{flex: 0.7}}>
+                <Text style={textStyles.titleMedium}> Personal Information </Text>
+            </View>
+            <View style={{flex: 0.3}}>
+                <Button
+                  onPress={() => navigate('StudentPersonalDetails', {refreshStudent: this._fetchStudent(this.state.studentId), 
+                    newStudent: false, student: this.state.student})}
+                  title='Edit'
+                />
+            </View>
+        </View>
 
         <Text style={textStyles.titleSmall}>
         Nickname
@@ -75,7 +97,19 @@ class StudentProfileScreen extends React.Component {
         {this.state.student.sex}
         </Text>
 
-        <Text style={{fontWeight: 'bold'}}> Contact Information </Text>
+
+        <View style={{flex: 1, flexDirection: 'row', marginTop: 20}}>
+            <View style={{flex: 0.7}}>
+                <Text style={textStyles.titleMedium}> Contact Information </Text>
+            </View>
+            <View style={{flex: 0.3}}>
+                <Button
+                  onPress={() => navigate('StudentContactInfo', {refreshStudent: this._fetchStudent(this.state.studentId), 
+                    newStudent: false, student: this.state.student})}
+                  title='Edit'
+                />
+            </View>
+        </View>
 
         <Text style={textStyles.titleSmall}>
         Address
@@ -120,7 +154,18 @@ class StudentProfileScreen extends React.Component {
         {this.state.student.primary_contact_phone}
         </Text>
 
-        <Text style={{fontWeight: 'bold'}}> Extra Information </Text>
+        <View style={{flex: 1, flexDirection: 'row', marginTop: 20}}>
+            <View style={{flex: 0.7}}>
+                <Text style={textStyles.titleMedium}> Extra Information </Text>
+            </View>
+            <View style={{flex: 0.3}}>
+                <Button
+                  onPress={() => navigate('StudentExtraInfo', {refreshStudent: this._fetchStudent(this.state.studentId), 
+                    newStudent: false, student: this.state.student})}
+                  title='Edit'
+                />
+            </View>
+        </View>
 
         <Text style={textStyles.titleSmall}>
         Notes
@@ -156,11 +201,6 @@ class StudentProfileScreen extends React.Component {
         <Text style={textStyles.body}>
         {this.state.student.past_dream_participant}
         </Text>
-
-        <Button
-          onPress={() => navigate('CreateStudent', {refreshStudent: this._fetchStudent(this.state.studentId), newStudent: false, student: this.state.student})}
-          title='Edit'
-        />
 
         <Button
           onPress={() => this._deleteStudent(this.state.studentId)}

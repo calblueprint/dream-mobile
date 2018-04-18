@@ -37,7 +37,7 @@ class SearchStudentScreen extends React.Component {
        <View>
          <SearchStudentForm onSearchStudent={this._handleSearchStudent}/>
          <StyledButton
-           onPress={() => this.props.navigation.navigate('CreateStudent',
+           onPress={() => this.props.navigation.navigate('StudentPersonalDetails',
              { refreshStudents: this.props.navigation.state.params.refreshStudents,
                course_id: this.state.course_id,
                newStudent: true })}

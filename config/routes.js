@@ -17,6 +17,9 @@ import SearchStudentResultScreen from '../screens/students/SearchStudentResultSc
 import StudentProfilePreviewScreen from '../screens/students/StudentProfilePreviewScreen';
 import AttendanceScreen from '../screens/attendances/AttendanceScreen';
 import AttendanceSummaryScreen from '../screens/attendances/AttendanceSummaryScreen';
+import StudentPersonalDetailsScreen from '../screens/students/StudentPersonalDetailsScreen';
+import StudentExtraInfoScreen from '../screens/students/StudentExtraInfoScreen';
+import StudentContactInfoScreen from '../screens/students/StudentContactInfoScreen';
 import { FontAwesome } from '@expo/vector-icons';
 import colors from '../styles/colors';
 
@@ -123,6 +126,24 @@ export const HomeStack = StackNavigator({
       headerTitle: 'Student Profile Preview',
     },
   },
+  StudentPersonalDetails : {
+    screen: StudentPersonalDetailsScreen,
+    navigationOptions: {
+      headerTitle: 'Personal Details',
+    },
+  },
+  StudentContactInfo : {
+    screen: StudentContactInfoScreen,
+    navigationOptions: {
+      headerTitle: 'Contact Information',
+    },
+  },
+  StudentExtraInfo : {
+    screen: StudentExtraInfoScreen,
+    navigationOptions: {
+      headerTitle: 'Extra Information',
+    },
+  }
 });
 
 
