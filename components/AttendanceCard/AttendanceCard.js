@@ -78,7 +78,7 @@ class AttendanceCard extends React.Component {
           {this.renderSelect()}
           <TouchableHighlight
             style={styles.commentButtonOuter}
-            onPress={() => this.props.setModal(this.props.index, this.props.attendance.comment)}>
+            onPress={() => this.props.setModal(this.props.attendance.comment)}>
             {this.renderCommentButton(this.props.attendance.comment)}
           </TouchableHighlight>
         </View>

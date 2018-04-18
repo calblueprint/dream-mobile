@@ -21,7 +21,7 @@ class AttendanceScreen extends React.Component {
       // Keep state for attendances since they shouldn't be updated to store
       // until user has reviewed the AttendanceSummaryScreen and submitted
       attendances: this.props.attendances ? this.props.attendances : [],
-      modalIndex: -1,
+      modalId: -1,
       modalComment: null,
     }
 
@@ -58,12 +58,11 @@ class AttendanceScreen extends React.Component {
     * Updates comment for the attendance at the given index when save button is pressed
     * in comment modal.
     */
-  _saveComment(index, comment) {
+  _saveComment(id, comment) {
     const attendances = this.state.attendances;
-    const attendance = this.state.attendances[index];
+    const attendance = this.state.attendances.find((attendance) => attendance.student_id === id);
     attendance.comment = comment;
     attendance.isChanged = true;
-    attendances[index] = attendance;
     this.setState({ attendances: attendances });
   }
 
@@ -88,9 +87,9 @@ class AttendanceScreen extends React.Component {
     * Sets the comment modal's modalIndex (either to certain attendance's index or -1
     * if modal isn't open) and sets the comment text as the given comment (null if modal isn't open)
     */
-  _setModal(index, comment) {
+  _setModal(id, comment) {
     this.setState({
-      modalIndex: index,
+      modalId: id,
       modalComment: comment
     });
   }
@@ -106,7 +105,7 @@ class AttendanceScreen extends React.Component {
           attendance={attendance}
           index={i}
           name={this._getStudentName(attendance.student_id)}
-          setModal={this._setModal.bind(this)}
+          setModal={(comment) => this._setModal(attendance.student_id, comment)}
           setType={this._setType.bind(this)} />
       );
     });
@@ -125,16 +124,16 @@ class AttendanceScreen extends React.Component {
     }
     const saveCallback = () => {
       this._setModal(-1, null);
-      this._saveComment(this.state.modalIndex, this.state.modalComment);
+      this._saveComment(this.state.modalId, this.state.modalComment);
     };
     const buttons = [{ title: 'Save', callback: saveCallback, type: 'primary'},{title: 'Cancel', callback: cancelCallback, type: 'secondary'}]
-    if (this.state.modalIndex !== -1) {
+    if (this.state.modalId !== -1) {
       return (
         <SimpleModal
           onClosed={cancelCallback}
-          title={this._getStudentName(this.state.modalIndex)}
+          title={this._getStudentName(this.state.modalId)}
           buttons={buttons}
-          visible={this.state.modalIndex !== -1}>
+          visible={this.state.modalId !== -1}>
           <View>
             <TextInput
                 style={{height: 40}}
