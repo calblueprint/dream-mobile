@@ -16,9 +16,12 @@ class StudentExtraInfoScreen extends React.Component {
       newStudent: this.props.navigation.state.params.newStudent,
       savedFields: this.props.navigation.state.params.savedFields
     }
+    console.log(this.state.savedFields);
   }
 
-  _handleUpdateStudent(params) {
+  _handleCreateStudent(params) {
+    const old = this.state.savedFields;
+    const joined = Object.assign({}, old, params);
       const successFunc = (responseData) => {
         this.setState({ student: responseData});
         this.props.navigation.state.params.refreshStudents();
@@ -26,22 +29,15 @@ class StudentExtraInfoScreen extends React.Component {
           course_id: this.state.course_id
         });
       }
-    postRequest(APIRoutes.getStudentsPath(), successFunc, standardError, params=params);
+    postRequest(APIRoutes.getStudentsPath(), successFunc, standardError, params=joined);
   }
 
-  _handleCreateStudent(params) {
-    const old = this.state.savedFields;
-    const appended = old.concat({ params });
+  _handleUpdateStudent(params) {
     const successFunc = (responseData) => {
       // this.props.navigation.state.params.refreshStudent();
       this.props.navigation.navigate('Courses');
     }
-    putRequest(APIRoutes.getStudentPath(this.state.student.id), successFunc, standardError, params=appended);
-      // this.props.navigation.navigate('StudentProfile', {
-      //     course_id: this.state.course_id,
-      //     student: this.state.student,
-      //     newStudent: this.state.newStudent
-      //   });
+    putRequest(APIRoutes.getStudentPath(this.state.student.id), successFunc, standardError, params=params);
   }
 
   render() {

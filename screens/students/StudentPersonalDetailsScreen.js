@@ -32,7 +32,8 @@ class StudentPersonalDetailsScreen extends React.Component {
     this.props.navigation.navigate('StudentContactInfo', {
       course_id: this.state.course_id,
       newStudent: this.state.newStudent,
-      savedFields: params
+      savedFields: params,
+      refreshStudents: this.props.navigation.state.params.refreshStudents,
     });
   }
 

@@ -101,7 +101,7 @@ class StudentContactInfoForm extends React.Component {
   _renderSaveButton() {
     let button = this.props.newStudent? (
       <StyledButton
-        onPress={this.props.onSaveStudent}
+        onPress={() => this.props.onSaveStudent(this.state.formValues)}
         text='Next: Extra Information'
         primaryButtonLarge>
       </StyledButton>

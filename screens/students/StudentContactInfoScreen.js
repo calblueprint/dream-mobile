@@ -32,11 +32,12 @@ class StudentContactInfoScreen extends React.Component {
 
   _handleCreateStudent(params) {
     const old = this.state.savedFields;
-    const appended = old.concat({ params });
+    const joined = Object.assign({}, old, params);
     this.props.navigation.navigate('StudentExtraInfo', {
       course_id: this.state.course_id,
       newStudent: this.state.newStudent,
-      savedFields: appended
+      savedFields: joined,
+      refreshStudents: this.props.navigation.state.params.refreshStudents,
     });
   }
 
