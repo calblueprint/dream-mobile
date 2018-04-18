@@ -6,6 +6,7 @@ import { standardError } from '../../lib/alerts';
 import StyledButton from '../../components/Button/Button';
 import PropTypes from 'prop-types';
 import SearchStudentForm from '../../components/Form/SearchStudentForm'
+import {formStyles} from "../../components/Form/styles";
 
 class SearchStudentScreen extends React.Component {
   constructor(props) {
@@ -34,16 +35,18 @@ class SearchStudentScreen extends React.Component {
 
   render() {
     return (
-       <View>
-         <SearchStudentForm onSearchStudent={this._handleSearchStudent}/>
-         <StyledButton
-           onPress={() => this.props.navigation.navigate('CreateStudent',
-             { refreshStudents: this.props.navigation.state.params.refreshStudents,
-               course_id: this.state.course_id,
-               newStudent: true })}
-           text="+ Create Student"
-           linkButton
-         />
+       <View style={formStyles.background}>
+         <View>
+           <SearchStudentForm onSearchStudent={this._handleSearchStudent}/>
+           <StyledButton
+             onPress={() => this.props.navigation.navigate('CreateStudent',
+               { refreshStudents: this.props.navigation.state.params.refreshStudents,
+                 course_id: this.state.course_id,
+                 newStudent: true })}
+             text="+ Create Student"
+             primaryButtonLarge
+           />
+         </View>
        </View>
     )
   }
