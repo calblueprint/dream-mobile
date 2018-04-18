@@ -22,10 +22,14 @@ class LoginScreen extends React.Component {
     this.state = {
       email: "",
       password: "",
+      isFetching: false,
     }
   }
 
   _attemptLogin() {
+    if (this.state.isFetching) { 
+      return;
+    }
     if (this.state.email == "") {
       this.state.email == "1";
     }
@@ -43,7 +47,11 @@ class LoginScreen extends React.Component {
         password: this.state.password,
       }
     }
-    this.props.fetchTeacher(params, this.props.navigation);
+    this.setState({isFetching: true}, ()=>{ 
+      this.props.fetchTeacher(params, this.props.navigation).then(()=>{ 
+        this.setState({isFetching: false});
+      });
+    });
     //TODO: Logging in should not push onto the stack. it should replace current
   }
 
