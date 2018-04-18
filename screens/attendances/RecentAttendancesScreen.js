@@ -69,7 +69,6 @@ class RecentAttendancesScreen extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  // Either change styles or generalize to AttendanceSummaryScreen too
   outer: {
     backgroundColor: '#fff',
     flex: 1
