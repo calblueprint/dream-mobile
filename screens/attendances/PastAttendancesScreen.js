@@ -96,19 +96,33 @@ class PastAttendancesScreen extends React.Component {
     const { navigate } = this.props.navigation;
     const attendances = this._renderAttendances();
     return(
-      <View>
-        <Text style={textStyles.titleLarge}>{monthYearDate(this.state.date)}</Text>
-        <StyledButton
-          onPress={this.incrementMonth}
-          text="Next Month"
-          primaryButtonLarge
-        />
-        <StyledButton
-          onPress={this.decrementMonth}
-          text="Prev Month"
-          primaryButtonLarge
-        />
-        { attendances }
+      <View style={{flexDirection: 'column', flex: 1, justifyContent:'flex-start'}}>
+        <View style={{flex: 0.08, marginTop: 24, marginBottom: 24, borderBottomWidth: 1, borderBottomColor: '#E6E6E6'}}>
+          <View style={{flexDirection: 'row', flex: 1}}>
+            <View style={{flex: 0.33}}>
+              <StyledButton
+                onPress={this.decrementMonth}
+                text="Prev"
+                linkButton
+              />
+            </View>
+            <View style={{flex: 0.33}}>
+              <Text style={textStyles.titleLarge}>{monthYearDate(this.state.date)}</Text>
+            </View>
+            <View style={{flex: 0.33}}>
+              <StyledButton
+                onPress={this.incrementMonth}
+                text="Next"
+                linkButton
+              />
+            </View>
+          </View>
+        </View>
+        <View style={{flex: 0.92}}>
+          <ScrollView>
+            { attendances }
+          </ScrollView>
+        </View>
       </View>
 
     )
