@@ -9,7 +9,7 @@ import types from '../lib/actionTypes';
   *   { student3 }
   * ]
   */
-export const students = (state = {}, action) => {
+export const students = (state = [], action) => {
   switch (action.type) {
     case types.RECEIVE_STUDENTS_SUCCESS:
       return action.students;
@@ -17,4 +17,3 @@ export const students = (state = {}, action) => {
       return state
   }
 }
-

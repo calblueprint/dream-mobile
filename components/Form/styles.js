@@ -10,6 +10,10 @@ const formStyles = StyleSheet.create({
     paddingLeft: 20,
     paddingRight: 20,
     backgroundColor: colors.backgroundWhite,
+  },
+  background: {
+    backgroundColor: colors.backgroundWhite,
+    flex: 1
   }
 })
 

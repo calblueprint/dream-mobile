@@ -28,10 +28,6 @@ class AttendanceScreen extends React.Component {
     this._saveComment = this._saveComment.bind(this);
   }
 
-  componentDidMount() {
-    this.props.fetchStudents(this.props.courseId, this.props.date);
-  }
-
   /**
     * Update attendances after dispatching a network call for them
     */
@@ -42,10 +38,10 @@ class AttendanceScreen extends React.Component {
   }
 
   /**
-    * Gets students full name at the given index (assumes attendance index is same as student index)
+    * Gets students full name at the given index
     */
-  _getStudentName(index) {
-    const student = this.props.students[index]
+  _getStudentName(id) {
+    const student = this.props.students.find((student) => {return student.id === id})
     if (student) {
       return `${student.first_name} ${student.last_name}`
     }
@@ -101,12 +97,13 @@ class AttendanceScreen extends React.Component {
     * Renders AttendanceCard for each attendance object
     */
   _renderAttendances() {
+
     return this.state.attendances.map((attendance, i) => {
       return(
         <AttendanceCard key={i}
           attendance={attendance}
           index={i}
-          name={this._getStudentName(i)}
+          name={this._getStudentName(attendance.student_id)}
           setModal={this._setModal.bind(this)}
           setType={this._setType.bind(this)} />
       );
@@ -152,9 +149,9 @@ class AttendanceScreen extends React.Component {
   /**
     * Renders date, course title, attendance cards, and submit button
     */
-  _renderLoadedView() {
-    const { navigate } = this.props.navigation;
 
+  render() {
+    const { navigate } = this.props.navigation;
     return(
       <View style={commonStyles.containerStatic}>
         <ScrollView>
@@ -183,19 +180,6 @@ class AttendanceScreen extends React.Component {
       </View>
     )
   }
-
-  /**
-    * Renders loading state if data is still loading or uses _renderLoadedView
-    */
-  render() {
-    const attendances = this.props.isLoading ? (<Image style={commonStyles.icon}
-                        source={require('../../icons/spinner.gif')}/>) : this._renderLoadedView();
-    return (
-      <View style={commonStyles.containerStatic}>
-        { attendances }
-      </View>
-    );
-  }
 }
 
 const styles = StyleSheet.create({
@@ -207,90 +191,39 @@ const styles = StyleSheet.create({
 });
 // TODO (Kelsey): Add PropTypes from navigation
 
-
-/**
-  * Fetches all students with the given course id and on success
-  * gets attendances for each student
-  */
-const fetchStudents = (courseId, date) => {
-  return (dispatch) => {
-    dispatch(actions.requestStudents(courseId));
-    console.log('starting fetch students');
-    return getRequest(
-      APIRoutes.getCourseStudentsPath(courseId),
-      (responseData) => {
-        dispatch(actions.receiveStudentsSuccess(responseData, courseId));
-        dispatch(fetchAttendances(responseData, courseId, date));
-      },
-      (error) => {
-        dispatch(actions.receiveStandardError(error));
-        standardError(error);
-      }
-    );
-
-    console.log('finished fetch students');
+const createNewAttendance = (studentId, courseId, date) => {
+  return {
+    id: -1,
+    comment: null,
+    date: date,
+    attendance_type: 0,
+    student_id: studentId,
+    course_id: courseId,
+    isChanged: true,
   }
 }
 
-/**
-  * Attempts to get attendance for each students and waits for each request to succeed
-  * before updating state for attendances
-  */
-const fetchAttendances = (students, courseId, date) => {
-  return (dispatch) => {
-    dispatch(actions.requestAttendances(courseId, date));
-    const attendances = students.map((student) => {
-      return fetchAttendance(student.id, courseId, date);
-    });
-
-    Promise.all(attendances).then((attendances) => {
-      dispatch(actions.receiveAttendancesSuccess(attendances, courseId, date));
-    }).catch((error) => {
-      dispatch(actions.receiveStandardError(error));
-      standardError(error);
-    });
-  }
-}
-
-/**
-  * Makes a request to get attendance for the specified student.
-  * (Uses postRequestNoCatch so any errors get caught in Promise.all)
-  */
-const fetchAttendance = (studentId, courseId, date) => {
-  const successFunc = (responseData) => {
-    return responseData;
-  }
-  const errorFunc = (error) => {
-    // TODO (Kelsey): address what happens when attendance for student on given date doesn't exist
-    console.log(error)
-  }
-  const params = {
-    attendance: {
-      student_id: studentId,
-      date: date,
-      course_id: courseId
-    }
-  }
-  return postRequestNoCatch(APIRoutes.attendanceItemPath(), successFunc, errorFunc, params);
-}
 
 const mapStateToProps = (state, props) => {
   // Get course and date associated with this attendance screen
   const course = state.courses.find((course) => course.id === props.navigation.state.params.courseId);
   const date = props.navigation.state.params.date;
+  //TODO: (Aivant) deal with the situation when there's no attendances for today
+  const students = course.students ? course.students : []
+  var attendances = props.navigation.state.params.attendances
+  if (!attendances) {
+    attendances = course.attendances && course.attendances[date] ? course.attendances[date] : [];
+    if (attendances.length == 0) {
+      attendances = students.map((s) => {return createNewAttendance(s.id, course.id, date)});
+    }
+  }
   return {
     ...props.navigation.state.params,
-    students: course.students ? course.students : {},
-    attendances: course.attendances && course.attendances[date] ? course.attendances[date].list : [],
+    courseTitle: course.title,
+    students: students,
+    attendances: attendances,
     isLoading: state.isLoading.value,
   };
 }
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    fetchStudents: (courseId, date) => dispatch(fetchStudents(courseId, date)),
-    fetchAttendances: (students, courseId, date) => dispatch(fetchAttendances(students, courseId, date)),
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(AttendanceScreen);
+export default connect(mapStateToProps, null)(AttendanceScreen);

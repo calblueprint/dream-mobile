@@ -6,7 +6,7 @@ import { colors } from '../../styles/colors';
 import { getRequest, deleteRequest, putRequest } from '../../lib/requests';
 import { APIRoutes } from '../../config/routes';
 import { formViewStyles } from '../../styles/formViewStyles';
-import { standardError } from '../../lib/alerts';
+import { standardError, confirmDelete } from '../../lib/alerts';
 
 class StudentProfileScreen extends React.Component {
 
@@ -16,11 +16,13 @@ class StudentProfileScreen extends React.Component {
     this._fetchStudent = this._fetchStudent.bind(this);
     this._deleteStudent = this._deleteStudent.bind(this);
     this._handleUpdateStudent = this._handleUpdateStudent.bind(this);
+    this._deleteEnrollment = this._deleteEnrollment.bind(this);
 
     this.state = {
       student : { },
       isLoading : true,
       studentId: this.props.navigation.state.params.studentId,
+      courseId: this.props.navigation.state.params.courseId,
     }
   }
 
@@ -37,12 +39,18 @@ class StudentProfileScreen extends React.Component {
     getRequest(APIRoutes.getStudentPath(studentId), successFunc, standardError);
   }
 
-  _deleteStudent(studentId) {
-    const successFunc = (responseData) => {
-      this.props.navigation.navigate('Courses');
-
+  _deleteEnrollment() {
+    var params = {
+        student_id: this.state.studentId,
+        course_id: this.state.courseId
     }
-    deleteRequest(APIRoutes.getStudentPath(studentId), successFunc, standardError);
+    const successFunc = (responseData) => {
+      // this.props.navigation.state.params.refreshStudents();
+      this.props.navigation.navigate('ViewCourse', {
+        course_id: this.state.courseId
+      });
+    }
+    deleteRequest(APIRoutes.getCoursesStudentsPath(), successFunc, standardError, params=params);
   }
 
   _handleUpdateStudent(params) {
@@ -203,7 +211,16 @@ class StudentProfileScreen extends React.Component {
         </Text>
 
         <Button
+<<<<<<< HEAD
           onPress={() => this._deleteStudent(this.state.studentId)}
+=======
+          onPress={() => navigate('CreateStudent', {refreshStudent: this._fetchStudent(this.state.studentId), newStudent: false, student: this.state.student})}
+          title='Edit'
+        />
+
+        <Button
+          onPress={() => confirmDelete("Are you sure you want to remove this student from the course?", this._deleteEnrollment)}
+>>>>>>> c81f0040de7acba88a392274435b5b56adfd26ab
           title='Delete'
         />
       </View>

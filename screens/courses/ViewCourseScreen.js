@@ -12,6 +12,8 @@ import { textStyles } from '../../styles/textStyles';
 import { FontAwesome,Entypo } from '@expo/vector-icons';
 import colors from '../../styles/colors';
 
+
+//TODO: (Aivant) Convert this to offline!
 class ViewCourseScreen extends React.Component {
   constructor(props) {
     super(props);
@@ -93,6 +95,7 @@ class ViewCourseScreen extends React.Component {
     this.props.navigation.navigate('StudentProfile', {
       refreshStudents: this._fetchStudents(),
       studentId: id,
+      courseId: this.state.course_id,
     });
   }
 
@@ -101,9 +104,9 @@ class ViewCourseScreen extends React.Component {
    */
   _deleteCourse() {
     const successFunc = (responseData) => {
-      this.props.navigation.state.params.refreshCourses();
-      this.props.navigation.goBack(null);
+      this.props.navigation.navigate('Courses');
     }
+
     deleteRequest(APIRoutes.getCoursePath(this.state.course_id), successFunc, standardError);
   }
 
@@ -111,8 +114,8 @@ class ViewCourseScreen extends React.Component {
     return (
       <StyledButton
         onPress={() => confirmDelete("Are you sure you want to delete this course?", this._deleteCourse)}
-        text='Delete'
-        secondaryButtonSmall>
+        text='Delete Course'
+        linkButton>
       </StyledButton>
     );
   }
@@ -230,7 +233,11 @@ class ViewCourseScreen extends React.Component {
             linkButton
           />
 
+          <View>{ this._renderDeleteCourseButton() }</View>
+
           <StyledButton
+            onPress={() => navigate('RecentAttendances',
+              { courseId: this.state.course.id})}
             text="View Past Attendance"
             primaryButtonLarge
           />
