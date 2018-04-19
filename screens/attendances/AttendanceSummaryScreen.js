@@ -173,7 +173,7 @@ class AttendanceSummaryScreen extends React.Component {
     */
   _renderModal() {
     const callback = () => {
-      this.props.setState({showModal: false}, () =>
+      this.setState({showModal: false}, () =>
                             {this.props.navigation.goBack(this.props.navigation.state.params.parentKey || null)}
                          )
     }
@@ -188,7 +188,7 @@ class AttendanceSummaryScreen extends React.Component {
         onClosed={callback}
         title='Status'
         buttons={buttons}
-        visible={this.props.isModalOpen}>
+        visible={this.state.showModal}>
         <View style={styles.modalContent}>
           <View style={[styles.containerInner, {marginBottom: 8}, savedToPhoneStyle]}>
             <Image
@@ -218,8 +218,6 @@ class AttendanceSummaryScreen extends React.Component {
     * Renders date, course title, attendance summary, sync button, and modal
     */
   _renderLoadedView() {
-    console.log("Rendering:");
-    console.log(this.props);
     return(
       <View style={commonStyles.containerStatic}>
         <ScrollView>
@@ -335,7 +333,7 @@ updateAttendance = (attendance, index) => {
 
   if (attendance.isChanged) {
     // append true to the list of parameters to make this request fail
-    return postRequestNoCatch(APIRoutes.attendanceItemPath(), successFunc, errorFunc, params);
+    return postRequestNoCatch(APIRoutes.attendanceItemPath(), successFunc, errorFunc, params, true);
   } else {
     return attendance;
   }

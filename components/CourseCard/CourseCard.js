@@ -6,6 +6,8 @@ import PropTypes from 'prop-types';
 import { cardStyles } from './styles';
 import { textStyles } from '../../styles/textStyles';
 import colors from '../../styles/colors';
+import { FontAwesome } from '@expo/vector-icons';
+
 
 /**
  * @prop course_id - course ID
@@ -29,7 +31,12 @@ class CourseCard extends React.Component {
       4: colors.courseBrown
     }
     const colorKey = this.props.index % 5
-    let syncText = this.props.synced ? "" : "Not Synced"
+    const unsyncedAttendances = (
+      <Text style={[cardStyles.count, textStyles.titleSmallLight]}>
+        <FontAwesome name="exclamation-triangle" size={14} color={colors.iconLight}/> Unsynced Attendances 
+      </Text>
+    )
+    let syncText = this.props.synced ? "Last Synced: " + this.props.last_synced : unsyncedAttendances
     return (
       <TouchableHighlight onPress={() => this.props.onSelectCourse(this.props.course_id)}>
         <View style={[cardStyles.outerContainer, {backgroundColor: colorList[colorKey]}]}>

@@ -31,7 +31,8 @@ class LoginScreen extends React.Component {
       return;
     }
     if (this.state.email == "") {
-      this.state.email == "1";
+      this.state.email = "user1@gmail.com";
+      this.state.password = "password";
     }
     if (this.state.email == "1") {
       this.state.email = "user1@gmail.com";

@@ -3,6 +3,7 @@ import { students } from './students';
 import { sessions } from './sessions';
 import { course_teachers } from './course_teachers';
 import { attendances } from './attendances';
+import { attendanceDate } from '../lib/date';
 
 /**
   * Handles all courses state
@@ -18,7 +19,8 @@ export const courses = (state = {}, action) => {
   switch (action.type) {
     case types.RECEIVE_COURSES_SUCCESS:
       //TODO: Intelligently merge (if still relevant);
-      return action.courses;
+      date = attendanceDate(new Date());
+      return action.courses.map((course) => (Object.assign({}, course, {last_synced: date})));
     case types.RECEIVE_STUDENTS_SUCCESS:
     case types.RECEIVE_SESSIONS_SUCCESS:
     case types.RECEIVE_COURSE_TEACHERS_SUCCESS:
