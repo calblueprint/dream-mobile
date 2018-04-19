@@ -14,7 +14,8 @@ class AttendanceDateCard extends React.Component {
 
   render() {
     return (
-      <TouchableHighlight onPress={() => this.props.onSelectDate(this.props.date)}>
+      <TouchableHighlight onPress={() => this.props.onSelectDate(this.props.date)}
+      underlayColor='transparent'>
         <View style={{borderBottomWidth: 1, borderBottomColor: '#E6E6E6'}}>
           <View style={{marginBottom: 16, marginTop: 16}}>
             <Text style={textStyles.body}>{this.props.date}</Text>

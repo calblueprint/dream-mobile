@@ -1,5 +1,6 @@
 const colors = {
-  primaryYellow: '#FFC107',
+  // primaryYellow: '#FFC107',
+  primaryYellow: '#3F51B5',
   courseGreen: '#26A69A',
   courseBlue: '#3F51B5',
   coursePurple: '#7E57C2',
@@ -15,6 +16,7 @@ const colors = {
   textDark_70: 'rgba(33, 33, 33, .7)',
   textDark_30: 'rgba(33, 33, 33, .3)',
   textLight: '#FFF',
+  textLight_70: 'rgba(255, 255, 255, .7)',
 
   backgroundGrey: '#F5F5F6',
   backgroundWhite: '#FFFFFF',

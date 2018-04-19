@@ -9,8 +9,9 @@ import StyledButton from '../../components/Button/Button';
 import StudentCard from '../../components/StudentCard/StudentCard';
 import { formViewStyles } from '../../styles/formViewStyles';
 import { textStyles } from '../../styles/textStyles';
-import { FontAwesome,Entypo } from '@expo/vector-icons';
+import { FontAwesome, Entypo, MaterialCommunityIcons } from '@expo/vector-icons';
 import colors from '../../styles/colors';
+import { attendanceDate } from '../../lib/date';
 
 
 //TODO: (Aivant) Convert this to offline!
@@ -20,8 +21,15 @@ class ViewCourseScreen extends React.Component {
     const { params = {} } = navigation.state;
     return {
         headerStyle: {
-          backgroundColor: params.navbarColor
-        }
+          backgroundColor: params.navbarColor,
+          borderBottomColor: 'transparent',
+        }, 
+        headerTintColor: '#fff', 
+        headerRight: (
+          <TouchableOpacity onPress={() => params.handleEditCourse()}>
+            <View style={{marginRight: 8}}><MaterialCommunityIcons name="pencil" size={30} color={'#fff'} /></View>
+          </TouchableOpacity>
+        )
     };
   };
 
@@ -43,6 +51,7 @@ class ViewCourseScreen extends React.Component {
       course : { },
       isLoading : true,
       students: [],
+      navbarColor: this.props.navigation.state.params.navbarColor
     }
   }
 
@@ -54,7 +63,21 @@ class ViewCourseScreen extends React.Component {
         { refreshStudents: this._fetchStudents, course_id: this.state.course_id, newStudent: true })
      }
 
-    this.props.navigation.setParams({ navbarColor: this.props.navigation.state.params.navbarColor });
+     const _editCourse = () => {
+        this.props.navigation.navigate('EditCourse', {
+          refreshCourses: this._fetchCourse,
+          newCourse: false,
+          course_id: this.state.course_id,
+          is_active: this.state.course.is_active,
+          title: this.state.course.title,
+          teacher1: this.state.course.teacher_id1,
+          teacher2: this.state.course.teacher_id2,
+          start_date: this.state.course.start_date,
+          end_date: this.state.course.end_date,
+          sessions: this.state.sessions,
+        })}
+
+    this.props.navigation.setParams({ navbarColor: this.state.navbarColor, handleEditCourse: _editCourse });
   }
 
   /*
@@ -139,9 +162,7 @@ class ViewCourseScreen extends React.Component {
     const course_start = start_date.toLocaleDateString()
     const course_end = end_date.toLocaleDateString()
     return (
-      <View style={{marginTop: 8}}>
-        <Text style={textStyles.body}>{ course_start } to { course_end } </Text>
-      </View>
+      <Text style={textStyles.bodySmallLight}>{`${course_start} to ${course_end}`}</Text>
     );
   }
 
@@ -151,9 +172,7 @@ class ViewCourseScreen extends React.Component {
   _renderTeachers() {
     return this.state.teachers.map((teacher, index) => {
       return (
-        <View  key={index} style={{marginTop: 8}}>
-          <Text style={textStyles.body}>{teacher.first_name} {teacher.last_name}</Text>
-        </View>
+        `${teacher.first_name} ${teacher.last_name}, `
       );
     });
   }
@@ -166,8 +185,8 @@ class ViewCourseScreen extends React.Component {
       const start = timeFormat(new Date(session.start_time))
       const end = timeFormat(new Date(session.end_time))
       return (
-        <View key={index} style={{marginTop: 8}}>
-          <Text style={textStyles.body}> { `${ session.weekday }, ${ start } - ${ end }` } </Text>
+        <View key={index}>
+          <Text style={textStyles.bodySmallLight}>{`${session.weekday}, ${ start } - ${ end }` } </Text>
         </View>
       );
     });
@@ -200,74 +219,70 @@ class ViewCourseScreen extends React.Component {
       );
     } else {
       return (
-        <ScrollView style={formViewStyles.base}>
-          <View style={formViewStyles.div_1}>
-            <View style={formViewStyles.div_2}>
-              <Text style={textStyles.titleLarge}>{ this.state.course.title }</Text>
-
+        <ScrollView style={{backgroundColor: this.state.navbarColor, borderBottomWidth: 400, borderBottomColor: '#fff'}}>
+          <View style={{backgroundColor: this.state.navbarColor, paddingBottom: 24}}>
+            <View style={formViewStyles.div_1}>
               <View style={formViewStyles.div_2}>
-                <Text style={textStyles.titleSmall}>Sessions</Text>
-                <View style={{marginLeft: -4}}>
+                <Text style={[textStyles.titleLargeLight, {marginBottom: 16}]}>{ this.state.course.title }</Text>
+
+                <View style={formViewStyles.div_2}>
                   { this._renderSessions() }
                 </View>
-              </View>
 
-              <View style={formViewStyles.div_2}>
-                <Text style={textStyles.titleSmall}>Teachers</Text>
-                { this._renderTeachers() }
-              </View>
+                <View style={formViewStyles.div_2}>
+                  <Text style={textStyles.bodySmallLight}>{ this._renderTeachers() }</Text>
+                </View>
 
-              <View style={formViewStyles.div_2}>
-                <Text style={textStyles.titleSmall}>In Session</Text>
-                { this._renderCourseDate() }
+                <View style={formViewStyles.div_2}>
+                  { this._renderCourseDate() }
+                </View>
               </View>
             </View>
           </View>
 
-          <View style={{marginTop: 16}}/>
-          <StyledButton
-            onPress={() => navigate('EditCourse',
-              {
-                refreshCourses: this._fetchCourse,
-                newCourse: false,
-                course_id: this.state.course_id,
-                is_active: this.state.course.is_active,
-                title: this.state.course.title,
-                teacher1: this.state.course.teacher_id1,
-                teacher2: this.state.course.teacher_id2,
-                start_date: this.state.course.start_date,
-                end_date: this.state.course.end_date,
-                sessions: this.state.sessions,
-              })}
-            text="Edit Course"
-            linkButton
-          />
+          <View style={{backgroundColor: colors.backgroundWhite}}>
 
-          <View>{ this._renderDeleteCourseButton() }</View>
+            <View style={{marginTop: 16}}>
+              <StyledButton
+                onPress={() => navigate('Attendances', {
+                  courseId: this.state.course.id,
+                  date: attendanceDate(new Date()),
+                })}
+                text="Take Attendance"
+                // secondaryButtonLarge
+                variableButton={ this.state.navbarColor }
+              />
+              <StyledButton
+                onPress={() => navigate('RecentAttendances',
+                  { courseId: this.state.course.id})}
+                text="View Past Attendance"
+                secondaryButtonLarge
+              />
+            </View> 
 
-          <StyledButton
-            onPress={() => navigate('RecentAttendances',
-              { courseId: this.state.course.id})}
-            text="View Past Attendance"
-            primaryButtonLarge
-          />
-          <View style={[commonStyles.divider, {marginTop: 16}]}/>
+            <View style={[commonStyles.divider, {marginTop: 16, marginBottom: 16}]}/>
 
 
-          <View style={[formViewStyles.div_1, {marginBottom: 16}]}>
-              <Text style={textStyles.titleMedium}>Students</Text>
-              <View style={{marginTop: 8}}>
-              { this._renderStudents() }
+            <View style={[formViewStyles.div_1, {marginBottom: 16}]}>
+              <View style={{flex: 1, flexDirection: 'row'}}>
+                <View style={{flex: 0.6}}>
+                  <Text style={textStyles.titleMedium}>Students</Text>
+                </View>
+                <View style={{flex: 0.4, flexDirection: 'row', justifyContent: 'flex-end'}}>
+                  <StyledButton
+                    onPress={() => this.props.navigation.navigate('SearchStudent',
+                    { refreshStudents: this._fetchStudents,
+                      course_id: this.state.course_id, })}
+                    text="+ Enroll Student"
+                    enrollSmall
+                  />
+                </View>
+              </View>
+              <View style={{marginTop: 8, marginBottom: 40}}>
+                { this._renderStudents() }
+              </View>
             </View>
           </View>
-
-          <StyledButton
-            onPress={() => this.props.navigation.navigate('SearchStudent',
-            { refreshStudents: this._fetchStudents,
-              course_id: this.state.course_id, })}
-            text="+ Enroll Student"
-            linkButton
-          />
         </ScrollView>
       );
     }

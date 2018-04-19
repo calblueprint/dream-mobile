@@ -19,7 +19,8 @@ class SearchResultCard extends React.Component {
 
   render() {
     return (
-      <TouchableHighlight onPress={() => this.props.onSelectStudent(this.props.student.id)}>
+      <TouchableHighlight onPress={() => this.props.onSelectStudent(this.props.student.id)}
+      underlayColor='transparent'>
         <View style={[
           cardStyles.outerContainer,
           { backgroundColor: colors.courseWhite,

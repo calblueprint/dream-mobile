@@ -13,7 +13,7 @@ const formViewStyles = StyleSheet.create({
 		marginTop: 24,
 	},
   div_2: {
-		marginTop: 16
+		marginTop: 8
   }
 });
 

@@ -24,6 +24,15 @@ export default class StyledButton extends React.Component {
 			  	>{this.props.text}</Button>
 			);
 		}
+		if (this.props.enrollSmall) {
+			return (
+				<Button
+				  onPress={this.props.onPress}
+				  style={ buttonStyles.enrollSmall }
+				  textStyle={ textStyles.enrollSmall }
+			  	>{this.props.text}</Button>
+			);
+		}
 		if (this.props.clearButtonSmall) {
 			return (
 				<Button
@@ -56,7 +65,35 @@ export default class StyledButton extends React.Component {
 				<Button
 				  onPress={this.props.onPress}
 				  style={ buttonStyles.secondaryButtonLarge } 
-				  textStyle={ textStyles.buttonText }
+				  textStyle={ textStyles.buttonTextDark }
+			  	>{this.props.text}</Button>
+			);
+		}
+		if (this.props.variableButton) {
+			const colorList = {
+		      '#26A69A': '#B2DFDB',
+		      '#3F51B5': '#CFD3EC',
+		      '#7E57C2': '#DFD5F0',
+		      '#C2185B': '#F3C6D6',
+		      '#795548': '#E3DBD8',
+		    }
+			return (
+				<Button
+				  onPress={this.props.onPress}
+				  style={ {backgroundColor: colorList[this.props.variableButton],
+				    borderColor: colorList[this.props.variableButton],
+				    marginRight: 16,
+				    marginLeft: 16,}} 
+				  textStyle={ {fontWeight: '500', fontSize: 16, color: this.props.variableButton} }
+			  	>{this.props.text}</Button>
+			);
+		}
+		if (this.props.secondaryButtonOutlineLarge) {
+			return (
+				<Button
+				  onPress={this.props.onPress}
+				  style={ buttonStyles.secondaryButtonOutlineLarge } 
+				  textStyle={ textStyles.buttonTextDark }
 			  	>{this.props.text}</Button>
 			);
 		}
