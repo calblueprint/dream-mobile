@@ -31,7 +31,8 @@ class CourseCard extends React.Component {
     const colorKey = this.props.index % 5
 
     return (
-      <TouchableHighlight onPress={() => this.props.onSelectCourse(this.props.course_id, colorKey)}>
+      <TouchableHighlight onPress={() => this.props.onSelectCourse(this.props.course_id, colorKey)}
+      underlayColor='transparent'>
         <View style={[cardStyles.outerContainer, {backgroundColor: colorList[colorKey]}]}>
           <View style={cardStyles.topContainer}>
             <Text style={[cardStyles.title, textStyles.titleMediumLight]}>{this.props.title}</Text>

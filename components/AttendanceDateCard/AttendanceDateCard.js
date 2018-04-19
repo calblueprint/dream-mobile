@@ -4,21 +4,21 @@ import PropTypes from 'prop-types';
 import { textStyles } from '../../styles/textStyles';
 
 /**
- * @prop student - student information
- * @prop onSelectStudent - callback function to show student information
+ * @prop date - attendance date
+ * @prop onSelectDate - callback function to show attendance information
  */
-class StudentCard extends React.Component {
+class AttendanceDateCard extends React.Component {
   constructor(props) {
     super(props);
   }
 
   render() {
     return (
-      <TouchableHighlight onPress={() => this.props.onSelectStudent(this.props.student.id)}
+      <TouchableHighlight onPress={() => this.props.onSelectDate(this.props.date)}
       underlayColor='transparent'>
         <View style={{borderBottomWidth: 1, borderBottomColor: '#E6E6E6'}}>
           <View style={{marginBottom: 16, marginTop: 16}}>
-            <Text style={textStyles.body}>{this.props.student.first_name} {this.props.student.last_name}</Text>
+            <Text style={textStyles.body}>{this.props.date}</Text>
           </View>
         </View>
       </TouchableHighlight>
@@ -26,4 +26,4 @@ class StudentCard extends React.Component {
   }
 }
 
-export default StudentCard;
+export default AttendanceDateCard;

@@ -15,6 +15,16 @@ const textStyles = StyleSheet.create({
 
   bodySmall: {
     color: colors.textDark,
+    fontSize: 16
+  },
+
+  bodySmallLight: {
+    color: colors.textLight_70,
+    fontSize: 16
+  },
+
+  bodySmallLighter: {
+    color: colors.textLight_70,
     fontSize: 14
   },
 
@@ -46,6 +56,12 @@ const textStyles = StyleSheet.create({
     fontWeight: '700'
   },
 
+  titleLargeLight: {
+    color: colors.textLight,
+    fontSize: 24,
+    fontWeight: '700'
+  },
+
   titleMediumLight: {
     color: colors.textLight,
     fontSize: 20,
@@ -66,6 +82,18 @@ const textStyles = StyleSheet.create({
 
   buttonTextSmall: {
     color: colors.textLight,
+    fontSize: 16,
+    fontWeight: '500'
+  },
+
+  enrollSmall: {
+    color: '#fff',
+    fontSize: 14, 
+    fontWeight: '500'
+  },
+
+  buttonTextDark: {
+    color: '#37474F',
     fontSize: 16,
     fontWeight: '500'
   },
