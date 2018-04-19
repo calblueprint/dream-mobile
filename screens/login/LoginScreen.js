@@ -28,11 +28,11 @@ class LoginScreen extends React.Component {
   _attemptLogin() {
     const params = {
       teacher: {
-        email__c: this.state.email,
-        password__c: this.state.password
-      }
+        email: this.state.email,
+        password: this.state.password,
     }
     this.props.fetchTeacher(params, this.props.navigation);
+    //TODO: Logging in should not push onto the stack. it should replace current
   }
 
   render() {
@@ -79,6 +79,7 @@ const fetchTeacher = (params, navigation) => {
         navigation.navigate('Courses');
       },
       (error) => {
+        //TODO: (Aivant) We shouldn't dispatch actions in case of error here since if the fetch request fails, this error function doesn't get called
         dispatch(actions.receiveStandardError(error));
         standardError(error);
       },

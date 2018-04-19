@@ -11,6 +11,7 @@ import SearchResultCard from '../../components/SearchResultCard/SearchResultCard
 import StyledButton from '../../components/Button/Button';
 import { FontAwesome, MaterialCommunityIcons } from '@expo/vector-icons';
 import colors from '../../styles/colors';
+import {textStyles} from "../../styles/textStyles";
 
 class SearchStudentResultScreen extends React.Component {
   constructor(props) {
@@ -47,17 +48,28 @@ class SearchStudentResultScreen extends React.Component {
                           onSelectStudent={this._handleSelectStudent}/>
       )
     );
-    return (
-      <View style={{marginBottom: 24}}>
-        { students }
-        <StyledButton
-          onPress={() => navigate('EditCourse', {refreshCourses: this.props.fetchCourses, newCourse: true,
-            sessions: [], teacher: this.props.teacher})}
-          text='Next'
-          primaryButtonLarge>
-        </StyledButton>
-      </View>
-    );
+
+    if (students.length === 0) {
+      return (
+        <View style={{
+          justifyContent: 'center',
+          alignItems: 'center'
+        }}>
+          <Text style={[textStyles.titleLarge, {
+            marginTop: 64,
+            textAlign: 'center'
+          }]}>
+            No Search Results Found. Please Go Back.
+          </Text>
+        </View>
+      );
+    } else {
+      return (
+        <View style={{marginBottom: 24}}>
+          { students }
+        </View>
+      );
+    }
   }
 
   render() {
@@ -72,14 +84,12 @@ class SearchStudentResultScreen extends React.Component {
     } else {
       results = this._renderSearchResults();
     }
+
     return (
-      <ScrollView>
-        <View style={{backgroundColor: '#f5f5f6'}}>
-          { results }
-        </View>
+      <ScrollView style={{backgroundColor: '#f5f5f6'}}>
+        { results }
       </ScrollView>
     );
-
   }
 }
 

@@ -1,10 +1,15 @@
 import React from 'react';
-import { Button, Text, ScrollView } from 'react-native';
-import { Form, InputField, PickerField,
+import { Button, Text, ScrollView, View } from 'react-native';
+import StyledButton from '../../components/Button/Button';
+import { InputField, PickerField,
   DatePickerField, TimePickerField } from 'react-native-form-generator';
+import { formStyles } from "./styles";
+import { t } from '../../components/Form/Form';
 import { APIRoutes } from '../../config/routes';
 import PropTypes from 'prop-types';
 import { frontendError } from '../../lib/alerts';
+
+var Form  = t.form.Form;
 
 /**
  * @prop onSearchStudent - callback function when student search form is submitted
@@ -39,40 +44,34 @@ class SearchStudentForm extends React.Component {
     }
   }
 
+  /*
+   * Define fields in form.
+   */
+  _getFormType() {
+    return t.struct({
+      first_name: t.String,
+      last_name: t.String,
+    });
+  }
+
   render() {
     return (
       <ScrollView>
-        <Form
-          onChange={this._handleFormChange.bind(this)}
-          value={this.state.formValues}
-        >
-          <InputField
-            ref='first_name'
-            label='First Name'
-            validationFunction=
-              {[(value)=>{
-                if(value == '') return "First name required";
-                //Initial state is null/undefined
-                if(!value) return "First name entered is invalid";
-                return true;
-              }]}
+        <View style={formStyles.background}>
+          <View style={formStyles.container}>
+            <Form
+              ref="form"
+              type={this._getFormType()}
+              onChange={this._handleFormChange.bind(this)}
+              value={this.state.formValues}
+            />
+          </View>
+          <StyledButton
+            onPress={this._handleSearchStudent}
+            text='Search Existing Student'
+            primaryButtonLarge
           />
-          <InputField
-            ref='last_name'
-            label='Last Name'
-            validationFunction=
-              {[(value)=>{
-                if(value == '') return "Last name required";
-                //Initial state is null/undefined
-                if(!value) return "Last name entered is invalid";
-                return true;
-              }]}
-          />
-        </Form>
-        <Button
-          onPress={this._handleSearchStudent}
-          title='Search Existing Student'
-        />
+        </View>
       </ScrollView>
     );
   }
