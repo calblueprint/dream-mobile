@@ -1,5 +1,5 @@
 const colors = {
-  // primaryYellow: '#FFC107',
+  oldYellow: '#FFC107',
   primaryYellow: '#3F51B5',
   courseGreen: '#26A69A',
   courseBlue: '#3F51B5',

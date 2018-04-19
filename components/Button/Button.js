@@ -60,6 +60,15 @@ export default class StyledButton extends React.Component {
 			  	>{this.props.text}</Button>
 			);
 		}
+		if (this.props.whiteButtonOutlineLarge) {
+			return (
+				<Button
+				  onPress={this.props.onPress}
+				  style={ buttonStyles.whiteButtonOutlineLarge } 
+				  textStyle={ textStyles.buttonText }
+			  	>{this.props.text}</Button>
+			);
+		}
 		if (this.props.secondaryButtonLarge) {
 			return (
 				<Button
