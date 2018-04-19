@@ -220,9 +220,6 @@ class ViewCourseScreen extends React.Component {
                 <Text style={textStyles.titleSmall}>In Session</Text>
                 { this._renderCourseDate() }
               </View>
-
-
-
             </View>
           </View>
 
@@ -252,7 +249,6 @@ class ViewCourseScreen extends React.Component {
             primaryButtonLarge
           />
           <View style={[commonStyles.divider, {marginTop: 16}]}/>
-
 
           <View style={[formViewStyles.div_1, {marginBottom: 16}]}>
               <Text style={textStyles.titleMedium}>Students</Text>
