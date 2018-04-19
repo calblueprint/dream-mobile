@@ -30,6 +30,7 @@ class LoginScreen extends React.Component {
       teacher: {
         email: this.state.email,
         password: this.state.password,
+      }
     }
     this.props.fetchTeacher(params, this.props.navigation);
     //TODO: Logging in should not push onto the stack. it should replace current
@@ -60,7 +61,7 @@ class LoginScreen extends React.Component {
           <StyledButton
             onPress={() => this.props.navigation.navigate('SignUp')}
             text='Sign Up'
-            whiteButtonOutlineLarge>
+            secondaryButtonLarge>
           </StyledButton>
         </Image>
       </View>
