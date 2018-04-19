@@ -13,6 +13,16 @@ import { FontAwesome,Entypo } from '@expo/vector-icons';
 import colors from '../../styles/colors';
 
 class ViewCourseScreen extends React.Component {
+
+  static navigationOptions = ({ navigation }) => {
+    const { params = {} } = navigation.state;
+    return {
+        headerStyle: {
+          backgroundColor: params.navbarColor
+        }
+    };
+  };
+
   constructor(props) {
     super(props);
     this._fetchCourse = this._fetchCourse.bind(this);
@@ -42,7 +52,7 @@ class ViewCourseScreen extends React.Component {
         { refreshStudents: this._fetchStudents, course_id: this.state.course_id, newStudent: true })
      }
 
-    this.props.navigation.setParams({ handleCreate: _enrollStudent });
+    this.props.navigation.setParams({ navbarColor: this.props.navigation.state.params.navbarColor });
   }
 
   /*

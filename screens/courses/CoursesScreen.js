@@ -1,9 +1,7 @@
 import React from 'react';
-import { Image, Button, ScrollView, Text, View, TouchableOpacity } from 'react-native';
-
+import { Image, Button, ScrollView, Text, View, TouchableOpacity, RefreshControl } from 'react-native';
 import { connect } from 'react-redux';
 import actions from '../../actions';
-
 import { commonStyles } from '../../styles/styles';
 import { getRequest } from '../../lib/requests';
 import { APIRoutes } from '../../config/routes';
@@ -45,10 +43,20 @@ class CoursesScreen extends React.Component {
     this.props.navigation.setParams({ handleCreate: _createCourse });
   }
 
-  _handleSelectCourse(course_id) {
+  _handleSelectCourse(courseId, colorKey) {
+
+    const colorList = {
+      0: colors.courseGreen,
+      1: colors.courseBlue,
+      2: colors.coursePurple,
+      3: colors.coursePink,
+      4: colors.courseBrown
+    }; 
+
     this.props.navigation.navigate('ViewCourse', {
       refreshCourses: this.props.fetchCourses,
-      course_id: course_id
+      course_id: courseId, 
+      navbarColor: colorList[colorKey]
     });
   }
 
