@@ -47,7 +47,7 @@ const buttonStyles = StyleSheet.create({
   },
 
   whiteButtonOutlineLarge: {
-    backgroundColor: 'rgba(255, 255, 255, 0.3)',
+    backgroundColor: 'transparent',
     borderColor: 'rgba(255, 255, 255, 0.9)',
     marginRight: 32, 
     marginLeft: 32,
