@@ -89,12 +89,12 @@ class CoursesScreen extends React.Component {
     return (
       <View style={{marginBottom: 24}}>
         { courses }
-        <StyledButton
-          onPress={() => navigate('EditCourse', {refreshCourses: this.props.fetchCourses, newCourse: true, 
+        <View style={{marginTop: 16}}><StyledButton
+          onPress={() => navigate('EditCourse', {refreshCourses: this.props.fetchCourses, newCourse: true,
             sessions: [], teacher: this.props.teacher})}
           text='Create Course'
-          primaryButtonLarge>
-        </StyledButton>
+          secondaryButtonLarge>
+        </StyledButton></View>
       </View>
     );
   }
