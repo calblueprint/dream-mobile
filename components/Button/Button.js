@@ -24,6 +24,15 @@ export default class StyledButton extends React.Component {
 			  	>{this.props.text}</Button>
 			);
 		}
+		if (this.props.noPaddingPrimaryButtonSmall) {
+			return (
+				<Button
+				  onPress={this.props.onPress}
+				  style={ buttonStyles.noPaddingPrimaryButtonSmall }
+				  textStyle={ textStyles.buttonTextSmall }
+			  	>{this.props.text}</Button>
+			);
+		}
 		if (this.props.clearButtonSmall) {
 			return (
 				<Button

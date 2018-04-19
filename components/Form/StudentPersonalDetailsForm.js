@@ -21,9 +21,12 @@ class StudentPersonalDetailsForm extends React.Component {
     this._onFormChange = this._onFormChange.bind(this);
     this._getFormOptions = this._getFormOptions.bind(this);
     this._renderSaveButton = this._renderSaveButton.bind(this);
+    this._clearFormErrors = this._clearFormErrors.bind(this);
+    this._handleSaveStudent = this._handleSaveStudent.bind(this);
 
     this.state = {
       formValues: this._getInitialFormValues(),
+      errors: [],
     }
   }
 
@@ -51,16 +54,16 @@ class StudentPersonalDetailsForm extends React.Component {
     return t.struct({
       first_name: t.String,
       last_name: t.String,
-      nickname: t.String,
-      is_active: t.enums({
-        true: "Yes",
-        false: "No",
-      }),
+      nickname: t.maybe(t.String),
+      is_active: t.maybe(t.enums({
+        Yes: "Yes",
+        No: "No",
+      })),
       birthday: t.String,
-      sex: t.enums({
+      sex: t.maybe(t.enums({
         Female: 'Female',
         Male: 'Male'
-      }),
+      })),
     });
   }
 
@@ -72,10 +75,10 @@ class StudentPersonalDetailsForm extends React.Component {
       error: this.state.errors,
       fields: {
         first_name: {
-          label: 'First Name'
+          label: '*First Name'
         },
         last_name: {
-          label: 'Last Name'
+          label: '*Last Name'
         },
         nickname: {
           label: 'Nickname'
@@ -84,7 +87,7 @@ class StudentPersonalDetailsForm extends React.Component {
           label: 'Active Participant?'
         },
         birthday: {
-          label: 'Birthday'
+          label: '*Birthday'
         },
         sex: {
           label: 'Sex'
@@ -94,18 +97,38 @@ class StudentPersonalDetailsForm extends React.Component {
   }
 
   /*
+   * Clear the error state at the beginning of each validation (login)
+   */
+  _clearFormErrors() {
+    this.setState({ errors: [] });
+  }
+
+  /*
+   * Extract values from form and call onSaveStudent callback.
+   */
+  _handleSaveStudent() {
+    this._clearFormErrors();
+    const values = this.form.getValue();
+    if (values) {
+      this.props.onSaveStudent(this.state.formValues)
+    } else {
+      frontendError("Validation failed.")
+    }
+  }
+
+  /*
    * Return the save button component.
    */
   _renderSaveButton() {
     let button = this.props.newStudent? (
       <StyledButton
-        onPress={() => this.props.onSaveStudent(this.state.formValues)}
+        onPress={this._handleSaveStudent}
         text='Next: Contact Information'
         primaryButtonLarge>
       </StyledButton>
     ) : (
       <StyledButton
-        onPress={() => this.props.onSaveStudent(this.state.formValues)}
+        onPress={this._handleSaveStudent}
         text='Save Changes'
         primaryButtonLarge>
       </StyledButton>

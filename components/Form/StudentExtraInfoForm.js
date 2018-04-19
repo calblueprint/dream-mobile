@@ -21,9 +21,12 @@ class StudentExtraInfoForm extends React.Component {
     this._onFormChange = this._onFormChange.bind(this);
     this._getFormOptions = this._getFormOptions.bind(this);
     this._renderSaveButton = this._renderSaveButton.bind(this);
+    this._clearFormErrors = this._clearFormErrors.bind(this);
+    this._handleSaveStudent = this._handleSaveStudent.bind(this);
 
     this.state = {
       formValues: this._getInitialFormValues(),
+      errors: [],
     }
   }
 
@@ -49,14 +52,14 @@ class StudentExtraInfoForm extends React.Component {
   _getFormType() {
     return t.struct({
       notes: t.maybe(t.String),
-      document_type: t.enums({
+      document_type: t.maybe(t.enums({
         None: 'None', 
         'Govt. ID card': 'Govt. ID card', 
         'Passport or foreign birth certificate': 'Passport or foreign birth certificate', 
         'Regularization card': 'Regularization card', 
         'Dominican birth certificate': 'Dominican birth certificate', 
         'Dominican birth cetificate that says foreigner': 'Dominican birth cetificate that says foreigner'
-      }),
+      })),
       level: t.maybe(t.enums({
         Maternal: 'Maternal', 
         Kinder: 'Kinder', 
@@ -70,8 +73,8 @@ class StudentExtraInfoForm extends React.Component {
         Other: 'Other'
       })),
       past_dream_participant: t.maybe(t.enums({
-        true : "Yes",
-        false : "No"
+        Yes : "Yes",
+        No : "No"
       }))
     });
   }
@@ -87,19 +90,39 @@ class StudentExtraInfoForm extends React.Component {
           label: 'Document Type'
         },
         notes: {
-          label: 'Notes (Optional)'
+          label: 'Notes'
         },
         level: {
-          label: 'Level (Montessori Only)'
+          label: 'Level'
         },
         primary_language: {
-          label: 'Primary Language (Optional)'
+          label: 'Primary Language'
         },
         past_dream_participant: {
-          label: 'Participated in DREAM before? (Optional)'
+          label: 'Participated in DREAM before?'
         },
       },
     };
+  }
+
+  /*
+   * Clear the error state at the beginning of each validation (login)
+   */
+  _clearFormErrors() {
+    this.setState({ errors: [] });
+  }
+
+  /*
+   * Extract values from form and call onSaveStudent callback.
+   */
+  _handleSaveStudent() {
+    this._clearFormErrors();
+    const values = this.form.getValue();
+    if (values) {
+      this.props.onSaveStudent(this.state.formValues)
+    } else {
+      frontendError("Validation failed.")
+    }
   }
 
   /*
@@ -108,13 +131,13 @@ class StudentExtraInfoForm extends React.Component {
   _renderSaveButton() {
     let button = this.props.newStudent? (
       <StyledButton
-        onPress={() => this.props.onSaveStudent(this.state.formValues)}
+        onPress={this._handleSaveStudent}
         text='Create Student'
         primaryButtonLarge>
       </StyledButton>
     ) : (
       <StyledButton
-        onPress={() => this.props.onSaveStudent(this.state.formValues)}
+        onPress={this._handleSaveStudent}
         text='Save Changes'
         primaryButtonLarge>
       </StyledButton>

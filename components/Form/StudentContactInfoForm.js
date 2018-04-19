@@ -21,9 +21,12 @@ class StudentContactInfoForm extends React.Component {
     this._onFormChange = this._onFormChange.bind(this);
     this._getFormOptions = this._getFormOptions.bind(this);
     this._renderSaveButton = this._renderSaveButton.bind(this);
+    this._clearFormErrors = this._clearFormErrors.bind(this);
+    this._handleSaveStudent = this._handleSaveStudent.bind(this);
 
     this.state = {
-      formValues: this._getInitialFormValues()
+      formValues: this._getInitialFormValues(),
+      errors: [],
     }
   }
 
@@ -50,13 +53,13 @@ class StudentContactInfoForm extends React.Component {
    */
   _getFormType() {
     return t.struct({
-      address: t.String,
+      address: t.maybe(t.String),
       phone: t.String,
-      phone_2: t.String,
+      phone_2: t.maybe(t.String),
       facebook_name: t.maybe(t.String),
-      email: t.String,
-      primary_contact: t.String,
-      primary_contact_phone: t.String
+      email: t.maybe(t.String),
+      primary_contact: t.maybe(t.String),
+      primary_contact_phone: t.maybe(t.String)
     });
   }
 
@@ -71,7 +74,7 @@ class StudentContactInfoForm extends React.Component {
           label: 'Address'
         },
         phone: {
-          label: 'Phone Number'
+          label: '*Phone Number'
         }, 
         phone_2: {
           label: 'Alternate Phone Number'
@@ -93,18 +96,38 @@ class StudentContactInfoForm extends React.Component {
   }
 
   /*
+   * Clear the error state at the beginning of each validation (login)
+   */
+  _clearFormErrors() {
+    this.setState({ errors: [] });
+  }
+
+  /*
+   * Extract values from form and call onSaveStudent callback.
+   */
+  _handleSaveStudent() {
+    this._clearFormErrors();
+    const values = this.form.getValue();
+    if (values) {
+      this.props.onSaveStudent(this.state.formValues)
+    } else {
+      frontendError("Validation failed.")
+    }
+  }
+
+  /*
    * Return the save button component.
    */
   _renderSaveButton() {
     let button = this.props.newStudent? (
       <StyledButton
-        onPress={() => this.props.onSaveStudent(this.state.formValues)}
+        onPress={this._handleSaveStudent}
         text='Next: Extra Information'
         primaryButtonLarge>
       </StyledButton>
     ) : (
       <StyledButton
-        onPress={() => this.props.onSaveStudent(this.state.formValues)}
+        onPress={this._handleSaveStudent}
         text='Save Changes'
         primaryButtonLarge>
       </StyledButton>

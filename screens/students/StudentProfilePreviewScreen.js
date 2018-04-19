@@ -8,6 +8,7 @@ import { APIRoutes } from '../../config/routes';
 import { formViewStyles } from '../../styles/formViewStyles';
 import { standardError } from '../../lib/alerts';
 import {formStyles} from "../../components/Form/styles";
+import StyledButton from '../../components/Button/Button';
 
 class StudentProfilePreviewScreen extends React.Component {
 
@@ -107,10 +108,11 @@ class StudentProfilePreviewScreen extends React.Component {
           </Text>
 
           <View style={{marginTop: 32}}>
-            <Button
+            <StyledButton
               onPress={() => this._handleEnrollStudent()}
-              title='Enroll Student'
-            />
+              text='Enroll Student'
+              primaryButtonLarge>
+            </StyledButton>
           </View>
         </View>
       </View>

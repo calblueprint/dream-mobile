@@ -22,6 +22,15 @@ const buttonStyles = StyleSheet.create({
     marginBottom: 8,
   },
 
+  noPaddingPrimaryButtonSmall: {
+    backgroundColor: colors.primaryYellow,
+    borderColor: colors.primaryYellow,
+    width: 85,
+    height: 37,
+    marginLeft: 10,
+    marginBottom: -10,
+  },
+
   clearButtonSmall: {
     borderColor:'rgba(255, 255, 255, 0)',
     marginBottom: 8,
