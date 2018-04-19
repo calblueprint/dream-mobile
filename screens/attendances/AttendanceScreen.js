@@ -223,7 +223,7 @@ const mapStateToProps = (state, props) => {
     courseTitle: course.title,
     students: students,
     attendances: JSON.parse(JSON.stringify(attendances)),
-    isLoading: state.isLoading.value,
+    isLoading: state.config.isLoading,
   };
 }
 

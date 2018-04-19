@@ -1,6 +1,6 @@
 import types from '../lib/actionTypes'
 
-export const isLoading = (state = {}, action) => {
+export const config = (state = {}, action) => {
   switch (action.type) {
     case types.REQUEST_COURSES:
     case types.REQUEST_TEACHER:
@@ -10,7 +10,7 @@ export const isLoading = (state = {}, action) => {
     case types.REQUEST_ATTENDANCES:
     case types.REQUEST_COURSE_ATTENDANCES:
     case types.REQUEST_UPDATE_ATTENDANCES:
-      return { value: true }
+      return Object.assign({}, state, { isLoading: true });
     case types.RECEIVE_TEACHER_SUCCESS:
     case types.RECEIVE_COURSES_SUCCESS:
     case types.RECEIVE_COURSE_ATTENDANCES_SUCCESS:
@@ -21,7 +21,9 @@ export const isLoading = (state = {}, action) => {
     case types.RECEIVE_UPDATE_ATTENDANCES_SUCCESS:
     case types.RECEIVE_UPDATE_ATTENDANCES_ERROR:
     case types.RECEIVE_STANDARD_ERROR:
-      return { value: false }
+      return Object.assign({}, state, { isLoading: false });
+    case types.UPDATE_LOCALE:
+      return Object.assign({}, state, { locale: action.locale});
     default:
       return state
   }

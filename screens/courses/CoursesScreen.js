@@ -3,6 +3,7 @@ import { Image, Button, ScrollView, Text, View, TouchableOpacity, RefreshControl
 
 import { connect } from 'react-redux';
 import actions from '../../actions';
+import I18n from '../../lib/i18n/i18n';
 
 import { commonStyles } from '../../styles/styles';
 import { getRequest, postRequestNoCatch } from '../../lib/requests';
@@ -93,6 +94,7 @@ class CoursesScreen extends React.Component {
         numStudents={course.students ? course.students.length : 0}
         synced={"synced" in course ? course.synced : true}
         last_synced={"last_synced" in course ? course.last_synced : ""}/>
+        locale={this.props.locale}/>
       )
     );
     return (
@@ -101,7 +103,7 @@ class CoursesScreen extends React.Component {
         <StyledButton
           onPress={() => navigate('EditCourse', {refreshCourses: this.props.fetchCourses, newCourse: true,
             sessions: [], teacher: this.props.teacher})}
-          text='Create Course'
+          text={I18n.t('createcourse', {locale: this.props.locale})}
           primaryButtonLarge>
         </StyledButton>
       </View>
@@ -303,7 +305,8 @@ const mapStateToProps = (state) => {
     localAttendances: state.localChanges.attendances,
     teacher: state.teacher,
     courses: state.courses,
-    isLoading: state.isLoading.value,
+    isLoading: state.config.isLoading,
+    locale: state.config.locale,
     online: state.offline.online,
   };
 }

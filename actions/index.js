@@ -3,6 +3,12 @@ import types from '../lib/actionTypes'
 
 let actions = {
   // GENERAL
+  updateLocale: (locale) => {
+    return {
+      type: types.UPDATE_LOCALE,
+      locale
+    }
+  },
   receiveStandardError: (error) => {
     return {
       type: types.RECEIVE_STANDARD_ERROR,
