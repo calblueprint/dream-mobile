@@ -60,7 +60,7 @@ class LoginScreen extends React.Component {
           <StyledButton
             onPress={() => this.props.navigation.navigate('SignUp')}
             text='Sign Up'
-            secondaryButtonLarge>
+            whiteButtonOutlineLarge>
           </StyledButton>
         </Image>
       </View>
