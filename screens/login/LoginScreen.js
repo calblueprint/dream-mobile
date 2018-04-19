@@ -2,6 +2,7 @@ import React from 'react';
 
 import { connect } from 'react-redux';
 import actions from '../../actions';
+import I18n from '../../lib/i18n/i18n';
 
 import StyledButton from '../../components/Button/Button';
 import { Button, ScrollView, Text, TextInput, View, Image, StyleSheet } from 'react-native';
@@ -27,9 +28,13 @@ class LoginScreen extends React.Component {
 
   _attemptLogin() {
     const params = {
+      // teacher: {
+      //   email: this.state.email,
+      //   password: this.state.password
+      // }
       teacher: {
-        email: this.state.email,
-        password: this.state.password
+        email: "user1@gmail.com",
+        password: "password"
       }
     }
     this.props.fetchTeacher(params, this.props.navigation);
@@ -42,24 +47,24 @@ class LoginScreen extends React.Component {
         style={styles.bg}
         source={require('../../img/log_in.png')}>
           <View style={styles.container}>
-            <Text style={textStyles.titleSmallLight}>Email</Text>
+            <Text style={textStyles.titleSmallLight}>{I18n.t('email', {locale: this.props.locale})}</Text>
             <TextInput style={styles.textInput}
               autoCapitalize='none'
               onChangeText={(text) => this.setState({email: text})}/>
-            <Text style={textStyles.titleSmallLight}>Password</Text>
+            <Text style={textStyles.titleSmallLight}>{I18n.t('password', {locale: this.props.locale})}</Text>
             <TextInput style={styles.textInput}
               onChangeText={(text) => this.setState({password: text})}
               secureTextEntry/>
           </View>
           <StyledButton
             onPress={this._attemptLogin.bind(this)}
-            text='Login'
+            text={I18n.t('login', {locale: this.props.locale})}
             whiteButtonLarge>
           </StyledButton>
 
           <StyledButton
             onPress={() => this.props.navigation.navigate('SignUp')}
-            text='Sign Up'
+            text={I18n.t('signup', {locale: this.props.locale})}
             secondaryButtonLarge>
           </StyledButton>
         </Image>
@@ -79,6 +84,7 @@ const fetchTeacher = (params, navigation) => {
         navigation.navigate('Courses');
       },
       (error) => {
+        //TODO: Standard Errors returned from rails won't inherently be localized
         dispatch(actions.receiveStandardError(error));
         standardError(error);
       },
@@ -87,11 +93,25 @@ const fetchTeacher = (params, navigation) => {
   }
 }
 
+const updateLocale = (locale) => {
+  return (dispatch) => {
+    dispatch(actions.updateLocale(locale));
+  }
+}
+
 const mapDispatchToProps = (dispatch) => {
   return {
+    updateLocale: (locale) => dispatch(updateLocale(locale)),
     fetchTeacher: (params, navigation) => dispatch(fetchTeacher(params, navigation)),
   }
 }
+
+const mapStateToProps = (state, props) => {
+    return { 
+      locale: state.config.locale
+    }
+}
+
 
 const styles = StyleSheet.create({
   bg: {
@@ -116,4 +136,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default connect(null, mapDispatchToProps)(LoginScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(LoginScreen);

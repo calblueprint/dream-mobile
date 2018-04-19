@@ -335,7 +335,7 @@ const mapStateToProps = (state, props) => {
   const date = props.navigation.state.params.date;
   return {
     ...props.navigation.state.params,
-    isLoading: state.isLoading.value,
+    isLoading: state.config.isLoading,
     isSynced: course.attendances[date].isSynced,
     isModalOpen: state.modal.isOpen,
   };

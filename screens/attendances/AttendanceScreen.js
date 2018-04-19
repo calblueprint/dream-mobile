@@ -282,7 +282,7 @@ const mapStateToProps = (state, props) => {
     ...props.navigation.state.params,
     students: course.students ? course.students : {},
     attendances: course.attendances && course.attendances[date] ? course.attendances[date].list : [],
-    isLoading: state.isLoading.value,
+    isLoading: state.config.isLoading,
   };
 }
 

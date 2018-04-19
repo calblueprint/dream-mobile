@@ -1,12 +1,12 @@
 import { courses } from './courses';
-import { isLoading } from './isLoading';
+import { config } from './config';
 import { teacher } from './teacher';
 import { modal } from './modal';
 
 const reducers = {
   teacher,
   courses,
-  isLoading,
+  config,
   modal
 };
 

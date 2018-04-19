@@ -143,7 +143,7 @@ const mapStateToProps = (state) => {
   return {
     teacher: state.teacher,
     courses: state.courses,
-    isLoading: state.isLoading.value,
+    isLoading: state.config.isLoading,
   };
 }
 
