@@ -6,7 +6,7 @@ import { Platform } from 'react-native'
  // TODO (Kelsey): test whether if check actually works
 if (process.env.NODE_ENV === 'production') {
   console.log('production');
-  URL = 'https://dream-rails-herokoconnect.herokuapp.com';
+  URL = 'https://dream-rails-staging.herokuapp.com';
   // URL = 'https://dream-rails-production.herokuapp.com';
 
 } else {
