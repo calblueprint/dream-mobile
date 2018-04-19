@@ -77,7 +77,12 @@ class PastAttendancesScreen extends React.Component {
     */
   _renderAttendances() {
     if (Object.keys(this.state.attendances).length == 0) {
-      return (<Text style={textStyles.titleMedium}>No attendances for this month. Try another!</Text>)
+      return (
+        //TODO: Vanessa style
+        <View>
+          <Text style={textStyles.titleMedium}>No attendances for this month. Try another!</Text>
+        </View>
+      )
     }
     return Object.keys(this.state.attendances).map((date, i) => {
       return(
@@ -96,19 +101,35 @@ class PastAttendancesScreen extends React.Component {
     const { navigate } = this.props.navigation;
     const attendances = this._renderAttendances();
     return(
-      <View>
-        <Text style={textStyles.titleLarge}>{monthYearDate(this.state.date)}</Text>
-        <StyledButton
-          onPress={this.incrementMonth}
-          text="Next Month"
-          primaryButtonLarge
-        />
-        <StyledButton
-          onPress={this.decrementMonth}
-          text="Prev Month"
-          primaryButtonLarge
-        />
-        { attendances }
+      <View style={{flexDirection: 'column', flex: 1, justifyContent:'flex-start'}}>
+        <View style={{flex: 0.1, marginTop: 24, borderBottomWidth: 1, borderBottomColor: '#E6E6E6'}}>
+          <View style={{flexDirection: 'row', flex: 1}}>
+            <View style={{flex: 0.2, marginBottom: 8,}}>
+              <StyledButton
+                onPress={this.decrementMonth}
+                text="< Prev"
+                linkButton
+              />
+            </View>
+            <View style={{flex: 0.6}}>
+              <Text style={[textStyles.titleMedium, {marginTop: 8, marginBottom: 8, textAlign: 'center'}]}>{monthYearDate(this.state.date)}</Text>
+            </View>
+            <View style={{flex: 0.2, marginBottom: 8,}}>
+              <StyledButton
+                onPress={this.incrementMonth}
+                text="Next >"
+                linkButton
+              />
+            </View>
+          </View>
+        </View>
+        <View style={{flex: 0.9}}>
+          <ScrollView>
+            <View style={[styles.inner, {marginTop: 16}]}>
+              { attendances }
+            </View>
+          </ScrollView>
+        </View>
       </View>
 
     )
@@ -128,13 +149,11 @@ class PastAttendancesScreen extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  // Either change styles or generalize to AttendanceSummaryScreen too
-  attendancesContainer: {
-    marginRight: 16,
+  inner: {
     marginLeft: 24,
+    marginRight: 24
   },
 });
-// TODO (Kelsey): Add PropTypes from navigation
 
 const saveAttendance = (attendances, courseId, date) => {
   return (dispatch) => {

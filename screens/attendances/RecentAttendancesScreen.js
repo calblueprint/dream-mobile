@@ -1,9 +1,7 @@
 import React from 'react';
 import { Image, Button, Text, View, ScrollView, TextInput, TouchableHighlight, StyleSheet } from 'react-native';
-
 import { connect } from 'react-redux';
 import actions from '../../actions';
-
 import { commonStyles } from '../../styles/styles';
 import { textStyles } from '../../styles/textStyles';
 import { APIRoutes } from '../../config/routes';
@@ -54,9 +52,11 @@ class RecentAttendancesScreen extends React.Component {
     const attendances = this._renderAttendances();
     const courseId = this.props.navigation.state.params.courseId
     return(
-      <View>
-        <Text style={textStyles.titleLarge}>Recent</Text>
-        { attendances }
+      <View style={styles.outer}>
+        <View style={styles.inner}>
+          <Text style={[textStyles.titleLarge, {marginBottom: 8}]}>Recent</Text>
+          { attendances }
+        </View>
         <StyledButton
           onPress={() => navigate('PastAttendances',
             { courseId: courseId})}
@@ -64,20 +64,20 @@ class RecentAttendancesScreen extends React.Component {
           primaryButtonLarge
         />
       </View>
-
     )
   }
 }
 
 const styles = StyleSheet.create({
-  // Either change styles or generalize to AttendanceSummaryScreen too
-  attendancesContainer: {
-    marginRight: 16,
-    marginLeft: 24,
+  outer: {
+    backgroundColor: '#fff',
+    flex: 1
+  },
+  inner: {
+    margin: 24,
+    marginTop: 40,
   },
 });
-// TODO (Kelsey): Add PropTypes from navigation
-
 
 const mapStateToProps = (state, props) => {
   // Get course and date associated with this attendance screen
@@ -92,6 +92,5 @@ const mapStateToProps = (state, props) => {
     //online: offline.online, //TODO: add and implement
   };
 }
-
 
 export default connect(mapStateToProps, null)(RecentAttendancesScreen);
