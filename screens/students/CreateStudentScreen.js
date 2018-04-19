@@ -12,18 +12,32 @@ class CreateStudentScreen extends React.Component {
     this._handleCreateStudent = this._handleCreateStudent.bind(this);
     this._handleUpdateStudent = this._handleUpdateStudent.bind(this);
     this.state = {
-      courseId: this.props.navigation.state.params.courseId,
+      course_id: this.props.navigation.state.params.course_id,
       student: this.props.navigation.state.params.student,
     }
+  }
+
+  _handleEnrollStudent(student) {
+    const successFunc = (responseData) => {
+      this.props.navigation.state.params.refreshStudents();
+      this.props.navigation.navigate('ViewCourse', { course_id: this.state.course_id });
+    }
+
+    const p = {
+      student_id: student.id,
+      course_id: this.state.course_id
+    }
+
+    postRequest(APIRoutes.getCoursesStudentsPath(), successFunc, standardError, params=p);
   }
 
   _handleCreateStudent(params) {
       const successFunc = (responseData) => {
         this.setState({ student: responseData});
-        this.props.navigation.state.params.refreshStudents();
-        this.props.navigation.goBack(null);
+        this._handleEnrollStudent(responseData);
       }
-    postRequest(APIRoutes.getStudentsPath(this.state.courseId), successFunc, standardError, params=params);
+
+    postRequest(APIRoutes.getStudentsPath(), successFunc, standardError, params=params);
   }
 
   _handleUpdateStudent(params) {

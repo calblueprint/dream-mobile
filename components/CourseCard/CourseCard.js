@@ -29,13 +29,15 @@ class CourseCard extends React.Component {
       4: colors.courseBrown
     }
     const colorKey = this.props.index % 5
-
+    let syncText = this.props.synced ? "" : "Not Synced"
     return (
-      <TouchableHighlight onPress={() => this.props.onSelectCourse(this.props.course_id)}>
+      <TouchableHighlight onPress={() => this.props.onSelectCourse(this.props.course_id, colorKey)}
+      underlayColor='transparent'>
         <View style={[cardStyles.outerContainer, {backgroundColor: colorList[colorKey]}]}>
           <View style={cardStyles.topContainer}>
             <Text style={[cardStyles.title, textStyles.titleMediumLight]}>{this.props.title}</Text>
-            <Text style={[cardStyles.count, textStyles.titleSmallLight]}>5 Students</Text>
+            <Text style={[cardStyles.count, textStyles.titleSmallLight]}>{this.props.numStudents} Students</Text>
+            <Text style={[cardStyles.count, textStyles.titleSmallLight]}>{syncText}</Text>
           </View>
           <View style={cardStyles.bottomContainer}>
             <StyledButton

@@ -8,8 +8,6 @@ import thunk from 'redux-thunk';
 const reducer = combineReducers(reducers);
 const initialState = { isLoading: {value: true} };
 
-// TODO: fix all references to `configureStore`
-// TODO: figure out if we still need `redux-thunk`
 export const store = createStore(
   reducer,
   initialState,

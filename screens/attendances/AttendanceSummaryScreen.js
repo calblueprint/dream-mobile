@@ -9,7 +9,7 @@ import { textStyles } from '../../styles/textStyles';
 import StyledButton from '../../components/Button/Button';
 import { APIRoutes } from '../../config/routes';
 import settings from '../../config/settings';
-import { putRequestNoCatch } from '../../lib/requests';
+import { postRequestNoCatch } from '../../lib/requests';
 import Collapse from '../../components/Collapse';
 import SimpleModal from '../../components/SimpleModal';
 import colors from '../../styles/colors';
@@ -303,7 +303,11 @@ syncAttendances = (attendances, courseId, date) => {
       dispatch(actions.receiveUpdateAttendancesSuccess(responseData, courseId, date));
       dispatch(actions.openModal());
     }).catch((error) => {
+      // Optimistically updates and marks course as unsynced
+      console.log("Attendance Sync Failed: " );
+      console.log(error);
       dispatch(actions.receiveUpdateAttendancesError(attendances, courseId, date));
+      dispatch(actions.saveLocalChanges(attendances, courseId, date));
       dispatch(actions.openModal());
     });
   }
@@ -320,10 +324,11 @@ updateAttendance = (attendance, index) => {
   const errorFunc = (error) => {
     console.log(error);
   }
-  const params = attendance
+  const params = {attendance: attendance}
 
   if (attendance.isChanged) {
-    return putRequestNoCatch(APIRoutes.attendancePath(), successFunc, errorFunc, params);
+    // append true to the list of parameters to make this request fail
+    return postRequestNoCatch(APIRoutes.attendanceItemPath(), successFunc, errorFunc, params);
   } else {
     return attendance;
   }
@@ -336,7 +341,7 @@ const mapStateToProps = (state, props) => {
   return {
     ...props.navigation.state.params,
     isLoading: state.isLoading.value,
-    isSynced: course.attendances[date].isSynced,
+    isSynced: course.synced,
     isModalOpen: state.modal.isOpen,
   };
 }

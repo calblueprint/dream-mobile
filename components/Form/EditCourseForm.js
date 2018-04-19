@@ -1,4 +1,4 @@
-import React from 'react';
+ import React from 'react';
 import { ScrollView, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native';
 import { Form, t } from '../../components/Form/Form';
 import { formStyles } from '../Form/styles.js';
