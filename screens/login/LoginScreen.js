@@ -20,8 +20,8 @@ class LoginScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      email__c: "",
-      password__c: "",
+      email: "",
+      password: "",
     }
   }
 
@@ -30,6 +30,7 @@ class LoginScreen extends React.Component {
       teacher: {
         email: this.state.email,
         password: this.state.password,
+      }
     }
     this.props.fetchTeacher(params, this.props.navigation);
     //TODO: Logging in should not push onto the stack. it should replace current
