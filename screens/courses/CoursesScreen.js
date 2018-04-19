@@ -93,7 +93,7 @@ class CoursesScreen extends React.Component {
         onTakeAttendance={this._handleTakeAttendance}
         numStudents={course.students ? course.students.length : 0}
         synced={"synced" in course ? course.synced : true}
-        last_synced={"last_synced" in course ? course.last_synced : ""}/>
+        last_synced={"last_synced" in course ? course.last_synced : ""}
         locale={this.props.locale}/>
       )
     );
