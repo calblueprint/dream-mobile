@@ -55,6 +55,13 @@ const buttonStyles = StyleSheet.create({
     marginBottom: 24,
   },
 
+  whiteButtonOutlineLarge: {
+    backgroundColor: 'transparent',
+    borderColor: 'rgba(255, 255, 255, 0.9)',
+    marginRight: 32, 
+    marginLeft: 32,
+  },
+
   clearButtonSmall: {
     backgroundColor: 'transparent',
     borderColor: '#fff',
@@ -64,16 +71,30 @@ const buttonStyles = StyleSheet.create({
     marginBottom: 8,
   },
 
+  enrollSmall: {
+    backgroundColor: colors.courseBlue,
+    borderColor: colors.courseBlue,
+    width: 140,
+    height: 36,
+  },
+
   linkButton: {
     backgroundColor: 'transparent',
     borderColor: 'transparent',
   },
 
   secondaryButtonLarge: {
-    backgroundColor: 'rgba(255, 255, 255, 0)',
-    borderColor: '#fff',
-    marginRight: 32, 
-    marginLeft: 32,
+    backgroundColor: '#CFD8DC',
+    borderColor: '#CFD8DC',
+    marginRight: 16,
+    marginLeft: 16,
+  },
+
+  secondaryButtonOutlineLarge: {
+    backgroundColor: 'transparent',
+    borderColor: '#37474F',
+    marginRight: 16, 
+    marginLeft: 16,
   }
 });
 
