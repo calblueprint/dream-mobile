@@ -49,7 +49,7 @@ export const HomeStack = StackNavigator({
   ViewCourse: {
     screen: ViewCourseScreen,
     navigationOptions: {
-      headerTitle: 'View Course',
+      // headerTitle: 'View Course',
     },
   },
   Courses : {

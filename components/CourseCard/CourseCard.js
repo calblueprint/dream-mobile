@@ -34,12 +34,13 @@ class CourseCard extends React.Component {
     const colorKey = this.props.index % 5
     const unsyncedAttendances = (
       <Text style={[cardStyles.count, textStyles.titleSmallLight]}>
-        <FontAwesome name="exclamation-triangle" size={14} color={colors.iconLight}/> Unsynced Attendances 
+        <FontAwesome name="exclamation-triangle" size={14} color={colors.iconLight}/> {I18n.t('unsyncedattendances', {locale: this.props.locale})}
       </Text>
     )
-    let syncText = this.props.synced ? "Last Synced: " + this.props.last_synced : unsyncedAttendances
+    let syncText = this.props.synced ? (I18n.t('lastsynced', {locale: this.props.locale}) + ": " + this.props.last_synced) : unsyncedAttendances
     return (
-      <TouchableHighlight onPress={() => this.props.onSelectCourse(this.props.course_id)}>
+      <TouchableHighlight onPress={() => this.props.onSelectCourse(this.props.course_id, colorKey)}
+      underlayColor='transparent'>
         <View style={[cardStyles.outerContainer, {backgroundColor: colorList[colorKey]}]}>
           <View style={cardStyles.topContainer}>
             <Text style={[cardStyles.title, textStyles.titleMediumLight]}>{this.props.title}</Text>

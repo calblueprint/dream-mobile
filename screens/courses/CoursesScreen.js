@@ -1,6 +1,5 @@
 import React from 'react';
 import { Image, Button, ScrollView, Text, View, TouchableOpacity, RefreshControl } from 'react-native';
-
 import { connect } from 'react-redux';
 import actions from '../../actions';
 import I18n from '../../lib/i18n/i18n';
@@ -54,10 +53,20 @@ class CoursesScreen extends React.Component {
     this.props.navigation.setParams({ handleCreate: _createCourse });
   }
 
-  _handleSelectCourse(courseId) {
+  _handleSelectCourse(courseId, colorKey) {
+
+    const colorList = {
+      0: colors.courseGreen,
+      1: colors.courseBlue,
+      2: colors.coursePurple,
+      3: colors.coursePink,
+      4: colors.courseBrown
+    }; 
+
     this.props.navigation.navigate('ViewCourse', {
       refreshCourses: this.props.fetchCourses,
-      courseId: courseId
+      courseId: courseId,
+      navbarColor: colorList[colorKey]
     });
   }
 
@@ -100,12 +109,13 @@ class CoursesScreen extends React.Component {
     return (
       <View style={{marginBottom: 24}}>
         { courses }
-        <StyledButton
+        <View style={{marginTop: 16}}><StyledButton
           onPress={() => navigate('EditCourse', {refreshCourses: this.props.fetchCourses, newCourse: true,
             sessions: [], teacher: this.props.teacher})}
           text={I18n.t('createcourse', {locale: this.props.locale})}
-          primaryButtonLarge>
+          secondaryButtonLarge>
         </StyledButton>
+        </View>
       </View>
     );
   }

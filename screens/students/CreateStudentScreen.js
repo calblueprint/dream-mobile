@@ -17,14 +17,26 @@ class CreateStudentScreen extends React.Component {
     }
   }
 
+  _handleEnrollStudent(student) {
+    const successFunc = (responseData) => {
+      this.props.navigation.state.params.refreshStudents();
+      this.props.navigation.navigate('ViewCourse', { course_id: this.state.course_id });
+    }
+
+    const p = {
+      student_id: student.id,
+      course_id: this.state.course_id
+    }
+
+    postRequest(APIRoutes.getCoursesStudentsPath(), successFunc, standardError, params=p);
+  }
+
   _handleCreateStudent(params) {
       const successFunc = (responseData) => {
         this.setState({ student: responseData});
-        this.props.navigation.state.params.refreshStudents();
-        this.props.navigation.navigate('ViewCourse', {
-          course_id: this.state.course_id
-        });
+        this._handleEnrollStudent(responseData);
       }
+
     postRequest(APIRoutes.getStudentsPath(), successFunc, standardError, params=params);
   }
 

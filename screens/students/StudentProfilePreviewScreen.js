@@ -7,6 +7,7 @@ import { getRequest, deleteRequest, postRequest } from '../../lib/requests';
 import { APIRoutes } from '../../config/routes';
 import { formViewStyles } from '../../styles/formViewStyles';
 import { standardError } from '../../lib/alerts';
+import {formStyles} from "../../components/Form/styles";
 
 class StudentProfilePreviewScreen extends React.Component {
 
@@ -55,43 +56,63 @@ class StudentProfilePreviewScreen extends React.Component {
   _renderStudent() {
     const { navigate } = this.props.navigation;
     return(
-      <View>
-        <Text style={textStyles.titleLarge}>
-          {this.state.student.first_name} {this.state.student.last_name} - {this.state.student.dream_id}
-        </Text>
+      <View style={formStyles.background}>
+        <View style={formStyles.container}>
+          <Text style={textStyles.titleLarge}>
+            {this.state.student.first_name} {this.state.student.last_name} - {this.state.student.dream_id}
+          </Text>
 
-        <Text style={textStyles.titleSmall}>
-          Birthday
-        </Text>
-        <Text style={textStyles.body}>
-          {this.state.student.birthday}
-        </Text>
+          <Text style={[textStyles.titleSmall, {
+            marginTop: 24
+          }]}>
+            Birthday
+          </Text>
+          <Text style={[textStyles.body, {
+            marginTop: 8
+          }]}>
+            {this.state.student.birthday}
+          </Text>
 
-        <Text style={textStyles.titleSmall}>
-          Address
-        </Text>
-        <Text style={textStyles.body}>
-          {this.state.student.address}
-        </Text>
+          <Text style={[textStyles.titleSmall, {
+            marginTop: 24
+          }]}>
+            Address
+          </Text>
+          <Text style={[textStyles.body, {
+            marginTop: 8
+          }]}>
+            {this.state.student.address}
+          </Text>
 
-        <Text style={textStyles.titleSmall}>
-          Phone Number
-        </Text>
-        <Text style={textStyles.body}>
-          {this.state.student.phone}
-        </Text>
+          <Text style={[textStyles.titleSmall, {
+            marginTop: 24
+          }]}>
+            Phone Number
+          </Text>
+          <Text style={[textStyles.body, {
+            marginTop: 8
+          }]}>
+            {this.state.student.phone}
+          </Text>
 
-        <Text style={textStyles.titleSmall}>
-          Alternate Phone Number
-        </Text>
-        <Text style={textStyles.body}>
-          {this.state.student.phone_2}
-        </Text>
+          <Text style={[textStyles.titleSmall, {
+            marginTop: 24
+          }]}>
+            Alternate Phone Number
+          </Text>
+          <Text style={[textStyles.body, {
+            marginTop: 8
+          }]}>
+            {this.state.student.phone_2}
+          </Text>
 
-        <Button
-          onPress={() => this._handleEnrollStudent()}
-          title='Enroll Student'
-        />
+          <View style={{marginTop: 32}}>
+            <Button
+              onPress={() => this._handleEnrollStudent()}
+              title='Enroll Student'
+            />
+          </View>
+        </View>
       </View>
     );
   }

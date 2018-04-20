@@ -82,7 +82,7 @@ class LoginScreen extends React.Component {
           <StyledButton
             onPress={() => this.props.navigation.navigate('SignUp')}
             text={I18n.t('signup', {locale: this.props.locale})}
-            secondaryButtonLarge>
+            whiteButtonOutlineLarge>
           </StyledButton>
         </Image>
       </View>
