@@ -15,6 +15,7 @@ import { textStyles } from '../../styles/textStyles';
 import { FontAwesome, Entypo, MaterialCommunityIcons } from '@expo/vector-icons';
 import colors from '../../styles/colors';
 import { attendanceDate } from '../../lib/date';
+import I18n from '../../lib/i18n/i18n';
 
 
 class ViewCourseScreen extends React.Component {
@@ -170,9 +171,10 @@ class ViewCourseScreen extends React.Component {
     return this.props.course.sessions.map((session, index) => {
       const start = timeFormat(new Date(session.start_time))
       const end = timeFormat(new Date(session.end_time))
+      const i18nWeekday = I18n.t(session.weekday.toLowerCase(), {locale: this.props.locale});
       return (
         <View key={index}>
-          <Text style={textStyles.bodySmallLight}>{`${session.weekday}, ${ start } - ${ end }` } </Text>
+          <Text style={textStyles.bodySmallLight}>{`${i18nWeekday}, ${ start } - ${ end }` } </Text>
         </View>
       );
     });
@@ -224,14 +226,14 @@ class ViewCourseScreen extends React.Component {
                   courseId: this.props.course.id,
                   date: attendanceDate(new Date()),
                 })}
-                text="Take Attendance"
+                text={I18n.t('takeattendance', {locale: this.props.locale})}
                 // secondaryButtonLarge
                 variableButton={ this.state.navbarColor }
               />
               <StyledButton
                 onPress={() => navigate('RecentAttendances',
                   { courseId: this.props.course.id})}
-                text="View Past Attendance"
+                text={I18n.t('viewpastattendances', {locale: this.props.locale})}
                 secondaryButtonLarge
               />
             </View>
@@ -241,7 +243,7 @@ class ViewCourseScreen extends React.Component {
             <View style={[formViewStyles.div_1, {marginBottom: 16}]}>
               <View style={{flex: 1, flexDirection: 'row'}}>
                 <View style={{flex: 0.6}}>
-                  <Text style={textStyles.titleMedium}>Students</Text>
+                  <Text style={textStyles.titleMedium}>{I18n.t('students', {locale: this.props.locale})}</Text>
                 </View>
                 <View style={{flex: 0.4, flexDirection: 'row', justifyContent: 'flex-end'}}>
                   <StyledButton
@@ -256,7 +258,7 @@ class ViewCourseScreen extends React.Component {
                         }
                       }
                     }
-                    text="+ Enroll Student"
+                    text={"+ " + I18n.t('enrollstudent', {locale: this.props.locale})}
                     enrollSmall
                   />
                 </View>
@@ -291,6 +293,7 @@ const mapStateToProps = (state, props) => {
     course: course,
     isLoading: state.config.isLoading,
     online: state.offline.online,
+    locale: state.config.locale,
   };
 }
 
