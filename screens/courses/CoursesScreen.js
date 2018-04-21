@@ -53,6 +53,14 @@ class CoursesScreen extends React.Component {
     this.props.navigation.setParams({ handleCreate: _createCourse });
   }
 
+  componentWillReceiveProps(nextProps) {
+    if(!this.props.online && nextProps.online) {
+      console.log("Online Status switching from offline to online");
+    } else if (this.props.online && !nextProps.online) {
+      console.log("Online status switching from online to offline");
+    }
+  }
+
   _handleSelectCourse(courseId, colorKey) {
 
     const colorList = {
@@ -61,7 +69,7 @@ class CoursesScreen extends React.Component {
       2: colors.coursePurple,
       3: colors.coursePink,
       4: colors.courseBrown
-    }; 
+    };
 
     this.props.navigation.navigate('ViewCourse', {
       refreshCourses: this.props.fetchCourses,
@@ -310,7 +318,7 @@ const updateAttendance = (attendance, index) => {
   }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, props) => {
   return {
     localAttendances: state.localChanges.attendances,
     teacher: state.teacher,
