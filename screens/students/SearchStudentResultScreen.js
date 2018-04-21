@@ -22,6 +22,7 @@ class SearchStudentResultScreen extends React.Component {
     this.state = {
       students: this.props.navigation.state.params.students,
       course_id: this.props.navigation.state.params.course_id,
+      navbarColor: this.props.navigation.state.params.navbarColor,
     }
   }
 
@@ -29,6 +30,7 @@ class SearchStudentResultScreen extends React.Component {
     this.props.navigation.navigate('StudentProfilePreview', {
       refreshStudents: this.props.navigation.state.params.refreshStudents,
       course_id: this.state.course_id,
+      navbarColor: this.state.navbarColor,
       studentId: id
     });
   }

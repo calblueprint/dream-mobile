@@ -25,8 +25,8 @@ class ViewCourseScreen extends React.Component {
         headerStyle: {
           backgroundColor: params.navbarColor,
           borderBottomColor: 'transparent',
-        }, 
-        headerTintColor: '#fff', 
+        },
+        headerTintColor: '#fff',
         headerRight: (
           <TouchableOpacity onPress={() => params.handleEditCourse()}>
             <View style={{marginRight: 8}}><MaterialCommunityIcons name="pencil" size={30} color={'#fff'} /></View>
@@ -56,7 +56,7 @@ class ViewCourseScreen extends React.Component {
      }
 
      const _editCourse = () => {
-       if(this.props.online) { 
+       if(this.props.online) {
           this.props.navigation.navigate('EditCourse', {
             refreshCourses: this._fetchCourse,
             newCourse: false,
@@ -69,7 +69,7 @@ class ViewCourseScreen extends React.Component {
             end_date: this.props.course.end_date,
             sessions: this.props.sessions,
           })
-      } else { 
+      } else {
         this.setState({showModal: true})
       }
     }
@@ -80,7 +80,8 @@ class ViewCourseScreen extends React.Component {
   _handleSelectStudent(id) {
     this.props.navigation.navigate('StudentProfile', {
       studentId: id,
-      courseId: this.props.course.id
+      courseId: this.props.course.id,
+      navbarColor: this.state.navbarColor,
     });
   }
 
@@ -97,12 +98,12 @@ class ViewCourseScreen extends React.Component {
   _renderDeleteCourseButton() {
     return (
       <StyledButton
-        onPress={() => { 
-            if (this.props.online) { 
+        onPress={() => {
+            if (this.props.online) {
               confirmDelete("Are you sure you want to delete this course?", this._deleteCourse)
             } else {
               this.setState({showModal: true})
-            } 
+            }
           }
         }
         text='Delete Course'
@@ -163,7 +164,7 @@ class ViewCourseScreen extends React.Component {
    * Display course sessions.
    */
   _renderSessions() {
-    if(this.props.course.sessions == []) { 
+    if(this.props.course.sessions == []) {
       return [];
     }
     return this.props.course.sessions.map((session, index) => {
@@ -233,7 +234,7 @@ class ViewCourseScreen extends React.Component {
                 text="View Past Attendance"
                 secondaryButtonLarge
               />
-            </View> 
+            </View>
             <View style={[commonStyles.divider, {marginTop: 16, marginBottom: 16}]}/>
 
 
@@ -248,7 +249,8 @@ class ViewCourseScreen extends React.Component {
                         if(this.props.online) {
                           navigate('SearchStudent',
                                   { refreshStudents: this._fetchStudents,
-                                    course_id: this.props.course.id, });
+                                    course_id: this.props.course.id,
+                                    navbarColor: this.state.navbarColor, });
                         } else {
                           this.setState({showModal: true})
                         }
@@ -288,7 +290,7 @@ const mapStateToProps = (state, props) => {
   return {
     course: course,
     isLoading: state.config.isLoading,
-    online: !state.offline.online,
+    online: state.offline.online,
   };
 }
 

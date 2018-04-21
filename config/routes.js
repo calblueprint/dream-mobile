@@ -10,7 +10,6 @@ import CoursesScreen from '../screens/courses/CoursesScreen';
 import TeacherProfileScreen from '../screens/teachers/TeacherProfileScreen';
 import TeacherProfileEditScreen from '../screens/teachers/TeacherProfileEditScreen';
 import EditCourseScreen from '../screens/courses/EditCourseScreen';
-import CreateStudentScreen from '../screens/students/CreateStudentScreen';
 import StudentProfileScreen from '../screens/students/StudentProfileScreen';
 import SearchStudentScreen from '../screens/students/SearchStudentScreen';
 import SearchStudentResultScreen from '../screens/students/SearchStudentResultScreen';
@@ -19,6 +18,9 @@ import AttendanceScreen from '../screens/attendances/AttendanceScreen';
 import RecentAttendancesScreen from '../screens/attendances/RecentAttendancesScreen';
 import PastAttendancesScreen from '../screens/attendances/PastAttendancesScreen';
 import AttendanceSummaryScreen from '../screens/attendances/AttendanceSummaryScreen';
+import StudentPersonalDetailsScreen from '../screens/students/StudentPersonalDetailsScreen';
+import StudentExtraInfoScreen from '../screens/students/StudentExtraInfoScreen';
+import StudentContactInfoScreen from '../screens/students/StudentContactInfoScreen';
 import { FontAwesome } from '@expo/vector-icons';
 import colors from '../styles/colors';
 
@@ -82,12 +84,6 @@ export const HomeStack = StackNavigator({
       headerTitle: 'Edit Course',
     },
   },
-  CreateStudent : {
-    screen: CreateStudentScreen,
-    navigationOptions: {
-      headerTitle: 'Create Student',
-    },
-  },
   StudentProfile : {
     screen: StudentProfileScreen,
     navigationOptions: {
@@ -137,6 +133,24 @@ export const HomeStack = StackNavigator({
       headerTitle: 'Student Profile Preview',
     },
   },
+  StudentPersonalDetails : {
+    screen: StudentPersonalDetailsScreen,
+    navigationOptions: {
+      headerTitle: 'Personal Details',
+    },
+  },
+  StudentContactInfo : {
+    screen: StudentContactInfoScreen,
+    navigationOptions: {
+      headerTitle: 'Contact Information',
+    },
+  },
+  StudentExtraInfo : {
+    screen: StudentExtraInfoScreen,
+    navigationOptions: {
+      headerTitle: 'Extra Information',
+    },
+  }
 });
 
 

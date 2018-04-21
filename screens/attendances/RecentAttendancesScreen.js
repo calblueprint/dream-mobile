@@ -126,7 +126,7 @@ const mapStateToProps = (state, props) => {
   lastKeys.forEach((key) => {latestAttendances[key] = attendances[key]});
   return {
     attendances: latestAttendances,
-    online: !state.offline.online,
+    online: state.offline.online,
   };
 }
 
