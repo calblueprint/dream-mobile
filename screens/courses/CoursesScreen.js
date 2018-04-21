@@ -41,8 +41,8 @@ class CoursesScreen extends React.Component {
     //TODO: (Aivant) Fix Helen's comment about how we shouldn't clean out current local changes
     //TODO: (Aivant) ensure that a user can't update another teacher's attendances
     // This prioritizes local changes over on-server changes but it makes the code very clean
-    this.props.fetchCourses(this.props.teacher).then((result) => {
-      this.props.syncLocalChanges(this.props.localAttendances);
+    this.props.syncLocalChanges(this.props.localAttendances).then((result) => {
+      this.props.fetchCourses(this.props.teacher);
     });
 
     const _createCourse = () => {
@@ -55,9 +55,12 @@ class CoursesScreen extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     if(!this.props.online && nextProps.online) {
+      // When we get back online try to sync local changes.
       console.log("Online Status switching from offline to online");
+      this.props.syncLocalChanges(this.props.localAttendances);
     } else if (this.props.online && !nextProps.online) {
       console.log("Online status switching from online to offline");
+      //TODO: Show some sort of notifications
     }
   }
 
