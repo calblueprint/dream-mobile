@@ -22,6 +22,7 @@ class StudentProfilePreviewScreen extends React.Component {
       isLoading : true,
       studentId: this.props.navigation.state.params.studentId,
       course_id: this.props.navigation.state.params.course_id,
+      navbarColor: this.props.navigation.state.params.navbarColor,
       student: { }
     }
   }
@@ -30,7 +31,10 @@ class StudentProfilePreviewScreen extends React.Component {
   _handleEnrollStudent() {
     const successFunc = (responseData) => {
       this.props.navigation.state.params.refreshStudents();
-      this.props.navigation.navigate('ViewCourse', { course_id: this.state.course_id });
+      this.props.navigation.navigate('ViewCourse', { 
+        course_id: this.state.course_id, 
+        navbarColor: this.state.navbarColor,
+      });
     }
 
     const p = {

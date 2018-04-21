@@ -14,6 +14,7 @@ class StudentPersonalDetailsScreen extends React.Component {
     this.state = {
       course_id: this.props.navigation.state.params.course_id,
       newStudent: this.props.navigation.state.params.newStudent,
+      navbarColor: this.props.navigation.state.params.navbarColor,
     }
   }
 
@@ -24,6 +25,7 @@ class StudentPersonalDetailsScreen extends React.Component {
         refreshStudents: this.props.navigation.state.params.refreshStudents,
         studentId: studentId,
         courseId: this.state.course_id,
+        navbarColor: this.state.navbarColor,
       });
     }
     putRequest(APIRoutes.getStudentPath(studentId), 
@@ -33,6 +35,7 @@ class StudentPersonalDetailsScreen extends React.Component {
   _handleCreateStudent(params) {
     this.props.navigation.navigate('StudentContactInfo', {
       course_id: this.state.course_id,
+      navbarColor: this.state.navbarColor,
       newStudent: this.state.newStudent,
       savedFields: params,
       refreshStudents: this.props.navigation.state.params.refreshStudents,

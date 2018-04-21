@@ -53,21 +53,26 @@ class ViewCourseScreen extends React.Component {
       students: [],
       navbarColor: this.props.navigation.state.params.navbarColor
     }
+    console.log(this.state.navbarColor);
   }
 
   componentDidMount() {
     this._fetchCourse();
 
-    const _enrollStudent = () => {
-       this.props.navigation.navigate('StudentPersonalDetails',
-        { refreshStudents: this._fetchStudents, course_id: this.state.course_id, newStudent: true })
-     }
+    // const _enrollStudent = () => {
+    //    this.props.navigation.navigate('StudentPersonalDetails',
+    //     { refreshStudents: this._fetchStudents, 
+    //       course_id: this.state.course_id, 
+    //       navbarColor: this.state.navbarColor, 
+    //       newStudent: true })
+    //  }
 
      const _editCourse = () => {
         this.props.navigation.navigate('EditCourse', {
           refreshCourses: this._fetchCourse,
           newCourse: false,
           course_id: this.state.course_id,
+          navbarColor: this.state.navbarColor,
           is_active: this.state.course.is_active,
           title: this.state.course.title,
           teacher1: this.state.course.teacher_id1,
@@ -77,7 +82,8 @@ class ViewCourseScreen extends React.Component {
           sessions: this.state.sessions,
         })}
 
-    this.props.navigation.setParams({ navbarColor: this.state.navbarColor, handleEditCourse: _editCourse });
+    this.props.navigation.setParams({ navbarColor: this.state.navbarColor, 
+      handleEditCourse: _editCourse });
   }
 
   /*
@@ -129,6 +135,7 @@ class ViewCourseScreen extends React.Component {
       refreshStudents: this._fetchStudents(),
       studentId: id,
       courseId: this.state.course_id,
+      navbarColor: this.state.navbarColor,
     });
   }
 
@@ -272,7 +279,9 @@ class ViewCourseScreen extends React.Component {
                   <StyledButton
                     onPress={() => this.props.navigation.navigate('SearchStudent',
                     { refreshStudents: this._fetchStudents,
-                      course_id: this.state.course_id, })}
+                      course_id: this.state.course_id,
+                      navbarColor: this.state.navbarColor,
+                       })}
                     text="+ Enroll Student"
                     enrollSmall
                   />

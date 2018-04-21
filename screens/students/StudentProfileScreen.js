@@ -23,7 +23,10 @@ class StudentProfileScreen extends React.Component {
       isLoading : true,
       studentId: this.props.navigation.state.params.studentId,
       courseId: this.props.navigation.state.params.courseId,
+      navbarColor: this.props.navigation.state.params.navbarColor
     }
+    console.log('student profile screen');
+    console.log(this.state.navbarColor);
   }
 
   componentDidMount() {
@@ -47,7 +50,8 @@ class StudentProfileScreen extends React.Component {
     const successFunc = (responseData) => {
       // this.props.navigation.state.params.refreshStudents();
       this.props.navigation.navigate('ViewCourse', {
-        course_id: this.state.courseId
+        course_id: this.state.courseId,
+        navbarColor: this.state.navbarColor
       });
     }
     deleteRequest(APIRoutes.getCoursesStudentsPath(), successFunc, standardError, params=params);
