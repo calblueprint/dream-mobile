@@ -101,6 +101,11 @@ export const HomeStack = StackNavigator({
     screen: AttendanceScreen,
     navigationOptions: {
       headerTitle: 'Attendance',
+      headerStyle: {
+        backgroundColor: '#f5f5f6',
+        borderBottomColor: 'transparent',
+      },
+      headerTintColor: colors.textDark,
     },
   },
   AttendanceSummary: {
@@ -108,6 +113,11 @@ export const HomeStack = StackNavigator({
     navigationOptions: ({navigation}) => ({
       headerTitle: 'Attendance Summary',
       headerRight: (<Button title='Edit' onPress={() => { navigation.goBack() }}/>),
+      headerStyle: {
+        backgroundColor: '#f5f5f6',
+        borderBottomColor: 'transparent',
+      },
+      headerTintColor: colors.textDark,
     }),
   },
   RecentAttendances: {
