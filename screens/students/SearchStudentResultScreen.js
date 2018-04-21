@@ -54,15 +54,15 @@ class SearchStudentResultScreen extends React.Component {
 
     if (students.length === 0) {
       return (
-        <View style={{
-          justifyContent: 'center',
-          alignItems: 'center'
-        }}>
-          <Text style={[textStyles.titleLarge, {
-            marginTop: 64,
+        <View style={viewStyles.noResults}>
+          <Image
+          style={viewStyles.img}
+          source={require('../../img/no_search.png')}/>
+          <Text style={[textStyles.titleMedium, {
+            marginTop: 16,
             textAlign: 'center'
           }]}>
-            No Search Results Found. Please Go Back.
+            No Search Results Found
           </Text>
         </View>
       );
@@ -102,6 +102,15 @@ class SearchStudentResultScreen extends React.Component {
 const viewStyles = StyleSheet.create({
   resultsText: {
     color: colors.textDark_70, fontSize: 16, marginBottom: 16
+  },
+  noResults: {
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  img: {
+    marginTop: 24,
+    width: 160,
+    height: 160
   }
 })
 
