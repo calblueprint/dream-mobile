@@ -8,36 +8,16 @@ import { APIRoutes } from '../../config/routes';
 import { formViewStyles } from '../../styles/formViewStyles';
 import { standardError, confirmDelete } from '../../lib/alerts';
 import StyledButton from '../../components/Button/Button';
+import { connect } from 'react-redux';
+
 
 class StudentProfileScreen extends React.Component {
 
   constructor(props) {
     super(props);
     this._renderStudent = this._renderStudent.bind(this);
-    this._fetchStudent = this._fetchStudent.bind(this);
     this._handleUpdateStudent = this._handleUpdateStudent.bind(this);
     this._deleteEnrollment = this._deleteEnrollment.bind(this);
-
-    this.state = {
-      student : { },
-      isLoading : true,
-      studentId: this.props.navigation.state.params.studentId,
-      courseId: this.props.navigation.state.params.courseId,
-      navbarColor: this.props.navigation.state.params.navbarColor
-    }
-  }
-
-  componentDidMount() {
-    this._fetchStudent(this.state.studentId);
-  }
-
-  _fetchStudent(studentId) {
-    const { navigate } = this.props.navigation;
-    const successFunc = (responseData) => {
-      this.setState({ student: responseData, isLoading: false });
-    }
-
-    getRequest(APIRoutes.getStudentPath(studentId), successFunc, standardError);
   }
 
   calculatePercentages(attendance_stats) {
@@ -50,14 +30,14 @@ class StudentProfileScreen extends React.Component {
 
   _deleteEnrollment() {
     var params = {
-        student_id: this.state.studentId,
-        course_id: this.state.courseId
+        student_id: this.props.student.id,
+        course_id: this.props.courseId
     }
     const successFunc = (responseData) => {
       // this.props.navigation.state.params.refreshStudents();
       this.props.navigation.navigate('ViewCourse', {
-        course_id: this.state.courseId,
-        navbarColor: this.state.navbarColor
+        course_id: this.props.courseId,
+        navbarColor: this.props.navbarColor
       });
     }
     deleteRequest(APIRoutes.getCoursesStudentsPath(), successFunc, standardError, params=params);
@@ -68,18 +48,18 @@ class StudentProfileScreen extends React.Component {
       // this.props.navigation.state.params.refreshStudent();
       this.props.navigation.navigate('Courses');
     }
-    putRequest(APIRoutes.getStudentPath(this.state.studentId), successFunc, standardError, params=params);
+    putRequest(APIRoutes.getStudentPath(this.props.student.id), successFunc, standardError, params=params);
   }
 
   _renderStudent() {
     const { navigate } = this.props.navigation;
-    const attendanceStats = this.calculatePercentages(this.state.student.attendance_stats)
+    const attendanceStats = this.calculatePercentages(this.props.student.attendance_stats)
     return(
       <View>
         <View style={formViewStyles.div_1}>
           <View style={formViewStyles.div_2}>
             <Text style={textStyles.titleLarge}>
-            {this.state.student.first_name} {this.state.student.last_name} - {this.state.student.dream_id}
+            {this.props.student.first_name} {this.props.student.last_name} - {this.props.student.dream_id}
             </Text>
           </View>
           <Text style={{fontWeight: 'bold'}}> Attendance Stats </Text>
@@ -101,10 +81,9 @@ class StudentProfileScreen extends React.Component {
                 <View style={{flex: 0.3}}>
                     <StyledButton
                       onPress={() => navigate('StudentPersonalDetails', {
-                        refreshStudent: this._fetchStudent(this.state.studentId),
                         newStudent: false,
-                        student: this.state.student,
-                        navbarColor: this.state.navbarColor
+                        student: this.props.student,
+                        navbarColor: this.props.navbarColor
                       })}
                       text='Edit'
                       noPaddingPrimaryButtonSmall
@@ -119,7 +98,7 @@ class StudentProfileScreen extends React.Component {
             Nickname
             </Text>
             <Text style={textStyles.body}>
-            {this.state.student.nickname}
+            {this.props.student.nickname}
             </Text>
           </View>
 
@@ -128,7 +107,7 @@ class StudentProfileScreen extends React.Component {
             Birthday
             </Text>
             <Text style={textStyles.body}>
-            {this.state.student.birthday}
+            {this.props.student.birthday}
             </Text>
           </View>
 
@@ -137,7 +116,7 @@ class StudentProfileScreen extends React.Component {
             Active Participant?
             </Text>
             <Text style={textStyles.body}>
-            {this.state.student.is_active}
+            {this.props.student.is_active}
             </Text>
           </View>
 
@@ -146,7 +125,7 @@ class StudentProfileScreen extends React.Component {
             Sex
             </Text>
             <Text style={textStyles.body}>
-            {this.state.student.sex}
+            {this.props.student.sex}
             </Text>
           </View>
 
@@ -158,10 +137,9 @@ class StudentProfileScreen extends React.Component {
                 <View style={{flex: 0.3}}>
                     <StyledButton
                       onPress={() => navigate('StudentContactInfo', {
-                        refreshStudent: this._fetchStudent(this.state.studentId),
                         newStudent: false,
-                        student: this.state.student,
-                        navbarColor: this.state.navbarColor})}
+                        student: this.props.student,
+                        navbarColor: this.props.navbarColor})}
                       text='Edit'
                       noPaddingPrimaryButtonSmall
                     />
@@ -174,7 +152,7 @@ class StudentProfileScreen extends React.Component {
             Address
             </Text>
             <Text style={textStyles.body}>
-            {this.state.student.address}
+            {this.props.student.address}
             </Text>
           </View>
 
@@ -183,8 +161,8 @@ class StudentProfileScreen extends React.Component {
             Phone Numbers
             </Text>
             <Text style={textStyles.body}>
-            {this.state.student.phone} {"\n"}
-            {this.state.student.phone_2}
+            {this.props.student.phone} {"\n"}
+            {this.props.student.phone_2}
             </Text>
           </View>
 
@@ -193,7 +171,7 @@ class StudentProfileScreen extends React.Component {
             Name on Facebook
             </Text>
             <Text style={textStyles.body}>
-            {this.state.student.facebook_name}
+            {this.props.student.facebook_name}
             </Text>
           </View>
 
@@ -202,7 +180,7 @@ class StudentProfileScreen extends React.Component {
             Email Address
             </Text>
             <Text style={textStyles.body}>
-            {this.state.student.email}
+            {this.props.student.email}
             </Text>
           </View>
 
@@ -211,7 +189,7 @@ class StudentProfileScreen extends React.Component {
             Primary Contact Name
             </Text>
             <Text style={textStyles.body}>
-            {this.state.student.primary_contact}
+            {this.props.student.primary_contact}
             </Text>
           </View>
 
@@ -220,7 +198,7 @@ class StudentProfileScreen extends React.Component {
             Primary Contact Phone Number
             </Text>
             <Text style={textStyles.body}>
-            {this.state.student.primary_contact_phone}
+            {this.props.student.primary_contact_phone}
             </Text>
           </View>
 
@@ -232,10 +210,9 @@ class StudentProfileScreen extends React.Component {
               <View style={{flex: 0.3}}>
                   <StyledButton
                     onPress={() => navigate('StudentExtraInfo', {
-                      refreshStudent: this._fetchStudent(this.state.studentId),
                       newStudent: false,
-                      student: this.state.student,
-                      navbarColor: this.state.navbarColor})}
+                      student: this.props.student,
+                      navbarColor: this.props.navbarColor})}
                     text='Edit'
                     noPaddingPrimaryButtonSmall
                   />
@@ -248,7 +225,7 @@ class StudentProfileScreen extends React.Component {
             Notes
             </Text>
             <Text style={textStyles.body}>
-            {this.state.student.notes}
+            {this.props.student.notes}
             </Text>
           </View>
 
@@ -257,7 +234,7 @@ class StudentProfileScreen extends React.Component {
             Level (Montessori Only)
             </Text>
             <Text style={textStyles.body}>
-            {this.state.student.level}
+            {this.props.student.level}
             </Text>
           </View>
 
@@ -266,7 +243,7 @@ class StudentProfileScreen extends React.Component {
             Primary Language
             </Text>
             <Text style={textStyles.body}>
-            {this.state.student.primary_language}
+            {this.props.student.primary_language}
             </Text>
           </View>
 
@@ -275,7 +252,7 @@ class StudentProfileScreen extends React.Component {
             Document Type
             </Text>
             <Text style={textStyles.body}>
-            {this.state.student.document_type}
+            {this.props.student.document_type}
             </Text>
           </View>
 
@@ -284,7 +261,7 @@ class StudentProfileScreen extends React.Component {
             Participated in DREAM before?
             </Text>
             <Text style={textStyles.body}>
-            {this.state.student.past_dream_participant}
+            {this.props.student.past_dream_participant}
             </Text>
           </View>
 
@@ -299,17 +276,7 @@ class StudentProfileScreen extends React.Component {
 
   render() {
     const { navigate } = this.props.navigation;
-    let students;
-    if (this.state.isLoading) {
-      student = (
-        <Image
-          style={commonStyles.icon}
-          source={require('../../icons/spinner.gif')}
-        />
-      )
-    } else {
-      student = this._renderStudent()
-    }
+    student = this._renderStudent()
     return (
       <ScrollView style={formViewStyles.base}>
         { student }
@@ -318,4 +285,20 @@ class StudentProfileScreen extends React.Component {
   }
 }
 
-export default StudentProfileScreen;
+const mapStateToProps = (state, props) => {
+  // Get course and date associated with this attendance screen
+  const course = state.courses.find((course) => course.id === props.navigation.state.params.courseId);
+  const student = course.students.find((student) => student.id === props.navigation.state.params.studentId);
+  return {
+    ...props.navigation.state.params,
+    student: student,
+  };
+}
+
+// const mapDispatchToProps = (dispatch) => {
+//   return {
+//     syncAttendances: (attendances, curAttendances, courseId, date, openModal) => dispatch(syncAttendances(attendances, curAttendances, courseId, date, openModal)),
+//   }
+// }
+
+export default connect(mapStateToProps, null)(StudentProfileScreen);
