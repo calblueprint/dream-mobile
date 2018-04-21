@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, Button, ScrollView, Text, View, TouchableOpacity } from 'react-native';
+import { Image, Button, ScrollView, Text, View, TouchableOpacity, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import actions from '../../actions';
 import { commonStyles } from '../../styles/styles';
@@ -51,6 +51,7 @@ class SearchStudentResultScreen extends React.Component {
       )
     );
 
+
     if (students.length === 0) {
       return (
         <View style={{
@@ -68,6 +69,7 @@ class SearchStudentResultScreen extends React.Component {
     } else {
       return (
         <View style={{marginBottom: 24}}>
+          <Text style={viewStyles.resultsText}>{`Displaying ${students.length} results`}</Text>
           { students }
         </View>
       );
@@ -88,11 +90,19 @@ class SearchStudentResultScreen extends React.Component {
     }
 
     return (
-      <ScrollView style={{backgroundColor: '#f5f5f6'}}>
-        { results }
+      <ScrollView style={{backgroundColor: '#fff'}}>
+        <View style={{margin: 24}}>
+          { results }
+        </View>
       </ScrollView>
     );
   }
 }
+
+const viewStyles = StyleSheet.create({
+  resultsText: {
+    color: colors.textDark_70, fontSize: 16, marginBottom: 16
+  }
+})
 
 export default SearchStudentResultScreen;

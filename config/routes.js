@@ -21,12 +21,13 @@ import AttendanceSummaryScreen from '../screens/attendances/AttendanceSummaryScr
 import StudentPersonalDetailsScreen from '../screens/students/StudentPersonalDetailsScreen';
 import StudentExtraInfoScreen from '../screens/students/StudentExtraInfoScreen';
 import StudentContactInfoScreen from '../screens/students/StudentContactInfoScreen';
-import { FontAwesome } from '@expo/vector-icons';
+import { FontAwesome, MaterialCommunityIcons } from '@expo/vector-icons';
 import colors from '../styles/colors';
 
 /**
  * HomeStack is the main navigation stack starting from the HomeScreen
  */
+
 export const HomeStack = StackNavigator({
   Home: {
     screen: HomeScreen,
@@ -60,16 +61,22 @@ export const HomeStack = StackNavigator({
       headerTitle: 'Courses',
       headerLeft: (
           <TouchableOpacity onPress={() => { navigation.navigate('TeacherProfile') }}>
-            <View style={{marginLeft: 8}}><FontAwesome name="user-circle-o" size={32} color={colors.iconDark} /></View>
+            <View style={{marginLeft: 8}}><FontAwesome 
+            name="user-circle-o" size={32} color={colors.iconDark} /></View>
           </TouchableOpacity>
-        )
+        ),
+      headerStyle: {},
+      headerTintColor: '',
     }),
   },
   TeacherProfile : {
     screen: TeacherProfileScreen,
     navigationOptions: ({navigation}) => ({
       headerTitle: 'Profile',
-      headerRight: (<Button title='Edit' onPress={() => { navigation.navigate('EditTeacherProfile') }}/>),
+      headerRight: (<TouchableOpacity title='Edit' 
+        onPress={() => { navigation.navigate('EditTeacherProfile') }}>
+          <View style={{marginRight: 8}}><MaterialCommunityIcons name="pencil" size={30} color={'#fff'} /></View>
+        </TouchableOpacity>),
     }),
   },
   EditTeacherProfile : {
@@ -123,7 +130,7 @@ export const HomeStack = StackNavigator({
           backgroundColor: colors.primaryYellow,
           borderBottomColor: 'transparent',
         }, 
-      headerTintColor: '#fff', 
+      headerTintColor: colors.textLight, 
     }),
   },
   SearchStudentResults: {
@@ -156,7 +163,18 @@ export const HomeStack = StackNavigator({
       headerTitle: 'Extra Information',
     },
   }
-});
+},
+// Default navigation bar styling
+{
+  navigationOptions: {
+    headerStyle: {
+        backgroundColor: colors.primaryYellow,
+        borderBottomColor: 'transparent',
+      }, 
+    headerTintColor: colors.textLight, 
+  }
+}
+);
 
 
 /**
