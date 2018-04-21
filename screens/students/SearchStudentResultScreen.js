@@ -54,16 +54,27 @@ class SearchStudentResultScreen extends React.Component {
 
     if (students.length === 0) {
       return (
-        <View style={viewStyles.noResults}>
-          <Image
-          style={viewStyles.img}
-          source={require('../../img/no_search.png')}/>
-          <Text style={[textStyles.titleMedium, {
-            marginTop: 16,
-            textAlign: 'center'
-          }]}>
-            No Search Results Found
-          </Text>
+        <View>
+          <View style={viewStyles.noResults}>
+            <Image
+            style={viewStyles.img}
+            source={require('../../img/no_search.png')}/>
+            <Text style={[textStyles.titleMedium, {
+              marginTop: 16,
+              textAlign: 'center'
+            }]}>
+              No Search Results Found
+            </Text>
+          </View>
+          <StyledButton
+            onPress={() => this.props.navigation.navigate('StudentPersonalDetails',
+              { refreshStudents: this.props.navigation.state.params.refreshStudents,
+                course_id: this.state.course_id,
+                navbarColor: this.state.navbarColor,
+                newStudent: true })}
+            text="+ Create Student"
+            secondaryButtonLarge
+          />
         </View>
       );
     } else {
@@ -105,7 +116,8 @@ const viewStyles = StyleSheet.create({
   },
   noResults: {
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    marginBottom: 24,
   },
   img: {
     marginTop: 24,
