@@ -263,7 +263,7 @@ class StudentProfileScreen extends React.Component {
 
         <Button
           onPress={() => confirmDelete("Are you sure you want to remove this student from the course?", this._deleteEnrollment)}
-          title='Delete'
+          title='Unenroll Student'
         />
       </View>
     </View>
