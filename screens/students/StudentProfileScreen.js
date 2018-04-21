@@ -3,10 +3,11 @@ import { Image, Button, Text, View, ScrollView } from 'react-native';
 import { textStyles } from '../../styles/textStyles';
 import { commonStyles } from '../../styles/styles';
 import { colors } from '../../styles/colors';
-import { getRequest, deleteRequest } from '../../lib/requests';
+import { getRequest, deleteRequest, putRequest } from '../../lib/requests';
 import { APIRoutes } from '../../config/routes';
 import { formViewStyles } from '../../styles/formViewStyles';
 import { standardError, confirmDelete } from '../../lib/alerts';
+import StyledButton from '../../components/Button/Button';
 
 class StudentProfileScreen extends React.Component {
 
@@ -14,6 +15,7 @@ class StudentProfileScreen extends React.Component {
     super(props);
     this._renderStudent = this._renderStudent.bind(this);
     this._fetchStudent = this._fetchStudent.bind(this);
+    this._handleUpdateStudent = this._handleUpdateStudent.bind(this);
     this._deleteEnrollment = this._deleteEnrollment.bind(this);
 
     this.state = {
@@ -21,7 +23,10 @@ class StudentProfileScreen extends React.Component {
       isLoading : true,
       studentId: this.props.navigation.state.params.studentId,
       courseId: this.props.navigation.state.params.courseId,
+      navbarColor: this.props.navigation.state.params.navbarColor
     }
+    console.log('student profile screen');
+    console.log(this.state.navbarColor);
   }
 
   componentDidMount() {
@@ -45,135 +50,223 @@ class StudentProfileScreen extends React.Component {
     const successFunc = (responseData) => {
       // this.props.navigation.state.params.refreshStudents();
       this.props.navigation.navigate('ViewCourse', {
-        course_id: this.state.courseId
+        course_id: this.state.courseId,
+        navbarColor: this.state.navbarColor
       });
     }
     deleteRequest(APIRoutes.getCoursesStudentsPath(), successFunc, standardError, params=params);
   }
 
+  _handleUpdateStudent(params) {
+    const successFunc = (responseData) => {
+      // this.props.navigation.state.params.refreshStudent();
+      this.props.navigation.navigate('Courses');
+    }
+    putRequest(APIRoutes.getStudentPath(this.state.studentId), successFunc, standardError, params=params);
+  }
+
   _renderStudent() {
     const { navigate } = this.props.navigation;
     return(
-       <View>
-        <Text style={textStyles.titleLarge}>
-        {this.state.student.first_name} {this.state.student.last_name} - {this.state.student.dream_id}
-        </Text>
+      <View>
+        <View style={formViewStyles.div_1}>
+          <View style={formViewStyles.div_2}>
+            <Text style={textStyles.titleLarge}>
+            {this.state.student.first_name} {this.state.student.last_name} - {this.state.student.dream_id}
+            </Text>
+          </View>
 
-        <Text style={{fontWeight: 'bold'}}> Personal Information </Text>
+          <View style={formViewStyles.div_2}>
+            <View style={{flex: 1, flexDirection: 'row', marginTop: 10}}>
+                <View style={{flex: 0.7}}>
+                    <Text style={textStyles.titleMedium}> Personal Information </Text>
+                </View>
+                <View style={{flex: 0.3}}>
+                    <StyledButton
+                      onPress={() => navigate('StudentPersonalDetails', {refreshStudent: this._fetchStudent(this.state.studentId), 
+                        newStudent: false, student: this.state.student})}
+                      text='Edit'
+                      noPaddingPrimaryButtonSmall
+                    />
+                </View>
+            </View>
+          </View>
+   
 
-        <Text style={textStyles.titleSmall}>
-        Nickname
-        </Text>
-        <Text style={textStyles.body}>
-        {this.state.student.nickname}
-        </Text>
+          <View style={formViewStyles.div_2}>
+            <Text style={textStyles.titleSmall}>
+            Nickname
+            </Text>
+            <Text style={textStyles.body}>
+            {this.state.student.nickname}
+            </Text>
+          </View>
 
-        <Text style={textStyles.titleSmall}>
-        Birthday
-        </Text>
-        <Text style={textStyles.body}>
-        {this.state.student.birthday}
-        </Text>
+          <View style={formViewStyles.div_2}>
+            <Text style={textStyles.titleSmall}>
+            Birthday
+            </Text>
+            <Text style={textStyles.body}>
+            {this.state.student.birthday}
+            </Text>
+          </View>
 
-        <Text style={textStyles.titleSmall}>
-        Sex
-        </Text>
-        <Text style={textStyles.body}>
-        {this.state.student.sex}
-        </Text>
+          <View style={formViewStyles.div_2}>
+            <Text style={textStyles.titleSmall}>
+            Active Participant?
+            </Text>
+            <Text style={textStyles.body}>
+            {this.state.student.is_active}
+            </Text>
+          </View>
 
-        <Text style={{fontWeight: 'bold'}}> Contact Information </Text>
+          <View style={formViewStyles.div_2}>
+            <Text style={textStyles.titleSmall}>
+            Sex
+            </Text>
+            <Text style={textStyles.body}>
+            {this.state.student.sex}
+            </Text>
+          </View>
 
-        <Text style={textStyles.titleSmall}>
-        Address
-        </Text>
-        <Text style={textStyles.body}>
-        {this.state.student.address}
-        </Text>
+          <View style={formViewStyles.div_2}>
+            <View style={{flex: 1, flexDirection: 'row', marginTop: 10}}>
+                <View style={{flex: 0.7}}>
+                    <Text style={textStyles.titleMedium}> Contact Information </Text>
+                </View>
+                <View style={{flex: 0.3}}>
+                    <StyledButton
+                      onPress={() => navigate('StudentContactInfo', {refreshStudent: this._fetchStudent(this.state.studentId), 
+                        newStudent: false, student: this.state.student})}
+                      text='Edit'
+                      noPaddingPrimaryButtonSmall
+                    />
+                </View>
+            </View>
+          </View>
 
-        <Text style={textStyles.titleSmall}>
-        Phone Numbers
-        </Text>
-        <Text style={textStyles.body}>
-        {this.state.student.phone} {"\n"}
-        {this.state.student.phone_2}
-        </Text>
+          <View style={formViewStyles.div_2}>
+            <Text style={textStyles.titleSmall}>
+            Address
+            </Text>
+            <Text style={textStyles.body}>
+            {this.state.student.address}
+            </Text>
+          </View>
 
-        <Text style={textStyles.titleSmall}>
-        Name on Facebook
-        </Text>
-        <Text style={textStyles.body}>
-        {this.state.student.facebook_name}
-        </Text>
+          <View style={formViewStyles.div_2}> 
+            <Text style={textStyles.titleSmall}>
+            Phone Numbers
+            </Text>
+            <Text style={textStyles.body}>
+            {this.state.student.phone} {"\n"}
+            {this.state.student.phone_2}
+            </Text>
+          </View>
 
-        <Text style={textStyles.titleSmall}>
-        Email Address
-        </Text>
-        <Text style={textStyles.body}>
-        {this.state.student.email}
-        </Text>
+          <View style={formViewStyles.div_2}>
+            <Text style={textStyles.titleSmall}>
+            Name on Facebook
+            </Text>
+            <Text style={textStyles.body}>
+            {this.state.student.facebook_name}
+            </Text>
+          </View>
 
-        <Text style={textStyles.titleSmall}>
-        Primary Contact Name
-        </Text>
-        <Text style={textStyles.body}>
-        {this.state.student.primary_contact}
-        </Text>
+          <View style={formViewStyles.div_2}>
+            <Text style={textStyles.titleSmall}>
+            Email Address
+            </Text>
+            <Text style={textStyles.body}>
+            {this.state.student.email}
+            </Text>
+          </View>
 
-        <Text style={textStyles.titleSmall}>
-        Primary Contact Phone Number
-        </Text>
-        <Text style={textStyles.body}>
-        {this.state.student.primary_contact_phone}
-        </Text>
+          <View style={formViewStyles.div_2}>
+            <Text style={textStyles.titleSmall}>
+            Primary Contact Name
+            </Text>
+            <Text style={textStyles.body}>
+            {this.state.student.primary_contact}
+            </Text>
+          </View>
+        
+          <View style={formViewStyles.div_2}>
+            <Text style={textStyles.titleSmall}>
+            Primary Contact Phone Number
+            </Text>
+            <Text style={textStyles.body}>
+            {this.state.student.primary_contact_phone}
+            </Text>
+          </View>
 
-        <Text style={{fontWeight: 'bold'}}> Extra Information </Text>
+          <View style={formViewStyles.div_2}>
+            <View style={{flex: 1, flexDirection: 'row', marginTop: 10}}>
+              <View style={{flex: 0.7}}>
+                  <Text style={textStyles.titleMedium}> Extra Information </Text>
+              </View>
+              <View style={{flex: 0.3}}>
+                  <StyledButton
+                    onPress={() => navigate('StudentExtraInfo', {refreshStudent: this._fetchStudent(this.state.studentId), 
+                      newStudent: false, student: this.state.student})}
+                    text='Edit'
+                    noPaddingPrimaryButtonSmall
+                  />
+              </View>
+            </View>
+          </View>
 
-        <Text style={textStyles.titleSmall}>
-        Notes
-        </Text>
-        <Text style={textStyles.body}>
-        {this.state.student.notes}
-        </Text>
+          <View style={formViewStyles.div_2}>
+            <Text style={textStyles.titleSmall}>
+            Notes
+            </Text>
+            <Text style={textStyles.body}>
+            {this.state.student.notes}
+            </Text>
+          </View>
 
-        <Text style={textStyles.titleSmall}>
-        Level (Montessori Only)
-        </Text>
-        <Text style={textStyles.body}>
-        {this.state.student.level}
-        </Text>
+          <View style={formViewStyles.div_2}>
+            <Text style={textStyles.titleSmall}>
+            Level (Montessori Only)
+            </Text>
+            <Text style={textStyles.body}>
+            {this.state.student.level}
+            </Text>
+          </View>
 
-        <Text style={textStyles.titleSmall}>
-        Primary Language 
-        </Text>
-        <Text style={textStyles.body}>
-        {this.state.student.primary_language}
-        </Text>
+          <View style={formViewStyles.div_2}>
+            <Text style={textStyles.titleSmall}>
+            Primary Language 
+            </Text>
+            <Text style={textStyles.body}>
+            {this.state.student.primary_language}
+            </Text>
+          </View>
 
-        <Text style={textStyles.titleSmall}>
-        Document Type
-        </Text>
-        <Text style={textStyles.body}>
-        {this.state.student.document_type}
-        </Text>
+          <View style={formViewStyles.div_2}>
+            <Text style={textStyles.titleSmall}>
+            Document Type
+            </Text>
+            <Text style={textStyles.body}>
+            {this.state.student.document_type}
+            </Text>
+          </View>
 
-        <Text style={textStyles.titleSmall}>
-        Participated in DREAM before?
-        </Text>
-        <Text style={textStyles.body}>
-        {this.state.student.past_dream_participant}
-        </Text>
-
-        <Button
-          onPress={() => navigate('CreateStudent', {refreshStudent: this._fetchStudent(this.state.studentId), newStudent: false, student: this.state.student})}
-          title='Edit'
-        />
+          <View style={formViewStyles.div_2}>
+            <Text style={textStyles.titleSmall}>
+            Participated in DREAM before?
+            </Text>
+            <Text style={textStyles.body}>
+            {this.state.student.past_dream_participant}
+            </Text>
+          </View>
 
         <Button
           onPress={() => confirmDelete("Are you sure you want to remove this student from the course?", this._deleteEnrollment)}
-          title='Delete'
+          title='Unenroll Student'
         />
       </View>
+    </View>
     );
   }
 
