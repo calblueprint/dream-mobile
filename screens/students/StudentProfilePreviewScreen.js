@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, Button, Text, View, ScrollView } from 'react-native';
+import { Image, Button, Text, View, ScrollView, StyleSheet} from 'react-native';
 import { textStyles } from '../../styles/textStyles';
 import { commonStyles } from '../../styles/styles';
 import { colors } from '../../styles/colors';
@@ -62,7 +62,7 @@ class StudentProfilePreviewScreen extends React.Component {
     const { navigate } = this.props.navigation;
     return(
       <View style={formStyles.background}>
-        <View style={formStyles.container}>
+        <View style={viewStyles.outer}>
           <Text style={textStyles.titleLarge}>
             {this.state.student.first_name} {this.state.student.last_name} - {this.state.student.dream_id}
           </Text>
@@ -110,15 +110,12 @@ class StudentProfilePreviewScreen extends React.Component {
           }]}>
             {this.state.student.phone_2}
           </Text>
-
-          <View style={{marginTop: 32}}>
-            <StyledButton
-              onPress={() => this._handleEnrollStudent()}
-              text='Enroll Student'
-              primaryButtonLarge>
-            </StyledButton>
-          </View>
         </View>
+        <StyledButton
+          onPress={() => this._handleEnrollStudent()}
+          text='Enroll Student'
+          primaryButtonLarge>
+        </StyledButton>
       </View>
     );
   }
@@ -143,5 +140,12 @@ class StudentProfilePreviewScreen extends React.Component {
     );
   }
 }
+
+const viewStyles = StyleSheet.create({
+  outer: {
+    margin: 24,
+    marginTop: 40,
+  },
+});
 
 export default StudentProfilePreviewScreen;
