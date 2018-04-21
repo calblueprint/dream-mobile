@@ -53,7 +53,6 @@ class ViewCourseScreen extends React.Component {
       students: [],
       navbarColor: this.props.navigation.state.params.navbarColor
     }
-    console.log(this.state.navbarColor);
   }
 
   componentDidMount() {

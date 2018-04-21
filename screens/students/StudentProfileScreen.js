@@ -25,8 +25,6 @@ class StudentProfileScreen extends React.Component {
       courseId: this.props.navigation.state.params.courseId,
       navbarColor: this.props.navigation.state.params.navbarColor
     }
-    console.log('student profile screen');
-    console.log(this.state.navbarColor);
   }
 
   componentDidMount() {
@@ -83,8 +81,12 @@ class StudentProfileScreen extends React.Component {
                 </View>
                 <View style={{flex: 0.3}}>
                     <StyledButton
-                      onPress={() => navigate('StudentPersonalDetails', {refreshStudent: this._fetchStudent(this.state.studentId), 
-                        newStudent: false, student: this.state.student})}
+                      onPress={() => navigate('StudentPersonalDetails', {
+                        refreshStudent: this._fetchStudent(this.state.studentId), 
+                        newStudent: false, 
+                        student: this.state.student, 
+                        navbarColor: this.state.navbarColor
+                      })}
                       text='Edit'
                       noPaddingPrimaryButtonSmall
                     />
@@ -136,8 +138,11 @@ class StudentProfileScreen extends React.Component {
                 </View>
                 <View style={{flex: 0.3}}>
                     <StyledButton
-                      onPress={() => navigate('StudentContactInfo', {refreshStudent: this._fetchStudent(this.state.studentId), 
-                        newStudent: false, student: this.state.student})}
+                      onPress={() => navigate('StudentContactInfo', {
+                        refreshStudent: this._fetchStudent(this.state.studentId), 
+                        newStudent: false, 
+                        student: this.state.student,
+                        navbarColor: this.state.navbarColor})}
                       text='Edit'
                       noPaddingPrimaryButtonSmall
                     />
@@ -207,8 +212,11 @@ class StudentProfileScreen extends React.Component {
               </View>
               <View style={{flex: 0.3}}>
                   <StyledButton
-                    onPress={() => navigate('StudentExtraInfo', {refreshStudent: this._fetchStudent(this.state.studentId), 
-                      newStudent: false, student: this.state.student})}
+                    onPress={() => navigate('StudentExtraInfo', {
+                      refreshStudent: this._fetchStudent(this.state.studentId), 
+                      newStudent: false, 
+                      student: this.state.student, 
+                      navbarColor: this.state.navbarColor})}
                     text='Edit'
                     noPaddingPrimaryButtonSmall
                   />
