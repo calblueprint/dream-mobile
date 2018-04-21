@@ -119,6 +119,11 @@ export const HomeStack = StackNavigator({
     screen: SearchStudentScreen,
     navigationOptions: ({navigation}) => ({
       headerTitle: 'Search Student',
+      headerStyle: {
+          backgroundColor: colors.primaryYellow,
+          borderBottomColor: 'transparent',
+        }, 
+      headerTintColor: '#fff', 
     }),
   },
   SearchStudentResults: {

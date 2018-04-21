@@ -1,5 +1,5 @@
 import React from 'react';
-import { View } from 'react-native';
+import { Image, Button, ScrollView, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { APIRoutes } from '../../config/routes';
 import { getRequest } from '../../lib/requests';
 import { standardError } from '../../lib/alerts';
@@ -38,21 +38,32 @@ class SearchStudentScreen extends React.Component {
   render() {
     return (
        <View style={formStyles.background}>
-         <View>
+         <View style={viewStyles.top}>
            <SearchStudentForm onSearchStudent={this._handleSearchStudent}/>
-           <StyledButton
-             onPress={() => this.props.navigation.navigate('StudentPersonalDetails',
-               { refreshStudents: this.props.navigation.state.params.refreshStudents,
-                 course_id: this.state.course_id,
-                 navbarColor: this.state.navbarColor,
-                 newStudent: true })}
-             text="+ Create Student"
-             primaryButtonLarge
-           />
+           <View style={viewStyles.buttonMargin}>
+             <StyledButton
+               onPress={() => this.props.navigation.navigate('StudentPersonalDetails',
+                 { refreshStudents: this.props.navigation.state.params.refreshStudents,
+                   course_id: this.state.course_id,
+                   navbarColor: this.state.navbarColor,
+                   newStudent: true })}
+               text="+ Create Student"
+               secondaryButtonLarge
+             />
+            </View>
          </View>
        </View>
     )
   }
 }
+
+const viewStyles = StyleSheet.create({
+  top: {
+    marginTop: 24,
+  },
+  buttonMargin: {
+    marginTop: 8,
+  }
+});
 
 export default SearchStudentScreen;
