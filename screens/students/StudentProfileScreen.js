@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, Button, Text, View, ScrollView, StyleSheet} from 'react-native';
+import { Image, Button, Text, View, ScrollView, StyleSheet } from 'react-native';
 import { textStyles } from '../../styles/textStyles';
 import { commonStyles } from '../../styles/styles';
 import colors from '../../styles/colors';
@@ -8,40 +8,49 @@ import { APIRoutes } from '../../config/routes';
 import { formViewStyles } from '../../styles/formViewStyles';
 import { standardError, confirmDelete } from '../../lib/alerts';
 import StyledButton from '../../components/Button/Button';
-import { connect } from 'react-redux';
-
 
 class StudentProfileScreen extends React.Component {
 
   constructor(props) {
     super(props);
     this._renderStudent = this._renderStudent.bind(this);
+    this._fetchStudent = this._fetchStudent.bind(this);
     this._handleUpdateStudent = this._handleUpdateStudent.bind(this);
     this._deleteEnrollment = this._deleteEnrollment.bind(this);
+
+    this.state = {
+      student : { },
+      isLoading : true,
+      studentId: this.props.navigation.state.params.studentId,
+      courseId: this.props.navigation.state.params.courseId,
+      navbarColor: this.props.navigation.state.params.navbarColor
+    }
   }
 
-  calculatePercentages(attendance_stats) {
-    const total = attendance_stats.num_present + attendance_stats.num_late + attendance_stats.num_absent;
-    // var present = (attendance_stats.num_present / total) * 100;
-    // var late = (attendance_stats.num_late / total) * 100;
-    // var absent = (attendance_stats.num_absent / total) * 100;
-    var present = `${attendance_stats.num_present} / ${total}`
-    var late = `${attendance_stats.num_late} / ${total}`
-    var absent = `${attendance_stats.num_absent} / ${total}`
-    // return {present: present.toFixed(1), late: late.toFixed(1), absent: absent.toFixed(1)};
-    return {present: present, late: late, absent: absent};
+  componentDidMount() {
+    this._fetchStudent(this.state.studentId);
+  }
+
+  _fetchStudent(studentId) {
+    const { navigate } = this.props.navigation;
+    const successFunc = (responseData) => {
+      this.setState({ student: responseData, isLoading: false });
+    }
+    console.log(this.state.student)
+
+    getRequest(APIRoutes.getStudentPath(studentId), successFunc, standardError);
   }
 
   _deleteEnrollment() {
     var params = {
-        student_id: this.props.student.id,
-        course_id: this.props.courseId
+        student_id: this.state.studentId,
+        course_id: this.state.courseId
     }
     const successFunc = (responseData) => {
-      this.props.navigation.state.params.refreshStudents();
+      // this.props.navigation.state.params.refreshStudents();
       this.props.navigation.navigate('ViewCourse', {
-        courseId: this.props.courseId,
-        navbarColor: this.props.navbarColor
+        course_id: this.state.courseId,
+        navbarColor: this.state.navbarColor
       });
     }
     deleteRequest(APIRoutes.getCoursesStudentsPath(), successFunc, standardError, params=params);
@@ -49,10 +58,10 @@ class StudentProfileScreen extends React.Component {
 
   _handleUpdateStudent(params) {
     const successFunc = (responseData) => {
-      this.props.navigation.state.params.refreshStudent();
+      // this.props.navigation.state.params.refreshStudent();
       this.props.navigation.navigate('Courses');
     }
-    putRequest(APIRoutes.getStudentPath(this.props.student.id), successFunc, standardError, params=params);
+    putRequest(APIRoutes.getStudentPath(this.state.studentId), successFunc, standardError, params=params);
   }
 
   _renderAttendanceStats() {
@@ -322,23 +331,23 @@ class StudentProfileScreen extends React.Component {
 
   render() {
     const { navigate } = this.props.navigation;
-    student = this._renderStudent()
+    let students;
+    if (this.state.isLoading) {
+      student = (
+        <Image
+          style={commonStyles.icon}
+          source={require('../../icons/spinner.gif')}
+        />
+      )
+    } else {
+      student = this._renderStudent()
+    }
     return (
       <ScrollView style={formViewStyles.base}>
         { student }
       </ScrollView>
     );
   }
-}
-
-const mapStateToProps = (state, props) => {
-  // Get course and date associated with this attendance screen
-  const course = state.courses.find((course) => course.id === props.navigation.state.params.courseId);
-  const student = course.students.find((student) => student.id === props.navigation.state.params.studentId);
-  return {
-    ...props.navigation.state.params,
-    student: student,
-  };
 }
 
 const viewStyles = StyleSheet.create({
@@ -348,11 +357,4 @@ const viewStyles = StyleSheet.create({
   },
 })
 
-
-// const mapDispatchToProps = (dispatch) => {
-//   return {
-//     syncAttendances: (attendances, curAttendances, courseId, date, openModal) => dispatch(syncAttendances(attendances, curAttendances, courseId, date, openModal)),
-//   }
-// }
-
-export default connect(mapStateToProps, null)(StudentProfileScreen);
+export default StudentProfileScreen;
