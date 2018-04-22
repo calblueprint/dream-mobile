@@ -12,7 +12,7 @@ if (process.env.NODE_ENV === 'production') {
 } else {
   console.log('staging');
   URL = Platform.select({
-    ios: "http://319d0aac.ngrok.io",
+    ios: "http://localhost:3000",
     // For Android Emulator
     android: "http://10.0.2.2:3000"
   });
