@@ -21,14 +21,17 @@ class SearchResultCard extends React.Component {
     return (
       <TouchableHighlight onPress={() => this.props.onSelectStudent(this.props.student.id)}
       underlayColor='transparent'>
-        <View style={[
-          cardStyles.outerContainer,
+        <View style={
           { backgroundColor: colors.courseWhite,
-            borderWidth: 1,
-            borderColor: colors.courseBlue,
+            borderWidth: 2,
+            borderColor: '#CFD3EC',
+            flex: 1,
             flexDirection: 'row',
-            padding: 10
-          }]}>
+            padding: 12,
+            borderRadius: 8,
+            marginTop: 8,
+            marginBottom: 4
+          }}>
           <View style={{flex: 0.9}}>
             <View style={{paddingBottom: 10}}>
               <Text style={[textStyles.titleMedium]}>

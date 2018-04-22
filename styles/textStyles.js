@@ -70,13 +70,13 @@ const textStyles = StyleSheet.create({
 
   buttonText: {
     color: colors.textLight,
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: '500'
   },
 
   buttonTextYellow: {
     color: colors.oldYellow,
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: '500'
   },
 
@@ -100,7 +100,7 @@ const textStyles = StyleSheet.create({
 
   buttonTextSecondarySmall: {
     color: colors.textDark_30,
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: '500'
   },
 
