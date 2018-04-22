@@ -90,7 +90,7 @@ class StudentProfileScreen extends React.Component {
               </View>
               <View style={{flex: 0.3}}>
                   <StyledButton
-                    onPress={() => navigate('StudentPersonalDetails', {
+                    onPress={() => this.props.navigation.navigate('StudentPersonalDetails', {
                       newStudent: false,
                       student: this.props.student,
                       navbarColor: this.props.navbarColor
@@ -142,7 +142,7 @@ class StudentProfileScreen extends React.Component {
               </View>
               <View style={{flex: 0.3}}>
                   <StyledButton
-                    onPress={() => navigate('StudentContactInfo', {
+                    onPress={() => this.props.navigation.navigate('StudentContactInfo', {
                       newStudent: false,
                       student: this.props.student,
                       navbarColor: this.props.navbarColor})}
@@ -221,7 +221,7 @@ class StudentProfileScreen extends React.Component {
             </View>
             <View style={{flex: 0.3}}>
                 <StyledButton
-                  onPress={() => navigate('StudentExtraInfo', {
+                  onPress={() => this.props.navigation.navigate('StudentExtraInfo', {
                     newStudent: false,
                     student: this.props.student,
                     navbarColor: this.props.navbarColor})}
