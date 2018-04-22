@@ -68,7 +68,7 @@ class ViewCourseScreen extends React.Component {
             teacher2: this.props.course.teacher_id2,
             start_date: this.props.course.start_date,
             end_date: this.props.course.end_date,
-            sessions: this.props.sessions,
+            sessions: this.props.course.sessions,
           })
       } else {
         this.setState({showModal: true})
