@@ -30,7 +30,7 @@ class StudentProfilePreviewScreen extends React.Component {
 
   _handleEnrollStudent() {
     const successFunc = (responseData) => {
-      this.props.navigation.state.params.refreshStudents();
+      // this.props.navigation.state.params.refreshStudents();
       this.props.navigation.navigate('ViewCourse', { 
         course_id: this.state.course_id, 
         navbarColor: this.state.navbarColor,
