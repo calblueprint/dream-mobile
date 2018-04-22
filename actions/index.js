@@ -3,6 +3,20 @@ import types from '../lib/actionTypes'
 
 let actions = {
   // GENERAL
+  enrollStudent: (student, courseId) => {
+    return {
+      type: types.ENROLL_STUDENT,
+      student,
+      courseId,
+    }
+  },
+  unenrollStudent: (studentId, courseId) => {
+    return {
+      type: types.UNENROLL_STUDENT,
+      studentId,
+      courseId,
+    }
+  },
   updateLocale: (locale) => {
     return {
       type: types.UPDATE_LOCALE,

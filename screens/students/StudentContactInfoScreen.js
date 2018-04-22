@@ -15,7 +15,8 @@ class StudentContactInfoScreen extends React.Component {
       course_id: this.props.navigation.state.params.course_id,
       navbarColor: this.props.navigation.state.params.navbarColor,
       newStudent: this.props.navigation.state.params.newStudent,
-      savedFields: this.props.navigation.state.params.savedFields
+      savedFields: this.props.navigation.state.params.savedFields,
+      parentKey: this.props.navigation.state.params.parentKey,
     }
   }
 
@@ -29,7 +30,7 @@ class StudentContactInfoScreen extends React.Component {
         navbarColor: this.state.navbarColor,
       });
     }
-    putRequest(APIRoutes.getStudentPath(studentId), 
+    putRequest(APIRoutes.getStudentPath(studentId),
       successFunc, standardError, params=params);
   }
 
@@ -41,7 +42,7 @@ class StudentContactInfoScreen extends React.Component {
       navbarColor: this.state.navbarColor,
       newStudent: this.state.newStudent,
       savedFields: joined,
-      refreshStudents: this.props.navigation.state.params.refreshStudents,
+      parentKey: this.state.parentKey,
     });
   }
 
@@ -67,7 +68,7 @@ class StudentContactInfoScreen extends React.Component {
             phone_2={navProps.phone_2}
             email={navProps.email}
             newStudent={this.state.newStudent}
-            onSaveStudent={this._handleUpdateStudent} 
+            onSaveStudent={this._handleUpdateStudent}
             />
          </View>
       )

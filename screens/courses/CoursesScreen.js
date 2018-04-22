@@ -1,9 +1,8 @@
 import React from 'react';
-import { Image, Button, ScrollView, Text, View, TouchableOpacity, RefreshControl } from 'react-native';
+import { Image, Button, ScrollView, Text, View, TouchableOpacity, RefreshControl, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import actions from '../../actions';
 import I18n from '../../lib/i18n/i18n';
-
 import { commonStyles } from '../../styles/styles';
 import { getRequest, postRequestNoCatch } from '../../lib/requests';
 import { APIRoutes } from '../../config/routes';
@@ -13,6 +12,7 @@ import CourseCard from '../../components/CourseCard/CourseCard';
 import StyledButton from '../../components/Button/Button';
 import { FontAwesome, MaterialCommunityIcons } from '@expo/vector-icons';
 import colors from '../../styles/colors';
+import {textStyles} from "../../styles/textStyles";
 
 class CoursesScreen extends React.Component {
 
@@ -120,18 +120,43 @@ class CoursesScreen extends React.Component {
         locale={this.props.locale}/>
       )
     );
-    return (
-      <View style={{marginBottom: 24}}>
-        { courses }
-        <View style={{marginTop: 16}}><StyledButton
-          onPress={() => navigate('EditCourse', {refreshCourses: this.props.fetchCourses, newCourse: true,
-            sessions: [], teacher: this.props.teacher})}
-          text={I18n.t('createcourse', {locale: this.props.locale})}
-          secondaryButtonLarge>
-        </StyledButton>
+
+    if (courses.length === 0) {
+      return (
+        <View style={{backgroundColor: '#fff', paddingBottom: 24}}>
+          <View style={viewStyles.noResults}>
+            <Image
+            style={viewStyles.img}
+            source={require('../../img/no_search.png')}/>
+            <Text style={[textStyles.titleMedium, {
+              marginTop: 16,
+              textAlign: 'center'
+            }]}>
+              No courses yet 
+            </Text>
+          </View>
+          <StyledButton
+            onPress={() => navigate('EditCourse', {refreshCourses: this.props.fetchCourses, newCourse: true,
+              sessions: [], teacher: this.props.teacher})}
+            text={I18n.t('createcourse', {locale: this.props.locale})}
+            secondaryButtonLarge>
+          </StyledButton>
         </View>
-      </View>
-    );
+      );
+    } else {
+      return (
+        <View style={{marginBottom: 24}}>
+          { courses }
+          <View style={{marginTop: 16}}><StyledButton
+            onPress={() => navigate('EditCourse', {refreshCourses: this.props.fetchCourses, newCourse: true,
+              sessions: [], teacher: this.props.teacher})}
+            text={I18n.t('createcourse', {locale: this.props.locale})}
+            secondaryButtonLarge>
+          </StyledButton>
+          </View>
+        </View>
+      );
+    }
   }
 
   render() {
@@ -345,5 +370,19 @@ const mapDispatchToProps = (dispatch) => {
     fetchRecentCourseAttendances: (students, courseId, date) => dispatch(fetchRecentCourseAttendances(students, courseId, date)),
   }
 }
+
+const viewStyles = StyleSheet.create({
+  noResults: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 24,
+  },
+  img: {
+    marginTop: 24,
+    width: 160,
+    height: 160
+  }
+})
+
 
 export default connect(mapStateToProps, mapDispatchToProps)(CoursesScreen);

@@ -44,6 +44,7 @@ class ViewCourseScreen extends React.Component {
     this._renderCourseDate = this._renderCourseDate.bind(this);
     this._renderSessions = this._renderSessions.bind(this);
     this._renderTeachers = this._renderTeachers.bind(this);
+    this._fetchStudents = this._fetchStudents.bind(this);
     this.state = {
       showModal: false,
       navbarColor: this.props.navigation.state.params.navbarColor
@@ -76,6 +77,13 @@ class ViewCourseScreen extends React.Component {
     }
 
     this.props.navigation.setParams({ navbarColor: this.state.navbarColor, handleEditCourse: _editCourse });
+  }
+
+  _fetchStudents() {
+    const successFunc = (responseData) => {
+      this.setState({ students: responseData, isLoading: false });
+    }
+    getRequest(APIRoutes.getStudentsInCoursePath(this.props.course.id), successFunc, standardError);
   }
 
   _handleSelectStudent(id) {

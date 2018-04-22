@@ -27,9 +27,9 @@ class SearchStudentScreen extends React.Component {
       this.setState({students: responseData});
       this.props.navigation.navigate('SearchStudentResults', {
         students: responseData,
-        refreshStudents: this.props.navigation.state.params.refreshStudents,
-        course_id: this.state.course_id, 
+        course_id: this.state.course_id,
         navbarColor: this.state.navbarColor,
+        parentKey: this.props.navigation.state.key,
       })
     }
     getRequest(APIRoutes.searchStudentPath(), successFunc, standardError, params=params);
@@ -43,9 +43,10 @@ class SearchStudentScreen extends React.Component {
            <View style={viewStyles.buttonMargin}>
              <StyledButton
                onPress={() => this.props.navigation.navigate('StudentPersonalDetails',
-                 { refreshStudents: this.props.navigation.state.params.refreshStudents,
+                 {
                    course_id: this.state.course_id,
                    navbarColor: this.state.navbarColor,
+                   parentKey: this.props.navigation.state.key,
                    newStudent: true })}
                text="+ Create Student"
                secondaryButtonLarge

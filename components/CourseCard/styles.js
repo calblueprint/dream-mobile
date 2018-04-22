@@ -9,7 +9,9 @@ const cardStyles = StyleSheet.create({
   },
   topContainer: {
   	flex: 1,
-  	height: 100,
+  	// height: 100,
+    paddingRight: 8,
+    paddingBottom: 8,
     backgroundColor: 'transparent'
   },
   bottomContainer: {
