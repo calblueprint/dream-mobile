@@ -51,165 +51,94 @@ class StudentProfileScreen extends React.Component {
     putRequest(APIRoutes.getStudentPath(this.props.student.id), successFunc, standardError, params=params);
   }
 
-  _renderStudent() {
-    const { navigate } = this.props.navigation;
+  _renderAttendanceStats() {
     const attendanceStats = this.calculatePercentages(this.props.student.attendance_stats)
-    return(
+    return (
+      <View style={{flex: 1, flexDirection: 'row', marginTop: 16}}>
+        <View style={{flex: 0.06}}/>
+        <View style={{flex: 0.27, backgroundColor: '#E1FCEE', padding: 12, borderRadius: 4}}>
+          <Text style={textStyles.body}>{attendanceStats.present}%</Text>
+          <Text>Present</Text>
+        </View>
+        <View style={{flex: 0.035}}/>
+        <View style={{flex: 0.27, backgroundColor: '#FCEBEB', padding: 12, borderRadius: 4}}>
+          <Text style={textStyles.body}>{attendanceStats.absent}%</Text>
+          <Text>Absent</Text>
+        </View>
+        <View style={{flex: 0.035}}/>
+        <View style={{flex: 0.27, backgroundColor: '#FFF3E5', padding: 12, borderRadius: 4}}>
+          <Text style={textStyles.body}>{attendanceStats.late}%</Text>
+          <Text>Late</Text>
+        </View>
+        <View style={{flex: 0.06}}/>
+      </View>
+    )
+
+  }
+
+  _renderPersonalInfo() {
+    return (
       <View>
-        <View style={formViewStyles.div_1}>
-          <View style={formViewStyles.div_2}>
-            <Text style={textStyles.titleLarge}>
-            {this.props.student.first_name} {this.props.student.last_name} - {this.props.student.dream_id}
-            </Text>
-          </View>
-          <Text style={{fontWeight: 'bold'}}> Attendance Stats </Text>
-          <Text style={textStyles.body}>
-          Percent Present: {attendanceStats.present}%
-          </Text>
-          <Text style={textStyles.body}>
-          Percent Absent: {attendanceStats.absent}%
-          </Text>
-          <Text style={textStyles.body}>
-          Percent Late: {attendanceStats.late}%
-          </Text>
-
-          <View style={formViewStyles.div_2}>
-            <View style={{flex: 1, flexDirection: 'row', marginTop: 10}}>
-                <View style={{flex: 0.7}}>
-                    <Text style={textStyles.titleMedium}> Personal Information </Text>
-                </View>
-                <View style={{flex: 0.3}}>
-                    <StyledButton
-                      onPress={() => navigate('StudentPersonalDetails', {
-                        newStudent: false,
-                        student: this.props.student,
-                        navbarColor: this.props.navbarColor
-                      })}
-                      text='Edit'
-                      noPaddingPrimaryButtonSmall
-                    />
-                </View>
-            </View>
-          </View>
-
-
-          <View style={formViewStyles.div_2}>
-            <Text style={textStyles.titleSmall}>
-            Nickname
-            </Text>
-            <Text style={textStyles.body}>
-            {this.props.student.nickname}
-            </Text>
-          </View>
-
-          <View style={formViewStyles.div_2}>
-            <Text style={textStyles.titleSmall}>
-            Birthday
-            </Text>
-            <Text style={textStyles.body}>
-            {this.props.student.birthday}
-            </Text>
-          </View>
-
-          <View style={formViewStyles.div_2}>
-            <Text style={textStyles.titleSmall}>
-            Active Participant?
-            </Text>
-            <Text style={textStyles.body}>
-            {this.props.student.is_active}
-            </Text>
-          </View>
-
-          <View style={formViewStyles.div_2}>
-            <Text style={textStyles.titleSmall}>
-            Sex
-            </Text>
-            <Text style={textStyles.body}>
-            {this.props.student.sex}
-            </Text>
-          </View>
-
-          <View style={formViewStyles.div_2}>
-            <View style={{flex: 1, flexDirection: 'row', marginTop: 10}}>
-                <View style={{flex: 0.7}}>
-                    <Text style={textStyles.titleMedium}> Contact Information </Text>
-                </View>
-                <View style={{flex: 0.3}}>
-                    <StyledButton
-                      onPress={() => navigate('StudentContactInfo', {
-                        newStudent: false,
-                        student: this.props.student,
-                        navbarColor: this.props.navbarColor})}
-                      text='Edit'
-                      noPaddingPrimaryButtonSmall
-                    />
-                </View>
-            </View>
-          </View>
-
-          <View style={formViewStyles.div_2}>
-            <Text style={textStyles.titleSmall}>
-            Address
-            </Text>
-            <Text style={textStyles.body}>
-            {this.props.student.address}
-            </Text>
-          </View>
-
-          <View style={formViewStyles.div_2}>
-            <Text style={textStyles.titleSmall}>
-            Phone Numbers
-            </Text>
-            <Text style={textStyles.body}>
-            {this.props.student.phone} {"\n"}
-            {this.props.student.phone_2}
-            </Text>
-          </View>
-
-          <View style={formViewStyles.div_2}>
-            <Text style={textStyles.titleSmall}>
-            Name on Facebook
-            </Text>
-            <Text style={textStyles.body}>
-            {this.props.student.facebook_name}
-            </Text>
-          </View>
-
-          <View style={formViewStyles.div_2}>
-            <Text style={textStyles.titleSmall}>
-            Email Address
-            </Text>
-            <Text style={textStyles.body}>
-            {this.props.student.email}
-            </Text>
-          </View>
-
-          <View style={formViewStyles.div_2}>
-            <Text style={textStyles.titleSmall}>
-            Primary Contact Name
-            </Text>
-            <Text style={textStyles.body}>
-            {this.props.student.primary_contact}
-            </Text>
-          </View>
-
-          <View style={formViewStyles.div_2}>
-            <Text style={textStyles.titleSmall}>
-            Primary Contact Phone Number
-            </Text>
-            <Text style={textStyles.body}>
-            {this.props.student.primary_contact_phone}
-            </Text>
-          </View>
-
-          <View style={formViewStyles.div_2}>
-            <View style={{flex: 1, flexDirection: 'row', marginTop: 10}}>
+        <View style={formViewStyles.div_2}>
+          <View style={{flex: 1, flexDirection: 'row', marginTop: 10}}>
               <View style={{flex: 0.7}}>
-                  <Text style={textStyles.titleMedium}> Extra Information </Text>
+                  <Text style={textStyles.titleMedium}> Personal Information </Text>
               </View>
               <View style={{flex: 0.3}}>
                   <StyledButton
-                    onPress={() => navigate('StudentExtraInfo', {
+                    onPress={() => navigate('StudentPersonalDetails', {
+                      newStudent: false,
+                      student: this.props.student,
+                      navbarColor: this.props.navbarColor
+                    })}
+                    text='Edit'
+                    noPaddingPrimaryButtonSmall
+                  />
+              </View>
+          </View>
+        </View>
+
+        <View style={formViewStyles.div_2}>
+          <Text style={textStyles.titleSmall}>
+          Birthday
+          </Text>
+          <Text style={textStyles.body}>
+          {this.props.student.birthday}
+          </Text>
+        </View>
+
+        <View style={formViewStyles.div_2}>
+          <Text style={textStyles.titleSmall}>
+          Active Participant?
+          </Text>
+          <Text style={textStyles.body}>
+          {this.props.student.is_active}
+          </Text>
+        </View>
+
+        <View style={formViewStyles.div_2}>
+          <Text style={textStyles.titleSmall}>
+          Sex
+          </Text>
+          <Text style={textStyles.body}>
+          {this.props.student.sex}
+          </Text>
+        </View>
+      </View>
+      )
+  }
+
+  _renderContactInfo() {
+    return(
+      <View>
+        <View style={formViewStyles.div_2}>
+          <View style={{flex: 1, flexDirection: 'row', marginTop: 10}}>
+              <View style={{flex: 0.7}}>
+                  <Text style={textStyles.titleMedium}> Contact Information </Text>
+              </View>
+              <View style={{flex: 0.3}}>
+                  <StyledButton
+                    onPress={() => navigate('StudentContactInfo', {
                       newStudent: false,
                       student: this.props.student,
                       navbarColor: this.props.navbarColor})}
@@ -217,59 +146,168 @@ class StudentProfileScreen extends React.Component {
                     noPaddingPrimaryButtonSmall
                   />
               </View>
+          </View>
+        </View>
+
+        <View style={formViewStyles.div_2}>
+          <Text style={textStyles.titleSmall}>
+          Address
+          </Text>
+          <Text style={textStyles.body}>
+          {this.props.student.address}
+          </Text>
+        </View>
+
+        <View style={formViewStyles.div_2}>
+          <Text style={textStyles.titleSmall}>
+          Phone Numbers
+          </Text>
+          <Text style={textStyles.body}>
+          {this.props.student.phone} {"\n"}
+          {this.props.student.phone_2}
+          </Text>
+        </View>
+
+        <View style={formViewStyles.div_2}>
+          <Text style={textStyles.titleSmall}>
+          Name on Facebook
+          </Text>
+          <Text style={textStyles.body}>
+          {this.props.student.facebook_name}
+          </Text>
+        </View>
+
+        <View style={formViewStyles.div_2}>
+          <Text style={textStyles.titleSmall}>
+          Email Address
+          </Text>
+          <Text style={textStyles.body}>
+          {this.props.student.email}
+          </Text>
+        </View>
+
+        <View style={formViewStyles.div_2}>
+          <Text style={textStyles.titleSmall}>
+          Primary Contact Name
+          </Text>
+          <Text style={textStyles.body}>
+          {this.props.student.primary_contact}
+          </Text>
+        </View>
+
+        <View style={formViewStyles.div_2}>
+          <Text style={textStyles.titleSmall}>
+          Primary Contact Phone Number
+          </Text>
+          <Text style={textStyles.body}>
+          {this.props.student.primary_contact_phone}
+          </Text>
+        </View>
+      </View>
+      )
+  }
+
+  _renderExtraInfo() {
+    return(
+      <View>
+        <View style={formViewStyles.div_2}>
+          <View style={{flex: 1, flexDirection: 'row', marginTop: 10}}>
+            <View style={{flex: 0.7}}>
+                <Text style={textStyles.titleMedium}> Extra Information </Text>
+            </View>
+            <View style={{flex: 0.3}}>
+                <StyledButton
+                  onPress={() => navigate('StudentExtraInfo', {
+                    newStudent: false,
+                    student: this.props.student,
+                    navbarColor: this.props.navbarColor})}
+                  text='Edit'
+                  noPaddingPrimaryButtonSmall
+                />
             </View>
           </View>
+        </View>
 
-          <View style={formViewStyles.div_2}>
-            <Text style={textStyles.titleSmall}>
-            Notes
-            </Text>
-            <Text style={textStyles.body}>
-            {this.props.student.notes}
-            </Text>
-          </View>
+        <View style={formViewStyles.div_2}>
+          <Text style={textStyles.titleSmall}>
+          Notes
+          </Text>
+          <Text style={textStyles.body}>
+          {this.props.student.notes}
+          </Text>
+        </View>
 
-          <View style={formViewStyles.div_2}>
-            <Text style={textStyles.titleSmall}>
-            Level (Montessori Only)
-            </Text>
-            <Text style={textStyles.body}>
-            {this.props.student.level}
-            </Text>
-          </View>
+        <View style={formViewStyles.div_2}>
+          <Text style={textStyles.titleSmall}>
+          Level (Montessori Only)
+          </Text>
+          <Text style={textStyles.body}>
+          {this.props.student.level}
+          </Text>
+        </View>
 
-          <View style={formViewStyles.div_2}>
-            <Text style={textStyles.titleSmall}>
-            Primary Language
-            </Text>
-            <Text style={textStyles.body}>
-            {this.props.student.primary_language}
-            </Text>
-          </View>
+        <View style={formViewStyles.div_2}>
+          <Text style={textStyles.titleSmall}>
+          Primary Language
+          </Text>
+          <Text style={textStyles.body}>
+          {this.props.student.primary_language}
+          </Text>
+        </View>
 
-          <View style={formViewStyles.div_2}>
-            <Text style={textStyles.titleSmall}>
-            Document Type
-            </Text>
-            <Text style={textStyles.body}>
-            {this.props.student.document_type}
-            </Text>
-          </View>
+        <View style={formViewStyles.div_2}>
+          <Text style={textStyles.titleSmall}>
+          Document Type
+          </Text>
+          <Text style={textStyles.body}>
+          {this.props.student.document_type}
+          </Text>
+        </View>
 
-          <View style={formViewStyles.div_2}>
-            <Text style={textStyles.titleSmall}>
-            Participated in DREAM before?
-            </Text>
-            <Text style={textStyles.body}>
-            {this.props.student.past_dream_participant}
-            </Text>
-          </View>
-
-        <Button
-          onPress={() => confirmDelete("Are you sure you want to remove this student from the course?", this._deleteEnrollment)}
-          title='Unenroll Student'
-        />
+        <View style={formViewStyles.div_2}>
+          <Text style={textStyles.titleSmall}>
+          Participated in DREAM before?
+          </Text>
+          <Text style={textStyles.body}>
+          {this.props.student.past_dream_participant}
+          </Text>
+        </View>
       </View>
+      )
+  }
+
+  _renderStudent() {
+    const { navigate } = this.props.navigation;
+    attendance_stats = this._renderAttendanceStats()
+    personal_info = this._renderPersonalInfo()
+    contact_info = this._renderContactInfo()
+    extra_info = this._renderExtraInfo()
+
+    return(
+      <View>
+        <View style={{backgroundColor: '#f5f5f6', paddingBottom: 24}}>
+          <View style={formViewStyles.div_1}>
+            <View style={formViewStyles.div_2}>
+              <Text style={textStyles.titleLarge}>
+              {this.props.student.first_name} {this.props.student.last_name} - {this.props.student.dream_id}
+              </Text>
+              <Text style={textStyles.bodySmall}>{this.props.student.nickname}</Text>
+            </View>
+          </View>
+        </View>
+
+        { attendance_stats }
+
+        { personal_info }
+
+        { contact_info }
+
+        { extra_info }
+
+      <Button
+        onPress={() => confirmDelete("Are you sure you want to remove this student from the course?", this._deleteEnrollment)}
+        title='Unenroll Student'
+      />
     </View>
     );
   }
