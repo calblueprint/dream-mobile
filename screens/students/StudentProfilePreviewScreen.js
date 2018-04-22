@@ -6,58 +6,50 @@ import { colors } from '../../styles/colors';
 import { getRequest, deleteRequest, postRequest } from '../../lib/requests';
 import { APIRoutes } from '../../config/routes';
 import { formViewStyles } from '../../styles/formViewStyles';
-import { standardError } from '../../lib/alerts';
+import { frontendError, alert } from '../../lib/alerts';
 import {formStyles} from "../../components/Form/styles";
 import StyledButton from '../../components/Button/Button';
+import { connect } from 'react-redux';
+import actions from '../../actions';
+
+
 
 class StudentProfilePreviewScreen extends React.Component {
 
   constructor(props) {
     super(props);
     this._renderStudent = this._renderStudent.bind(this);
-    this._fetchStudent = this._fetchStudent.bind(this);
     this._handleEnrollStudent = this._handleEnrollStudent.bind(this);
 
+    //THis state updating is 100% for convenience tbh. bad practice
     this.state = {
-      isLoading : true,
-      studentId: this.props.navigation.state.params.studentId,
+      student: this.props.navigation.state.params.student,
       course_id: this.props.navigation.state.params.course_id,
       navbarColor: this.props.navigation.state.params.navbarColor,
-      student: { }
+      parentKey: this.props.navigation.state.params.parentKey,
     }
-    console.log('student profile preview');
-    console.log(this.state.course_id);
   }
 
 
   _handleEnrollStudent() {
+    if(this.props.studentIds.includes(this.state.student.id)) {
+      console.log("Student is already enrolled");
+      frontendError("This student is already enrolled.");
+      this.props.navigation.goBack(this.state.parentKey)
+      return;
+    }
     const successFunc = (responseData) => {
-      this.props.navigation.state.params.refreshStudents();
-      this.props.navigation.navigate('ViewCourse', { 
-        courseId: this.state.course_id, 
-        navbarColor: this.state.navbarColor,
-      });
+      alert("Success!", "Student Successfully Enrolled")
+      this.props.navigation.goBack(this.state.parentKey)
     }
 
     const p = {
-      student_id: this.state.studentId,
+      student_id: this.state.student.id,
       course_id: this.state.course_id
     }
-
-    postRequest(APIRoutes.getCoursesStudentsPath(), successFunc, standardError, params=p);
-  }
-
-  componentDidMount() {
-    this._fetchStudent(this.state.studentId);
-  }
-
-  _fetchStudent(studentId) {
-    const { navigate } = this.props.navigation;
-    const successFunc = (responseData) => {
-      this.setState({ student: responseData, isLoading: false });
-    }
-
-    getRequest(APIRoutes.getStudentPath(studentId), successFunc, standardError);
+    this.props.enrollStudent(this.state.student, this.state.course_id)
+    //TODO: What if this post request fails? Add graceful failing!
+    postRequest(APIRoutes.getCoursesStudentsPath(), successFunc, () => frontendError("Student Enrollment Failed"), params=p);
   }
 
   _renderStudent() {
@@ -124,17 +116,7 @@ class StudentProfilePreviewScreen extends React.Component {
 
   render() {
     const { navigate } = this.props.navigation;
-    let students;
-    if (this.state.isLoading) {
-      student = (
-        <Image
-          style={commonStyles.icon}
-          source={require('../../icons/spinner.gif')}
-        />
-      )
-    } else {
-      student = this._renderStudent()
-    }
+    student = this._renderStudent()
     return (
       <ScrollView style={formViewStyles.base}>
         { student }
@@ -150,4 +132,19 @@ const viewStyles = StyleSheet.create({
   },
 });
 
-export default StudentProfilePreviewScreen;
+const mapStateToProps = (state, props) => {
+  // Get course and date associated with this attendance screen
+  const course = state.courses.find((course) => course.id === props.navigation.state.params.course_id);
+  return {
+    ...props.navigation.state.params,
+    studentIds: course.students.map((student) => {return student.id}),
+  };
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    enrollStudent: (student, courseId) => dispatch(actions.enrollStudent(student, courseId)),
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(StudentProfilePreviewScreen);

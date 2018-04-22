@@ -31,6 +31,10 @@ export const students = (state = [], action) => {
   switch (action.type) {
     case types.RECEIVE_STUDENTS_SUCCESS:
       return action.students;
+    case types.ENROLL_STUDENT:
+      return state.concat(action.student);
+    case types.UNENROLL_STUDENT:
+      return state.filter((student) => student.id != action.studentId);
     case types.UPDATE_STUDENT_ATTENDANCE_STATS:
       return state.map(s => {
         relevantAttendance = action.attendances.find((a) => a.student_id === s.id);

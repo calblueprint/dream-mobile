@@ -2,9 +2,11 @@ import React from 'react';
 import { View } from 'react-native';
 import { APIRoutes } from '../../config/routes';
 import { postRequest, putRequest } from '../../lib/requests';
-import { standardError } from '../../lib/alerts';
+import { standardError, alert } from '../../lib/alerts';
 import PropTypes from 'prop-types';
 import StudentExtraInfoForm from '../../components/Form/StudentExtraInfoForm';
+import { connect } from 'react-redux';
+import actions from '../../actions';
 
 class StudentExtraInfoScreen extends React.Component {
   constructor(props) {
@@ -15,7 +17,8 @@ class StudentExtraInfoScreen extends React.Component {
       course_id: this.props.navigation.state.params.course_id,
       navbarColor: this.props.navigation.state.params.navbarColor,
       newStudent: this.props.navigation.state.params.newStudent,
-      savedFields: this.props.navigation.state.params.savedFields
+      savedFields: this.props.navigation.state.params.savedFields,
+      parentKey: this.props.navigation.state.params.parentKey,
     }
   }
 
@@ -23,23 +26,20 @@ class StudentExtraInfoScreen extends React.Component {
     const studentId = this.props.navigation.state.params.student.id;
     const successFunc = (responseData) => {
       this.props.navigation.navigate('StudentProfile', {
-        refreshStudents: this.props.navigation.state.params.refreshStudents,
         studentId: studentId,
         courseId: this.state.course_id,
         navbarColor: this.state.navbarColor,
       });
     }
-    putRequest(APIRoutes.getStudentPath(studentId), 
+    putRequest(APIRoutes.getStudentPath(studentId),
       successFunc, standardError, params=params);
   }
 
   _handleEnrollStudent(student) {
     const successFunc = (responseData) => {
-      this.props.navigation.state.params.refreshStudents();
-      this.props.navigation.navigate('ViewCourse', { 
-        courseId: this.state.course_id,
-        navbarColor: this.state.navbarColor,
-      });
+      this.props.enrollStudent(this.state.student, this.state.course_id)
+      this.props.navigation.goBack(this.state.parentKey);
+      alert("Success!", "Student Successfully Enrolled")
     }
 
     const p = {
@@ -80,7 +80,7 @@ class StudentExtraInfoScreen extends React.Component {
             primary_language={navProps.primary_language}
             past_dream_participant={navProps.past_dream_participant}
             newStudent={this.state.newStudent}
-            onSaveStudent={this._handleUpdateStudent} 
+            onSaveStudent={this._handleUpdateStudent}
             />
          </View>
       )
@@ -88,4 +88,10 @@ class StudentExtraInfoScreen extends React.Component {
   }
 }
 
-export default StudentExtraInfoScreen;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    enrollStudent: (student, courseId) => dispatch(actions.enrollStudent(student, courseId)),
+  }
+}
+
+export default connect(null, mapDispatchToProps)(StudentExtraInfoScreen);

@@ -9,6 +9,8 @@ import { formViewStyles } from '../../styles/formViewStyles';
 import { standardError, confirmDelete } from '../../lib/alerts';
 import StyledButton from '../../components/Button/Button';
 import { connect } from 'react-redux';
+import actions from '../../actions';
+
 
 
 class StudentProfileScreen extends React.Component {
@@ -38,12 +40,10 @@ class StudentProfileScreen extends React.Component {
         course_id: this.props.courseId
     }
     const successFunc = (responseData) => {
-      this.props.navigation.state.params.refreshStudents();
-      this.props.navigation.navigate('ViewCourse', {
-        courseId: this.props.courseId,
-        navbarColor: this.props.navbarColor
-      });
+      this.props.unenrollStudent(this.props.student.id, this.props.courseId);
+      this.props.navigation.goBack();
     }
+    //TODO: What happens if this function fails. Are we still offline first? HAndle this!!!
     deleteRequest(APIRoutes.getCoursesStudentsPath(), successFunc, standardError, params=params);
   }
 
@@ -56,6 +56,9 @@ class StudentProfileScreen extends React.Component {
   }
 
   _renderAttendanceStats() {
+    if(!this.props.student || !this.props.student.attendance_stats) {
+      return;
+    }
     const attendanceStats = this.calculatePercentages(this.props.student.attendance_stats)
     return (
       <View style={{flex: 1, flexDirection: 'row', marginTop: 16}}>
@@ -282,6 +285,9 @@ class StudentProfileScreen extends React.Component {
 
   _renderStudent() {
     const { navigate } = this.props.navigation;
+    if (!this.props.student ) {
+      return;
+    }
     attendance_stats = this._renderAttendanceStats()
     personal_info = this._renderPersonalInfo()
     contact_info = this._renderContactInfo()
@@ -349,10 +355,10 @@ const viewStyles = StyleSheet.create({
 })
 
 
-// const mapDispatchToProps = (dispatch) => {
-//   return {
-//     syncAttendances: (attendances, curAttendances, courseId, date, openModal) => dispatch(syncAttendances(attendances, curAttendances, courseId, date, openModal)),
-//   }
-// }
+const mapDispatchToProps = (dispatch) => {
+  return {
+    unenrollStudent: (studentId, courseId) => dispatch(actions.unenrollStudent(studentId, courseId)),
+  }
+}
 
-export default connect(mapStateToProps, null)(StudentProfileScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(StudentProfileScreen);

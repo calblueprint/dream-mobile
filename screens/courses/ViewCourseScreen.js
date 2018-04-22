@@ -79,11 +79,11 @@ class ViewCourseScreen extends React.Component {
     this.props.navigation.setParams({ navbarColor: this.state.navbarColor, handleEditCourse: _editCourse });
   }
 
-  _fetchStudents() {  
+  _fetchStudents() {
     const successFunc = (responseData) => {
       this.setState({ students: responseData, isLoading: false });
     }
-    getRequest(APIRoutes.getStudentsInCoursePath(this.state.course_id), successFunc, standardError);
+    getRequest(APIRoutes.getStudentsInCoursePath(this.props.course.id), successFunc, standardError);
   }
 
   _handleSelectStudent(id) {
