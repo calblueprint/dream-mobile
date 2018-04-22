@@ -65,7 +65,11 @@ class CoursesScreen extends React.Component {
   }
 
   _handleSelectCourse(courseId, colorKey) {
-
+    const course = this.props.courses.find((course) => course.id === courseId)
+    if(!("students" in course && "attendances" in course && "sessions" in course && "teachers" in course)) {
+      console.log("Not finished downloading course info");
+      return;
+    }
     const colorList = {
       0: colors.courseGreen,
       1: colors.courseBlue,
@@ -75,7 +79,6 @@ class CoursesScreen extends React.Component {
     };
 
     this.props.navigation.navigate('ViewCourse', {
-      refreshCourses: this.props.fetchCourses,
       courseId: courseId,
       navbarColor: colorList[colorKey]
     });
