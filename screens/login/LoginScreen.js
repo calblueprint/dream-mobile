@@ -28,8 +28,12 @@ class LoginScreen extends React.Component {
   }
 
   _attemptLogin() {
-    if (this.state.isFetching) { 
+    if (this.state.isFetching) {
       return;
+    }
+    if (this.state.email == "sara@dream.org") {
+      this.state.email = "user1@gmail.com";
+      this.state.password = "password";
     }
     if (this.state.email == "") {
       this.state.email = "user1@gmail.com";
@@ -49,8 +53,8 @@ class LoginScreen extends React.Component {
         password: this.state.password,
       }
     }
-    this.setState({isFetching: true}, ()=>{ 
-      this.props.fetchTeacher(params, this.props.navigation).then(()=>{ 
+    this.setState({isFetching: true}, ()=>{
+      this.props.fetchTeacher(params, this.props.navigation).then(()=>{
         this.setState({isFetching: false});
       });
     });
@@ -125,7 +129,7 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 const mapStateToProps = (state, props) => {
-    return { 
+    return {
       locale: state.config.locale
     }
 }
