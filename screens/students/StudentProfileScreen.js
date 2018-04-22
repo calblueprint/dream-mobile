@@ -38,9 +38,9 @@ class StudentProfileScreen extends React.Component {
         course_id: this.props.courseId
     }
     const successFunc = (responseData) => {
-      // this.props.navigation.state.params.refreshStudents();
+      this.props.navigation.state.params.refreshStudents();
       this.props.navigation.navigate('ViewCourse', {
-        course_id: this.props.courseId,
+        courseId: this.props.courseId,
         navbarColor: this.props.navbarColor
       });
     }
@@ -49,7 +49,7 @@ class StudentProfileScreen extends React.Component {
 
   _handleUpdateStudent(params) {
     const successFunc = (responseData) => {
-      // this.props.navigation.state.params.refreshStudent();
+      this.props.navigation.state.params.refreshStudent();
       this.props.navigation.navigate('Courses');
     }
     putRequest(APIRoutes.getStudentPath(this.props.student.id), successFunc, standardError, params=params);

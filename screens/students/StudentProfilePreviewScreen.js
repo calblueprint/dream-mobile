@@ -25,14 +25,16 @@ class StudentProfilePreviewScreen extends React.Component {
       navbarColor: this.props.navigation.state.params.navbarColor,
       student: { }
     }
+    console.log('student profile preview');
+    console.log(this.state.course_id);
   }
 
 
   _handleEnrollStudent() {
     const successFunc = (responseData) => {
-      // this.props.navigation.state.params.refreshStudents();
+      this.props.navigation.state.params.refreshStudents();
       this.props.navigation.navigate('ViewCourse', { 
-        course_id: this.state.course_id, 
+        courseId: this.state.course_id, 
         navbarColor: this.state.navbarColor,
       });
     }
