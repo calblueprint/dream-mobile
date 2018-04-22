@@ -281,7 +281,7 @@ class ViewCourseScreen extends React.Component {
                       course_id: this.state.course_id,
                       navbarColor: this.state.navbarColor,
                        })}
-                    text="+ Enroll Student"
+                    text="+ Enroll"
                     enrollSmall
                   />
                 </View>

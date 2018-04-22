@@ -22,13 +22,13 @@ const buttonStyles = StyleSheet.create({
     marginBottom: 8,
   },
 
-  noPaddingPrimaryButtonSmall: {
-    backgroundColor: colors.primaryYellow,
-    borderColor: colors.primaryYellow,
+  editButton: {
+    backgroundColor: '#CFD8DC',
+    borderColor: '#CFD8DC',
     width: 85,
-    height: 37,
+    height: 32,
     marginLeft: 10,
-    marginBottom: -10,
+    marginBottom: 0,
   },
 
   clearButtonSmall: {
@@ -74,7 +74,7 @@ const buttonStyles = StyleSheet.create({
   enrollSmall: {
     backgroundColor: colors.courseBlue,
     borderColor: colors.courseBlue,
-    width: 140,
+    width: 120,
     height: 36,
   },
 
