@@ -1,8 +1,8 @@
 import React from 'react';
-import { Image, Button, Text, View, ScrollView } from 'react-native';
+import { Image, Button, Text, View, ScrollView, StyleSheet} from 'react-native';
 import { textStyles } from '../../styles/textStyles';
 import { commonStyles } from '../../styles/styles';
-import { colors } from '../../styles/colors';
+import colors from '../../styles/colors';
 import { getRequest, deleteRequest, putRequest } from '../../lib/requests';
 import { APIRoutes } from '../../config/routes';
 import { formViewStyles } from '../../styles/formViewStyles';
@@ -22,10 +22,14 @@ class StudentProfileScreen extends React.Component {
 
   calculatePercentages(attendance_stats) {
     const total = attendance_stats.num_present + attendance_stats.num_late + attendance_stats.num_absent;
-    var present = (attendance_stats.num_present / total) * 100;
-    var late = (attendance_stats.num_late / total) * 100;
-    var absent = (attendance_stats.num_absent / total) * 100;
-    return {present: present.toFixed(1), late: late.toFixed(1), absent: absent.toFixed(1)};
+    // var present = (attendance_stats.num_present / total) * 100;
+    // var late = (attendance_stats.num_late / total) * 100;
+    // var absent = (attendance_stats.num_absent / total) * 100;
+    var present = `${attendance_stats.num_present} / ${total}`
+    var late = `${attendance_stats.num_late} / ${total}`
+    var absent = `${attendance_stats.num_absent} / ${total}`
+    // return {present: present.toFixed(1), late: late.toFixed(1), absent: absent.toFixed(1)};
+    return {present: present, late: late, absent: absent};
   }
 
   _deleteEnrollment() {
@@ -55,22 +59,22 @@ class StudentProfileScreen extends React.Component {
     const attendanceStats = this.calculatePercentages(this.props.student.attendance_stats)
     return (
       <View style={{flex: 1, flexDirection: 'row', marginTop: 16}}>
-        <View style={{flex: 0.06}}/>
-        <View style={{flex: 0.27, backgroundColor: '#E1FCEE', padding: 12, borderRadius: 4}}>
-          <Text style={textStyles.body}>{attendanceStats.present}%</Text>
-          <Text>Present</Text>
+        <View style={{flex: 0.08}}/>
+        <View style={{flex: 0.25, backgroundColor: '#E1FCEE', padding: 12, borderRadius: 4}}>
+          <Text style={[textStyles.bodyBold, {textAlign: 'center'}]}>{attendanceStats.present}</Text>
+          <Text style={[textStyles.bodySmallBold, {marginTop: 4, textAlign: 'center', color: colors.successGreen}]}>Present</Text>
         </View>
-        <View style={{flex: 0.035}}/>
-        <View style={{flex: 0.27, backgroundColor: '#FCEBEB', padding: 12, borderRadius: 4}}>
-          <Text style={textStyles.body}>{attendanceStats.absent}%</Text>
-          <Text>Absent</Text>
+        <View style={{flex: 0.045}}/>
+        <View style={{flex: 0.25, backgroundColor: '#FCEBEB', padding: 12, borderRadius: 4}}>
+          <Text style={[textStyles.bodyBold, {textAlign: 'center'}]}>{attendanceStats.absent}</Text>
+          <Text style={[textStyles.bodySmallBold, {marginTop: 4, textAlign: 'center', color: colors.errorRed}]}>Absent</Text>
         </View>
-        <View style={{flex: 0.035}}/>
-        <View style={{flex: 0.27, backgroundColor: '#FFF3E5', padding: 12, borderRadius: 4}}>
-          <Text style={textStyles.body}>{attendanceStats.late}%</Text>
-          <Text>Late</Text>
+        <View style={{flex: 0.045}}/>
+        <View style={{flex: 0.25, backgroundColor: '#FFF3E5', padding: 12, borderRadius: 4}}>
+          <Text style={[textStyles.bodyBold, {textAlign: 'center'}]}>{attendanceStats.late}</Text>
+          <Text style={[textStyles.bodySmallBold, {marginTop: 4, textAlign: 'center', color: colors.lateOrange}]}>Late</Text>
         </View>
-        <View style={{flex: 0.06}}/>
+        <View style={{flex: 0.08}}/>
       </View>
     )
 
@@ -78,11 +82,11 @@ class StudentProfileScreen extends React.Component {
 
   _renderPersonalInfo() {
     return (
-      <View>
+      <View style={viewStyles.outer}>
         <View style={formViewStyles.div_2}>
           <View style={{flex: 1, flexDirection: 'row', marginTop: 10}}>
               <View style={{flex: 0.7}}>
-                  <Text style={textStyles.titleMedium}> Personal Information </Text>
+                  <Text style={textStyles.titleMedium}>Personal Information </Text>
               </View>
               <View style={{flex: 0.3}}>
                   <StyledButton
@@ -92,7 +96,7 @@ class StudentProfileScreen extends React.Component {
                       navbarColor: this.props.navbarColor
                     })}
                     text='Edit'
-                    noPaddingPrimaryButtonSmall
+                    editButton
                   />
               </View>
           </View>
@@ -130,11 +134,11 @@ class StudentProfileScreen extends React.Component {
 
   _renderContactInfo() {
     return(
-      <View>
+      <View style={viewStyles.outer}>
         <View style={formViewStyles.div_2}>
           <View style={{flex: 1, flexDirection: 'row', marginTop: 10}}>
               <View style={{flex: 0.7}}>
-                  <Text style={textStyles.titleMedium}> Contact Information </Text>
+                  <Text style={textStyles.titleMedium}>Contact Information </Text>
               </View>
               <View style={{flex: 0.3}}>
                   <StyledButton
@@ -143,7 +147,7 @@ class StudentProfileScreen extends React.Component {
                       student: this.props.student,
                       navbarColor: this.props.navbarColor})}
                     text='Edit'
-                    noPaddingPrimaryButtonSmall
+                    editButton
                   />
               </View>
           </View>
@@ -209,11 +213,11 @@ class StudentProfileScreen extends React.Component {
 
   _renderExtraInfo() {
     return(
-      <View>
+      <View style={viewStyles.outer}>
         <View style={formViewStyles.div_2}>
           <View style={{flex: 1, flexDirection: 'row', marginTop: 10}}>
             <View style={{flex: 0.7}}>
-                <Text style={textStyles.titleMedium}> Extra Information </Text>
+                <Text style={textStyles.titleMedium}>Extra Information </Text>
             </View>
             <View style={{flex: 0.3}}>
                 <StyledButton
@@ -222,7 +226,7 @@ class StudentProfileScreen extends React.Component {
                     student: this.props.student,
                     navbarColor: this.props.navbarColor})}
                   text='Edit'
-                  noPaddingPrimaryButtonSmall
+                  editButton
                 />
             </View>
           </View>
@@ -284,31 +288,35 @@ class StudentProfileScreen extends React.Component {
     extra_info = this._renderExtraInfo()
 
     return(
-      <View>
-        <View style={{backgroundColor: '#f5f5f6', paddingBottom: 24}}>
-          <View style={formViewStyles.div_1}>
-            <View style={formViewStyles.div_2}>
-              <Text style={textStyles.titleLarge}>
-              {this.props.student.first_name} {this.props.student.last_name} - {this.props.student.dream_id}
-              </Text>
-              <Text style={textStyles.bodySmall}>{this.props.student.nickname}</Text>
+        <View style={{backgroundColor: colors.primaryYellow, marginTop: -200}}>
+          <View style={{backgroundColor: colors.primaryYellow, marginTop: 200, paddingBottom: 24}}>
+            <View style={formViewStyles.div_1}>
+              <View style={formViewStyles.div_2}>
+                <Text style={textStyles.titleLargeLight}>
+                {this.props.student.first_name} {this.props.student.last_name}
+                </Text>
+                <View style={formViewStyles.div_2}>
+                  <Text style={textStyles.bodySmallLight}>{this.props.student.nickname}</Text>
+                </View>
+              </View>
             </View>
           </View>
-        </View>
 
-        { attendance_stats }
+          <View style={{backgroundColor: colors.backgroundWhite}}>
+            { attendance_stats }
+            { personal_info }
+            { contact_info }
+            { extra_info }
 
-        { personal_info }
-
-        { contact_info }
-
-        { extra_info }
-
-      <Button
-        onPress={() => confirmDelete("Are you sure you want to remove this student from the course?", this._deleteEnrollment)}
-        title='Unenroll Student'
-      />
-    </View>
+            <View style={{marginTop: 40, marginBottom: 40}}>
+              <StyledButton
+                onPress={() => confirmDelete("Are you sure you want to remove this student from the course?", this._deleteEnrollment)}
+                text='Unenroll Student'
+                secondaryButtonLarge
+              />
+            </View>
+          </View>
+      </View>
     );
   }
 
@@ -332,6 +340,14 @@ const mapStateToProps = (state, props) => {
     student: student,
   };
 }
+
+const viewStyles = StyleSheet.create({
+  outer: {
+    margin: 24,
+    marginBottom: 8
+  },
+})
+
 
 // const mapDispatchToProps = (dispatch) => {
 //   return {

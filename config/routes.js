@@ -95,11 +95,6 @@ export const HomeStack = StackNavigator({
     screen: StudentProfileScreen,
     navigationOptions: {
       headerTitle: 'Student Profile',
-      headerStyle: {
-        backgroundColor: '#f5f5f6',
-        borderBottomColor: 'transparent',
-      },
-      headerTintColor: colors.textDark,
     },
   },
   Attendances: {
