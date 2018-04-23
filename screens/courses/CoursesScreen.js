@@ -163,11 +163,14 @@ class CoursesScreen extends React.Component {
     let courses;
     courses = this._renderCourses();
     return (
-      <ScrollView refreshControl={
+      <ScrollView
+        style={{backgroundColor: '#f5f5f6'}}
+        refreshControl={
         <RefreshControl
           refreshing={this.props.isLoading}
           onRefresh={this._onRefresh.bind(this)}
         />}
+
       >
         <View style={{backgroundColor: '#f5f5f6'}}>
           { courses }
