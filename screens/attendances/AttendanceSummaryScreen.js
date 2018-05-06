@@ -333,7 +333,7 @@ updateAttendance = (attendance, index) => {
 
   if (attendance.isChanged) {
     // append true to the list of parameters to make this request fail
-    return postRequestNoCatch(APIRoutes.attendanceItemPath(), successFunc, errorFunc, params, true);
+    return postRequestNoCatch(APIRoutes.attendanceItemPath(), successFunc, errorFunc, params);
   } else {
     return attendance;
   }

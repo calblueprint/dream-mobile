@@ -173,8 +173,8 @@ class ViewCourseScreen extends React.Component {
    * Display course sessions.
    */
   _renderSessions() {
-    if(this.props.course.sessions == []) {
-      return [];
+    if(this.props.course.sessions.length == 0) {
+      return;
     }
     return this.props.course.sessions.map((session, index) => {
       const start = timeFormat(new Date(session.start_time))
@@ -182,7 +182,9 @@ class ViewCourseScreen extends React.Component {
       const i18nWeekday = I18n.t(session.weekday.toLowerCase(), {locale: this.props.locale});
       return (
         <View key={index}>
-          <Text style={textStyles.bodySmallLight}>{`${i18nWeekday}, ${ start } - ${ end }` } </Text>
+          <View style={formViewStyles.div_2}>
+            <Text style={textStyles.bodySmallLight}>{`${i18nWeekday}, ${ start } - ${ end }` } </Text>
+          </View>
         </View>
       );
     });
@@ -193,6 +195,12 @@ class ViewCourseScreen extends React.Component {
    */
   _renderStudents() {
     const { navigate } = this.props.navigation;
+    if (this.props.course.students.length == 0) {
+      return (
+        <Text style={textStyles.bodySmall}>No students yet. Enroll a student!</Text>
+        )
+    }
+
     return this.props.course.students.map((student, i) =>  (
       <StudentCard key={i}
         student={student}
@@ -212,9 +220,7 @@ class ViewCourseScreen extends React.Component {
               <View style={formViewStyles.div_2}>
                 <Text style={[textStyles.titleLargeLight, {marginBottom: 16}]}>{ this.props.course.title }</Text>
 
-                <View style={formViewStyles.div_2}>
-                  { this._renderSessions() }
-                </View>
+                { this._renderSessions() }
 
                 <View style={formViewStyles.div_2}>
                   <Text style={textStyles.bodySmallLight}>{ this._renderTeachers() }</Text>
