@@ -32,6 +32,12 @@ class ViewCourseScreen extends React.Component {
           <TouchableOpacity onPress={() => params.handleEditCourse()}>
             <View style={{marginRight: 8}}><MaterialCommunityIcons name="pencil" size={30} color={'#fff'} /></View>
           </TouchableOpacity>
+        ),
+        headerLeft: (
+          <TouchableOpacity onPress={() => { navigation.navigate('Courses') }}>
+            <View style={{marginLeft: 8}}><FontAwesome
+            name="angle-left" size={32} color={'#fff'} /></View>
+          </TouchableOpacity>
         )
     };
   };
