@@ -340,6 +340,12 @@ class StudentProfileScreen extends React.Component {
 const mapStateToProps = (state, props) => {
   // Get course and date associated with this attendance screen
   const course = state.courses.find((course) => course.id === props.navigation.state.params.courseId);
+  console.log('state.courses');
+  console.log(state.courses);
+  console.log('courseID');
+  console.log(props.navigation.state.params.courseId);
+  console.log('course.students');
+  console.log(course.students);
   const student = course.students.find((student) => student.id === props.navigation.state.params.studentId);
   return {
     ...props.navigation.state.params,

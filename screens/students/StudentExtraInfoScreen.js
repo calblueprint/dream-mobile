@@ -38,7 +38,10 @@ class StudentExtraInfoScreen extends React.Component {
   _handleEnrollStudent(student) {
     const successFunc = (responseData) => {
       this.props.enrollStudent(this.state.student, this.state.course_id)
-      this.props.navigation.goBack(this.state.parentKey);
+      this.props.navigation.navigate('ViewCourse', {
+        courseId: this.state.course_id, 
+        navbarColor: this.state.navbarColor,
+      });
       alert("Success!", "Student Successfully Enrolled")
     }
 
