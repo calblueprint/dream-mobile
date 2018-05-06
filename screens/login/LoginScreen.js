@@ -3,7 +3,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import actions from '../../actions';
 import I18n from '../../lib/i18n/i18n';
-
+import colors from '../../styles/colors';
 import StyledButton from '../../components/Button/Button';
 import { Button, ScrollView, Text, TextInput, View, Image, StyleSheet } from 'react-native';
 import { postRequest } from '../../lib/requests';
@@ -63,32 +63,30 @@ class LoginScreen extends React.Component {
 
   render() {
     return (
-      <View style={{flex: 1, alignItems: 'center'}}>
-        <Image
-        style={styles.bg}
-        source={require('../../img/log_in.png')}>
-          <View style={styles.container}>
-            <Text style={textStyles.titleSmallLight}>{I18n.t('email', {locale: this.props.locale})}</Text>
-            <TextInput style={styles.textInput}
-              autoCapitalize='none'
-              onChangeText={(text) => this.setState({email: text})}/>
-            <Text style={textStyles.titleSmallLight}>{I18n.t('password', {locale: this.props.locale})}</Text>
-            <TextInput style={styles.textInput}
-              onChangeText={(text) => this.setState({password: text})}
-              secureTextEntry/>
-          </View>
+      <View style={{flex: 1, alignItems: 'center', backgroundColor: colors.primaryYellow}}>
+        <View style={styles.container}>
+          <Text style={textStyles.titleSmallLight}>{I18n.t('email', {locale: this.props.locale})}</Text>
+          <TextInput style={styles.textInput}
+            autoCapitalize='none'
+            onChangeText={(text) => this.setState({email: text})}/>
+          <Text style={textStyles.titleSmallLight}>{I18n.t('password', {locale: this.props.locale})}</Text>
+          <TextInput style={styles.textInput}
+            onChangeText={(text) => this.setState({password: text})}
+            secureTextEntry/>
+          
+        </View>
+        <View style={styles.buttons}>
           <StyledButton
             onPress={this._attemptLogin.bind(this)}
             text={I18n.t('login', {locale: this.props.locale})}
             whiteButtonLarge>
           </StyledButton>
-
           <StyledButton
             onPress={() => this.props.navigation.navigate('SignUp')}
             text={I18n.t('signup', {locale: this.props.locale})}
             whiteButtonOutlineLarge>
           </StyledButton>
-        </Image>
+        </View>
       </View>
 
     );
@@ -151,9 +149,12 @@ const styles = StyleSheet.create({
 
   },
   container: {
-    marginRight: 40,
-    marginLeft: 40,
-    marginTop: 180,
+    marginRight: 32,
+    marginLeft: 32,
+    marginTop: 140,
+    alignSelf: 'stretch'
+  },
+  buttons: {
     alignSelf: 'stretch'
   }
 });

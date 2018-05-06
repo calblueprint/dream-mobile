@@ -65,7 +65,7 @@ export default class StyledButton extends React.Component {
 				<Button
 				  onPress={this.props.onPress}
 				  style={ buttonStyles.whiteButtonLarge } 
-				  textStyle={ textStyles.buttonTextYellow }
+				  textStyle={ textStyles.buttonTextDark }
 			  	>{this.props.text}</Button>
 			);
 		}
