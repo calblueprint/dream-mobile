@@ -39,6 +39,7 @@ class SignUpForm extends React.Component {
       first_name__c: t.String,
       last_name__c: t.String,
       phone_number_1__c: t.Number,
+      email: t.String,
       email__c: t.String,
       password: t.String,
       password_confimation: t.String,
@@ -60,13 +61,17 @@ class SignUpForm extends React.Component {
           label: 'Last Name',
         },
         phone_number_1__c: {
-          label: 'Phone'
+          label: 'Phone',
         },
         // dream_id: {
         //   label: 'Dream ID',
         // },
-        email__c: {
+        email: {
           label: 'Email',
+          autoCapitalize: 'none',
+        },
+        email__c: {
+          label: 'Email Confirmation',
           autoCapitalize: 'none',
         },
         password: {

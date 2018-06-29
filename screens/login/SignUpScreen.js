@@ -49,7 +49,7 @@ const fetchTeacher = (params, navigation) => {
   return (dispatch) => {
     dispatch(actions.requestTeacher(params));
     return postRequest(
-      APIRoutes.getTeachersPath(),
+      APIRoutes.signupPath(),
       (responseData) => {
         dispatch(actions.receiveTeacherSuccess(responseData));
         navigation.navigate('Courses');

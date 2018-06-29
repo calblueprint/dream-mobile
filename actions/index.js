@@ -44,19 +44,6 @@ let actions = {
     }
   },
 
-  // USER
-  requestUser: () => {
-    return {
-      type: types.REQUEST_USER,
-    }
-  },
-  receiveUserSuccess: (user) => {
-    return {
-      type: types.RECEIVE_USER_SUCCESS,
-      user
-    }
-  },
-
   // TEACHERS
   requestTeacher: () => {
     return {
