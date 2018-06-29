@@ -193,7 +193,7 @@ export const HomeStack = StackNavigator({
 export class APIRoutes {
   // Use to build api routes
   static createRoute(route)           { return `/api/${route}` }
-  static deviseRoute(route)           { return `/teachers/${route}` }
+  static deviseRoute(route)           { return `/users/${route}` }
 
   // Courses
   static getCoursesPath()             { return APIRoutes.createRoute(`courses`) }
@@ -202,6 +202,7 @@ export class APIRoutes {
   static getTeachersPath(id)          { return APIRoutes.createRoute(`courses/${id}/teachers`) }
 
   //Teachers
+  static getTeachersPath()            { return APIRoutes.createRoute(`teachers`) }
   static getTeacherPath(id)           { return APIRoutes.createRoute(`teachers/${id}`) }
   static getTeacherCoursesPath(id)    { return APIRoutes.createRoute(`teachers/${id}/courses`) }
 

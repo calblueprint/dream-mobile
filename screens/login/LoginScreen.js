@@ -27,7 +27,7 @@ class LoginScreen extends React.Component {
 
   _attemptLogin() {
     const params = {
-      teacher: {
+      user: {
         email: this.state.email,
         password: this.state.password,
       }
