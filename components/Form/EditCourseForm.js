@@ -99,6 +99,7 @@ class EditCourseForm extends React.Component {
       title__c: t.String,
       facilitator_1__c: t.String,
       facilitator_2__c: t.maybe(t.String),
+      program__c: t.String,
       start_date__c: t.Date,
       end_date__c: t.Date,
     });
@@ -121,6 +122,9 @@ class EditCourseForm extends React.Component {
         facilitator_2__c: {
           label: 'Teacher Email 2 (optional)',
           autoCapitalize: 'none',
+        },
+        program__c: {
+          label: 'Program',
         },
         start_date__c: {
           label: 'Start Date',
