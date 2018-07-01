@@ -53,11 +53,11 @@ class EditCourseScreen extends React.Component {
       return (
         <EditCourseForm
           is_active={navProps.is_active}
-          title={navProps.title}
-          teacher1={navProps.teacher1}
-          teacher2={navProps.teacher2}
-          start_date={navProps.start_date}
-          end_date={navProps.end_date}
+          title__c={navProps.title__c}
+          facilitator_1__c={navProps.facilitator_1__c}
+          facilitator_2__c={navProps.facilitator_2__c}
+          start_date={navProps.start_date__c}
+          end_date={navProps.end_date__c}
           sessionList={navProps.sessions}
           onSaveCourse={this._handleUpdateCourse} />
       );

@@ -78,15 +78,15 @@ class EditCourseForm extends React.Component {
   _getInitialFormValues() {
     let values = {
       is_active: this.props.is_active,
-      title: this.props.title,
-      teacher_id1: this.props.teacher1,
-      teacher_id2: this.props.teacher2,
+      title__c: this.props.title__c,
+      facilitator_1__c: this.props.facilitator_1__c,
+      facilitator_2__c: this.props.facilitator_2__c,
     };
-    if (this.props.start_date) {
-      values.start_date = new Date(this.props.start_date)
+    if (this.props.start_date__c) {
+      values.start_date__c = new Date(this.props.start_date__c)
     }
-    if (this.props.start_date) {
-      values.end_date = new Date(this.props.end_date)
+    if (this.props.start_date__c) {
+      values.end_date__c = new Date(this.props.end_date__c)
     }
     return values
   }
@@ -96,11 +96,11 @@ class EditCourseForm extends React.Component {
    */
   _getFormType() {
     return t.struct({
-      title: t.String,
-      teacher_id1: t.Number,
-      teacher_id2: t.maybe(t.Number),
-      start_date: t.Date,
-      end_date: t.Date,
+      title__c: t.String,
+      facilitator_1__c: t.String,
+      facilitator_2__c: t.maybe(t.String),
+      start_date__c: t.Date,
+      end_date__c: t.Date,
     });
   }
 
@@ -111,19 +111,26 @@ class EditCourseForm extends React.Component {
     return {
       error: this.state.errors,
       fields: {
-        teacher_id1: {
-          label: 'Teacher ID 1',
+        title__c: {
+          label: 'Title',
         },
-        teacher_id2: {
-          label: 'Teacher ID 2 (optional)',
+        facilitator_1__c: {
+          label: 'Teacher Email 1',
+          autoCapitalize: 'none',
         },
-        start_date: {
+        facilitator_2__c: {
+          label: 'Teacher Email 2 (optional)',
+          autoCapitalize: 'none',
+        },
+        start_date__c: {
+          label: 'Start Date',
           mode:'date',
           config: {
             format:dateFormat,
           }
         },
-        end_date: {
+        end_date__c: {
+          label: 'End Date',
           mode:'date',
           config: {
             format:dateFormat,
