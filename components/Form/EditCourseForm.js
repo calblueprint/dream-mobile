@@ -156,7 +156,7 @@ class EditCourseForm extends React.Component {
    */
   _onFormChange(values) {
     const today = new Date();
-    if (values.end_date && values.end_date < today) {
+    if (values.end_date__c && values.end_date__c < today) {
       values.is_active = false
     } else {
       values.is_active = true

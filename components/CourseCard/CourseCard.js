@@ -41,7 +41,7 @@ class CourseCard extends React.Component {
           </View>
           <View style={cardStyles.bottomContainer}>
             <StyledButton
-              onPress={() => this.props.onTakeAttendance(this.props.course_id, this.props.title)}
+              onPress={() => this.props.onTakeAttendance(this.props.course_id, this.props.title__c)}
               text='Take Attendance'
               clearButtonSmall>
             </StyledButton>
