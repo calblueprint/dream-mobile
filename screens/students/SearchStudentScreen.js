@@ -21,8 +21,8 @@ class SearchStudentScreen extends React.Component {
   }
 
   _handleSearchStudent(params) {
-    params.first_name = params.student.first_name;
-    params.last_name = params.student.last_name;
+    params.first_name__c = params.student.first_name__c;
+    params.last_name__c = params.student.last_name__c;
     const successFunc = (responseData) => {
       this.setState({students: responseData});
       this.props.navigation.navigate('SearchStudentResults', {

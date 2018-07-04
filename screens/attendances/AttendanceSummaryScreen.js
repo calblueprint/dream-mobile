@@ -48,7 +48,7 @@ class AttendanceSummaryScreen extends React.Component {
   _getStudentName(index) {
     const student = this.props.students[index]
     if (student) {
-      return `${student.first_name} ${student.last_name}`
+      return `${student.first_name__c} ${student.last_name__c}`
     }
   }
 

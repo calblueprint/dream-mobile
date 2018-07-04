@@ -43,7 +43,7 @@ class AttendanceScreen extends React.Component {
   _getStudentName(id) {
     const student = this.props.students.find((student) => {return student.id === id})
     if (student) {
-      return `${student.first_name} ${student.last_name}`
+      return `${student.first_name__c} ${student.last_name__c}`
     }
   }
 

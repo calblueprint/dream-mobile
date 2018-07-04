@@ -37,12 +37,12 @@ class StudentPersonalDetailsForm extends React.Component {
   _getInitialFormValues() {
     if (!this.props.newStudent) {
       return ({
-        first_name: this.props.first_name,
-        last_name: this.props.last_name,
-        birthday: this.props.birthday,
-        nickname: this.props.nickname,
-        is_active: this.props.is_active,
-        sex: this.props.sex
+        first_name__c: this.props.first_name__c,
+        last_name__c: this.props.last_name__c,
+        date_of_birth__c: this.props.date_of_birth__c,
+        nickname__c: this.props.nickname__c,
+        // is_active: this.props.is_active,
+        sex__c: this.props.sex__c
       });
     }
   }
@@ -52,15 +52,15 @@ class StudentPersonalDetailsForm extends React.Component {
    */
   _getFormType() {
     return t.struct({
-      first_name: t.String,
-      last_name: t.String,
-      nickname: t.maybe(t.String),
-      is_active: t.maybe(t.enums({
-        Yes: "Yes",
-        No: "No",
-      })),
-      birthday: t.String,
-      sex: t.maybe(t.enums({
+      first_name__c: t.String,
+      last_name__c: t.String,
+      nickname__c: t.maybe(t.String),
+      // is_active: t.maybe(t.enums({
+      //   Yes: "Yes",
+      //   No: "No",
+      // })),
+      date_of_birth__c: t.String,
+      sex__c: t.maybe(t.enums({
         Female: 'Female',
         Male: 'Male'
       })),
@@ -74,22 +74,22 @@ class StudentPersonalDetailsForm extends React.Component {
     return {
       error: this.state.errors,
       fields: {
-        first_name: {
+        first_name__c: {
           label: '*First Name'
         },
-        last_name: {
+        last_name__c: {
           label: '*Last Name'
         },
-        nickname: {
+        nickname__c: {
           label: 'Nickname'
         },
-        is_active: {
-          label: 'Active Participant?'
-        },
-        birthday: {
+        // is_active: {
+        //   label: 'Active Participant?'
+        // },
+        date_of_birth__c: {
           label: '*Birthday'
         },
-        sex: {
+        sex__c: {
           label: 'Sex'
         },
       },
