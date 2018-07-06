@@ -38,8 +38,8 @@ class StudentProfilePreviewScreen extends React.Component {
     }
 
     const p = {
-      student_id: this.state.studentId,
-      course_id: this.state.course_id
+      student__c: this.state.studentId,
+      class__c: this.state.course_id
     }
 
     postRequest(APIRoutes.getCoursesStudentsPath(), successFunc, standardError, params=p);

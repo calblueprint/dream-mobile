@@ -35,15 +35,16 @@ class StudentContactInfoForm extends React.Component {
   }
 
   _getInitialFormValues() {
+    console.log(this.props)
     if (!this.props.newStudent) {
       return ({
         direccion__c: this.props.direccion__c,
-        Contacto_Primario_Name__c: this.props.primary_contact,
-        Contacto_Primario_Phone__c: this.props.primary_contact_phone,
+        contacto_primario_name__c: this.props.contacto_primario_name__c,
+        contacto_primario_phone__c: this.props.contacto_primario_phone__c,
         usuario_de_facebook__c: this.props.usuario_de_facebook__c,
-        phone_number_1__c: this.props.phone,
-        phone_number_2__c: this.props.phone_2,
-        email__c: this.props.email
+        phone_number_1__c: this.props.phone_number_1__c,
+        phone_number_2__c: this.props.phone_number_2__c,
+        email__c: this.props.email__c
       });
     }
   }
@@ -58,8 +59,8 @@ class StudentContactInfoForm extends React.Component {
       phone_number_2__c: t.maybe(t.String),
       usuario_de_facebook__c: t.maybe(t.String),
       email__c: t.maybe(t.String),
-      Contacto_Primario_Name__c: t.maybe(t.String),
-      Contacto_Primario_Phone__c: t.maybe(t.String)
+      contacto_primario_name__c: t.maybe(t.String),
+      contacto_primario_phone__c: t.maybe(t.String)
     });
   }
 
@@ -83,12 +84,13 @@ class StudentContactInfoForm extends React.Component {
           label: 'Name on Facebook'
         },
         email__c: {
-          label: 'Email'
+          label: 'Email',
+          autoCapitalize: 'none'
         },
-        Contacto_Primario_Name__c: {
+        contacto_primario_name__c: {
           label: 'Primary Contact Name'
         },
-        Contacto_Primario_Phone__c: {
+        contacto_primario_phone__c: {
           label: 'Primary Contact Phone Number'
         },
       },

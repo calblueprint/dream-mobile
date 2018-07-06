@@ -42,8 +42,8 @@ class StudentProfileScreen extends React.Component {
 
   _deleteEnrollment() {
     var params = {
-        student_id: this.state.studentId,
-        course_id: this.state.courseId
+        student__c: this.state.studentId,
+        class__c: this.state.courseId
     }
     const successFunc = (responseData) => {
       // this.props.navigation.state.params.refreshStudents();
@@ -85,8 +85,7 @@ class StudentProfileScreen extends React.Component {
                         refreshStudent: this._fetchStudent(this.state.studentId), 
                         newStudent: false, 
                         student: this.state.student, 
-                        navbarColor: this.state.navbarColor
-                      })}
+                        navbarColor: this.state.navbarColor})}
                       text='Edit'
                       noPaddingPrimaryButtonSmall
                     />
@@ -141,7 +140,7 @@ class StudentProfileScreen extends React.Component {
                       onPress={() => navigate('StudentContactInfo', {
                         refreshStudent: this._fetchStudent(this.state.studentId), 
                         newStudent: false, 
-                        student: this.state.student,
+                        student: this.state.student, 
                         navbarColor: this.state.navbarColor})}
                       text='Edit'
                       noPaddingPrimaryButtonSmall
@@ -192,7 +191,7 @@ class StudentProfileScreen extends React.Component {
             Primary Contact Name
             </Text>
             <Text style={textStyles.body}>
-            {this.state.student.Contacto_Primario_Name__c}
+            {this.state.student.contacto_primario_name__c}
             </Text>
           </View>
         
@@ -201,7 +200,7 @@ class StudentProfileScreen extends React.Component {
             Primary Contact Phone Number
             </Text>
             <Text style={textStyles.body}>
-            {this.state.student.Contacto_Primario_Phone__c}
+            {this.state.student.contacto_primario_phone__c}
             </Text>
           </View>
 

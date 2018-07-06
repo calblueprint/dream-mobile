@@ -125,7 +125,7 @@ class ViewCourseScreen extends React.Component {
     const successFunc = (responseData) => {
       this.setState({ students: responseData, isLoading: false });
     }
-
+    
     getRequest(APIRoutes.getStudentsInCoursePath(this.state.course_id), successFunc, standardError);
   }
 

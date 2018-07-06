@@ -16,7 +16,7 @@ class SearchResultCard extends React.Component {
   constructor(props) {
     super(props);
   }
-
+  
   render() {
     return (
       <TouchableHighlight onPress={() => this.props.onSelectStudent(this.props.student.id)}
@@ -39,10 +39,10 @@ class SearchResultCard extends React.Component {
               </Text>
             </View>
             <Text style={[textStyles.titleSmall]}>
-              Birthday: {this.props.student.Date_of_Birth__c}
+              Birthday: {this.props.student.date_of_birth__c}
             </Text>
             <Text style={[textStyles.titleSmall]}>
-              Address: {this.props.student.Direccion__c}
+              Address: {this.props.student.direccion__c}
             </Text>
           </View>
           <View style={{

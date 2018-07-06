@@ -35,6 +35,7 @@ class StudentPersonalDetailsForm extends React.Component {
   }
 
   _getInitialFormValues() {
+    console.log(this.props)
     if (!this.props.newStudent) {
       return ({
         first_name__c: this.props.first_name__c,

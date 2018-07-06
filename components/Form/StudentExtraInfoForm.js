@@ -37,11 +37,11 @@ class StudentExtraInfoForm extends React.Component {
   _getInitialFormValues() {
     if (!this.props.newStudent) {
       return ({
-        notes: this.props.notes,
-        document_type: this.props.document_type,
-        level: this.props.level,
-        primary_language: this.props.primary_language,
-        past_dream_participant: this.props.past_dream_participant
+        notes__c: this.props.notes__c,
+        tipo_de_documento__c: this.props.tipo_de_documento__c,
+        // level: this.props.level,
+        idioma_principal__c: this.props.idioma_principal__c,
+        // past_dream_participant: this.props.past_dream_participant
       });
     }
   }
@@ -51,8 +51,8 @@ class StudentExtraInfoForm extends React.Component {
    */
   _getFormType() {
     return t.struct({
-      notes: t.maybe(t.String),
-      document_type: t.maybe(t.enums({
+      notes__c: t.maybe(t.String),
+      tipo_de_documento__c: t.maybe(t.enums({
         None: 'None', 
         'Govt. ID card': 'Govt. ID card', 
         'Passport or foreign birth certificate': 'Passport or foreign birth certificate', 
@@ -60,22 +60,22 @@ class StudentExtraInfoForm extends React.Component {
         'Dominican birth certificate': 'Dominican birth certificate', 
         'Dominican birth cetificate that says foreigner': 'Dominican birth cetificate that says foreigner'
       })),
-      level: t.maybe(t.enums({
-        Maternal: 'Maternal', 
-        Kinder: 'Kinder', 
-        'Pre-Primaria': 'Pre-Primaria', 
-        Primero: 'Primero', 
-        Segundo: 'Segundo'
-      })),
-      primary_language: t.maybe(t.enums({
+      // level: t.maybe(t.enums({
+      //   Maternal: 'Maternal', 
+      //   Kinder: 'Kinder', 
+      //   'Pre-Primaria': 'Pre-Primaria', 
+      //   Primero: 'Primero', 
+      //   Segundo: 'Segundo'
+      // })),
+      idioma_principal__c: t.maybe(t.enums({
         Spanish: 'Spanish', 
         Creole: 'Creole', 
         Other: 'Other'
-      })),
-      past_dream_participant: t.maybe(t.enums({
-        Yes : "Yes",
-        No : "No"
       }))
+      // past_dream_participant: t.maybe(t.enums({
+      //   Yes : "Yes",
+      //   No : "No"
+      // }))
     });
   }
 
@@ -86,21 +86,21 @@ class StudentExtraInfoForm extends React.Component {
     return {
       error: this.state.errors,
       fields: {
-        document_type: {
+        tipo_de_documento__c: {
           label: 'Document Type'
         },
-        notes: {
+        notes__c: {
           label: 'Notes'
         },
-        level: {
-          label: 'Level'
-        },
-        primary_language: {
+        // level: {
+        //   label: 'Level'
+        // },
+        idioma_principal__c: {
           label: 'Primary Language'
         },
-        past_dream_participant: {
-          label: 'Participated in DREAM before?'
-        },
+        // past_dream_participant: {
+        //   label: 'Participated in DREAM before?'
+        // },
       },
     };
   }

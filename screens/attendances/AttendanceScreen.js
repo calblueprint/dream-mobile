@@ -197,8 +197,8 @@ const createNewAttendance = (studentId, courseId, date) => {
     comment: null,
     date: date,
     attendance_type: 0,
-    student_id: studentId,
-    course_id: courseId,
+    student__c: studentId,
+    class__c: courseId,
     isChanged: true,
   }
 }

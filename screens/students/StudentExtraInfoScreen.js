@@ -74,11 +74,11 @@ class StudentExtraInfoScreen extends React.Component {
       return (
          <View>
          <StudentExtraInfoForm
-            notes={navProps.notes}
-            document_type={navProps.document_type}
-            level={navProps.level}
-            primary_language={navProps.primary_language}
-            past_dream_participant={navProps.past_dream_participant}
+            notes__c={navProps.notes__c}
+            tipo_de_documento__c={navProps.tipo_de_documento__c}
+            // level={navProps.level}
+            idioma_principal__c={navProps.idioma_principal__c}
+            // past_dream_participant={navProps.past_dream_participant}
             newStudent={this.state.newStudent}
             onSaveStudent={this._handleUpdateStudent} 
             />
