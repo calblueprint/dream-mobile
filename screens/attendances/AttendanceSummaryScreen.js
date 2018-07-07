@@ -32,7 +32,7 @@ class AttendanceSummaryScreen extends React.Component {
     */
   _filterAttendances(type) {
     const filteredStudents = this.props.attendances.reduce((result, attendance, i) => {
-      if (attendance.attendance_type == type) {
+      if (attendance.attendance_type__c == type) {
         result.push({key: this._getStudentName(i)});
       }
       return result;

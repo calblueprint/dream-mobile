@@ -6,7 +6,6 @@ import { frontendError } from '../../lib/alerts';
 import { textStyles } from '../../styles/textStyles';
 import { commonStyles } from '../../styles/styles';
 
-
 import { Form, t } from '../../components/Form/Form';
 import { formStyles } from '../../components/Form/styles.js';
 import StyledButton from '../../components/Button/Button';
@@ -35,7 +34,6 @@ class StudentPersonalDetailsForm extends React.Component {
   }
 
   _getInitialFormValues() {
-    console.log(this.props)
     if (!this.props.newStudent) {
       return ({
         first_name__c: this.props.first_name__c,

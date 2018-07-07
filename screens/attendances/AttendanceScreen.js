@@ -61,7 +61,7 @@ class AttendanceScreen extends React.Component {
   _saveComment(index, comment) {
     const attendances = this.state.attendances;
     const attendance = this.state.attendances[index];
-    attendance.comment = comment;
+    attendance.notes__c = comment;
     attendance.isChanged = true;
     attendances[index] = attendance;
     this.setState({ attendances: attendances });
@@ -75,7 +75,7 @@ class AttendanceScreen extends React.Component {
     return (value, label) => {
       const attendances = this.state.attendances;
       const attendance = this.state.attendances[index];
-      attendance.attendance_type = value;
+      attendance.attendance_type__c = value;
       attendance.isChanged = true;
       attendances[index] = attendance;
       this.setState({ attendances: attendances });
@@ -103,7 +103,7 @@ class AttendanceScreen extends React.Component {
         <AttendanceCard key={i}
           attendance={attendance}
           index={i}
-          name={this._getStudentName(attendance.student_id)}
+          name={this._getStudentName(attendance.student__c)}
           setModal={this._setModal.bind(this)}
           setType={this._setType.bind(this)} />
       );
@@ -168,7 +168,7 @@ class AttendanceScreen extends React.Component {
             attendances: this.state.attendances,
             students: this.props.students,
             courseTitle: this.props.courseTitle,
-            date: this.props.date,
+            start_date__c: this.props.date,
             parentKey: this.props.navigation.state.key,
             courseId: this.props.courseId,
           })}
@@ -194,9 +194,9 @@ const styles = StyleSheet.create({
 const createNewAttendance = (studentId, courseId, date) => {
   return {
     id: -1,
-    comment: null,
-    date: date,
-    attendance_type: 0,
+    notes__c: null,
+    start_date__c: date,
+    attendance_type__c: 0,
     student__c: studentId,
     class__c: courseId,
     isChanged: true,

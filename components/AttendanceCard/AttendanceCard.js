@@ -40,11 +40,11 @@ class AttendanceCard extends React.Component {
     return(
       <Dropdown
         onSelect={this.props.setType(this.props.index)}
-        value={this.props.attendance.attendance_type}
-        defaultText={optionsAbbrev[this.props.attendance.attendance_type]}
+        value={this.props.attendance.attendance_type__c}
+        defaultText={optionsAbbrev[this.props.attendance.attendance_type__c]}
         options={options}
         styles={attendanceButtonStyles}
-        optionsColor={optionsColor[this.props.attendance.attendance_type]}
+        optionsColor={optionsColor[this.props.attendance.attendance_type__c]}
         />
     )
   }
@@ -70,7 +70,7 @@ class AttendanceCard extends React.Component {
     return (
       <View style={styles.container}>
         <View style={styles.nameContainer}>
-          <Text style={textStyles.body}>{this.props.name}</Text>
+          <Text style={textStyles.body}>{this.props.attendance.student_name__c}</Text>
         </View>
         <View style={styles.spaceContainer}>
         </View>
@@ -78,9 +78,9 @@ class AttendanceCard extends React.Component {
           {this.renderSelect()}
           <TouchableHighlight
             style={styles.commentButtonOuter}
-            onPress={() => this.props.setModal(this.props.index, this.props.attendance.comment)}
+            onPress={() => this.props.setModal(this.props.index, this.props.attendance.notes__c)}
             underlayColor='transparent'>
-            {this.renderCommentButton(this.props.attendance.comment)}
+            {this.renderCommentButton(this.props.attendance.notes__c)}
           </TouchableHighlight>
         </View>
       </View>
@@ -90,7 +90,6 @@ class AttendanceCard extends React.Component {
 
 AttendanceCard.propTypes = {
   attendance: React.PropTypes.object.isRequired,
-  name: React.PropTypes.string.isRequired,
   index: React.PropTypes.number.isRequired,
   setModal: React.PropTypes.func.isRequired,
   setType: React.PropTypes.func.isRequired,

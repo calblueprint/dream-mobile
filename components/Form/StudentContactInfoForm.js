@@ -35,7 +35,6 @@ class StudentContactInfoForm extends React.Component {
   }
 
   _getInitialFormValues() {
-    console.log(this.props)
     if (!this.props.newStudent) {
       return ({
         direccion__c: this.props.direccion__c,
