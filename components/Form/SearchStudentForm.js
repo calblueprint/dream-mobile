@@ -30,8 +30,8 @@ class SearchStudentForm extends React.Component {
 
   _getInitialFormValues() {
     let values = {
-      first_name__c: this.props.first_name__c,
-      last_name__c: this.props.last_name__c,
+      first_name__c: "",
+      last_name__c: "",
     }
     return values
   }
