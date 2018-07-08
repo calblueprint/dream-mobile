@@ -130,7 +130,7 @@ class AttendanceScreen extends React.Component {
       return (
         <SimpleModal
           onClosed={cancelCallback}
-          title={this._getStudentName(this.state.modalIndex)}
+          title={this.state.attendances[this.state.modalIndex].student_name__c}
           buttons={buttons}
           visible={this.state.modalIndex !== -1}>
           <View>

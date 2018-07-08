@@ -20,7 +20,6 @@ import { monthYearDate } from '../../lib/date';
 class PastAttendancesScreen extends React.Component {
   constructor(props) {
     super(props);
-    console.log(this.props.navigation.state.params.courseTitle)
     today = new Date();
     this.state = {
       courseId : this.props.navigation.state.params.courseId,
