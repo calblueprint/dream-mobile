@@ -256,6 +256,7 @@ class ViewCourseScreen extends React.Component {
               <StyledButton
                 onPress={() => navigate('Attendances', {
                   courseId: this.state.course.id,
+                  courseTitle: this.state.course.title__c,
                   date: attendanceDate(new Date()),
                 })}
                 text="Take Attendance"
@@ -264,7 +265,8 @@ class ViewCourseScreen extends React.Component {
               />
               <StyledButton
                 onPress={() => navigate('RecentAttendances',
-                  { courseId: this.state.course.id})}
+                  { courseId: this.state.course.id,
+                    courseTitle: this.state.course.title__c})}
                 text="View Past Attendance"
                 secondaryButtonLarge
               />

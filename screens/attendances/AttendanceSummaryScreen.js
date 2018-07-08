@@ -220,7 +220,7 @@ class AttendanceSummaryScreen extends React.Component {
         <ScrollView>
           <View style={styles.summaryContainer}>
             <View style={commonStyles.header}>
-              <Text style={textStyles.titleSmall}>{this.props.date}</Text>
+              <Text style={textStyles.titleSmall}>{this.props.start_date__c}</Text>
               <Text style={textStyles.titleLarge}>{this.props.courseTitle}</Text>
             </View>
             {this._renderSummary()}
@@ -228,7 +228,7 @@ class AttendanceSummaryScreen extends React.Component {
         </ScrollView>
         <StyledButton
           onPress={() => this.props.syncAttendances(
-            this.props.attendances, this.props.courseId, this.props.date)}
+            this.props.attendances, this.props.courseId, this.props.start_date__c)}
           text='Sync'
           primaryButtonLarge
         >

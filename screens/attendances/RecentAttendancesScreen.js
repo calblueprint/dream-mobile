@@ -23,8 +23,10 @@ class RecentAttendancesScreen extends React.Component {
     */
     _handleSelectDate(date) {
       var courseId = this.props.navigation.state.params.courseId
+      var courseTitle = this.props.navigation.state.params.courseTitle
       this.props.navigation.navigate('Attendances', {
         courseId: courseId,
+        courseTitle: courseTitle,
         date: date,
       });
     }
@@ -59,7 +61,8 @@ class RecentAttendancesScreen extends React.Component {
         </View>
         <StyledButton
           onPress={() => navigate('PastAttendances',
-            { courseId: courseId})}
+            { courseId: courseId,
+              courseTitle: this.props.navigation.state.params.courseTitle})}
           text="View By Month"
           primaryButtonLarge
         />

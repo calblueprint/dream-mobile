@@ -63,6 +63,7 @@ class CoursesScreen extends React.Component {
 
     this.props.navigation.navigate('ViewCourse', {
       refreshCourses: this.props.fetchCourses,
+      courseTitle: this.props.courses[0].title__c,
       course_id: courseId, 
       navbarColor: colorList[colorKey]
     });
@@ -72,6 +73,7 @@ class CoursesScreen extends React.Component {
     const date = attendanceDate(new Date());
     this.props.navigation.navigate('Attendances', {
       courseId: courseId,
+      courseTitle: this.props.courses[0].title__c,
       date: date,
     });
   }

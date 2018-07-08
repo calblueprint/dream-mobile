@@ -158,7 +158,7 @@ class AttendanceScreen extends React.Component {
           <View style={styles.attendancesContainer}>
             <View style={commonStyles.header}>
               <Text style={textStyles.titleSmall}>{this.props.date}</Text>
-              <Text style={textStyles.titleLarge}>{this.props.courseTitle}</Text>
+              <Text style={textStyles.titleLarge}>{this.props.navigation.state.params.courseTitle}</Text>
             </View>
             {this._renderAttendances()}
           </View>
@@ -167,7 +167,7 @@ class AttendanceScreen extends React.Component {
           onPress={() => navigate('AttendanceSummary', {
             attendances: this.state.attendances,
             students: this.props.students,
-            courseTitle: this.props.courseTitle,
+            courseTitle: this.props.navigation.state.params.courseTitle,
             start_date__c: this.props.date,
             parentKey: this.props.navigation.state.key,
             courseId: this.props.courseId,
