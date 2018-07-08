@@ -132,7 +132,7 @@ class StudentExtraInfoForm extends React.Component {
     let button = this.props.newStudent? (
       <StyledButton
         onPress={this._handleSaveStudent}
-        text='Create & Enroll Student'
+        text='Create Student'
         primaryButtonLarge>
       </StyledButton>
     ) : (
