@@ -9,7 +9,7 @@ import CreateCourseForm from '../../components/Form/CreateCourseForm'
 import { postRequest, putRequest, deleteRequest } from '../../lib/requests';
 import { standardError } from '../../lib/alerts';
 
-class EditCourseScreen extends React.Component {
+class CreateCourseScreen extends React.Component {
   constructor(props) {
     super(props);
     this._onSuccess = this._onSuccess.bind(this);
@@ -24,7 +24,6 @@ class EditCourseScreen extends React.Component {
    * Displays success toaster and navigates back to previous screen.
    */
   _onSuccess(response) {
-    this.props.navigation.state.params.refreshCourses(this.props.navigation.state.params.teacher);
     this.props.navigation.goBack(null);
   }
 
@@ -45,17 +44,11 @@ class EditCourseScreen extends React.Component {
   render() {
     const navProps = this.props.navigation.state.params;
     return (
-      <EditCourseForm
-        is_active={navProps.is_active}
-        title__c={navProps.title__c}
-        facilitator_1__c={navProps.facilitator_1__c}
-        facilitator_2__c={navProps.facilitator_2__c}
-        start_date__c={navProps.start_date__c}
-        end_date__c={navProps.end_date__c}
+      <CreateCourseForm
         sessionList={navProps.sessions}
-        onSaveCourse={this._handleUpdateCourse} />
+        onSaveCourse={this._handleCreateCourse} />
     );
   }
 }
 
-export default EditCourseScreen;
+export default CreateCourseScreen;
