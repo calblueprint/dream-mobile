@@ -69,12 +69,13 @@ class CoursesScreen extends React.Component {
     });
   }
 
-  _handleTakeAttendance(courseId, title) {
+  _handleTakeAttendance(courseId, title, students) {
     const date = attendanceDate(new Date());
     this.props.navigation.navigate('Attendances', {
       courseId: courseId,
       courseTitle: this.props.courses[0].title__c,
       date: date,
+      students: students,
     });
   }
 
@@ -98,6 +99,7 @@ class CoursesScreen extends React.Component {
         index={i}
         course_id={course.id}
         title__c={course.title__c}
+        students={course.students}
         onSelectCourse={this._handleSelectCourse}
         onTakeAttendance={this._handleTakeAttendance}
         numStudents={course.students ? course.students.length : 0}

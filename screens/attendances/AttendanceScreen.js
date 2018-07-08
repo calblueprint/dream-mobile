@@ -23,6 +23,7 @@ class AttendanceScreen extends React.Component {
       attendances: this.props.attendances ? this.props.attendances : [],
       modalIndex: -1,
       modalComment: null,
+      _getStudentName: this._getStudentName.bind(this),
     }
 
     this._saveComment = this._saveComment.bind(this);
@@ -89,7 +90,7 @@ class AttendanceScreen extends React.Component {
   _setModal(index, comment) {
     this.setState({
       modalIndex: index,
-      modalComment: comment
+      modalComment: comment,
     });
   }
 
@@ -97,7 +98,6 @@ class AttendanceScreen extends React.Component {
     * Renders AttendanceCard for each attendance object
     */
   _renderAttendances() {
-
     return this.state.attendances.map((attendance, i) => {
       return(
         <AttendanceCard key={i}
@@ -126,11 +126,15 @@ class AttendanceScreen extends React.Component {
       this._saveComment(this.state.modalIndex, this.state.modalComment);
     };
     const buttons = [{ title: 'Save', callback: saveCallback, type: 'primary'},{title: 'Cancel', callback: cancelCallback, type: 'secondary'}]
+
+    console.log(this.state)
     if (this.state.modalIndex !== -1) {
+      const new_title = this.state.attendances[this.state.modalIndex].student_name__c ? this.state.attendances[this.state.modalIndex].student_name__c : this.state._getStudentName(this.state.attendances[this.state.modalIndex].student__c);
+      console.log(new_title)
       return (
         <SimpleModal
           onClosed={cancelCallback}
-          title={this.state.attendances[this.state.modalIndex].student_name__c}
+          title={new_title}
           buttons={buttons}
           visible={this.state.modalIndex !== -1}>
           <View>

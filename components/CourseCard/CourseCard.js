@@ -30,6 +30,7 @@ class CourseCard extends React.Component {
     }
     const colorKey = this.props.index % 5
     let syncText = this.props.synced ? "" : "Not Synced"
+    
     return (
       <TouchableHighlight onPress={() => this.props.onSelectCourse(this.props.course_id, colorKey)}
       underlayColor='transparent'>
@@ -41,7 +42,7 @@ class CourseCard extends React.Component {
           </View>
           <View style={cardStyles.bottomContainer}>
             <StyledButton
-              onPress={() => this.props.onTakeAttendance(this.props.course_id, this.props.title__c)}
+              onPress={() => this.props.onTakeAttendance(this.props.course_id, this.props.title__c, this.props.students)}
               text='Take Attendance'
               clearButtonSmall>
             </StyledButton>

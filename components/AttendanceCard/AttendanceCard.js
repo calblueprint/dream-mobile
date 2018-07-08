@@ -69,9 +69,15 @@ class AttendanceCard extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <View style={styles.nameContainer}>
-          <Text style={textStyles.body}>{this.props.attendance.student_name__c}</Text>
-        </View>
+        {this.props.name ? (
+          <View style={styles.nameContainer}>
+            <Text style={textStyles.body}>{this.props.name}</Text>
+          </View>
+        ) : (
+          <View style={styles.nameContainer}>
+            <Text style={textStyles.body}>{this.props.attendance.student_name__c}</Text>
+          </View>
+        )}
         <View style={styles.spaceContainer}>
         </View>
         <View style={styles.leftContainer}>

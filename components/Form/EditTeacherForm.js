@@ -41,7 +41,7 @@ class EditTeacherForm extends React.Component {
       first_name__c: this.props.teacher.first_name__c,
       last_name__c: this.props.teacher.last_name__c,
       // dream_id: this.props.teacher.dream_id,
-      email__c: this.props.teacher.email__c,
+      // email__c: this.props.teacher.email__c,
       phone_number_1__c: this.props.teacher.phone_number_1__c,
     };
     return values
@@ -55,7 +55,7 @@ class EditTeacherForm extends React.Component {
       first_name__c: t.String,
       last_name__c: t.String,
       // dream_id: t.Number,
-      email__c: t.String,
+      // email__c: t.String,
       phone_number_1__c: t.String,
     });
   }
@@ -76,9 +76,9 @@ class EditTeacherForm extends React.Component {
         // dream_id: {
         //   label: 'Dream ID',
         // },
-        email__c: {
-          label: 'Email',
-        },
+        // email__c: {
+        //   label: 'Email',
+        // },
         phone_number_1__c: {
           label: 'Phone',
         },
