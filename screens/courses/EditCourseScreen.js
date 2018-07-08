@@ -5,6 +5,7 @@ import { Form, InputField, PickerField,
 import { APIRoutes } from '../../config/routes';
 import PropTypes from 'prop-types';
 import EditCourseForm from '../../components/Form/EditCourseForm'
+import CreateCourseForm from '../../components/Form/CreateCourseForm'
 import { postRequest, putRequest, deleteRequest } from '../../lib/requests';
 import { standardError } from '../../lib/alerts';
 
@@ -45,7 +46,7 @@ class EditCourseScreen extends React.Component {
     const navProps = this.props.navigation.state.params;
     if (navProps.newCourse) {
       return (
-        <EditCourseForm
+        <CreateCourseForm
           sessionList={navProps.sessions}
           onSaveCourse={this._handleCreateCourse} />
       );
