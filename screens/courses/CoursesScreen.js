@@ -73,7 +73,7 @@ class CoursesScreen extends React.Component {
     const date = attendanceDate(new Date());
     this.props.navigation.navigate('Attendances', {
       courseId: courseId,
-      courseTitle: this.props.courses[0].title__c,
+      courseTitle: title,
       date: date,
       students: students,
     });

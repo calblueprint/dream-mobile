@@ -14,6 +14,7 @@ import Collapse from '../../components/Collapse';
 import SimpleModal from '../../components/SimpleModal';
 import colors from '../../styles/colors';
 import { standardError } from '../../lib/alerts';
+import { frontendError } from '../../lib/alerts';
 import constants from '../../lib/constants';
 
 class AttendanceSummaryScreen extends React.Component {
@@ -215,6 +216,23 @@ class AttendanceSummaryScreen extends React.Component {
     * Renders date, course title, attendance summary, sync button, and modal
     */
   _renderLoadedView() {
+    let syncButton;
+    if (this.props.students.length) {
+      syncButton = <StyledButton
+        onPress={() => this.props.syncAttendances(
+          this.props.attendances, this.props.courseId, this.props.start_date__c)}
+        text='Sync'
+        primaryButtonLarge
+      >
+      </StyledButton>
+    } else {
+      syncButton = <StyledButton
+        onPress={frontendError('There are no students currently enrolled.')}
+        text='Sync'
+        primaryButtonLarge
+      >
+      </StyledButton>
+    }
     return(
       <View style={commonStyles.containerStatic}>
         <ScrollView>
@@ -226,13 +244,7 @@ class AttendanceSummaryScreen extends React.Component {
             {this._renderSummary()}
           </View>
         </ScrollView>
-        <StyledButton
-          onPress={() => this.props.syncAttendances(
-            this.props.attendances, this.props.courseId, this.props.start_date__c)}
-          text='Sync'
-          primaryButtonLarge
-        >
-        </StyledButton>
+        {syncButton}
         {this._renderModal()}
       </View>
     )

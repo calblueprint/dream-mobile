@@ -6,6 +6,7 @@ import actions from '../../actions';
 
 import { commonStyles } from '../../styles/styles';
 import { textStyles } from '../../styles/textStyles';
+import colors from '../../styles/colors';
 import { APIRoutes } from '../../config/routes';
 import settings from '../../config/settings';
 import { getRequest, postRequestNoCatch } from '../../lib/requests';
@@ -127,10 +128,8 @@ class AttendanceScreen extends React.Component {
     };
     const buttons = [{ title: 'Save', callback: saveCallback, type: 'primary'},{title: 'Cancel', callback: cancelCallback, type: 'secondary'}]
 
-    console.log(this.state)
     if (this.state.modalIndex !== -1) {
       const new_title = this.state.attendances[this.state.modalIndex].student_name__c ? this.state.attendances[this.state.modalIndex].student_name__c : this.state._getStudentName(this.state.attendances[this.state.modalIndex].student__c);
-      console.log(new_title)
       return (
         <SimpleModal
           onClosed={cancelCallback}
@@ -156,33 +155,59 @@ class AttendanceScreen extends React.Component {
 
   render() {
     const { navigate } = this.props.navigation;
-    return(
-      <View style={commonStyles.containerStatic}>
-        <ScrollView>
-          <View style={styles.attendancesContainer}>
-            <View style={commonStyles.header}>
-              <Text style={textStyles.titleSmall}>{this.props.date}</Text>
-              <Text style={textStyles.titleLarge}>{this.props.navigation.state.params.courseTitle}</Text>
+    if (!this.props.students.length) {
+      return(
+        <View style={commonStyles.containerStatic}>
+          <ScrollView>
+            <View style={styles.attendancesContainer}>
+              <View style={commonStyles.header}>
+                <Text style={textStyles.titleSmall}>{this.props.date}</Text>
+                <Text style={textStyles.titleLarge}>{this.props.navigation.state.params.courseTitle}</Text>
+              </View>
             </View>
-            {this._renderAttendances()}
-          </View>
-        </ScrollView>
-        <StyledButton
-          onPress={() => navigate('AttendanceSummary', {
-            attendances: this.state.attendances,
-            students: this.props.students,
-            courseTitle: this.props.navigation.state.params.courseTitle,
-            start_date__c: this.props.date,
-            parentKey: this.props.navigation.state.key,
-            courseId: this.props.courseId,
-          })}
-          text='Submit'
-          primaryButtonLarge
-        >
-        </StyledButton>
-        {this._renderModal()}
-      </View>
-    )
+            <View style={viewStyles.noResults}>
+              <Image
+              style={viewStyles.img}
+              source={require('../../img/no_search.png')}/>
+              <Text style={[textStyles.titleMedium, {
+                marginTop: 16,
+                textAlign: 'center'
+              }]}>
+                No Students Currently Enrolled
+              </Text>
+            </View>
+          </ScrollView>
+        </View>
+      )
+    } else {
+      return(
+        <View style={commonStyles.containerStatic}>
+          <ScrollView>
+            <View style={styles.attendancesContainer}>
+              <View style={commonStyles.header}>
+                <Text style={textStyles.titleSmall}>{this.props.date}</Text>
+                <Text style={textStyles.titleLarge}>{this.props.navigation.state.params.courseTitle}</Text>
+              </View>
+              {this._renderAttendances()}
+            </View>
+          </ScrollView>
+          <StyledButton
+            onPress={() => navigate('AttendanceSummary', {
+              attendances: this.state.attendances,
+              students: this.props.students,
+              courseTitle: this.props.navigation.state.params.courseTitle,
+              start_date__c: this.props.date,
+              parentKey: this.props.navigation.state.key,
+              courseId: this.props.courseId,
+            })}
+            text='Submit'
+            primaryButtonLarge
+          >
+          </StyledButton>
+          {this._renderModal()}
+        </View>
+      ) 
+    }
   }
 }
 
@@ -215,8 +240,17 @@ const mapStateToProps = (state, props) => {
   //TODO: (Aivant) deal with the situation when there's no attendances for today
   const students = course.students ? course.students : []
   var attendances = props.navigation.state.params.attendances
+
   if (!attendances) {
     attendances = course.attendances && course.attendances[date] ? course.attendances[date] : [];
+    if (students.length > attendances.length) {
+      const difference = students.length - attendances.length
+      var i;
+      var slength = students.length;
+      for (i = slength - difference; i < slength; i++) { 
+        attendances.push(createNewAttendance(students[i].id, course.id, date));
+      }
+    }
     if (attendances.length == 0) {
       attendances = students.map((s) => {return createNewAttendance(s.id, course.id, date)});
     }
@@ -229,5 +263,22 @@ const mapStateToProps = (state, props) => {
     isLoading: state.isLoading.value,
   };
 }
+
+
+const viewStyles = StyleSheet.create({
+  resultsText: {
+    color: colors.textDark_70, fontSize: 16, marginBottom: 16
+  },
+  noResults: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 24,
+  },
+  img: {
+    marginTop: 24,
+    width: 160,
+    height: 160
+  }
+})
 
 export default connect(mapStateToProps, null)(AttendanceScreen);
