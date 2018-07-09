@@ -28,10 +28,8 @@ class LoginScreen extends React.Component {
   _attemptLogin() {
     const params = {
       user: {
-        email: 'cp@gmail.com',
-        password: 'password',
-        // email: this.state.email,
-        // password: this.state.password,
+        email: this.state.email,
+        password: this.state.password,
       }
     }
     this.props.fetchTeacher(params, this.props.navigation);
@@ -73,6 +71,7 @@ class LoginScreen extends React.Component {
 }
 
 const fetchTeacher = (params, navigation) => {
+  console.log(navigation)
   return (dispatch) => {
     dispatch(actions.requestTeacher(params));
     return postRequest(
