@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, Button, ScrollView, StyleSheet, Text, View, TouchableOpacity} from 'react-native';
+import { Image, Button, ScrollView, StyleSheet, Text, View, TouchableWithoutFeedback, TouchableOpacity} from 'react-native';
 import { commonStyles } from '../../styles/styles';
 import { getRequest, deleteRequest } from '../../lib/requests';
 import { APIRoutes } from '../../config/routes';
@@ -205,11 +205,11 @@ class ViewCourseScreen extends React.Component {
         console.log(this.props.navigation.state)
         const { params = {} } = this.props.navigation.state;
         return (
-          <StyledButton
-            onPress={() => params.handleEditCourse()}
-            text='+ Add Sessions'
-            linkButton
-          />
+          <TouchableOpacity onPress={() => params.handleEditCourse()}>
+            <View>
+              <Text style={textStyles.buttonTextAddSession} >+ Add Session</Text>
+            </View>
+          </TouchableOpacity>
         );
     }
   }
