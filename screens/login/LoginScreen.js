@@ -71,7 +71,6 @@ class LoginScreen extends React.Component {
 }
 
 const fetchTeacher = (params, navigation) => {
-  console.log(navigation)
   return (dispatch) => {
     dispatch(actions.requestTeacher(params));
     return postRequest(

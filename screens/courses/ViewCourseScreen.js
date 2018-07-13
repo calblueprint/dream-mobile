@@ -191,15 +191,27 @@ class ViewCourseScreen extends React.Component {
    * Display course sessions.
    */
   _renderSessions() {
-    return this.state.sessions.map((session, index) => {
-      const start = timeFormat(new Date(session.start_time))
-      const end = timeFormat(new Date(session.end_time))
-      return (
-        <View key={index}>
-          <Text style={textStyles.bodySmallLight}>{`${session.weekday}, ${ start } - ${ end }` } </Text>
-        </View>
-      );
-    });
+    if (this.state.sessions.length != 0) {
+      return this.state.sessions.map((session, index) => {
+        const start = timeFormat(new Date(session.start_time))
+        const end = timeFormat(new Date(session.end_time))
+        return (
+          <View key={index}>
+            <Text style={textStyles.bodySmallLight}>{`${session.weekday}, ${ start } - ${ end }` } </Text>
+          </View>
+        );
+      });
+    } else {
+        console.log(this.props.navigation.state)
+        const { params = {} } = this.props.navigation.state;
+        return (
+          <StyledButton
+            onPress={() => params.handleEditCourse()}
+            text='+ Add Sessions'
+            linkButton
+          />
+        );
+    }
   }
 
   /*
