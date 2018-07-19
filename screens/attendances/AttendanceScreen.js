@@ -244,11 +244,14 @@ const mapStateToProps = (state, props) => {
   if (!attendances) {
     attendances = course.attendances && course.attendances[date] ? course.attendances[date] : [];
     if (students.length > attendances.length) {
-      const difference = students.length - attendances.length
-      var i;
-      var slength = students.length;
-      for (i = slength - difference; i < slength; i++) { 
-        attendances.push(createNewAttendance(students[i].id, course.id, date));
+      var curr_attend_student_ids = []
+      for (a = 0; a < attendances.length; a++) { 
+        curr_attend_student_ids.push(String(attendances[a].student_id__c));
+      }
+      for (i = 0; i < students.length; i++) { 
+        if (curr_attend_student_ids.indexOf(String(students[i].id)) <= -1) {
+          attendances.push(createNewAttendance(students[i].id, course.id, date));
+        }
       }
     }
     if (attendances.length == 0) {

@@ -202,12 +202,11 @@ class ViewCourseScreen extends React.Component {
         );
       });
     } else {
-        console.log(this.props.navigation.state)
         const { params = {} } = this.props.navigation.state;
         return (
           <TouchableOpacity onPress={() => params.handleEditCourse()}>
             <View>
-              <Text style={textStyles.buttonTextAddSession} >+ Add Session</Text>
+              <Text style={textStyles.buttonTextAddSessionCourse} >+ Add Session</Text>
             </View>
           </TouchableOpacity>
         );
