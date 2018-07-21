@@ -20,10 +20,8 @@ class LoginScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      // email: "",
-      // password: "",
-      email: "cp@gmail.com",
-      password: "password",
+      email: "",
+      password: "",
     }
   }
 
