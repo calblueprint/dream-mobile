@@ -27,6 +27,7 @@ class RecentAttendancesScreen extends React.Component {
       this.props.navigation.navigate('Attendances', {
         courseId: courseId,
         courseTitle: courseTitle,
+        attendances: this.props.attendances[date],
         date: date,
       });
     }
