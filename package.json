@@ -38,7 +38,7 @@
     "react-native-dropdown": "0.0.6",
     "react-native-elements": "^0.17.0",
     "react-native-fontawesome": "^5.7.0",
-    "react-native-form-generator": "^0.9.9",
+    "react-native-form-generator": "github:MichaelCereda/react-native-form-generator",
     "react-native-modal-datetime-picker": "^4.13.0",
     "react-native-modal-picker": "0.0.16",
     "react-native-modalbox": "^1.4.2",

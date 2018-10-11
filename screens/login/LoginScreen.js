@@ -39,9 +39,7 @@ class LoginScreen extends React.Component {
   render() {
     return (
       <View style={{flex: 1, alignItems: 'center'}}>
-        <Image
-        style={styles.bg}
-        source={require('../../img/log_in.png')}>
+      
           <View style={styles.container}>
             <Text style={textStyles.titleSmallLight}>Email</Text>
             <TextInput style={styles.textInput}
@@ -63,7 +61,6 @@ class LoginScreen extends React.Component {
             text='Sign Up'
             whiteButtonOutlineLarge>
           </StyledButton>
-        </Image>
       </View>
 
     );
