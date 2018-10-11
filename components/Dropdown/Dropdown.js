@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, Button, TextInput, Modal, TouchableHighlight } from 'react-native';
 import { Select, Option } from 'react-native-chooser';
 import styles from './styles';
+import PropTypes from 'prop-types';
 import { textStyles } from '../../styles/textStyles';
 
 class Dropdown extends React.Component {
@@ -57,11 +58,11 @@ class Dropdown extends React.Component {
 }
 
 Dropdown.propTypes = {
-  onSelect: React.PropTypes.func.isRequired,
-  value: React.PropTypes.any.isRequired,
-  options: React.PropTypes.object.isRequired,
-  defaultText: React.PropTypes.string.isRequired,
-  styles: React.PropTypes.object,
+  onSelect: PropTypes.func.isRequired,
+  value: PropTypes.any.isRequired,
+  options: PropTypes.object.isRequired,
+  defaultText: PropTypes.string.isRequired,
+  styles: PropTypes.object,
 };
 
 export default Dropdown;
