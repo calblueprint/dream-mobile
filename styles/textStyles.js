@@ -75,7 +75,7 @@ const textStyles = StyleSheet.create({
   },
 
   buttonTextYellow: {
-    color: colors.oldYellow,
+    color: colors.primaryYellow,
     fontSize: 16,
     fontWeight: '500'
   },
