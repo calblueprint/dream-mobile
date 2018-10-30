@@ -99,10 +99,13 @@ const fetchTeacher = (params, navigation) => {
     return postRequest(
       APIRoutes.loginPath(),
       (responseData) => {
+        console.log("logged in successfully")
         dispatch(actions.receiveTeacherSuccess(responseData));
         navigation.navigate('Courses');
       },
       (error) => {
+        console.log("logged in with error")
+        console.log(error)
         //TODO: (Aivant) We shouldn't dispatch actions in case of error here since if the fetch request fails, this error function doesn't get called
         //TODO: Standard Errors returned from rails won't inherently be localized
         dispatch(actions.receiveStandardError(error));

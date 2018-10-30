@@ -2,6 +2,7 @@ import React from 'react';
 import { View, TouchableHighlight } from 'react-native';
 import { commonStyles } from '../../styles/styles';
 import styles from './styles';
+import PropTypes from 'prop-types'
 import Collapsible from 'react-native-collapsible';
 
 class Collapse extends React.Component {
@@ -24,10 +25,10 @@ class Collapse extends React.Component {
 
 
 Collapse.propTypes = {
-  setCollapsed: React.PropTypes.func.isRequired,
-  header: React.PropTypes.object.isRequired,
-  isCollapsed: React.PropTypes.bool.isRequired,
-  headerStyle: React.PropTypes.object,
+  setCollapsed: PropTypes.func.isRequired,
+  header: PropTypes.object.isRequired,
+  isCollapsed: PropTypes.bool.isRequired,
+  headerStyle: PropTypes.object,
 };
 
 export default Collapse;

@@ -4,6 +4,7 @@ import { commonStyles } from '../../styles/styles';
 import styles from './styles';
 import StyledButton from '../../components/Button/Button';
 import Modal from 'react-native-modalbox';
+import PropTypes from 'prop-types'
 import { textStyles } from '../../styles/textStyles';
 
 /**
@@ -71,10 +72,10 @@ class SimpleModal extends React.Component {
 
 
 SimpleModal.propTypes = {
-  visible: React.PropTypes.bool.isRequired,
-  title: React.PropTypes.string.isRequired,
-  buttons: React.PropTypes.array.isRequired,
-  onClosed: React.PropTypes.func.isRequired,
+  visible: PropTypes.bool.isRequired,
+  title: PropTypes.string.isRequired,
+  buttons: PropTypes.array.isRequired,
+  onClosed: PropTypes.func.isRequired,
 };
 
 export default SimpleModal;

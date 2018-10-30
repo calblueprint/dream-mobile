@@ -2,6 +2,7 @@ import React from 'react';
 import { Image, View, Text, StyleSheet, Button, TouchableHighlight } from 'react-native';
 import styles from './styles'
 import Dropdown from '../Dropdown'
+import PropTypes from 'prop-types'
 import { textStyles } from '../../styles/textStyles';
 
 class AttendanceCard extends React.Component {
@@ -57,7 +58,7 @@ class AttendanceCard extends React.Component {
           source={require('../../icons/comment_active.png')}
         />
       )
-    } 
+    }
     return (
       <Image
         style={styles.commentButton}
@@ -88,11 +89,11 @@ class AttendanceCard extends React.Component {
 }
 
 AttendanceCard.propTypes = {
-  attendance: React.PropTypes.object.isRequired,
-  name: React.PropTypes.string.isRequired,
-  index: React.PropTypes.number.isRequired,
-  setModal: React.PropTypes.func.isRequired,
-  setType: React.PropTypes.func.isRequired,
+  attendance: PropTypes.object.isRequired,
+  name: PropTypes.string.isRequired,
+  index: PropTypes.number.isRequired,
+  setModal: PropTypes.func.isRequired,
+  setType: PropTypes.func.isRequired,
 };
 
 export default AttendanceCard;
