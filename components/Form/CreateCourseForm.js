@@ -22,13 +22,10 @@ import Session from '../Session';
  * @prop end_date - end date of course
  * @prop sessionList - list of session records
  */
-class EditCourseForm extends React.Component {
+class CreateCourseForm extends React.Component {
 
   constructor(props) {
     super(props);
-
-    this._initializeSessionList = this._initializeSessionList.bind(this);
-    this._initializeSession = this._initializeSession.bind(this);
 
     this._getInitialFormValues = this._getInitialFormValues.bind(this);
     this._getFormType = this._getFormType.bind(this);
@@ -36,40 +33,13 @@ class EditCourseForm extends React.Component {
     this._clearFormErrors = this._clearFormErrors.bind(this);
     this._onFormChange = this._onFormChange.bind(this);
 
-    this._mapSessions = this._mapSessions.bind(this);
-    this._handleAddSession = this._handleAddSession.bind(this);
-    this._handleSessionChange = this._handleSessionChange.bind(this);
-    this._handleSessionDelete = this._handleSessionDelete.bind(this);
     this._handleSaveCourse = this._handleSaveCourse.bind(this);
-    this._renderSessions = this._renderSessions.bind(this);
-    this._renderAddSessionButton = this._renderAddSessionButton.bind(this);
     this._renderSaveCourseButton = this._renderSaveCourseButton.bind(this);
 
     this.state = {
       formValues: this._getInitialFormValues(),
       errors: [],
-      sessionList: [],
     }
-  }
-
-  componentDidMount() {
-    this._initializeSessionList();
-  }
-
-  /*
-   * Parse sessionList from props to create state sessionList.
-   */
-  _initializeSessionList() {
-    const sessionList = this.props.sessionList.map(this._initializeSession)
-    this.setState({ sessionList: sessionList })
-  }
-
-  /*
-   * Add individual session to state sessionList.
-   */
-  _initializeSession(session, index) {
-    session.modified = false
-    return session
   }
 
   /*
@@ -99,6 +69,7 @@ class EditCourseForm extends React.Component {
       title__c: t.String,
       facilitator_1__c: t.String,
       facilitator_2__c: t.maybe(t.String),
+      program__c: t.String,
       start_date__c: t.Date,
       end_date__c: t.Date,
     });
@@ -121,6 +92,9 @@ class EditCourseForm extends React.Component {
         facilitator_2__c: {
           label: 'Teacher Email 2 (optional)',
           autoCapitalize: 'none',
+        },
+        program__c: {
+          label: 'Program',
         },
         start_date__c: {
           label: 'Start Date',
@@ -162,75 +136,6 @@ class EditCourseForm extends React.Component {
   }
 
   /*
-   * Map session to its view in the Course form.
-   */
-  _mapSessions(session, index) {
-    return (
-      <Session
-        key             = {index}
-        weekday         = {session.weekday}
-        start_time      = {session.start_time}
-        end_time        = {session.end_time}
-        number          = {session.number}
-        onSessionChange = {this._handleSessionChange}
-        onSessionDelete = {this._handleSessionDelete}
-      />
-    );
-  }
-
-  /*
-   * Add new session to state sessionList
-   */
-  _handleAddSession() {
-    let newSession = {
-      modified: true,
-      weekday: 'Monday',
-      number: this.state.sessionList.length,
-    }
-
-    // Default start_time is 8AM
-    start = new Date();
-    start.setHours(8);
-    start.setMinutes(0);
-    newSession.start_time = start;
-
-    // Default end_time is 9AM
-    end = new Date();
-    end.setHours(9);
-    end.setMinutes(0);
-    newSession.end_time = end;
-
-    sessionList = this.state.sessionList.slice();
-    sessionList.push(newSession)
-    this.setState({ sessionList: sessionList })
-  }
-
-  /*
-   * Update sessionList state each time a session changes
-   */
-  _handleSessionChange(session, number){
-    sessionList = this.state.sessionList.slice();
-    sessionList[number] = { ...sessionList[number], ...session }
-    sessionList[number].modified = true
-    this.setState({ sessionList: sessionList })
-  }
-
-  /*
-   * Delete session from sessionList.
-   */
-  _handleSessionDelete(number){
-    sessionList = this.state.sessionList.slice();
-    sessionList.splice(number, 1);
-
-    // Decrement question number for all following questions
-    for (let i = number; i < sessionList.length; i++) {
-      sessionList[i].number -= 1;
-      sessionList[i].modified = true
-    }
-    this.setState({ sessionList: sessionList })
-  }
-
-  /*
    * Extract values from form and call onSaveCourse callback.
    */
   _handleSaveCourse() {
@@ -241,27 +146,6 @@ class EditCourseForm extends React.Component {
     } else {
       frontendError("Validation failed.")
     }
-  }
-
-  /*
-   * Display sessions.
-   */
-  _renderSessions() {
-    let sessions = this.state.sessionList.map(this._mapSessions);
-    return sessions;
-  }
-
-  /*
-   * Return the add session button component.
-   */
-  _renderAddSessionButton() {
-    return (
-      <TouchableWithoutFeedback onPress={this._handleAddSession}>
-        <View>
-          <Text style={textStyles.buttonTextAddSession}>+ Add Session</Text>
-        </View>
-      </TouchableWithoutFeedback>
-    );
   }
 
   /*
@@ -289,9 +173,7 @@ class EditCourseForm extends React.Component {
               value={this.state.formValues}
               onChange={this._onFormChange}
             />
-            { this._renderSessions() }
-            { this._renderAddSessionButton() }
-          </View>
+            </View>
         </ScrollView>
         { this._renderSaveCourseButton() }
       </View>
@@ -299,4 +181,4 @@ class EditCourseForm extends React.Component {
   }
 }
 
-export default EditCourseForm;
+export default CreateCourseForm;

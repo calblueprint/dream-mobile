@@ -42,8 +42,8 @@ class StudentProfileScreen extends React.Component {
 
   _deleteEnrollment() {
     var params = {
-        student_id: this.state.studentId,
-        course_id: this.state.courseId
+        student__c: this.state.studentId,
+        class__c: this.state.courseId
     }
     const successFunc = (responseData) => {
       // this.props.navigation.state.params.refreshStudents();
@@ -70,7 +70,7 @@ class StudentProfileScreen extends React.Component {
         <View style={formViewStyles.div_1}>
           <View style={formViewStyles.div_2}>
             <Text style={textStyles.titleLarge}>
-            {this.state.student.first_name} {this.state.student.last_name} - {this.state.student.dream_id}
+            {this.state.student.first_name__c} {this.state.student.last_name__c}
             </Text>
           </View>
 
@@ -85,8 +85,7 @@ class StudentProfileScreen extends React.Component {
                         refreshStudent: this._fetchStudent(this.state.studentId), 
                         newStudent: false, 
                         student: this.state.student, 
-                        navbarColor: this.state.navbarColor
-                      })}
+                        navbarColor: this.state.navbarColor})}
                       text='Edit'
                       noPaddingPrimaryButtonSmall
                     />
@@ -100,7 +99,7 @@ class StudentProfileScreen extends React.Component {
             Nickname
             </Text>
             <Text style={textStyles.body}>
-            {this.state.student.nickname}
+            {this.state.student.nickname__c}
             </Text>
           </View>
 
@@ -109,25 +108,25 @@ class StudentProfileScreen extends React.Component {
             Birthday
             </Text>
             <Text style={textStyles.body}>
-            {this.state.student.birthday}
+            {this.state.student.date_of_birth__c}
             </Text>
           </View>
 
-          <View style={formViewStyles.div_2}>
+          {/*<View style={formViewStyles.div_2}>
             <Text style={textStyles.titleSmall}>
             Active Participant?
             </Text>
             <Text style={textStyles.body}>
             {this.state.student.is_active}
             </Text>
-          </View>
+          </View>*/}
 
           <View style={formViewStyles.div_2}>
             <Text style={textStyles.titleSmall}>
             Sex
             </Text>
             <Text style={textStyles.body}>
-            {this.state.student.sex}
+            {this.state.student.sex__c}
             </Text>
           </View>
 
@@ -141,7 +140,7 @@ class StudentProfileScreen extends React.Component {
                       onPress={() => navigate('StudentContactInfo', {
                         refreshStudent: this._fetchStudent(this.state.studentId), 
                         newStudent: false, 
-                        student: this.state.student,
+                        student: this.state.student, 
                         navbarColor: this.state.navbarColor})}
                       text='Edit'
                       noPaddingPrimaryButtonSmall
@@ -155,7 +154,7 @@ class StudentProfileScreen extends React.Component {
             Address
             </Text>
             <Text style={textStyles.body}>
-            {this.state.student.address}
+            {this.state.student.direccion__c}
             </Text>
           </View>
 
@@ -164,8 +163,8 @@ class StudentProfileScreen extends React.Component {
             Phone Numbers
             </Text>
             <Text style={textStyles.body}>
-            {this.state.student.phone} {"\n"}
-            {this.state.student.phone_2}
+            {this.state.student.phone_number_1__c} {"\n"}
+            {this.state.student.phone_number_2__c}
             </Text>
           </View>
 
@@ -174,7 +173,7 @@ class StudentProfileScreen extends React.Component {
             Name on Facebook
             </Text>
             <Text style={textStyles.body}>
-            {this.state.student.facebook_name}
+            {this.state.student.usuario_de_facebook__c}
             </Text>
           </View>
 
@@ -183,7 +182,7 @@ class StudentProfileScreen extends React.Component {
             Email Address
             </Text>
             <Text style={textStyles.body}>
-            {this.state.student.email}
+            {this.state.student.email__c}
             </Text>
           </View>
 
@@ -192,7 +191,7 @@ class StudentProfileScreen extends React.Component {
             Primary Contact Name
             </Text>
             <Text style={textStyles.body}>
-            {this.state.student.primary_contact}
+            {this.state.student.contacto_primario_name__c}
             </Text>
           </View>
         
@@ -201,7 +200,7 @@ class StudentProfileScreen extends React.Component {
             Primary Contact Phone Number
             </Text>
             <Text style={textStyles.body}>
-            {this.state.student.primary_contact_phone}
+            {this.state.student.contacto_primario_phone__c}
             </Text>
           </View>
 
@@ -229,25 +228,25 @@ class StudentProfileScreen extends React.Component {
             Notes
             </Text>
             <Text style={textStyles.body}>
-            {this.state.student.notes}
+            {this.state.student.notes__c}
             </Text>
           </View>
 
-          <View style={formViewStyles.div_2}>
+          {/*<View style={formViewStyles.div_2}>
             <Text style={textStyles.titleSmall}>
             Level (Montessori Only)
             </Text>
             <Text style={textStyles.body}>
             {this.state.student.level}
             </Text>
-          </View>
+          </View>*/}
 
           <View style={formViewStyles.div_2}>
             <Text style={textStyles.titleSmall}>
             Primary Language 
             </Text>
             <Text style={textStyles.body}>
-            {this.state.student.primary_language}
+            {this.state.student.idioma_principal__c}
             </Text>
           </View>
 
@@ -256,18 +255,18 @@ class StudentProfileScreen extends React.Component {
             Document Type
             </Text>
             <Text style={textStyles.body}>
-            {this.state.student.document_type}
+            {this.state.student.tipo_de_documento__c}
             </Text>
           </View>
 
-          <View style={formViewStyles.div_2}>
+          {/*<View style={formViewStyles.div_2}>
             <Text style={textStyles.titleSmall}>
             Participated in DREAM before?
             </Text>
             <Text style={textStyles.body}>
             {this.state.student.past_dream_participant}
             </Text>
-          </View>
+          </View>*/}
 
         <Button
           onPress={() => confirmDelete("Are you sure you want to remove this student from the course?", this._deleteEnrollment)}

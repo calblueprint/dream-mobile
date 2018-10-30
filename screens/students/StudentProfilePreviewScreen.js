@@ -38,8 +38,8 @@ class StudentProfilePreviewScreen extends React.Component {
     }
 
     const p = {
-      student_id: this.state.studentId,
-      course_id: this.state.course_id
+      student__c: this.state.studentId,
+      class__c: this.state.course_id
     }
 
     postRequest(APIRoutes.getCoursesStudentsPath(), successFunc, standardError, params=p);
@@ -64,7 +64,7 @@ class StudentProfilePreviewScreen extends React.Component {
       <View style={formStyles.background}>
         <View style={viewStyles.outer}>
           <Text style={textStyles.titleLarge}>
-            {this.state.student.first_name} {this.state.student.last_name} - {this.state.student.dream_id}
+            {this.state.student.first_name__c} {this.state.student.last_name__c}
           </Text>
 
           <Text style={[textStyles.titleSmall, {
@@ -75,7 +75,7 @@ class StudentProfilePreviewScreen extends React.Component {
           <Text style={[textStyles.body, {
             marginTop: 8
           }]}>
-            {this.state.student.birthday}
+            {this.state.student.date_of_birth__c}
           </Text>
 
           <Text style={[textStyles.titleSmall, {
@@ -86,7 +86,7 @@ class StudentProfilePreviewScreen extends React.Component {
           <Text style={[textStyles.body, {
             marginTop: 8
           }]}>
-            {this.state.student.address}
+            {this.state.student.direccion__c}
           </Text>
 
           <Text style={[textStyles.titleSmall, {
@@ -97,7 +97,7 @@ class StudentProfilePreviewScreen extends React.Component {
           <Text style={[textStyles.body, {
             marginTop: 8
           }]}>
-            {this.state.student.phone}
+            {this.state.student.phone_number_1__c}
           </Text>
 
           <Text style={[textStyles.titleSmall, {
@@ -108,7 +108,7 @@ class StudentProfilePreviewScreen extends React.Component {
           <Text style={[textStyles.body, {
             marginTop: 8
           }]}>
-            {this.state.student.phone_2}
+            {this.state.student.phone_number_2__c}
           </Text>
         </View>
         <StyledButton

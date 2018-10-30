@@ -14,6 +14,7 @@ import Collapse from '../../components/Collapse';
 import SimpleModal from '../../components/SimpleModal';
 import colors from '../../styles/colors';
 import { standardError } from '../../lib/alerts';
+import { frontendError } from '../../lib/alerts';
 import constants from '../../lib/constants';
 
 class AttendanceSummaryScreen extends React.Component {
@@ -32,7 +33,7 @@ class AttendanceSummaryScreen extends React.Component {
     */
   _filterAttendances(type) {
     const filteredStudents = this.props.attendances.reduce((result, attendance, i) => {
-      if (attendance.attendance_type == type) {
+      if (attendance.attendance_type__c == type) {
         result.push({key: this._getStudentName(i)});
       }
       return result;
@@ -48,7 +49,7 @@ class AttendanceSummaryScreen extends React.Component {
   _getStudentName(index) {
     const student = this.props.students[index]
     if (student) {
-      return `${student.first_name} ${student.last_name}`
+      return `${student.first_name__c} ${student.last_name__c}`
     }
   }
 
@@ -215,24 +216,35 @@ class AttendanceSummaryScreen extends React.Component {
     * Renders date, course title, attendance summary, sync button, and modal
     */
   _renderLoadedView() {
+    let syncButton;
+    if (this.props.students.length) {
+      syncButton = <StyledButton
+        onPress={() => this.props.syncAttendances(
+          this.props.attendances, this.props.courseId, this.props.start_date__c)}
+        text='Sync'
+        primaryButtonLarge
+      >
+      </StyledButton>
+    } else {
+      syncButton = <StyledButton
+        onPress={frontendError('There are no students currently enrolled.')}
+        text='Sync'
+        primaryButtonLarge
+      >
+      </StyledButton>
+    }
     return(
       <View style={commonStyles.containerStatic}>
         <ScrollView>
           <View style={styles.summaryContainer}>
             <View style={commonStyles.header}>
-              <Text style={textStyles.titleSmall}>{this.props.date}</Text>
+              <Text style={textStyles.titleSmall}>{this.props.start_date__c}</Text>
               <Text style={textStyles.titleLarge}>{this.props.courseTitle}</Text>
             </View>
             {this._renderSummary()}
           </View>
         </ScrollView>
-        <StyledButton
-          onPress={() => this.props.syncAttendances(
-            this.props.attendances, this.props.courseId, this.props.date)}
-          text='Sync'
-          primaryButtonLarge
-        >
-        </StyledButton>
+        {syncButton}
         {this._renderModal()}
       </View>
     )

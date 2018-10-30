@@ -18,7 +18,7 @@ class StudentCard extends React.Component {
       underlayColor='transparent'>
         <View style={{borderBottomWidth: 1, borderBottomColor: '#E6E6E6'}}>
           <View style={{marginBottom: 16, marginTop: 16}}>
-            <Text style={textStyles.body}>{this.props.student.first_name} {this.props.student.last_name}</Text>
+            <Text style={textStyles.body}>{this.props.student.first_name__c} {this.props.student.last_name__c}</Text>
           </View>
         </View>
       </TouchableHighlight>

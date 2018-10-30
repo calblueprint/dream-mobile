@@ -30,8 +30,8 @@ class SearchStudentForm extends React.Component {
 
   _getInitialFormValues() {
     let values = {
-      first_name: this.props.first_name,
-      last_name: this.props.last_name,
+      first_name__c: "",
+      last_name__c: "",
     }
     return values
   }
@@ -49,9 +49,26 @@ class SearchStudentForm extends React.Component {
    */
   _getFormType() {
     return t.struct({
-      first_name: t.String,
-      last_name: t.String,
+      first_name__c: t.String,
+      last_name__c: t.String,
     });
+  }
+
+  /*
+   * Specify options for form fields.
+   */
+  _getFormOptions() {
+    return {
+      error: this.state.errors,
+      fields: {
+        first_name__c: {
+          label: 'First Name',
+        },
+        last_name__c: {
+          label: 'Last Name',
+        },
+      },
+    };
   }
 
   render() {
@@ -62,6 +79,7 @@ class SearchStudentForm extends React.Component {
             <Form
               ref="form"
               type={this._getFormType()}
+              options={this._getFormOptions()}
               onChange={this._handleFormChange.bind(this)}
               value={this.state.formValues}
             />

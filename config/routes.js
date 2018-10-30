@@ -10,6 +10,7 @@ import CoursesScreen from '../screens/courses/CoursesScreen';
 import TeacherProfileScreen from '../screens/teachers/TeacherProfileScreen';
 import TeacherProfileEditScreen from '../screens/teachers/TeacherProfileEditScreen';
 import EditCourseScreen from '../screens/courses/EditCourseScreen';
+import CreateCourseScreen from '../screens/courses/CreateCourseScreen';
 import StudentProfileScreen from '../screens/students/StudentProfileScreen';
 import SearchStudentScreen from '../screens/students/SearchStudentScreen';
 import SearchStudentResultScreen from '../screens/students/SearchStudentResultScreen';
@@ -78,6 +79,12 @@ export const HomeStack = StackNavigator({
           <View style={{marginRight: 8}}><MaterialCommunityIcons name="pencil" size={30} color={'#fff'} /></View>
         </TouchableOpacity>),
     }),
+  },
+  CreateCourse : {
+    screen: CreateCourseScreen,
+    navigationOptions: {
+      headerTitle: 'Create Course',
+    },
   },
   EditTeacherProfile : {
     screen: TeacherProfileEditScreen,
@@ -193,7 +200,7 @@ export const HomeStack = StackNavigator({
 export class APIRoutes {
   // Use to build api routes
   static createRoute(route)           { return `/api/${route}` }
-  static deviseRoute(route)           { return `/teachers/${route}` }
+  static deviseRoute(route)           { return `/users/${route}` }
 
   // Courses
   static getCoursesPath()             { return APIRoutes.createRoute(`courses`) }

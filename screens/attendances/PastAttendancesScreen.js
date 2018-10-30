@@ -23,6 +23,7 @@ class PastAttendancesScreen extends React.Component {
     today = new Date();
     this.state = {
       courseId : this.props.navigation.state.params.courseId,
+      courseTitle: this.props.navigation.state.params.courseTitle,
       date: new Date(today.getFullYear(), today.getMonth(), 1),
       isLoading: true,
       attendances: [],
@@ -67,6 +68,7 @@ class PastAttendancesScreen extends React.Component {
     this.props.saveAttendance(this.state.attendances[date], this.state.courseId, date);
     this.props.navigation.navigate('Attendances', {
       courseId: this.state.courseId,
+      courseTitle: this.state.courseTitle,
       attendances: this.state.attendances[date],
       date: date,
     });

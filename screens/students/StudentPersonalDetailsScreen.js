@@ -56,12 +56,12 @@ class StudentPersonalDetailsScreen extends React.Component {
       return (
          <View>
          <StudentPersonalDetailsForm
-            first_name={navProps.first_name}
-            last_name={navProps.last_name}
-            birthday={navProps.birthday}
-            nickname={navProps.nickname}
-            is_active={navProps.is_active}
-            sex={navProps.sex}
+            first_name__c={navProps.first_name__c}
+            last_name__c={navProps.last_name__c}
+            date_of_birth__c={navProps.date_of_birth__c}
+            nickname__c={navProps.nickname__c}
+            // is_active={navProps.is_active}
+            sex__c={navProps.sex__c}
             newStudent={this.state.newStudent}
             onSaveStudent={this._handleUpdateStudent} 
             />

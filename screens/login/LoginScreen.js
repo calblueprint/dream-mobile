@@ -27,7 +27,7 @@ class LoginScreen extends React.Component {
 
   _attemptLogin() {
     const params = {
-      teacher: {
+      user: {
         email: this.state.email,
         password: this.state.password,
       }
@@ -38,10 +38,9 @@ class LoginScreen extends React.Component {
 
   render() {
     return (
-      <View style={{flex: 1, alignItems: 'center'}}>
-        <Image
-        style={styles.bg}
-        source={require('../../img/log_in.png')}>
+      <View style={{flex: 1, alignItems: 'center', backgroundColor:'#3F51B5'}}>
+          
+          <Text style={{color: '#FFFFFF', fontSize: 32, fontWeight: '700', marginTop: 120, textAlign: 'center'}}>The DREAM Project</Text>
           <View style={styles.container}>
             <Text style={textStyles.titleSmallLight}>Email</Text>
             <TextInput style={styles.textInput}
@@ -63,7 +62,6 @@ class LoginScreen extends React.Component {
             text='Sign Up'
             whiteButtonOutlineLarge>
           </StyledButton>
-        </Image>
       </View>
 
     );
@@ -97,7 +95,7 @@ const mapDispatchToProps = (dispatch) => {
 
 const styles = StyleSheet.create({
   bg: {
-    backgroundColor:'transparent',
+    backgroundColor:'#7E57C2',
     resizeMode: 'cover',
     justifyContent: 'center',
     alignItems: 'center',
@@ -107,13 +105,14 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     borderBottomWidth: 1,
     borderBottomColor: '#fff',
-    color: '#fff'
+    color: '#fff', 
+    fontSize: 16
 
   },
   container: {
     marginRight: 40,
     marginLeft: 40,
-    marginTop: 180,
+    marginTop: 60,
     alignSelf: 'stretch'
   }
 });
