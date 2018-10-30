@@ -2,7 +2,7 @@ import React from 'react';
 import { Image, View, Text, StyleSheet, Button, TouchableHighlight } from 'react-native';
 import styles from './styles'
 import Dropdown from '../Dropdown'
-import PropTypes from 'prop-types'
+import PropTypes from 'prop-types';
 import { textStyles } from '../../styles/textStyles';
 
 class AttendanceCard extends React.Component {
@@ -41,11 +41,11 @@ class AttendanceCard extends React.Component {
     return(
       <Dropdown
         onSelect={this.props.setType(this.props.index)}
-        value={this.props.attendance.attendance_type}
-        defaultText={optionsAbbrev[this.props.attendance.attendance_type]}
+        value={this.props.attendance.attendance_type__c}
+        defaultText={optionsAbbrev[this.props.attendance.attendance_type__c]}
         options={options}
         styles={attendanceButtonStyles}
-        optionsColor={optionsColor[this.props.attendance.attendance_type]}
+        optionsColor={optionsColor[this.props.attendance.attendance_type__c]}
         />
     )
   }
@@ -70,6 +70,7 @@ class AttendanceCard extends React.Component {
   render() {
     return (
       <View style={styles.container}>
+<<<<<<< HEAD
         <View style={styles.nameContainer}>
           <Text style={textStyles.body}>{this.props.name}</Text>
         </View>
@@ -84,6 +85,27 @@ class AttendanceCard extends React.Component {
               {this.renderCommentButton(this.props.attendance.comment)}
             </TouchableHighlight>
           </View>
+=======
+        {this.props.name ? (
+          <View style={styles.nameContainer}>
+            <Text style={textStyles.body}>{this.props.name}</Text>
+          </View>
+        ) : (
+          <View style={styles.nameContainer}>
+            <Text style={textStyles.body}>{this.props.attendance.student_name__c}</Text>
+          </View>
+        )}
+        <View style={styles.spaceContainer}>
+        </View>
+        <View style={styles.leftContainer}>
+          {this.renderSelect()}
+          <TouchableHighlight
+            style={styles.commentButtonOuter}
+            onPress={() => this.props.setModal(this.props.index, this.props.attendance.notes__c)}
+            underlayColor='transparent'>
+            {this.renderCommentButton(this.props.attendance.notes__c)}
+          </TouchableHighlight>
+>>>>>>> 858871d98505c5a976c5e473036423b41c76ad33
         </View>
       </View>
     )
@@ -92,7 +114,10 @@ class AttendanceCard extends React.Component {
 
 AttendanceCard.propTypes = {
   attendance: PropTypes.object.isRequired,
+<<<<<<< HEAD
   name: PropTypes.string.isRequired,
+=======
+>>>>>>> 858871d98505c5a976c5e473036423b41c76ad33
   index: PropTypes.number.isRequired,
   setModal: PropTypes.func.isRequired,
   setType: PropTypes.func.isRequired,

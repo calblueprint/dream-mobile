@@ -37,7 +37,6 @@ class SearchStudentResultScreen extends React.Component {
 
   _renderSearchResults() {
     const { navigate } = this.props.navigation;
-
     var students_arr = new Array();
     for (const key in this.state.students) {
       students_arr.push(this.state.students[key]);

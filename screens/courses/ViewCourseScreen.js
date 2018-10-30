@@ -63,14 +63,15 @@ class ViewCourseScreen extends React.Component {
           this.props.navigation.navigate('EditCourse', {
             refreshCourses: this._fetchCourse,
             newCourse: false,
-            course_id: this.props.course.id,
+            course_id: this.props.course_id,
+            navbarColor: this.props.navbarColor,
             is_active: this.props.course.is_active,
-            title: this.props.course.title,
-            teacher1: this.props.course.teacher_id1,
-            teacher2: this.props.course.teacher_id2,
-            start_date: this.props.course.start_date,
-            end_date: this.props.course.end_date,
-            sessions: this.props.course.sessions,
+            title__c: this.props.course.title__c,
+            facilitator_1__c: this.props.course.f1_email__c,
+            facilitator_2__c: this.props.course.f2_email__c,
+            start_date__c: this.props.course.start_date__c,
+            end_date__c: this.props.course.end_date__c,
+            sessions: this.props.sessions,
           })
       } else {
         this.setState({showModal: true})
@@ -150,10 +151,10 @@ class ViewCourseScreen extends React.Component {
    * Display course dates.
    */
   _renderCourseDate() {
-    const start_date = new Date(this.props.course.start_date)
-    const end_date = new Date(this.props.course.end_date)
-    const course_start = start_date.toLocaleDateString()
-    const course_end = end_date.toLocaleDateString()
+    const start_date__c = new Date(this.props.course.start_date__c)
+    const end_date__c = new Date(this.props.course.end_date__c)
+    const course_start = start_date__c.toLocaleDateString()
+    const course_end = end_date__c.toLocaleDateString()
     return (
       <Text style={textStyles.bodySmallLight}>{`${course_start} to ${course_end}`}</Text>
     );
@@ -165,9 +166,13 @@ class ViewCourseScreen extends React.Component {
   _renderTeachers() {
     return this.props.course.teachers.map((teacher, index) => {
       return (
-        `${teacher.first_name} ${teacher.last_name}, `
+        `${this.state.course.f1_first_name__c} ${this.state.course.f1_last_name__c}`
       );
-    });
+    } else {
+      return (
+        `${this.state.course.f1_first_name__c} ${this.state.course.f1_last_name__c}, ${this.state.course.f2_first_name__c} ${this.state.course.f2_last_name__c}`
+      );
+    }
   }
 
   /*
@@ -219,7 +224,7 @@ class ViewCourseScreen extends React.Component {
           <View style={{backgroundColor: this.state.navbarColor, paddingBottom: 24}}>
             <View style={formViewStyles.div_1}>
               <View style={formViewStyles.div_2}>
-                <Text style={[textStyles.titleLargeLight, {marginBottom: 16}]}>{ this.props.course.title }</Text>
+                <Text style={[textStyles.titleLargeLight, {marginBottom: 16}]}>{ this.props.course.title__c }</Text>
 
                 { this._renderSessions() }
 

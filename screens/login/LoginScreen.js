@@ -33,7 +33,7 @@ class LoginScreen extends React.Component {
     }
 
     const params = {
-      teacher: {
+      user: {
         email: this.state.email,
         password: this.state.password,
       }
@@ -48,18 +48,19 @@ class LoginScreen extends React.Component {
 
   render() {
     return (
-      <View style={{flex: 1, alignItems: 'center', backgroundColor: colors.primaryYellow}}>
-        <View style={styles.container}>
-          <Text style={textStyles.titleSmallLight}>{I18n.t('email', {locale: this.props.locale})}</Text>
-          <TextInput style={styles.textInput}
-            autoCapitalize='none'
-            onChangeText={(text) => this.setState({email: text})}/>
-          <Text style={textStyles.titleSmallLight}>{I18n.t('password', {locale: this.props.locale})}</Text>
-          <TextInput style={styles.textInput}
-            onChangeText={(text) => this.setState({password: text})}
-            secureTextEntry/>
-        </View>
-        <View style={styles.buttons}>
+      <View style={{flex: 1, alignItems: 'center', backgroundColor:'#3F51B5'}}>
+
+          <Text style={{color: '#FFFFFF', fontSize: 32, fontWeight: '700', marginTop: 120, textAlign: 'center'}}>The DREAM Project</Text>
+          <View style={styles.container}>
+            <Text style={textStyles.titleSmallLight}>Email</Text>
+            <TextInput style={styles.textInput}
+              autoCapitalize='none'
+              onChangeText={(text) => this.setState({email: text})}/>
+            <Text style={textStyles.titleSmallLight}>Password</Text>
+            <TextInput style={styles.textInput}
+              onChangeText={(text) => this.setState({password: text})}
+              secureTextEntry/>
+          </View>
           <StyledButton
             onPress={this._attemptLogin.bind(this)}
             text={I18n.t('login', {locale: this.props.locale})}
@@ -70,7 +71,6 @@ class LoginScreen extends React.Component {
             text={I18n.t('signup', {locale: this.props.locale})}
             whiteButtonOutlineLarge>
           </StyledButton>
-        </View>
       </View>
 
     );
@@ -122,7 +122,7 @@ const mapStateToProps = (state, props) => {
 
 const styles = StyleSheet.create({
   bg: {
-    backgroundColor:'transparent',
+    backgroundColor:'#7E57C2',
     resizeMode: 'cover',
     justifyContent: 'center',
     alignItems: 'center',
@@ -132,16 +132,14 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     borderBottomWidth: 1,
     borderBottomColor: '#fff',
-    color: '#fff'
+    color: '#fff',
+    fontSize: 16
 
   },
   container: {
-    marginRight: 32,
-    marginLeft: 32,
-    marginTop: 140,
-    alignSelf: 'stretch'
-  },
-  buttons: {
+    marginRight: 40,
+    marginLeft: 40,
+    marginTop: 60,
     alignSelf: 'stretch'
   }
 });

@@ -6,6 +6,7 @@ import actions from '../../actions';
 
 import { commonStyles } from '../../styles/styles';
 import { textStyles } from '../../styles/textStyles';
+import colors from '../../styles/colors';
 import { APIRoutes } from '../../config/routes';
 import settings from '../../config/settings';
 import { getRequest, postRequestNoCatch } from '../../lib/requests';
@@ -23,6 +24,7 @@ class AttendanceScreen extends React.Component {
       attendances: this.props.attendances ? this.props.attendances : [],
       modalId: -1,
       modalComment: null,
+      _getStudentName: this._getStudentName.bind(this),
     }
 
     this._saveComment = this._saveComment.bind(this);
@@ -43,7 +45,7 @@ class AttendanceScreen extends React.Component {
   _getStudentName(id) {
     const student = this.props.students.find((student) => {return student.id === id})
     if (student) {
-      return `${student.first_name} ${student.last_name}`
+      return `${student.first_name__c} ${student.last_name__c}`
     }
   }
 
@@ -98,14 +100,13 @@ class AttendanceScreen extends React.Component {
     * Renders AttendanceCard for each attendance object
     */
   _renderAttendances() {
-
     return this.state.attendances.map((attendance, i) => {
       return(
         <AttendanceCard key={i}
           attendance={attendance}
           index={i}
-          name={this._getStudentName(attendance.student_id)}
-          setModal={(comment) => this._setModal(attendance.student_id, comment)}
+          name={this._getStudentName(attendance.student__c)}
+          setModal={(comment) => this._setModal(attendance.student__c, comment)}
           setType={this._setType.bind(this)} />
       );
     });
@@ -153,33 +154,59 @@ class AttendanceScreen extends React.Component {
 
   render() {
     const { navigate } = this.props.navigation;
-    return(
-      <View style={commonStyles.containerStatic}>
-        <ScrollView>
-          <View style={styles.attendancesContainer}>
-            <View style={commonStyles.header}>
-              <Text style={textStyles.titleSmall}>{this.props.date}</Text>
-              <Text style={textStyles.titleLarge}>{this.props.courseTitle}</Text>
+    if (!this.props.students.length) {
+      return(
+        <View style={commonStyles.containerStatic}>
+          <ScrollView>
+            <View style={styles.attendancesContainer}>
+              <View style={commonStyles.header}>
+                <Text style={textStyles.titleSmall}>{this.props.date}</Text>
+                <Text style={textStyles.titleLarge}>{this.props.navigation.state.params.courseTitle}</Text>
+              </View>
             </View>
-            {this._renderAttendances()}
-          </View>
-        </ScrollView>
-        <StyledButton
-          onPress={() => navigate('AttendanceSummary', {
-            attendances: this.state.attendances,
-            students: this.props.students,
-            courseTitle: this.props.courseTitle,
-            date: this.props.date,
-            parentKey: this.props.navigation.state.key,
-            courseId: this.props.courseId,
-          })}
-          text='Submit'
-          primaryButtonLarge
-        >
-        </StyledButton>
-        {this._renderModal()}
-      </View>
-    )
+            <View style={viewStyles.noResults}>
+              <Image
+              style={viewStyles.img}
+              source={require('../../img/no_search.png')}/>
+              <Text style={[textStyles.titleMedium, {
+                marginTop: 16,
+                textAlign: 'center'
+              }]}>
+                No Students Currently Enrolled
+              </Text>
+            </View>
+          </ScrollView>
+        </View>
+      )
+    } else {
+      return(
+        <View style={commonStyles.containerStatic}>
+          <ScrollView>
+            <View style={styles.attendancesContainer}>
+              <View style={commonStyles.header}>
+                <Text style={textStyles.titleSmall}>{this.props.date}</Text>
+                <Text style={textStyles.titleLarge}>{this.props.navigation.state.params.courseTitle}</Text>
+              </View>
+              {this._renderAttendances()}
+            </View>
+          </ScrollView>
+          <StyledButton
+            onPress={() => navigate('AttendanceSummary', {
+              attendances: this.state.attendances,
+              students: this.props.students,
+              courseTitle: this.props.navigation.state.params.courseTitle,
+              start_date__c: this.props.date,
+              parentKey: this.props.navigation.state.key,
+              courseId: this.props.courseId,
+            })}
+            text='Submit'
+            primaryButtonLarge
+          >
+          </StyledButton>
+          {this._renderModal()}
+        </View>
+      )
+    }
   }
 }
 
@@ -195,11 +222,11 @@ const styles = StyleSheet.create({
 const createNewAttendance = (studentId, courseId, date) => {
   return {
     id: -1,
-    comment: null,
-    date: date,
-    attendance_type: 0,
-    student_id: studentId,
-    course_id: courseId,
+    notes__c: null,
+    start_date__c: date,
+    attendance_type__c: 0,
+    student__c: studentId,
+    class__c: courseId,
     isChanged: true,
   }
 }
@@ -211,8 +238,20 @@ const mapStateToProps = (state, props) => {
   const date = props.navigation.state.params.date;
   const students = course.students ? course.students : []
   var attendances = props.navigation.state.params.attendances
+
   if (!attendances) {
     attendances = course.attendances && course.attendances[date] ? course.attendances[date] : [];
+    if (students.length > attendances.length) {
+      var curr_attend_student_ids = []
+      for (a = 0; a < attendances.length; a++) {
+        curr_attend_student_ids.push(String(attendances[a].student_id__c));
+      }
+      for (i = 0; i < students.length; i++) {
+        if (curr_attend_student_ids.indexOf(String(students[i].id)) <= -1) {
+          attendances.push(createNewAttendance(students[i].id, course.id, date));
+        }
+      }
+    }
     if (attendances.length == 0) {
       attendances = students.map((s) => {return createNewAttendance(s.id, course.id, date)});
     }
@@ -226,5 +265,22 @@ const mapStateToProps = (state, props) => {
     isLoading: state.config.isLoading,
   };
 }
+
+
+const viewStyles = StyleSheet.create({
+  resultsText: {
+    color: colors.textDark_70, fontSize: 16, marginBottom: 16
+  },
+  noResults: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 24,
+  },
+  img: {
+    marginTop: 24,
+    width: 160,
+    height: 160
+  }
+})
 
 export default connect(mapStateToProps, null)(AttendanceScreen);

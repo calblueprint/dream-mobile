@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, Button, TextInput, Modal, TouchableHighlight } from 'react-native';
 import { Select, Option } from 'react-native-chooser';
 import styles from './styles';
-import PropTypes from 'prop-types'
+import PropTypes from 'prop-types';
 import { textStyles } from '../../styles/textStyles';
 
 class Dropdown extends React.Component {

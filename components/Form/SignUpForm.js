@@ -36,13 +36,13 @@ class SignUpForm extends React.Component {
    */
   _getFormType() {
     return t.struct({
-      first_name: t.String,
-      last_name: t.String,
+      first_name__c: t.String,
+      last_name__c: t.String,
+      phone_number_1__c: t.Number,
       email: t.String,
       password: t.String,
       password_confimation: t.String,
-      dream_id: t.Number,
-      phone: t.Number,
+      // dream_id: t.Number,
     });
   }
 
@@ -53,16 +53,20 @@ class SignUpForm extends React.Component {
     return {
       error: this.state.errors,
       fields: {
-        first_name: {
+        first_name__c: {
           label: 'First Name',
         },
-        last_name: {
+        last_name__c: {
           label: 'Last Name',
         },
-        dream_id: {
-          label: 'Dream ID',
+        phone_number_1__c: {
+          label: 'Phone',
         },
+        // dream_id: {
+        //   label: 'Dream ID',
+        // },
         email: {
+          label: 'Email',
           autoCapitalize: 'none',
         },
         password: {

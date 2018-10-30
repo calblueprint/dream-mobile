@@ -37,25 +37,25 @@ class TeacherProfileScreen extends React.Component {
         <View style={formViewStyles.div_1}>
           <View style={formViewStyles.div_2}>
             <Text style={textStyles.titleLarge}>
-            {this.props.teacher.first_name} {this.props.teacher.last_name}
+            {this.props.teacher.first_name__c} {this.props.teacher.last_name__c}
             </Text>
           </View>
 
-          <View style={formViewStyles.div_2}>
+          {/*<View style={formViewStyles.div_2}>
             <Text style={textStyles.titleSmall}>
             {I18n.t('dreamid', {locale: this.props.locale})}
             </Text>
             <Text style={textStyles.body}>
             {this.props.teacher.dream_id}
             </Text>
-          </View>
+          </View>*/}
 
           <View style={formViewStyles.div_2}>
             <Text style={textStyles.titleSmall}>
             {I18n.t('email', {locale: this.props.locale})}
             </Text>
             <Text style={textStyles.body}>
-            {this.props.teacher.email}
+            {this.props.teacher.email__c}
             </Text>
           </View>
 
@@ -64,7 +64,7 @@ class TeacherProfileScreen extends React.Component {
             {I18n.t('phonenumber', {locale: this.props.locale})}
             </Text>
             <Text style={textStyles.body}>
-            {this.props.teacher.phone}
+            {this.props.teacher.phone_number_1__c}
             </Text>
           </View>
           

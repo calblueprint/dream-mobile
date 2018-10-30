@@ -43,14 +43,14 @@ class CourseCard extends React.Component {
       underlayColor='transparent'>
         <View style={[cardStyles.outerContainer, {backgroundColor: colorList[colorKey]}]}>
           <View style={cardStyles.topContainer}>
-            <Text style={[cardStyles.title, textStyles.titleMediumLight]}>{this.props.title}</Text>
+            <Text style={[cardStyles.title, textStyles.titleMediumLight]}>{this.props.title__c}</Text>
             <Text style={[cardStyles.count, textStyles.titleSmallLight]}>5 {I18n.t('students', {locale: this.props.locale})}</Text>
             <Text style={[cardStyles.count, textStyles.titleSmallLight]}>{syncText}</Text>
-            
+
           </View>
           <View style={cardStyles.bottomContainer}>
             <StyledButton
-              onPress={() => this.props.onTakeAttendance(this.props.course_id, this.props.title)}
+              onPress={() => this.props.onTakeAttendance(this.props.course_id, this.props.title__c)}
               text={I18n.t('takeattendance', {locale: this.props.locale})}
               clearButtonSmall>
             </StyledButton>

@@ -37,13 +37,13 @@ class StudentContactInfoForm extends React.Component {
   _getInitialFormValues() {
     if (!this.props.newStudent) {
       return ({
-        address: this.props.address,
-        primary_contact: this.props.primary_contact,
-        primary_contact_phone: this.props.primary_contact_phone,
-        facebook_name: this.props.facebook_name,
-        phone: this.props.phone,
-        phone_2: this.props.phone_2,
-        email: this.props.email
+        direccion__c: this.props.direccion__c,
+        contacto_primario_name__c: this.props.contacto_primario_name__c,
+        contacto_primario_phone__c: this.props.contacto_primario_phone__c,
+        usuario_de_facebook__c: this.props.usuario_de_facebook__c,
+        phone_number_1__c: this.props.phone_number_1__c,
+        phone_number_2__c: this.props.phone_number_2__c,
+        email__c: this.props.email__c
       });
     }
   }
@@ -53,13 +53,13 @@ class StudentContactInfoForm extends React.Component {
    */
   _getFormType() {
     return t.struct({
-      address: t.maybe(t.String),
-      phone: t.String,
-      phone_2: t.maybe(t.String),
-      facebook_name: t.maybe(t.String),
-      email: t.maybe(t.String),
-      primary_contact: t.maybe(t.String),
-      primary_contact_phone: t.maybe(t.String)
+      direccion__c: t.maybe(t.String),
+      phone_number_1__c: t.String,
+      phone_number_2__c: t.maybe(t.String),
+      usuario_de_facebook__c: t.maybe(t.String),
+      email__c: t.maybe(t.String),
+      contacto_primario_name__c: t.maybe(t.String),
+      contacto_primario_phone__c: t.maybe(t.String)
     });
   }
 
@@ -70,25 +70,26 @@ class StudentContactInfoForm extends React.Component {
     return {
       error: this.state.errors,
       fields: {
-        address: {
+        direccion__c: {
           label: 'Address'
         },
-        phone: {
+        phone_number_1__c: {
           label: '*Phone Number'
         }, 
-        phone_2: {
+        phone_number_2__c: {
           label: 'Alternate Phone Number'
         },
-        facebook_name: {
+        usuario_de_facebook__c: {
           label: 'Name on Facebook'
         },
-        email: {
-          label: 'Email'
+        email__c: {
+          label: 'Email',
+          autoCapitalize: 'none'
         },
-        primary_contact: {
+        contacto_primario_name__c: {
           label: 'Primary Contact Name'
         },
-        primary_contact_phone: {
+        contacto_primario_phone__c: {
           label: 'Primary Contact Phone Number'
         },
       },

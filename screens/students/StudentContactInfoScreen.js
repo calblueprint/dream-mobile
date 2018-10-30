@@ -60,13 +60,13 @@ class StudentContactInfoScreen extends React.Component {
       return (
          <View>
          <StudentContactInfoForm
-            address={navProps.address}
-            primary_contact={navProps.primary_contact}
-            primary_contact_phone={navProps.primary_contact_phone}
-            facebook_name={navProps.facebook_name}
-            phone={navProps.phone}
-            phone_2={navProps.phone_2}
-            email={navProps.email}
+            direccion__c={navProps.direccion__c}
+            contacto_primario_name__c={navProps.contacto_primario_name__c}
+            contacto_primario_phone__c={navProps.contacto_primario_phone__c}
+            usuario_de_facebook__c={navProps.usuario_de_facebook__c}
+            phone_number_1__c={navProps.phone_number_1__c}
+            phone_number_2__c={navProps.phone_number_2__c}
+            email__c={navProps.email__c}
             newStudent={this.state.newStudent}
             onSaveStudent={this._handleUpdateStudent}
             />

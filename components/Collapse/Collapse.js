@@ -2,7 +2,7 @@ import React from 'react';
 import { View, TouchableHighlight } from 'react-native';
 import { commonStyles } from '../../styles/styles';
 import styles from './styles';
-import PropTypes from 'prop-types'
+import PropTypes from 'prop-types';
 import Collapsible from 'react-native-collapsible';
 
 class Collapse extends React.Component {

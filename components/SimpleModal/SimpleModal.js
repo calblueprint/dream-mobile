@@ -4,7 +4,7 @@ import { commonStyles } from '../../styles/styles';
 import styles from './styles';
 import StyledButton from '../../components/Button/Button';
 import Modal from 'react-native-modalbox';
-import PropTypes from 'prop-types'
+import PropTypes from 'prop-types';
 import { textStyles } from '../../styles/textStyles';
 
 /**

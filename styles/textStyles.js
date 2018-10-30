@@ -75,7 +75,7 @@ const textStyles = StyleSheet.create({
   },
 
   buttonTextYellow: {
-    color: colors.oldYellow,
+    color: colors.primaryYellow,
     fontSize: 16,
     fontWeight: '500'
   },
@@ -110,6 +110,14 @@ const textStyles = StyleSheet.create({
     fontWeight: '500',
     textDecorationLine: 'underline',
     textDecorationColor: colors.primaryYellow,
+  },
+
+  buttonTextAddSessionCourse: {
+    color: colors.backgroundWhite,
+    fontSize: 16,
+    fontWeight: '500',
+    textDecorationLine: 'underline',
+    textDecorationColor: colors.backgroundWhite,
   },
 
   toastText: {

@@ -46,7 +46,7 @@ class CoursesScreen extends React.Component {
     });
 
     const _createCourse = () => {
-       this.props.navigation.navigate('EditCourse', {refreshCourses: this.props.fetchCourses, newCourse: true,
+       this.props.navigation.navigate('CreateCourse', {refreshCourses: this.props.fetchCourses, newCourse: true,
         sessions: [], teacher: this.props.teacher})}
 
 
@@ -84,11 +84,13 @@ class CoursesScreen extends React.Component {
     });
   }
 
-  _handleTakeAttendance(courseId, title) {
+  _handleTakeAttendance(courseId, title, students) {
     const date = attendanceDate(new Date());
     this.props.navigation.navigate('Attendances', {
       courseId: courseId,
+      courseTitle: title,
       date: date,
+      students: students,
     });
   }
 
@@ -111,7 +113,8 @@ class CoursesScreen extends React.Component {
       <CourseCard key={i}
         index={i}
         course_id={course.id}
-        title={course.title}
+        title__c={course.title__c}
+        students={course.students}
         onSelectCourse={this._handleSelectCourse}
         onTakeAttendance={this._handleTakeAttendance}
         numStudents={course.students ? course.students.length : 0}
@@ -132,7 +135,7 @@ class CoursesScreen extends React.Component {
               marginTop: 16,
               textAlign: 'center'
             }]}>
-              No courses yet 
+              No courses yet
             </Text>
           </View>
           <StyledButton

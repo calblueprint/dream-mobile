@@ -38,11 +38,11 @@ class EditTeacherForm extends React.Component {
    */
   _getInitialFormValues() {
     values = {
-      first_name: this.props.teacher.first_name,
-      last_name: this.props.teacher.last_name,
-      dream_id: this.props.teacher.dream_id,
-      email: this.props.teacher.email,
-      phone: this.props.teacher.phone,
+      first_name__c: this.props.teacher.first_name__c,
+      last_name__c: this.props.teacher.last_name__c,
+      // dream_id: this.props.teacher.dream_id,
+      // email__c: this.props.teacher.email__c,
+      phone_number_1__c: this.props.teacher.phone_number_1__c,
     };
     return values
   }
@@ -52,11 +52,11 @@ class EditTeacherForm extends React.Component {
    */
   _getFormType() {
     return t.struct({
-      first_name: t.String,
-      last_name: t.String,
-      dream_id: t.Number,
-      email: t.String,
-      phone: t.String,
+      first_name__c: t.String,
+      last_name__c: t.String,
+      // dream_id: t.Number,
+      // email__c: t.String,
+      phone_number_1__c: t.String,
     });
   }
 
@@ -67,14 +67,20 @@ class EditTeacherForm extends React.Component {
     return {
       error: this.state.errors,
       fields: {
-        first_name: {
+        first_name__c: {
           label: 'First Name',
         },
-        last_name: {
+        last_name__c: {
           label: 'Last Name',
         },
-        dream_id: {
-          label: 'Dream ID',
+        // dream_id: {
+        //   label: 'Dream ID',
+        // },
+        // email__c: {
+        //   label: 'Email',
+        // },
+        phone_number_1__c: {
+          label: 'Phone',
         },
       },
     };
