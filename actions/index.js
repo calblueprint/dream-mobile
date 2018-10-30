@@ -3,6 +3,26 @@ import types from '../lib/actionTypes'
 
 let actions = {
   // GENERAL
+  enrollStudent: (student, courseId) => {
+    return {
+      type: types.ENROLL_STUDENT,
+      student,
+      courseId,
+    }
+  },
+  unenrollStudent: (studentId, courseId) => {
+    return {
+      type: types.UNENROLL_STUDENT,
+      studentId,
+      courseId,
+    }
+  },
+  updateLocale: (locale) => {
+    return {
+      type: types.UPDATE_LOCALE,
+      locale
+    }
+  },
   receiveStandardError: (error) => {
     return {
       type: types.RECEIVE_STANDARD_ERROR,
@@ -68,6 +88,44 @@ let actions = {
     return {
       type: types.RECEIVE_STUDENTS_SUCCESS,
       students,
+      courseId
+    }
+  },
+  updateStudentAttendanceStats: (attendances, curAttendances, courseId) => {
+    return {
+      type: types.UPDATE_STUDENT_ATTENDANCE_STATS,
+      attendances,
+      curAttendances,
+      courseId
+    }
+  },
+
+  // Sessions
+  requestSessions: (courseId) => {
+    return {
+      type: types.REQUEST_SESSIONS,
+      courseId
+    }
+  },
+  receiveSessionsSuccess: (sessions, courseId) => {
+    return {
+      type: types.RECEIVE_SESSIONS_SUCCESS,
+      sessions,
+      courseId
+    }
+  },
+
+  // Course Teachers
+  requestCourseTeachers: (courseId) => {
+    return {
+      type: types.REQUEST_COURSE_TEACHERS,
+      courseId
+    }
+  },
+  receiveCourseTeachersSuccess: (courseTeachers, courseId) => {
+    return {
+      type: types.RECEIVE_COURSE_TEACHERS_SUCCESS,
+      courseTeachers,
       courseId
     }
   },

@@ -24,7 +24,7 @@ const commonStyles = StyleSheet.create({
     alignSelf: 'center',
   },
   divider: {
-    borderBottomWidth: 1, 
+    borderBottomWidth: 1,
     borderBottomColor: '#E6E6E6'
   }
 });

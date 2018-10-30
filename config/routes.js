@@ -61,19 +61,20 @@ export const HomeStack = StackNavigator({
       headerTitle: 'Courses',
       headerLeft: (
           <TouchableOpacity onPress={() => { navigation.navigate('TeacherProfile') }}>
-            <View style={{marginLeft: 8}}><FontAwesome 
+            <View style={{marginLeft: 8}}><FontAwesome
             name="user-circle-o" size={32} color={colors.iconDark} /></View>
           </TouchableOpacity>
         ),
       headerStyle: {},
       headerTintColor: '',
+      gesturesEnabled: false,
     }),
   },
   TeacherProfile : {
     screen: TeacherProfileScreen,
     navigationOptions: ({navigation}) => ({
       headerTitle: 'Profile',
-      headerRight: (<TouchableOpacity title='Edit' 
+      headerRight: (<TouchableOpacity title='Edit'
         onPress={() => { navigation.navigate('EditTeacherProfile') }}>
           <View style={{marginRight: 8}}><MaterialCommunityIcons name="pencil" size={30} color={'#fff'} /></View>
         </TouchableOpacity>),
@@ -89,6 +90,11 @@ export const HomeStack = StackNavigator({
     screen: EditCourseScreen,
     navigationOptions: {
       headerTitle: 'Edit Course',
+      headerStyle: {
+        backgroundColor: '#f5f5f6',
+        borderBottomColor: 'transparent',
+      },
+      headerTintColor: colors.textDark,
     },
   },
   StudentProfile : {
@@ -112,7 +118,6 @@ export const HomeStack = StackNavigator({
     screen: AttendanceSummaryScreen,
     navigationOptions: ({navigation}) => ({
       headerTitle: 'Attendance Summary',
-      headerRight: (<Button title='Edit' onPress={() => { navigation.goBack() }}/>),
       headerStyle: {
         backgroundColor: '#f5f5f6',
         borderBottomColor: 'transparent',
@@ -139,8 +144,8 @@ export const HomeStack = StackNavigator({
       headerStyle: {
           backgroundColor: colors.primaryYellow,
           borderBottomColor: 'transparent',
-        }, 
-      headerTintColor: colors.textLight, 
+        },
+      headerTintColor: colors.textLight,
     }),
   },
   SearchStudentResults: {
@@ -180,8 +185,8 @@ export const HomeStack = StackNavigator({
     headerStyle: {
         backgroundColor: colors.primaryYellow,
         borderBottomColor: 'transparent',
-      }, 
-    headerTintColor: colors.textLight, 
+      },
+    headerTintColor: colors.textLight,
   }
 }
 );

@@ -24,12 +24,12 @@ export default class StyledButton extends React.Component {
 			  	>{this.props.text}</Button>
 			);
 		}
-		if (this.props.noPaddingPrimaryButtonSmall) {
+		if (this.props.editButton) {
 			return (
 				<Button
 				  onPress={this.props.onPress}
-				  style={ buttonStyles.noPaddingPrimaryButtonSmall }
-				  textStyle={ textStyles.buttonTextSmall }
+				  style={ buttonStyles.editButton }
+				  textStyle={ [textStyles.buttonTextDark] }
 			    >{this.props.text}</Button>
 			);
 		}
@@ -38,7 +38,7 @@ export default class StyledButton extends React.Component {
 				<Button
 				  onPress={this.props.onPress}
 				  style={ buttonStyles.enrollSmall }
-				  textStyle={ textStyles.enrollSmall }
+				  textStyle={ textStyles.buttonText }
 			  	>{this.props.text}</Button>
 			);
 		}

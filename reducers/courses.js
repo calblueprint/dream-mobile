@@ -1,6 +1,9 @@
 import types from '../lib/actionTypes'
 import { students } from './students';
+import { sessions } from './sessions';
+import { course_teachers } from './course_teachers';
 import { attendances } from './attendances';
+import { attendanceDate } from '../lib/date';
 
 /**
   * Handles all courses state
@@ -16,12 +19,18 @@ export const courses = (state = {}, action) => {
   switch (action.type) {
     case types.RECEIVE_COURSES_SUCCESS:
       //TODO: Intelligently merge (if still relevant);
-      return action.courses;
+      date = attendanceDate(new Date());
+      return action.courses.map((course) => (Object.assign({}, course, {last_synced: date})));
     case types.RECEIVE_STUDENTS_SUCCESS:
+    case types.RECEIVE_SESSIONS_SUCCESS:
+    case types.RECEIVE_COURSE_TEACHERS_SUCCESS:
     case types.RECEIVE_ATTENDANCES_SUCCESS:
     case types.RECEIVE_COURSE_ATTENDANCES_SUCCESS:
     case types.RECEIVE_UPDATE_ATTENDANCES_SUCCESS:
     case types.RECEIVE_UPDATE_ATTENDANCES_ERROR:
+    case types.UPDATE_STUDENT_ATTENDANCE_STATS:
+    case types.ENROLL_STUDENT:
+    case types.UNENROLL_STUDENT:
       // For specific course
       return state.map((item) => {
         return item.id == action.courseId ? course(item, action) : item;
@@ -44,9 +53,22 @@ export const courses = (state = {}, action) => {
 const course = (state = {}, action) => {
   switch (action.type) {
     case types.RECEIVE_STUDENTS_SUCCESS:
+    case types.UPDATE_STUDENT_ATTENDANCE_STATS:
+    case types.ENROLL_STUDENT:
+    case types.UNENROLL_STUDENT:
       // For course's students
       return Object.assign({}, state, {
         students: students(state.students, action)
+      });
+    case types.RECEIVE_SESSIONS_SUCCESS:
+      // For course's sessions
+      return Object.assign({}, state, {
+        sessions: sessions(state.sessions, action)
+      });
+    case types.RECEIVE_COURSE_TEACHERS_SUCCESS:
+      // For course's courseTeachers
+      return Object.assign({}, state, {
+        teachers: course_teachers(state.teachers, action)
       });
     case types.RECEIVE_ATTENDANCES_SUCCESS:
     case types.RECEIVE_COURSE_ATTENDANCES_SUCCESS:

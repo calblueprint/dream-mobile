@@ -6,7 +6,7 @@ import reducers from '../reducers';
 import thunk from 'redux-thunk';
 
 const reducer = combineReducers(reducers);
-const initialState = { isLoading: {value: true} };
+const initialState = { config: {isLoading: true, locale: 'en'} };
 
 export const store = createStore(
   reducer,

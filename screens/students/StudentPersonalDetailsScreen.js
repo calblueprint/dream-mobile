@@ -15,6 +15,7 @@ class StudentPersonalDetailsScreen extends React.Component {
       course_id: this.props.navigation.state.params.course_id,
       newStudent: this.props.navigation.state.params.newStudent,
       navbarColor: this.props.navigation.state.params.navbarColor,
+      parentKey: this.props.navigation.state.params.parentKey,
     }
   }
 
@@ -22,13 +23,12 @@ class StudentPersonalDetailsScreen extends React.Component {
     const studentId = this.props.navigation.state.params.student.id;
     const successFunc = (responseData) => {
       this.props.navigation.navigate('StudentProfile', {
-        refreshStudents: this.props.navigation.state.params.refreshStudents,
         studentId: studentId,
         courseId: this.state.course_id,
         navbarColor: this.state.navbarColor,
       });
     }
-    putRequest(APIRoutes.getStudentPath(studentId), 
+    putRequest(APIRoutes.getStudentPath(studentId),
       successFunc, standardError, params=params);
   }
 
@@ -38,7 +38,7 @@ class StudentPersonalDetailsScreen extends React.Component {
       navbarColor: this.state.navbarColor,
       newStudent: this.state.newStudent,
       savedFields: params,
-      refreshStudents: this.props.navigation.state.params.refreshStudents,
+      parentKey: this.state.parentKey,
     });
   }
 
@@ -63,7 +63,7 @@ class StudentPersonalDetailsScreen extends React.Component {
             is_active={navProps.is_active}
             sex={navProps.sex}
             newStudent={this.state.newStudent}
-            onSaveStudent={this._handleUpdateStudent} 
+            onSaveStudent={this._handleUpdateStudent}
             />
          </View>
       )

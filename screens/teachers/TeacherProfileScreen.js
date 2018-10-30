@@ -3,6 +3,7 @@ import { Image, Button, Text, View, ScrollView } from 'react-native';
 
 import { connect } from 'react-redux';
 import actions from '../../actions';
+import I18n from '../../lib/i18n/i18n';
 
 import { colors } from '../../styles/colors';
 import { textStyles } from '../../styles/textStyles';
@@ -42,7 +43,7 @@ class TeacherProfileScreen extends React.Component {
 
           <View style={formViewStyles.div_2}>
             <Text style={textStyles.titleSmall}>
-            Dream ID
+            {I18n.t('dreamid', {locale: this.props.locale})}
             </Text>
             <Text style={textStyles.body}>
             {this.props.teacher.dream_id}
@@ -51,7 +52,7 @@ class TeacherProfileScreen extends React.Component {
 
           <View style={formViewStyles.div_2}>
             <Text style={textStyles.titleSmall}>
-            Email
+            {I18n.t('email', {locale: this.props.locale})}
             </Text>
             <Text style={textStyles.body}>
             {this.props.teacher.email}
@@ -60,16 +61,29 @@ class TeacherProfileScreen extends React.Component {
 
           <View style={[formViewStyles.div_2, {marginBottom: 24}]}>
             <Text style={textStyles.titleSmall}>
-            Phone Number
+            {I18n.t('phonenumber', {locale: this.props.locale})}
             </Text>
             <Text style={textStyles.body}>
             {this.props.teacher.phone}
             </Text>
           </View>
-
+          
+          <View style={[formViewStyles.div_2, {marginBottom: 24}]}>
+            <Text style={textStyles.titleSmall}>
+            {I18n.t('currentlanguage', {locale: this.props.locale})}
+            </Text>
+            <Text style={textStyles.body}>
+            {this.props.locale == "en" ? "English" : "Español"}
+            </Text>
+          </View>
+          <StyledButton
+          onPress={() => this.props.updateLocale(this.props.locale == "en" ? "es" : "en")}
+          text={I18n.t('changelanguage', {locale: this.props.locale})}
+          linkButton
+          />
           <StyledButton
           onPress={this._attemptSignOut.bind(this)}
-          text='Sign Out'
+          text={I18n.t('signout', {locale: this.props.locale})}
           linkButton
           />
 
@@ -115,15 +129,23 @@ const fetchTeacher = (teacher) => {
   }
 }
 
+const updateLocale = (locale) => {
+  return (dispatch) => {
+    dispatch(actions.updateLocale(locale));
+  }
+}
+
 const mapStateToProps = (state) => {
   return {
     teacher: state.teacher,
-    isLoading: state.isLoading.value,
+    isLoading: state.config.isLoading,
+    locale: state.config.locale,
   };
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    updateLocale: (locale) => dispatch(updateLocale(locale)),
     fetchTeacher: (teacher) => dispatch(fetchTeacher(teacher)),
     logout: () => dispatch(actions.logout()),
   }

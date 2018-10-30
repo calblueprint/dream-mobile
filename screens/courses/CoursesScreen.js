@@ -1,7 +1,8 @@
 import React from 'react';
-import { Image, Button, ScrollView, Text, View, TouchableOpacity, RefreshControl } from 'react-native';
+import { Image, Button, ScrollView, Text, View, TouchableOpacity, RefreshControl, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import actions from '../../actions';
+import I18n from '../../lib/i18n/i18n';
 import { commonStyles } from '../../styles/styles';
 import { getRequest, postRequestNoCatch } from '../../lib/requests';
 import { APIRoutes } from '../../config/routes';
@@ -11,6 +12,7 @@ import CourseCard from '../../components/CourseCard/CourseCard';
 import StyledButton from '../../components/Button/Button';
 import { FontAwesome, MaterialCommunityIcons } from '@expo/vector-icons';
 import colors from '../../styles/colors';
+import {textStyles} from "../../styles/textStyles";
 
 class CoursesScreen extends React.Component {
 
@@ -39,8 +41,8 @@ class CoursesScreen extends React.Component {
     //TODO: (Aivant) Fix Helen's comment about how we shouldn't clean out current local changes
     //TODO: (Aivant) ensure that a user can't update another teacher's attendances
     // This prioritizes local changes over on-server changes but it makes the code very clean
-    this.props.fetchCourses(this.props.teacher).then((result) => {
-      this.props.syncLocalChanges(this.props.localAttendances);
+    this.props.syncLocalChanges(this.props.localAttendances).then((result) => {
+      this.props.fetchCourses(this.props.teacher);
     });
 
     const _createCourse = () => {
@@ -51,19 +53,33 @@ class CoursesScreen extends React.Component {
     this.props.navigation.setParams({ handleCreate: _createCourse });
   }
 
-  _handleSelectCourse(courseId, colorKey) {
+  componentWillReceiveProps(nextProps) {
+    if(!this.props.online && nextProps.online) {
+      // When we get back online try to sync local changes.
+      console.log("Online Status switching from offline to online");
+      this.props.syncLocalChanges(this.props.localAttendances);
+    } else if (this.props.online && !nextProps.online) {
+      console.log("Online status switching from online to offline");
+      //TODO: Show some sort of notifications
+    }
+  }
 
+  _handleSelectCourse(courseId, colorKey) {
+    const course = this.props.courses.find((course) => course.id === courseId)
+    if(!("students" in course && "attendances" in course && "sessions" in course && "teachers" in course)) {
+      console.log("Not finished downloading course info");
+      return;
+    }
     const colorList = {
       0: colors.courseGreen,
       1: colors.courseBlue,
       2: colors.coursePurple,
       3: colors.coursePink,
       4: colors.courseBrown
-    }; 
+    };
 
     this.props.navigation.navigate('ViewCourse', {
-      refreshCourses: this.props.fetchCourses,
-      course_id: courseId, 
+      courseId: courseId,
       navbarColor: colorList[colorKey]
     });
   }
@@ -99,31 +115,62 @@ class CoursesScreen extends React.Component {
         onSelectCourse={this._handleSelectCourse}
         onTakeAttendance={this._handleTakeAttendance}
         numStudents={course.students ? course.students.length : 0}
-        synced={"synced" in course ? course.synced : true}/>
+        synced={"synced" in course ? course.synced : true}
+        last_synced={"last_synced" in course ? course.last_synced : ""}
+        locale={this.props.locale}/>
       )
     );
-    return (
-      <View style={{marginBottom: 24}}>
-        { courses }
-        <View style={{marginTop: 16}}><StyledButton
-          onPress={() => navigate('EditCourse', {refreshCourses: this.props.fetchCourses, newCourse: true,
-            sessions: [], teacher: this.props.teacher})}
-          text='Create Course'
-          secondaryButtonLarge>
-        </StyledButton></View>
-      </View>
-    );
+
+    if (courses.length === 0) {
+      return (
+        <View style={{backgroundColor: '#fff', paddingBottom: 24}}>
+          <View style={viewStyles.noResults}>
+            <Image
+            style={viewStyles.img}
+            source={require('../../img/no_search.png')}/>
+            <Text style={[textStyles.titleMedium, {
+              marginTop: 16,
+              textAlign: 'center'
+            }]}>
+              No courses yet 
+            </Text>
+          </View>
+          <StyledButton
+            onPress={() => navigate('EditCourse', {refreshCourses: this.props.fetchCourses, newCourse: true,
+              sessions: [], teacher: this.props.teacher})}
+            text={I18n.t('createcourse', {locale: this.props.locale})}
+            secondaryButtonLarge>
+          </StyledButton>
+        </View>
+      );
+    } else {
+      return (
+        <View style={{marginBottom: 24}}>
+          { courses }
+          <View style={{marginTop: 16}}><StyledButton
+            onPress={() => navigate('EditCourse', {refreshCourses: this.props.fetchCourses, newCourse: true,
+              sessions: [], teacher: this.props.teacher})}
+            text={I18n.t('createcourse', {locale: this.props.locale})}
+            secondaryButtonLarge>
+          </StyledButton>
+          </View>
+        </View>
+      );
+    }
   }
 
   render() {
     let courses;
     courses = this._renderCourses();
     return (
-      <ScrollView refreshControl={
+      <ScrollView
+        style={{backgroundColor: '#f5f5f6'}}
+        refreshControl={
         <RefreshControl
           refreshing={this.props.isLoading}
           onRefresh={this._onRefresh.bind(this)}
         />}
+
       >
         <View style={{backgroundColor: '#f5f5f6'}}>
           { courses }
@@ -157,9 +204,13 @@ const fetchCourses = (teacher) => {
       path,
       (responseData) =>  {
         dispatch(actions.receiveCoursesSuccess(responseData))
-        for (const key in responseData) { // Once you have the courses, fetch student and attendance data
-          dispatch(fetchStudents(responseData[key].id));
-          dispatch(fetchRecentCourseAttendances(responseData[key].id));
+        for (const key in responseData) {
+          // Once you have the courses, fetch student and attendance data
+          const courseId = responseData[key].id;
+          dispatch(fetchStudents(courseId));
+          dispatch(fetchCourseTeachers(courseId));
+          dispatch(fetchSessions(courseId));
+          dispatch(fetchRecentCourseAttendances(courseId));
         }
       },
       (error) => {
@@ -173,8 +224,7 @@ const fetchCourses = (teacher) => {
 }
 
 /**
-  * Fetches all students with the given course id and on success
-  * gets attendances for each student
+  * Fetches all students with the given course id
   */
 const fetchStudents = (courseId) => {
   return (dispatch) => {
@@ -186,6 +236,48 @@ const fetchStudents = (courseId) => {
       },
       (error) => {
         console.log("Error in fetching students for course: " + courseId);
+        console.log(error);
+        dispatch(actions.receiveStandardError(error));
+        standardError(error);
+      }
+    );
+  }
+}
+
+/**
+  * Fetches all teachers with the given course id
+  */
+const fetchCourseTeachers = (courseId) => {
+  return (dispatch) => {
+    dispatch(actions.requestCourseTeachers(courseId));
+    return getRequest(
+      APIRoutes.getTeachersPath(courseId),
+      (responseData) => {
+        dispatch(actions.receiveCourseTeachersSuccess(responseData.teachers, courseId));
+      },
+      (error) => {
+        console.log("Error in fetching course teachers for course: " + courseId);
+        console.log(error);
+        dispatch(actions.receiveStandardError(error));
+        standardError(error);
+      }
+    );
+  }
+}
+
+/**
+  * Fetches all sessions with the given course id
+  */
+const fetchSessions = (courseId) => {
+  return (dispatch) => {
+    dispatch(actions.requestSessions(courseId));
+    return getRequest(
+      APIRoutes.getSessionsPath(courseId),
+      (responseData) => {
+        dispatch(actions.receiveSessionsSuccess(responseData.sessions, courseId));
+      },
+      (error) => {
+        console.log("Error in fetching sessions for course: " + courseId);
         console.log(error);
         dispatch(actions.receiveStandardError(error));
         standardError(error);
@@ -260,12 +352,13 @@ const updateAttendance = (attendance, index) => {
   }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, props) => {
   return {
     localAttendances: state.localChanges.attendances,
     teacher: state.teacher,
     courses: state.courses,
-    isLoading: state.isLoading.value,
+    isLoading: state.config.isLoading,
+    locale: state.config.locale,
     online: state.offline.online,
   };
 }
@@ -274,9 +367,25 @@ const mapDispatchToProps = (dispatch) => {
   return {
     syncLocalChanges: (attendances) => dispatch(syncLocalChanges(attendances)),
     fetchCourses: (teacher) => dispatch(fetchCourses(teacher)),
-    fetchStudents: (courseId, date) => dispatch(fetchStudents(courseId, date)),
+    fetchStudents: (courseId) => dispatch(fetchStudents(courseId)),
+    fetchCourseTeachers: (courseId) => dispatch(fetchCourseTeachers(courseId)),
+    fetchSessions: (courseId) => dispatch(fetchSessions(courseId)),
     fetchRecentCourseAttendances: (students, courseId, date) => dispatch(fetchRecentCourseAttendances(students, courseId, date)),
   }
 }
+
+const viewStyles = StyleSheet.create({
+  noResults: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 24,
+  },
+  img: {
+    marginTop: 24,
+    width: 160,
+    height: 160
+  }
+})
+
 
 export default connect(mapStateToProps, mapDispatchToProps)(CoursesScreen);

@@ -1,5 +1,5 @@
 import { courses } from './courses';
-import { isLoading } from './isLoading';
+import { config } from './config';
 import { teacher } from './teacher';
 import { modal } from './modal';
 import { localChanges } from './localChanges';
@@ -7,9 +7,9 @@ import { localChanges } from './localChanges';
 const reducers = {
   teacher,
   courses,
-  isLoading,
-  modal,
-  localChanges
+  localChanges,
+  config,
+  modal
 };
 
 export default reducers;

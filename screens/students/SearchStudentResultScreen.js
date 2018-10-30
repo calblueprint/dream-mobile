@@ -26,12 +26,12 @@ class SearchStudentResultScreen extends React.Component {
     }
   }
 
-  _handleSelectStudent(id) {
+  _handleSelectStudent(student) {
     this.props.navigation.navigate('StudentProfilePreview', {
-      refreshStudents: this.props.navigation.state.params.refreshStudents,
       course_id: this.state.course_id,
       navbarColor: this.state.navbarColor,
-      studentId: id
+      student: student,
+      parentKey: this.props.navigation.state.params.parentKey,
     });
   }
 
@@ -68,8 +68,7 @@ class SearchStudentResultScreen extends React.Component {
           </View>
           <StyledButton
             onPress={() => this.props.navigation.navigate('StudentPersonalDetails',
-              { refreshStudents: this.props.navigation.state.params.refreshStudents,
-                course_id: this.state.course_id,
+              { course_id: this.state.course_id,
                 navbarColor: this.state.navbarColor,
                 newStudent: true })}
             text="+ Create Student"
@@ -88,17 +87,7 @@ class SearchStudentResultScreen extends React.Component {
   }
 
   render() {
-    let results;
-    if (this.props.isLoading) {
-      results = (
-        <Image
-          style={commonStyles.icon}
-          source={require('../../icons/spinner.gif')}
-        />
-      )
-    } else {
-      results = this._renderSearchResults();
-    }
+    results = this._renderSearchResults();
 
     return (
       <ScrollView style={{backgroundColor: '#fff'}}>
