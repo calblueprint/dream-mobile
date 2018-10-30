@@ -31,21 +31,6 @@ class LoginScreen extends React.Component {
     if (this.state.isFetching) {
       return;
     }
-    if (this.state.email == "sara@dream.org") {
-      this.state.email = "user1@gmail.com";
-      this.state.password = "password";
-    }
-    if (this.state.email == "") {
-      this.state.email = "user1@gmail.com";
-      this.state.password = "password";
-    }
-    if (this.state.email == "1") {
-      this.state.email = "user1@gmail.com";
-      this.state.password = "password";
-    } else if (this.state.email == "2") {
-      this.state.email = "user2@gmail.com";
-      this.state.password = "password";
-    }
 
     const params = {
       teacher: {
@@ -73,7 +58,6 @@ class LoginScreen extends React.Component {
           <TextInput style={styles.textInput}
             onChangeText={(text) => this.setState({password: text})}
             secureTextEntry/>
-
         </View>
         <View style={styles.buttons}>
           <StyledButton
