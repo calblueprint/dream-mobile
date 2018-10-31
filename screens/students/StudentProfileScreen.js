@@ -297,6 +297,7 @@ class StudentProfileScreen extends React.Component {
 
         </View> //close div
       </View> // Closes the whole thing
+    );
 
     }
 

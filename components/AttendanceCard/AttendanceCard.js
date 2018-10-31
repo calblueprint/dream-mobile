@@ -70,22 +70,6 @@ class AttendanceCard extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-<<<<<<< HEAD
-        <View style={styles.nameContainer}>
-          <Text style={textStyles.body}>{this.props.name}</Text>
-        </View>
-        <View style={styles.spaceContainer}/>
-        <View style={styles.leftOuterContainer}>
-          <View style={styles.leftContainer}>
-              {this.renderSelect()}
-            <TouchableHighlight
-              style={styles.commentButtonOuter}
-              onPress={() => this.props.setModal(this.props.attendance.comment)}
-              underlayColor='transparent'>
-              {this.renderCommentButton(this.props.attendance.comment)}
-            </TouchableHighlight>
-          </View>
-=======
         {this.props.name ? (
           <View style={styles.nameContainer}>
             <Text style={textStyles.body}>{this.props.name}</Text>
@@ -105,7 +89,6 @@ class AttendanceCard extends React.Component {
             underlayColor='transparent'>
             {this.renderCommentButton(this.props.attendance.notes__c)}
           </TouchableHighlight>
->>>>>>> 858871d98505c5a976c5e473036423b41c76ad33
         </View>
       </View>
     )
@@ -114,10 +97,7 @@ class AttendanceCard extends React.Component {
 
 AttendanceCard.propTypes = {
   attendance: PropTypes.object.isRequired,
-<<<<<<< HEAD
   name: PropTypes.string.isRequired,
-=======
->>>>>>> 858871d98505c5a976c5e473036423b41c76ad33
   index: PropTypes.number.isRequired,
   setModal: PropTypes.func.isRequired,
   setType: PropTypes.func.isRequired,

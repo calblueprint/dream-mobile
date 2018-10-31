@@ -168,11 +168,7 @@ class ViewCourseScreen extends React.Component {
       return (
         `${this.state.course.f1_first_name__c} ${this.state.course.f1_last_name__c}`
       );
-    } else {
-      return (
-        `${this.state.course.f1_first_name__c} ${this.state.course.f1_last_name__c}, ${this.state.course.f2_first_name__c} ${this.state.course.f2_last_name__c}`
-      );
-    }
+    });
   }
 
   /*

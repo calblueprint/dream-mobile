@@ -31,6 +31,10 @@ class LoginScreen extends React.Component {
     if (this.state.isFetching) {
       return;
     }
+    if (this.state.email == "") {
+      this.state.email = "cp@gmail.com"
+      this.state.password = "password"
+    }
 
     const params = {
       user: {
